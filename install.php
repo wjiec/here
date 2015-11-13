@@ -42,3 +42,37 @@ require_once 'Class/Class.Core.php';
 Core::init();
 
 // echo Parsedown::instance()->line('![Baidu](https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superplus/img/logo_white_ee663702.png)');
+
+function __res($path) {
+    return Core_Url::__res($path);
+}
+?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Here Installer</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
+    <link rel="stylesheet" href="<?php __res('include/Resource/css/style.css')?>" media="all" />
+    <script src="<?php __res('include/Resource/js/here.js')?>"></script>
+</head>
+<body>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

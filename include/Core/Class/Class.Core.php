@@ -15,7 +15,7 @@ class Core {
     }
     
     private static function __autoload( $class ) {
-        @include_once "{$class}.php";
+        @include_once str_replace(array('\\', '_'), '/', $class) . '.php';
     }
 }
 
