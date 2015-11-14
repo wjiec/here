@@ -17,6 +17,10 @@ class Core {
     private static function __autoload( $class ) {
         @include_once str_replace(array('\\', '_'), '/', $class) . '.php';
     }
+    
+    public static function __res($path) {
+        return 'http://' . ((isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : '') . '/' . $path;
+    }
 }
 
 ?>
