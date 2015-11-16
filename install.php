@@ -55,22 +55,26 @@ function __res($path) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
-    <link rel="stylesheet" href="<?php __res('include/Resource/css/library/bootstrap.min.css')?>" media="all" />
+<!-- <link rel="stylesheet" href="<?php __res('include/Resource/css/library/bootstrap-v4-alpha.min.css')?>" media="all" /> -->
     <link rel="stylesheet" href="<?php __res('include/Resource/css/style.css')?>" media="all" />
     <link rel="stylesheet" href="<?php __res('include/Resource/css/module/install.css')?>" media="all" />
     <script src="<?php __res('include/Resource/js/library/jquery-2.1.4.min.js')?>"></script>
     <script src="<?php __res('include/Resource/js/here.js')?>"></script>
 </head>
 <body>
-    <div class="container-fluid" id="header">
+    <div class="container-fluid _Here_border" id="_Here-Installer">
         <div class="row">
-            <section id="Here-Installer" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12">
+            <section id="_Here-Installer-Header" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
                 <h3>Here Installer</h3>
+            </section>
+            <section id="_Here_Installer-Container" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
+                <h3 class="hidden">Here Install Info</h3>
+                <div></div>
             </section>
         </div>
     </div>
-<div class="container">
-    <div class="row">
+
+<div class="container" id="test">
         <div class="row">
           <div class="col-md-1">.col-md-1</div>
           <div class="col-md-1">.col-md-1</div>
@@ -141,7 +145,6 @@ function __res($path) {
         <div class="row">
           <div class="col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
         </div>
-    </div>
 </div>
 </body>
 </html>

@@ -1,1 +1,20 @@
 @CHARSET "UTF-8";
+#_Here-Installer {
+    height: 10rem;
+    color: #EEE;
+    background: #23282d;
+}
+#_Here-Installer-Header {
+    text-align: center;
+}
+#_Here-Installer-Header h3 {
+    font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+    font-size: 2rem;
+}
+
+#test {
+    display: none;
+}
+._Here_border {
+    box-shadow: 0 0 0.83rem rgba(0, 0, 0, 0.15);
+}

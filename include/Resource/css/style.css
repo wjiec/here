@@ -37,8 +37,8 @@
 }
 /**
  * Color List
- * rgb(230, 39, 57)
- * rgb(225, 232, 240)
+ * rgb(230, 39, 57) - red
+ * rgb(225, 232, 240) - 
  * rgb(144, 104, 190)
  * rgb(110, 211, 207)
  */
@@ -48,10 +48,6 @@
  * 
  * Via: WordPress
  */
-* {
-    margin: 0;
-    padding: 0;
-}
 *,
 *:before,
 *:after {
@@ -146,6 +142,6 @@ blockquote, q {
 a img {
     border: 0;
 }
-*[class^='col-'] {
-    border: 0.083rem solid;
+.hidden {
+    display: none;
 }
