@@ -35,6 +35,13 @@
     background: rgba(211, 211, 211, .55);
     color: rgb(230, 39, 57);
 }
+/* !non-using
+::selection {
+    color: transparent;
+    text-shadow: 0 0 0.5rem rgba(0, 0, 0, .5);
+}
+*/
+
 /**
  * Color List
  * rgb(230, 39, 57) - red
@@ -86,9 +93,6 @@ body {
     background: url('images/bg.png');
     font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
 }
-a, img {
-    -webkit-touch-callout: none;
-}
 a {
     
     text-decoration: none;
@@ -134,14 +138,11 @@ q:after {
 }
 blockquote, q {
     -webkit-hyphens: none;
-    -moz-hyphens: none;
-    -ms-hyphens: none;
-    hyphens: none;
+       -moz-hyphens: none;
+        -ms-hyphens: none;
+            hyphens: none;
     quotes: none;
 }
 a img {
     border: 0;
-}
-.hidden {
-    display: none;
 }

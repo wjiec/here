@@ -36,7 +36,7 @@ ob_start();
 session_start();
 
 # Core API
-require_once 'Class/Class.Core.php';
+require_once 'Here/Core.php';
 
 # Init env
 Core::init();
@@ -55,96 +55,21 @@ function __res($path) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
-<!-- <link rel="stylesheet" href="<?php __res('include/Resource/css/library/bootstrap-v4-alpha.min.css')?>" media="all" /> -->
-    <link rel="stylesheet" href="<?php __res('include/Resource/css/style.css')?>" media="all" />
-    <link rel="stylesheet" href="<?php __res('include/Resource/css/module/install.css')?>" media="all" />
-    <script src="<?php __res('include/Resource/js/library/jquery-2.1.4.min.js')?>"></script>
-    <script src="<?php __res('include/Resource/js/here.js')?>"></script>
+    <link rel="stylesheet" href="include/Resource/css/library/grid-alpha.css" media="all" />
+    <link rel="stylesheet" href="include/Resource/css/module/install.css" media="all" />
+    <script src="include/Resource/js/library/jquery-2.1.4.min.js"></script>
+    <script src="include/Resource/js/here.js"></script>
 </head>
 <body>
-    <div class="container-fluid _Here_border" id="_Here-Installer">
+    <div class="container-fluid _Here_Container" id="_Here-Installer">
         <div class="row">
-            <section id="_Here-Installer-Header" class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-8 col-xs-offset-2">
+            <section id="_Here-Installer-Header" class="_Here_Align_All">
                 <h3>Here Installer</h3>
             </section>
             <section id="_Here_Installer-Container" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
-                <h3 class="hidden">Here Install Info</h3>
-                <div></div>
+                <h3 class="_Here_Attr_Hidden">Here Install Info</h3>
             </section>
         </div>
     </div>
-
-<div class="container" id="test">
-        <div class="row">
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-          <div class="col-md-1">.col-md-1</div>
-        </div>
-        <div class="row">
-          <div class="col-md-8">.col-md-8</div>
-          <div class="col-md-4">.col-md-4</div>
-        </div>
-        <div class="row">
-          <div class="col-md-4">.col-md-4</div>
-          <div class="col-md-4">.col-md-4</div>
-          <div class="col-md-4">.col-md-4</div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">.col-md-6</div>
-          <div class="col-md-6">.col-md-6</div>
-        </div>
-        <br />
-        <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-        <div class="row">
-          <div class="col-xs-12 col-md-8">.col-xs-12 .col-md-8</div>
-          <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-        </div>
-        
-        <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
-        <div class="row">
-          <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-          <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-          <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-        </div>
-        
-        <!-- Columns are always 50% wide, on mobile and desktop -->
-        <div class="row">
-          <div class="col-xs-6">.col-xs-6</div>
-          <div class="col-xs-6">.col-xs-6</div>
-        </div>
-        <br />
-        <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-8">.col-xs-12 .col-sm-6 .col-md-8</div>
-          <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-        </div>
-        <div class="row">
-          <div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
-          <div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
-          <!-- Optional: clear the XS cols if their content doesn't match in height -->
-          <div class="clearfix visible-xs-block"></div>
-          <div class="col-xs-6 col-sm-4">.col-xs-6 .col-sm-4</div>
-        </div>
-        <br />
-        <div class="row">
-          <div class="col-md-4">.col-md-4</div>
-          <div class="col-md-4 col-md-offset-4">.col-md-4 .col-md-offset-4</div>
-        </div>
-        <div class="row">
-          <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
-          <div class="col-md-3 col-md-offset-3">.col-md-3 .col-md-offset-3</div>
-        </div>
-        <div class="row">
-          <div class="col-md-6 col-md-offset-3">.col-md-6 .col-md-offset-3</div>
-        </div>
-</div>
 </body>
 </html>
