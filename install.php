@@ -42,10 +42,6 @@ require_once 'Here/Core.php';
 Core::init();
 
 // echo Parsedown::instance()->line('![Baidu](https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superplus/img/logo_white_ee663702.png)');
-
-function __res($path) {
-    echo Core::__res($path);
-}
 ?>
 <!doctype html>
 <html lang="en">
@@ -61,13 +57,18 @@ function __res($path) {
     <script src="include/Resource/js/here.js"></script>
 </head>
 <body>
-    <div class="container-fluid _Here_Container" id="_Here-Installer">
+    <div id="_Here-Installer" class="container-fluid">
         <div class="row">
-            <section id="_Here-Installer-Header" class="_Here_Align_All">
+            <section id="_Here-Installer-Header" class="widget-align-vh">
                 <h3>Here Installer</h3>
             </section>
-            <section id="_Here_Installer-Container" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12">
-                <h3 class="_Here_Attr_Hidden">Here Install Info</h3>
+            <section id="_Here-Installer-Container" class="col-6 col-offset-3">
+                <h3 class="widget-hidden">Here Installer Guide</h3>
+                <div id="_Here-Replace-Container">
+                    <h4>Welcome to the  programs wizard.</h4>
+                    <section>
+                    </section>
+                </div>
             </section>
         </div>
     </div>

@@ -10,34 +10,33 @@ body {
     background: url('../images/tbg.png');
     font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
 }
-#_Here-Installer {
+#_Here-Installer-Header {
     height: 10rem;
     color: #fff;
     background: #23282d;
-    display: -webkit-box;
-    display: flex;
-    -webkit-box-pack: center;
-    -webkit-box-align: center;
-    justify-content: center;
-    align-items: center;
     cursor: default;
-}
-#_Here-Installer-Header {
     text-align: center;
 }
 #_Here-Installer-Header h3 {
+    margin: 0;
     font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
     font-size: 2rem;
     font-style: italic;
     line-height: 3rem;
     letter-spacing: 0.167rem;
 }
-
-#test {
-    display: none;
+#_Here-Installer-Container {
+    cursor: default;
+    height: 20rem;
+    margin-top: 2rem;
+    /* background-color: #fff; */
+    /* box-shadow: 0 0 0.83rem rgba(0, 0, 0, .15); */
 }
-._Here_Container {
-    box-shadow: 0 0 0.83rem rgba(0, 0, 0, 0.15);
+#_Here-Installer-Container h4 {
+    font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+    font-size: 1.8rem;
+    font-style: italic;
+    line-height: 3rem;
 }
 ._Here_link_disable {
     cursor: not-allowed !important;
