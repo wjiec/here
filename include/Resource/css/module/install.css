@@ -1,4 +1,39 @@
 @CHARSET "UTF-8";
+/**
+ * Webkit Style
+ */
+::-webkit-scrollbar {
+    height: 0.667rem;
+    width: 0.667rem;
+}
+::-webkit-scrollbar-track {
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 0.833rem;
+    background: rgba(0, 0, 0, .3);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(0, 0, 0, .15);
+    color: #F00;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, .5);
+}
+::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, .65);
+}
+::selection {
+    background: rgba(211, 211, 211, .55);
+    color: rgb(230, 39, 57);
+}
+::-moz-selection {
+    background: rgba(211, 211, 211, .55);
+    color: rgb(230, 39, 57);
+}
+::-webkit-selection {
+    background: rgba(211, 211, 211, .55);
+    color: rgb(230, 39, 57);
+}
 html, body {
     -webkit-user-select: none;
        -moz-user-select: none;
@@ -6,9 +41,12 @@ html, body {
 }
 body {
     color: rgb(51, 51, 51);
+    font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
     background-color: rgb(241, 241, 241);
     background: url('../images/tbg.png');
-    font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+}
+code, pre {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
 }
 #_Here-Installer-Header {
     height: 10rem;
@@ -17,7 +55,7 @@ body {
     cursor: default;
     text-align: center;
 }
-#_Here-Installer-Header h3 {
+#_Here-Installer-Header h1 {
     margin: 0;
     font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
     font-size: 2rem;
@@ -27,16 +65,21 @@ body {
 }
 #_Here-Installer-Container {
     cursor: default;
-    height: 20rem;
     margin-top: 2rem;
-    /* background-color: #fff; */
-    /* box-shadow: 0 0 0.83rem rgba(0, 0, 0, .15); */
+    background: #fff;
+    box-shadow: 0 0 0.083rem rgba(0, 0, 0, .15);
 }
-#_Here-Installer-Container h4 {
+#_Here-Replace-Container h3 {
     font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
     font-size: 1.8rem;
     font-style: italic;
     line-height: 3rem;
+}
+#_Here-Replace-Container > *:not(h3) {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    font-size: 1.6rem;
+    font-family: "Droid Serif",Georgia,"Times New Roman",STHeiti,serif;
 }
 ._Here_link_disable {
     cursor: not-allowed !important;

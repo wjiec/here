@@ -4,7 +4,7 @@
  * @author  ShadowMan
  */
 class Core {
-    const _MajorVersion = '0.0';
+    const _MajorVersion = '0.0.1';
     const _MinorVersion = '15.1.1';
     
     public static function init() {
