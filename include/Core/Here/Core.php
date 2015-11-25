@@ -15,10 +15,28 @@ class Core {
                 Core::__autoload($class);
             }
         }
+        
+        self::Maketoken(); die();
     }
     
     private static function __autoload( $class ) {
         @include_once str_replace(array('\\', '_'), '/', $class) . '.php';
+    }
+    
+    private static function Maketoken() {
+        $tokenSet = 'ABDEFGHJKLMNPQRSTVWXYabdefghijkmnpqrstvwxy0123456789!@#$%^&*';
+        
+        self::_shuffle($tokenSet);
+    }
+    
+    private static function _shuffle(&$var) {
+        if (gettype($var) == 'string') {
+            $var = str_shuffle($var);
+        } else if (gettype($var) == 'array') {
+            $var = shuffle($var);
+        } else {
+            return;
+        }
     }
 }
 
