@@ -37,9 +37,16 @@ session_start();
 
 # Core API
 require_once 'Here/Core.php';
+require_once 'Here/Route.php';
 
 # Init env
 Core::init();
+
+include 'default/license.php'; die();
+
+function _u($path) {
+    echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
+}
 
 // echo Parsedown::instance()->line('![Baidu](https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superplus/img/logo_white_ee663702.png)'); die();
 ?>
@@ -63,19 +70,11 @@ Core::init();
             <section id="_Here-Installer-Header" class="widget-align-vh">
                 <h1>Here Installer</h1>
             </section>
-            <section id="_Here-Installer-Container" class="col-6 col-offset-3 col-sm-8 col-sm-offset-2">
+            <section id="_Here-Installer-Container" class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
                 <h2 class="widget-hidden">Here Installer Guide</h2>
                 <div id="_Here-Replace-Container">
-                    <h3>Welcome to <strong>Here</strong>.</h3>
-                    <p>Before getting started, we need some information on the database. You will need to know the following items before proceeding.</p>
-                    <ul>
-                        <li>Database name</li>
-                        <li>Database username</li>
-                        <li>Database password</li>
-                        <li>Database host</li>
-                        <li>Table prefix (if you want to run more than one WordPress in a single database)</li>
-                        <li></li>
-                    </ul>
+                    <h3>Welcome to Here.</h3>
+                    <p>Here is distributed under the <a href="<?php _u('license.php'); ?>" target="_blank">MIT</a> license.</p>
                 </div>
             </section>
         </div>
