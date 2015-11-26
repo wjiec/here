@@ -42,8 +42,6 @@ require_once 'Here/Route.php';
 # Init env
 Core::init();
 
-include 'default/license.php'; die();
-
 function _u($path) {
     echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
 }
@@ -75,9 +73,14 @@ function _u($path) {
                 <div id="_Here-Replace-Container">
                     <h3>Welcome to Here.</h3>
                     <p>Here is distributed under the <a href="<?php _u('license.php'); ?>" target="_blank">MIT</a> license.</p>
+                    <p>This Installer will automatically detect server environment is in line with the minimum configuration requirements. If not meet,  please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
                 </div>
             </section>
         </div>
+        <div id="_Here-Next-Step" class="row">
+            <button id="_Next-Step-Btn" class="widget-btn col-lg-offset-3 col-md-offset-2 col-sm-offset-1">Next Step</button>
+        </div>
+        
     </div>
 </body>
 </html>

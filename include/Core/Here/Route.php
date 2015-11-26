@@ -1,3 +1,7 @@
 <?php
-class Here_Route {
+class Route {
+    private $_method = null;
+    
+    public function __construct() {
+    }
 }

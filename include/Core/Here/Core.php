@@ -16,7 +16,7 @@ class Core {
             }
         }
         
-        self::Maketoken(); die();
+        self::Maketoken();
     }
     
     private static function __autoload( $class ) {
@@ -27,6 +27,10 @@ class Core {
         $tokenSet = 'ABDEFGHJKLMNPQRSTVWXYabdefghijkmnpqrstvwxy0123456789!@#$%^&*';
         
         self::_shuffle($tokenSet);
+        
+        if (!isset($_COOKIE['token'])) {
+            setcookie('token', substr($tokenSet, 0, 8));
+        }
     }
     
     private static function _shuffle(&$var) {
@@ -35,7 +39,7 @@ class Core {
         } else if (gettype($var) == 'array') {
             $var = shuffle($var);
         } else {
-            return;
+            return $var;
         }
     }
 }
