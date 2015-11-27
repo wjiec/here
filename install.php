@@ -59,7 +59,7 @@ function _u($path) {
     <link rel="stylesheet" href="/include/Resource/css/library/grid-alpha.css" media="all" />
     <link rel="stylesheet" href="/include/Resource/css/module/install.css" media="all" />
     <script src="/include/Resource/js/library/jquery-2.1.4.min.js"></script>
-    <script src="/include/Resource/js/library/jquery.pjax.js"></script>
+<!--     <script src="/include/Resource/js/library/jquery.pjax.js"></script> -->
     <script src="/include/Resource/js/installer.js"></script>
 </head>
 <body>
@@ -76,11 +76,13 @@ function _u($path) {
                     <p>This Installer will automatically detect server environment is in line with the minimum configuration requirements. If not meet,  please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
                 </div>
             </section>
+            <section id="_Here-Server-Env">
+                <h3 class="widget-hidden">Detect Server Environment</h3>
+            </section>
         </div>
         <div id="_Here-Next-Step" class="row">
             <button id="_Next-Step-Btn" class="widget-btn col-lg-offset-3 col-md-offset-2 col-sm-offset-1">Next Step</button>
         </div>
-        
     </div>
 </body>
 </html>

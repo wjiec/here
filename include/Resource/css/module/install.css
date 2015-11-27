@@ -89,7 +89,7 @@ code, pre {
     font-size: 1.8rem;
     font-style: italic;
     line-height: 3rem;
-    margin-bottom: .5rem;
+    margin-bottom: 1.5rem;
 }
 @media (max-width: 544px) {
     #_Here-Replace-Container h3 {
@@ -103,7 +103,7 @@ code, pre {
     font-family: "Fira Mono", "Source Code Pro", monospace;
 }
 #_Here-Replace-Container p {
-    margin: .5rem 0;
+    margin:  0 0 1rem 0;
 }
 #_Here-Replace-Container a {
     color: rgb(102, 102, 102);
