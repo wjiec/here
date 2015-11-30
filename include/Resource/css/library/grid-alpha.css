@@ -770,3 +770,18 @@ strong {
     cursor: not-allowed;
     pointer-events: none;
 }
+.widget-opacity-1 {
+    opacity: 1;
+}
+.widget-opacity-75 {
+    opacity: .75;
+}
+.widget-opacity-5 {
+    opacity: .5;
+}
+.widget-opacity-35 {
+    opacity: .35;
+}
+.widget-opacity-0 {
+    opacity: 0;
+}

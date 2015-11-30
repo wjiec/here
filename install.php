@@ -41,6 +41,7 @@ require_once 'Here/Route.php';
 
 # Init env
 Core::init();
+(new Route())->test("Test", "This", "Is", "Args");
 
 function _u($path) {
     echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
@@ -81,8 +82,8 @@ function _u($path) {
             </section>
         </div>
         <div id="_Here-Next-Step" class="row">
-            <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-12 col-sm-offset-8 col-xs-offset-7">
-                <button id="Next-Step-Btn" class="widget-btn widget-btn-default">Next Step »</button>
+            <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-7">
+                <button id="Next-Step-Btn" class="widget-btn widget-btn-default">Next Step</button>
             </div>
         </div>
     </div>

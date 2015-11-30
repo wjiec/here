@@ -84,6 +84,9 @@ code, pre {
         margin-top: 0;
     }
 }
+#_Here-Replace-Container {
+    transition: all .35s;
+}
 #_Here-Replace-Container h3 {
     font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
     font-size: 1.8rem;
@@ -109,7 +112,7 @@ code, pre {
     color: rgb(102, 102, 102);
     cursor: pointer;
     border-bottom: 1px dashed rgba(0, 0, 0, .3);
-    transition: all .25s;
+    transition: all .35s;
 }
 #_Here-Replace-Container a:focus {
     text-decoration: none;
@@ -125,6 +128,9 @@ code, pre {
 #Next-Step-Btn {
     margin-top: 2.5rem;
     font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', 微软雅黑, Arial, sans-serif;
+}
+#Next-Step-Btn::after {
+    content: " »";
 }
 ._Here_link_disable {
     cursor: not-allowed !important;
