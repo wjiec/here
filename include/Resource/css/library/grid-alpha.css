@@ -28,8 +28,8 @@ html {
   -webkit-tap-highlight-color: transparent;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  -webkit-text-size-adjust: 100%;
-      -ms-text-size-adjust: 100%;
+/*   -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%; */
 }
 @-moz-viewport {
   width: device-width;
@@ -645,8 +645,110 @@ strong {
   }
 }
 /**
+ * Widget
+ */
+.widget-btn {
+  display: inline-block;
+  padding: .375rem 1rem;
+  font-size: 1.4rem;
+  font-weight: normal;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition-property: background, border;
+  transition-duration: .35s;
+}
+.widget-btn:focus,
+.widget-btn:active:focus,
+.widget-btn.active:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+.widget-btn:focus, .widget-btn:hover {
+  text-decoration: none;
+}
+.widget-btn.focus {
+  text-decoration: none;
+}
+.widget-btn:active, .widget-btn.active {
+  background-image: none;
+  outline: 0;
+}
+.widget-btn.disabled, .widget-btn:disabled {
+  cursor: not-allowed;
+  opacity: .65;
+}
+/**
  * Widget Style
  */
+.widget-btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.widget-btn-default:hover {
+  color: #333;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.widget-btn-primary {
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+}
+.widget-btn-primary:hover {
+  color: #fff;
+  background-color: #286090;
+  border-color: #204d74;
+}
+.widget-btn-success {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #4cae4c;
+}
+.widget-btn-success:hover {
+  color: #fff;
+  background-color: #449d44;
+  border-color: #398439;
+}
+.widget-btn-info {
+  color: #fff;
+  background-color: #5bc0de;
+  border-color: #46b8da;
+}
+.widget-btn-info:hover {
+  color: #fff;
+  background-color: #31b0d5;
+  border-color: #269abc;
+}
+.widget-btn-warning {
+  color: #fff;
+  background-color: #f0ad4e;
+  border-color: #eea236;
+}
+.widget-btn-warning:hover {
+  color: #fff;
+  background-color: #ec971f;
+  border-color: #d58512;
+}
+.widget-btn-danger {
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+.widget-btn-danger:hover {
+  color: #fff;
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
 .widget-hidden {
   display: none;
 }

@@ -68,7 +68,7 @@ function _u($path) {
             <section id="_Here-Installer-Header" class="widget-align-vh">
                 <h1>Here Installer</h1>
             </section>
-            <section id="_Here-Installer-Container" class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+            <section id="_Here-Installer-Container" class="col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
                 <h2 class="widget-hidden">Here Installer Guide</h2>
                 <div id="_Here-Replace-Container">
                     <h3>Welcome to Here.</h3>
@@ -81,8 +81,11 @@ function _u($path) {
             </section>
         </div>
         <div id="_Here-Next-Step" class="row">
-            <button id="_Next-Step-Btn" class="widget-btn col-lg-offset-3 col-md-offset-2 col-sm-offset-1">Next Step</button>
+            <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-12 col-sm-offset-8 col-xs-offset-7">
+                <button id="Next-Step-Btn" class="widget-btn widget-btn-default">Next Step »</button>
+            </div>
         </div>
     </div>
+    <footer></footer>
 </body>
 </html>

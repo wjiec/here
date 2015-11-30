@@ -6,6 +6,8 @@
  * @author  ShadowMan
  */
 
+var_dump($_SERVER);
+
 if (!defined('__HERE_ROOT_DIRECTORY__') && !@include_once 'config.php') {
     file_exists('./install.php') ? header('Location: install.php') : print('Missing Config File');
     exit;

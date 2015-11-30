@@ -19,7 +19,7 @@
 ::-webkit-scrollbar-track {
 }
 ::-webkit-scrollbar-thumb {
-    border-radius: 0.833rem;
+    border-radius: 10px;
     background: rgba(0, 0, 0, .3);
 }
 ::-webkit-scrollbar-thumb:window-inactive {
@@ -108,7 +108,7 @@ code, pre {
 #_Here-Replace-Container a {
     color: rgb(102, 102, 102);
     cursor: pointer;
-    border-bottom: .083rem dashed rgba(0, 0, 0, .3);
+    border-bottom: 1px dashed rgba(0, 0, 0, .3);
     transition: all .25s;
 }
 #_Here-Replace-Container a:focus {
@@ -117,12 +117,19 @@ code, pre {
 #_Here-Replace-Container a:hover {
     color: rgb(17, 17, 17);
     text-decoration: none;
-    border-bottom: .083rem dashed rgba(0, 0, 0, .65);
+    border-bottom: 1px dashed rgba(0, 0, 0, .65);
 }
-#_Next-Step-Btn {
-    margin-top: 1rem;
+#Btn-Container {
+    display: inline;
+}
+#Next-Step-Btn {
+    margin-top: 2.5rem;
+    font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', 微软雅黑, Arial, sans-serif;
 }
 ._Here_link_disable {
     cursor: not-allowed !important;
     pointer-events: none;
+}
+footer {
+    margin: 2rem auto;
 }
