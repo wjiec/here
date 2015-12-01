@@ -1,0 +1,10 @@
+{
+  "name" : "JShadowMan/Here",
+  "description" : "A Simple Blog",
+  "version" : "0.0.1",
+  "require" : {
+    "php" : ">=5.3.0"
+  },
+  "license" : "MIT",
+  "homepage" : "https://github.com/jshadowman/here"
+}
