@@ -6,5 +6,8 @@
     "php" : ">=5.3.0"
   },
   "license" : "MIT",
-  "homepage" : "https://github.com/jshadowman/here"
+  "homepage" : "https://github.com/jshadowman/here",
+  "autoload": {
+        "files": [ "index.php" ]
+    }
 }
