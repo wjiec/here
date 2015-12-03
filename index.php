@@ -46,38 +46,29 @@ require_once 'Here/Route.php';
 ->error('404', function($params) {
     echo '404' . ' ' . $params;
 })
-->error('404', 'Not Found'); // curl -vvv 127.0.0.1:9527 -> '404 Not Found'
+->error('404', 'Not Found'); // curl -v 127.0.0.1:9527 -> '404 Not Found'
 */
-class Handler{
-    public function hello($name){
-        echo "Hello $name !!!";
-    }
-    public static function hello_again($name){
-        echo "Hello $name again !!!";
-    }
-}
 
 (new Route())
 ->error('404', function() {
     header("HTTP/1.1 404 Not Found");
     include 'default/404.php';
 })
-->hook('print', function() {
-    echo '<br>HOOK: print<br>';
+->hook('print', function($params) {
+    echo "<br>HOOK: print<br>";
+
+    var_dump($params);
 })
 ->get('/', function() {
     echo '<br>GET /<br>';
 })
 ->get('/hello/world/', function() {
     echo '<br>GET /hell/world/<br>';
-})
+}, 'print') // add hook
 ->get('/license.php', function() {
     include 'default/license.php';
 })
 ->execute();
-
-die(); # Route Debug
-
 
 if (!defined('__HERE_ROOT_DIRECTORY__') && !@include_once 'config.php') {
     file_exists('./install.php') ? header('Location: install.php') : print('Missing Config File');
