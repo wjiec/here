@@ -3,23 +3,26 @@ class Route {
     private $_hook;
     private $_error;
     private $_tree;
+    private $_strict;
 
     const SEPARATOR = '/';
     const HANDLE = '$$';
+    const VARIABLE = '$';
 
     const CALLBACK = 'cb';
     const HOOK = 'hook';
 
-    public function __construct() {
+    public function __construct($strict = false) {
         $this->_error = [];
         $this->_hook  = [];
         $this->_tree  = [];
+        $this->_strict = !!$strict;
     }
 
     public function __call($name, $args) {
         if (in_array($name, array('get', 'post'))) {
             array_unshift($args, strtoupper($name));
-            call_user_func_array('self::createNode', $args);
+            call_user_func_array('self::initNode', $args);
         }
         if (in_array($name, array('error', 'hook'))) { // 钩子和错误处理
             $key  = array_shift($args); // _error | _hook 中的键, 表示一个错误或者一个钩子，值为需要触发的方法
@@ -39,28 +42,32 @@ class Route {
 
     public function execute($method = null, $path = null, $params = []) {
         $method = $method ? $method : $_SERVER['REQUEST_METHOD'];
+        $params['_ROUTER']['_PATH'] = $path;
         $path = trim($path ? $path : parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), self::SEPARATOR);
-        
+
         list($callback, $hook, $params) = self::resolve($method, $path, $params);
+        $params['_HANDLE'] = ['_CALLBACK' => $callback, '_HOOK' => $hook];
+        $params['_ROUTER']['_THIS'] = $this;
+        
         if (!is_callable($callback)) {
             if (empty($params[0])) {
                 echo $params[0];
             } else {
-                $this->error('404');
+                if ($this->_strict) {
+                    $this->error('404', $params);
+                }
             }
         } else {
-            $params['_HANDLE'] = ['_CALLBACK' => $callback, '_HOOK' => $hook];
-            
-            call_user_func_array($callback, $params);
+            call_user_func_array($callback, [$params]);
             if (!empty($hook)) {
                 foreach ($hook as $h) {
-                    $this->hook($h, $params);
+                    $this->hook($h, [$params]);
                 }
             }
         }
     }
 
-    private function createNode($method, $path, $callback, $hook = null) {
+    private function initNode($method, $path, $callback, $hook = null) {
         $nodes = explode(self::SEPARATOR, str_replace('.', self::SEPARATOR, trim($path, self::SEPARATOR)));
         if (!is_array($method)) {
             $method = [ $method ];
@@ -69,18 +76,28 @@ class Route {
             if (!array_key_exists($m, $this->_tree)) { // 如果在 _tree 中， $method 键值对不存在，就创建这个键值对。值为array
                 $this->_tree[$m] = [];
             }
-            $this->match_one_path($this->_tree[$m], $nodes, $callback, $hook);
+            $this->createNode($this->_tree[$m], $nodes, $callback, $hook);
         }
     }
 
-    private function match_one_path(&$tree, $nodes, $callback, $hook) {
+    private function createNode(&$tree, $nodes, $callback, $hook) {
         $currentNode = array_shift($nodes);
-        if ($currentNode && !array_key_exists($currentNode, $tree)) {
-            $tree[$currentNode] = [];
+        
+        if (!array_key_exists(self::VARIABLE, $tree)) {
+            $tree[self::VARIABLE] = [];
+        }
+        if ($currentNode[0] == self::VARIABLE) {
+            $tree[self::VARIABLE][substr($currentNode, 1)] = [];
+            
+            return self::createNode($tree[self::VARIABLE][substr($currentNode, 1)], $nodes, $callback, $hook);
+        } else {
+            if ($currentNode && !array_key_exists($currentNode, $tree)) {
+                $tree[$currentNode] = [];
+            }
         }
         
         if ($currentNode) { // create next node
-            return self::match_one_path($tree[$currentNode], $nodes, $callback, $hook);
+            return self::createNode($tree[$currentNode], $nodes, $callback, $hook);
         }
 
         $tree[self::HANDLE] = [ self::CALLBACK => $callback, self::HOOK => [] ];
@@ -93,7 +110,7 @@ class Route {
         }
     }
 
-    private function resolve($method, $path, $params) {
+    private function resolve($method, $path, &$params) {
         if (!array_key_exists($method, $this->_tree)) {
             return [null, null, ["METHOD \"{$method}\" NOT FOUND"]];
         }
@@ -102,7 +119,7 @@ class Route {
         return self::__find($this->_tree[$method], $nodes, $params);
     }
 
-    private function __find(&$tree, $nodes, $params) {
+    private function __find(&$tree, $nodes, &$params) {
         $need = array_shift($nodes);
 
         if (empty($need)) {
