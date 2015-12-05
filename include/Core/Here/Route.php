@@ -86,7 +86,7 @@ class Route {
         if (!array_key_exists(self::VARIABLE, $tree)) {
             $tree[self::VARIABLE] = [];
         }
-        if ($currentNode[0] == self::VARIABLE) {
+        if ($currentNode && $currentNode[0] == self::VARIABLE) {
             $tree[self::VARIABLE][substr($currentNode, 1)] = [];
             
             return self::createNode($tree[self::VARIABLE][substr($currentNode, 1)], $nodes, $callback, $hook);
@@ -102,11 +102,9 @@ class Route {
 
         $tree[self::HANDLE] = [ self::CALLBACK => $callback, self::HOOK => [] ];
         if (is_array($hook)) {
-            foreach ($hook as $h) {
-                array_push($tree[self::HANDLE]['hook'], $h);
-            }
+            $tree[self::HANDLE]['hook'] = array_merge($tree[self::HANDLE]['hook'], $hook);
         } else if ($hook) {
-            array_push($tree[self::HANDLE]['hook'], $hook);
+            $tree[self::HANDLE]['hook'][] = $hook;
         }
     }
 

@@ -87,17 +87,26 @@ require_once 'Here/Route.php';
 ->get('/', function($params) {
     var_dump($params);
     echo '<br>GET /<br>';
-})
+}, 'print')
 ->get('/hello/world', function($params) {
     var_dump($params);
-})
+}, ['print', 'test'])
 ->get('/hello/$name/', function($params) {
     
 })
 ->get('/hello/$name/$mid', function($params) {
+    
+})
+->post('/hello/world', function($params) {
+    var_dump($params);
+})
+->post('/hello/$name/', function($params) {
 
 })
-->execute()
+->post('/hello/$name/$mid', function($params) {
+
+})
+->execute('GET', '/')
 ;
 
 if (!defined('__HERE_ROOT_DIRECTORY__') && !@include_once 'config.php') {
