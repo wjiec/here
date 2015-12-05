@@ -73,8 +73,7 @@ require_once 'Here/Route.php';
 })
 ->execute();
 */
-
-(new Route(true))
+(new Route())
 ->error('404', function($params) {
     header("HTTP/1.1 404 Not Found");
     include 'default/404.php';
@@ -82,7 +81,6 @@ require_once 'Here/Route.php';
 })
 ->hook('print', function($params) {
     echo "<br>HOOK: print<br>";
-    var_dump($params);
 })
 ->get('/', function($params) {
     var_dump($params);
@@ -95,18 +93,12 @@ require_once 'Here/Route.php';
     
 })
 ->get('/hello/$name/$mid', function($params) {
-    
-})
-->post('/hello/world', function($params) {
     var_dump($params);
 })
-->post('/hello/$name/', function($params) {
-
+->get('/hello/$user.$sxt/$id.$ext', function($params) {
+    var_dump($params);
 })
-->post('/hello/$name/$mid', function($params) {
-
-})
-->execute('GET', '/')
+->execute()
 ;
 
 if (!defined('__HERE_ROOT_DIRECTORY__') && !@include_once 'config.php') {

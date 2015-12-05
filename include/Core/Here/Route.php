@@ -11,12 +11,12 @@ class Route {
 
     const CALLBACK = 'cb';
     const HOOK = 'hook';
+    const STATUS = 'status';
 
-    public function __construct($strict = false) {
+    public function __construct() {
         $this->_error = [];
         $this->_hook  = [];
         $this->_tree  = [];
-        $this->_strict = !!$strict;
     }
 
     public function __call($name, $args) {
@@ -33,29 +33,29 @@ class Route {
             } else if (isset($this->{$member}[$key]) && is_callable($this->{$member}[$key])) { // 如果只传入 key(和不是一个可调用结构的参数), 检查这个键是否存在, 存在就调用这个回调函数
                 return call_user_func_array($this->{$member}[$key], $args);
             } else { // 调用错误, 即不是设置对应 error | hook 的回调函数，也不是触发相应 error | hook 的
-                return ($name == 'error') ? trigger_error("`{$name}`->\"{$key}\": {$args[0]}") : $args[0]; // set_error_handler($error_handler);
+                // error & hook not found
             }
         }
-
         return $this;
     }
 
     public function execute($method = null, $path = null, $params = []) {
         $method = $method ? $method : $_SERVER['REQUEST_METHOD'];
-        $params['_ROUTER']['_PATH'] = $path;
-        $path = trim($path ? $path : parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), self::SEPARATOR);
-
-        list($callback, $hook, $params) = self::resolve($method, $path, $params);
+        $path = $path ? $path : parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $params['_path'] = $path;
+        
+        $path = trim($path, self::SEPARATOR);
+        
+        $this->hook('will', $params);
+        list($callback, $hook) = self::resolve($method, $path, $params);
+        $this->hook('did', $params);
+        
         $params['_HANDLE'] = ['_CALLBACK' => $callback, '_HOOK' => $hook];
-        $params['_ROUTER']['_THIS'] = $this;
+        $params['this'] = $this;
         
         if (!is_callable($callback)) {
-            if (empty($params[0])) {
-                echo $params[0];
-            } else {
-                if ($this->_strict) {
-                    $this->error('404', $params);
-                }
+            if (isset($params[self::STATUS])) {
+                $this->{key($params[self::STATUS])}(current($params[self::STATUS]), $params);
             }
         } else {
             call_user_func_array($callback, [$params]);
@@ -110,7 +110,7 @@ class Route {
 
     private function resolve($method, $path, &$params) {
         if (!array_key_exists($method, $this->_tree)) {
-            return [null, null, ["METHOD \"{$method}\" NOT FOUND"]];
+            return [null, null, ['msg' => "METHOD \"{$method}\" NOT FOUND"]];
         }
         $nodes = explode(self::SEPARATOR, str_replace('.', self::SEPARATOR, $path));
 
@@ -124,16 +124,33 @@ class Route {
             if (array_key_exists(self::HANDLE, $tree)) {
                 return [$tree[self::HANDLE][self::CALLBACK], $tree[self::HANDLE][self::HOOK], $params];
             } else {
-                return [null, null, ["\"HANDLE NOT FOUND\""]];
+                return [null, null, ['msg' => "\"HANDLE NOT FOUND\""]];
             }
         }
         foreach ($tree as $node => $value) {
-            if ($node == self::HANDLE) { continue; }
+            if ($node == self::HANDLE || $node == self::VARIABLE) { continue; }
             if ($node == $need) {
                 return $this->__find($tree[$node], $nodes, $params);
             }
         }
-
-        return [null, null, ["PATH NOT FOUND"]];
+        
+        if (empty($tree[self::VARIABLE])) {
+            return [null, null, [self::STATUS => ['error' => '404']]];
+        } else {
+            $match = $tree[self::VARIABLE];
+            
+            foreach ($match as $key => $val) {
+                $params['_DATA'][$key] = $need;
+                list($c, $h, $v) = $this->__find($match[$key], $nodes, $params);
+                
+                if ($c && is_callable($c)) {
+                    return [$c, $h, $v];
+                }
+                if (!isset($params[self::STATUS])) {
+                    $params = array_merge($params, $v);
+                }
+                unset($params['_DATA'][$key]);
+            }
+        }
     }
 }
