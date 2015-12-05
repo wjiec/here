@@ -45,14 +45,16 @@ require_once 'Here/Router.php';
     echo "401" . '<br>' . $message;
     die($message);
 })
-->hook('check', function($params) {
-    if ($params['_data']['name'] != 'shadowman') {
-        $params['this']->error('401', $params, "please log in");
-    }
+->error('404', function($params) {
+    header('HTTP/1.1 404 Not Found');
+    var_dump($params);
 })
-->get('/$name', function($params) {
+->get('/$name^a', function($params) {
     echo "name: " . $params['_data']['name'];
-}, ['check'])
+})
+->get('/$user^A', function($params) {
+    echo "user: " . $params['_data']['user'];
+})
 ->execute();
 
 if (!defined('__HERE_ROOT_DIRECTORY__') && !@include_once 'config.php') {

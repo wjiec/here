@@ -3,7 +3,8 @@ class Route {
     private $_hook;
     private $_error;
     private $_tree;
-
+    private $_check = ['A' => 'alnum', 'a' => 'alpha', 'd' => 'digit', 'l' => 'lower', 'u' => 'upper'];
+    
     const SEPARATOR = '/';
     const HANDLE = '$$';
     const VARIABLE = '$';
@@ -39,11 +40,10 @@ class Route {
     }
 
     public function execute($method = null, $path = null, $params = []) {
-        $method = $method ? $method : $_SERVER['REQUEST_METHOD'];
-        $path = $path ? $path : parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $params['_path'] = $path;
+        $method = strtoupper($method ? $method : $_SERVER['REQUEST_METHOD']);
+        $params['_path'] = $path ? $path : parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         
-        $path = trim($path, self::SEPARATOR);
+        $path = trim($params['_path'], self::SEPARATOR);
         
         $this->hook('will', $params);
         list($callback, $hook) = self::resolve($method, $path, $params);
@@ -52,7 +52,7 @@ class Route {
         $params['_handle'] = ['_callback' => $callback, '_hook' => $hook];
         $params['this'] = $this;
         
-        if (!empty($hook)) {
+        if ($hook && !empty($hook)) {
             foreach ($hook as $h) {
                 $this->hook($h, $params);
             }
@@ -142,7 +142,15 @@ class Route {
         } else {
             $match = $tree[self::VARIABLE];
             foreach ($match as $key => $val) {
-                $params['_data'][$key] = $need;
+                if ($pos = strpos($key, '^')) {
+                    if (array_key_exists($key[$pos + 1], $this->_check) && !call_user_func('ctype_' . $this->_check[$key[$pos + 1]], $need)) {
+                        $params = array_merge($params, [self::STATUS => ['error' => '404', 'message' => 'VALIDATE FAILURE']]);
+                        continue;
+                    } else {
+                        unset($params[self::STATUS]);
+                    }
+                }
+                $params['_data'][substr($key, 0, $pos)] = $need;
                 list($c, $h) = $this->__find($match[$key], $nodes, $params);
                 
                 if ($c && is_callable($c)) {
