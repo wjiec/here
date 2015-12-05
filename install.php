@@ -41,13 +41,13 @@ require_once 'Here/Router.php';
 
 # Init env
 Core::init();
-(new Route())->test("Test", "This", "Is", "Args");
 
 function _u($path) {
     echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
 }
 
 // echo Parsedown::instance()->line('![Baidu](https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superplus/img/logo_white_ee663702.png)'); die();
+// TODO pjax
 ?>
 <!doctype html>
 <html lang="en">

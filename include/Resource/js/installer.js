@@ -32,16 +32,8 @@ $(function() {
 });
 
 function nextStep() {
-    $.post('/controller/installer/setp/2', {
+    $.post('/index.php', {
         step : 2
     }, function(data) {
     }, 'json');
-    
-//    switch (i++ % 4) {
-//        case 0: $('#_Here-Replace-Container').attr('class', '').addClass('widget-opacity-75'); break;
-//        case 1: $('#_Here-Replace-Container').attr('class', '').addClass('widget-opacity-5'); break;
-//        case 2: $('#_Here-Replace-Container').attr('class', '').addClass('widget-opacity-35'); break;
-//        case 3: $('#_Here-Replace-Container').attr('class', '').addClass('widget-opacity-0').html('')
-//        .attr('class', '').addClass('widget-opacity-1'); break;
-//    }
 }

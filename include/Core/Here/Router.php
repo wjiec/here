@@ -1,5 +1,5 @@
 <?php
-class Route {
+class Router {
     private $_hook;
     private $_error;
     private $_tree;

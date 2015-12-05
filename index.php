@@ -5,10 +5,6 @@
  * @package Here
  * @author  ShadowMan
  */
-# TODO Route
-############################################################
-error_reporting(E_ALL);
-
 # Root Directory
 define('__HERE_ROOT_DIRECTORY__', dirname(__FILE__));
 
@@ -34,26 +30,28 @@ define('__HERE_THEME_DIRECTORY__', '/include/Theme');
     __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__ . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_THEME_DIRECTORY__ . PATH_SEPARATOR
 );
-ob_start();
 
-# Route API
+ob_start();
+session_start();
+
+# Core API
+require_once 'Here/Core.php';
 require_once 'Here/Router.php';
 
-(new Route())
-->error('401', function($params, $message = null) {
-    header("HTTP/1.1 401 Authorization Required");
-    echo "401" . '<br>' . $message;
-    die($message);
+# Init env
+Core::init();
+(new Router())
+->get('/', function() {
+    header('Location: install.php');
 })
-->error('404', function($params) {
-    header('HTTP/1.1 404 Not Found');
-    var_dump($params);
+->get('/index.php', function() {
+    header('Location: install.php');
 })
-->get('/$name^a', function($params) {
-    echo "name: " . $params['_data']['name'];
+->get('/license.php', function($params) {
+    include 'default/license.php';
 })
-->get('/$user^A', function($params) {
-    echo "user: " . $params['_data']['user'];
+->post('/index.php', function($params) {
+    var_dump($_POST);
 })
 ->execute();
 
