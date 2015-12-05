@@ -37,7 +37,7 @@ define('__HERE_THEME_DIRECTORY__', '/include/Theme');
 ob_start();
 
 # Route API
-require_once 'Here/Route.php';
+require_once 'Here/Router.php';
 
 (new Route())
 ->error('401', function($params, $message = null) {
