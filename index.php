@@ -39,67 +39,21 @@ ob_start();
 # Route API
 require_once 'Here/Route.php';
 
-// DEBUG:
-//      php -S 0.0.0.0:9527
-/*
 (new Route())
-->error('404', function($params) {
-    echo '404' . ' ' . $params;
+->error('401', function($params, $message = null) {
+    header("HTTP/1.1 401 Authorization Required");
+    echo "401" . '<br>' . $message;
+    die($message);
 })
-->error('404', 'Not Found'); // curl -v 127.0.0.1:9527 -> '404 Not Found'
-*/
-
-/*
-(new Route())
-->error('404', function($params) {
-    header("HTTP/1.1 404 Not Found");
-    include 'default/404.php';
+->hook('check', function($params) {
+    if ($params['_data']['name'] != 'shadowman') {
+        $params['this']->error('401', $params, "please log in");
+    }
 })
-->hook('print', function($params) {
-    echo "<br>HOOK: print<br>";
-
-    var_dump($params);
-})
-->get('/', function($params) {
-    var_dump($params);
-    
-    echo '<br>GET /<br>';
-})
-->get('/hello/world/', function($params) {
-    echo '<br>GET /hell/world/<br>';
-}, 'print') // add hook
-->get('/license.php', function($params) {
-    include 'default/license.php';
-})
+->get('/$name', function($params) {
+    echo "name: " . $params['_data']['name'];
+}, ['check'])
 ->execute();
-*/
-(new Route())
-->error('404', function($params) {
-    header("HTTP/1.1 404 Not Found");
-    include 'default/404.php';
-    var_dump($params);
-})
-->hook('print', function($params) {
-    echo "<br>HOOK: print<br>";
-})
-->get('/', function($params) {
-    var_dump($params);
-    echo '<br>GET /<br>';
-}, 'print')
-->get('/hello/world', function($params) {
-    var_dump($params);
-}, ['print', 'test'])
-->get('/hello/$name/', function($params) {
-    
-})
-->get('/hello/$name/$mid', function($params) {
-    var_dump($params);
-})
-->get('/hello/$user.$sxt/$id.$ext', function($params) {
-    var_dump($params);
-})
-->execute()
-;
 
 if (!defined('__HERE_ROOT_DIRECTORY__') && !@include_once 'config.php') {
     file_exists('./install.php') ? header('Location: install.php') : print('Missing Config File');

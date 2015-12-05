@@ -3,7 +3,6 @@ class Route {
     private $_hook;
     private $_error;
     private $_tree;
-    private $_strict;
 
     const SEPARATOR = '/';
     const HANDLE = '$$';
@@ -50,20 +49,20 @@ class Route {
         list($callback, $hook) = self::resolve($method, $path, $params);
         $this->hook('did', $params);
         
-        $params['_HANDLE'] = ['_CALLBACK' => $callback, '_HOOK' => $hook];
+        $params['_handle'] = ['_callback' => $callback, '_hook' => $hook];
         $params['this'] = $this;
         
+        if (!empty($hook)) {
+            foreach ($hook as $h) {
+                $this->hook($h, $params);
+            }
+        }
         if (!is_callable($callback)) {
             if (isset($params[self::STATUS])) {
                 $this->{key($params[self::STATUS])}(current($params[self::STATUS]), $params);
             }
         } else {
             call_user_func_array($callback, [$params]);
-            if (!empty($hook)) {
-                foreach ($hook as $h) {
-                    $this->hook($h, [$params]);
-                }
-            }
         }
     }
 
@@ -87,8 +86,9 @@ class Route {
             $tree[self::VARIABLE] = [];
         }
         if ($currentNode && $currentNode[0] == self::VARIABLE) {
-            $tree[self::VARIABLE][substr($currentNode, 1)] = [];
-            
+            if (!isset($tree[self::VARIABLE][substr($currentNode, 1)])) {
+                $tree[self::VARIABLE][substr($currentNode, 1)] = [];
+            }
             return self::createNode($tree[self::VARIABLE][substr($currentNode, 1)], $nodes, $callback, $hook);
         } else {
             if ($currentNode && !array_key_exists($currentNode, $tree)) {
@@ -110,7 +110,8 @@ class Route {
 
     private function resolve($method, $path, &$params) {
         if (!array_key_exists($method, $this->_tree)) {
-            return [null, null, ['msg' => "METHOD \"{$method}\" NOT FOUND"]];
+            $params = array_merge($params, [self::STATUS => ['error' => '404', 'message' => 'METHOD NOT FOUND']]);
+            return [null, null];
         }
         $nodes = explode(self::SEPARATOR, str_replace('.', self::SEPARATOR, $path));
 
@@ -122,34 +123,32 @@ class Route {
 
         if (empty($need)) {
             if (array_key_exists(self::HANDLE, $tree)) {
-                return [$tree[self::HANDLE][self::CALLBACK], $tree[self::HANDLE][self::HOOK], $params];
+                return [$tree[self::HANDLE][self::CALLBACK], $tree[self::HANDLE][self::HOOK]];
             } else {
-                return [null, null, ['msg' => "\"HANDLE NOT FOUND\""]];
+                $params = array_merge($params, [self::STATUS => ['error' => '404', 'message' => 'HANDLE NOT FOUND']]);
+                return [null, null];
             }
         }
         foreach ($tree as $node => $value) {
             if ($node == self::HANDLE || $node == self::VARIABLE) { continue; }
-            if ($node == $need) {
+            if ($need == $node) {
                 return $this->__find($tree[$node], $nodes, $params);
             }
         }
-        
+
         if (empty($tree[self::VARIABLE])) {
-            return [null, null, [self::STATUS => ['error' => '404']]];
+            $params = array_merge($params, [self::STATUS => ['error' => '404', 'message' => 'PATH NOT FOUND']]);
+            return [null, null];
         } else {
             $match = $tree[self::VARIABLE];
-            
             foreach ($match as $key => $val) {
-                $params['_DATA'][$key] = $need;
-                list($c, $h, $v) = $this->__find($match[$key], $nodes, $params);
+                $params['_data'][$key] = $need;
+                list($c, $h) = $this->__find($match[$key], $nodes, $params);
                 
                 if ($c && is_callable($c)) {
-                    return [$c, $h, $v];
+                    return [$c, $h];
                 }
-                if (!isset($params[self::STATUS])) {
-                    $params = array_merge($params, $v);
-                }
-                unset($params['_DATA'][$key]);
+                unset($params['_data'][$key]);
             }
         }
     }
