@@ -6,62 +6,27 @@
  * @author  ShadowMan
  */
 
-# Root Directory
-define('__HERE_ROOT_DIRECTORY__', dirname(__FILE__));
-
-# Common Resource Directory
-define('__HERE_COMMON_DIRECTORY__', '/include');
-
-# Admin Resource Directory
-define('__HERE_ADMIN_DIRECTORY__', '/admin');
-
-# Core Resource Directory
-define('__HERE_CORE_DIRECTORY__', '/include/Core');
-
-# Plugins Directory
-define('__HERE_PLUGINS_DIRECTORY__', '/include/Plugins');
-
-# Theme Directory
-define('__HERE_THEME_DIRECTORY__', '/include/Theme');
-
-@set_include_path(get_include_path() . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_COMMON_DIRECTORY__ . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_ADMIN_DIRECTORY__ . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_CORE_DIRECTORY__ . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__ . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_THEME_DIRECTORY__ . PATH_SEPARATOR
-);
-
-ob_start();
-session_start();
-
-# Core API
-require_once 'Here/Core.php';
-require_once 'Here/Router.php';
-
-# Init env
-Core::init();
-
-(new Router())
-->error('404', function($params, $message = '') {
-    header('HTTP/1.1 404 Not Found');
-    die($message ? $message : $params['status']['message']);
-})
-->get('install.php', function(){})
-->post('install.php', function($params) {
-    if (isset($_POST['step'])) {
-        switch ((int)$_POST['step']) {
-            case '2': include 'install/step/' . (int)$_POST['step'] . '.php'; break;
-            case '3': echo '3'; break;
-            default: $params['this']->error('404', $params);
-        }
-    }
-    die();
-})
-->execute();
+// $options->router
+// ->post('install.php', function($params) {
+//     if (isset($_POST['step'])) {
+//         switch ((int)$_POST['step']) {
+//             case '2': include 'install/step/' . (int)$_POST['step'] . '.php'; break;
+//             case '3': echo '3'; break;
+//             default: $params['this']->error('404', $params);
+//         }
+//     }
+//     die();
+// });
 
 function _u($path) {
     echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
+}
+
+function _fastclick() {
+    $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+    if (strpos($agent, 'iphone') || strpos($agent, 'ipad') || strpos($agent, 'android') || strpos($agent, 'midp') || strpos($agent, 'ucweb')) {
+        echo "<script src=\"/include/Resource/js/library/mobile/fastclick.min.js\"></script>\n";
+    }
 }
 
 // TODO pjax
@@ -77,7 +42,7 @@ function _u($path) {
     <link rel="stylesheet" href="/include/Resource/css/library/grid-alpha.css" media="all" />
     <link rel="stylesheet" href="/include/Resource/css/module/install.css" media="all" />
     <script src="/include/Resource/js/library/jquery-2.1.4.min.js"></script>
-<!--     <script src="/include/Resource/js/library/jquery.pjax.js"></script> -->
+    <?php _fastclick(); ?>
     <script src="/include/Resource/js/installer.js"></script>
 </head>
 <body>

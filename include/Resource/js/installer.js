@@ -4,45 +4,20 @@ $(function() {
     $(document).on('contextmenu', function() { return false; });
     $(document).on('selectstart', function() { return false; });
     
-    if (isMobile()) {
-        $.getScript('/include/Resource/js/library/mobile/fastclick.min.js', function() {
-            FastClick.attach(document.body);
-            $('#Next-Step-Btn').on('click', nextStep);
-        });
-    } else {
-        $('#Next-Step-Btn').on('click', nextStep);
-    }
-    
-    function isMobile() {
-        var sUserAgent = navigator.userAgent.toLowerCase();
-        var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
-        var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
-        var bIsMidp = sUserAgent.match(/midp/i) == "midp";
-        var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
-        var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
-        var bIsAndroid = sUserAgent.match(/android/i) == "android";
-        var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
-        var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
-        if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-});
-
-function nextStep() {
-    $.ajax({
-        type: 'POST',
-        url: 'install.php',
-        data: 'step=2',
-        context: $('#_Here-Replace-Container'),
-        beforeSend: function(XHR) {
-            this.css({'opacity':'.35'});
-        },
-        success: function(data){
-            this.html(data);
-            this.css({'opacity':'1'});
-        }
+    $('#Next-Step-Btn').on('click', function() {
+//        $.ajax({
+//            type: 'POST',
+//            url: 'install.php',
+//            data: 'step=2',
+//            context: $('#_Here-Replace-Container'),
+//            async: true,
+//            beforeSend: function(XHR) {
+//                this.css({'opacity':'.35'});
+//            },
+//            success: function(data){
+//                this.html(data);
+//                this.css({'opacity':'1'});
+//            }
+//        });
     });
-}
+});
