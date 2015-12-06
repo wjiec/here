@@ -32,8 +32,17 @@ $(function() {
 });
 
 function nextStep() {
-    $.post('/index.php', {
-        step : 2
-    }, function(data) {
-    }, 'json');
+    $.ajax({
+        type: 'POST',
+        url: 'install.php',
+        data: 'step=2',
+        context: $('#_Here-Replace-Container'),
+        beforeSend: function(XHR) {
+            this.css({'opacity':'.35'});
+        },
+        success: function(data){
+            this.html(data);
+            this.css({'opacity':'1'});
+        }
+    });
 }

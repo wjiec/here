@@ -42,11 +42,28 @@ require_once 'Here/Router.php';
 # Init env
 Core::init();
 
+(new Router())
+->error('404', function($params, $message = '') {
+    header('HTTP/1.1 404 Not Found');
+    die($message ? $message : $params['status']['message']);
+})
+->get('install.php', function(){})
+->post('install.php', function($params) {
+    if (isset($_POST['step'])) {
+        switch ((int)$_POST['step']) {
+            case '2': include 'install/step/' . (int)$_POST['step'] . '.php'; break;
+            case '3': echo '3'; break;
+            default: $params['this']->error('404', $params);
+        }
+    }
+    die();
+})
+->execute();
+
 function _u($path) {
     echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
 }
 
-// echo Parsedown::instance()->line('![Baidu](https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superplus/img/logo_white_ee663702.png)'); die();
 // TODO pjax
 ?>
 <!doctype html>
