@@ -22,7 +22,14 @@ class Router {
     public function __call($name, $args) {
         if (in_array($name, array('get', 'post'))) {
             array_unshift($args, strtoupper($name));
-            call_user_func_array('self::initNode', $args);
+            
+            if (is_array($args[1])) {
+                foreach ($args[1] as $path) {
+                    call_user_func_array('self::initNode', [strtoupper($name), $path, $args[2], isset($args[3]) ? $args[3] : null]);
+                }
+            } else {
+                call_user_func_array('self::initNode', $args);
+            }
         }
         if (in_array($name, array('error', 'hook'))) { // 钩子和错误处理
             $key  = array_shift($args); // _error | _hook 中的键, 表示一个错误或者一个钩子，值为需要触发的方法
