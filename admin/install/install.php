@@ -64,7 +64,7 @@ function _fastclick() {
             </section>
         </div>
         <div id="_Here-Next-Step" class="row">
-            <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-7">
+            <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-17">
                 <button id="Next-Step-Btn" class="widget-btn widget-btn-default">Next Step</button>
             </div>
         </div>
