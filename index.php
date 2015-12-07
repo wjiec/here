@@ -45,7 +45,6 @@ $theme = new Theme();
 
 (new Router())
 ->error('404', function($params, $message = '') {
-    header('HTTP/1.1 404 Not Found');
     $params['theme']->_404();
 })
 ->get(['/', '/index.php'], function(){
