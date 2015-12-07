@@ -126,7 +126,7 @@ code, pre {
     display: inline;
 }
 #Next-Step-Btn {
-    margin-top: 2.5rem;
+    margin-top: 2rem;
     font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', 微软雅黑, Arial, sans-serif;
 }
 #Next-Step-Btn::after {

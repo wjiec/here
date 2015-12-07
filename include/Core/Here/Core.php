@@ -1,7 +1,7 @@
 <?php
 /**
- * @package Here
- * @author  ShadowMan
+ * @author ShadowMan
+ * @package Core
  */
 class Core {
     const _MajorVersion = '0.0.1';
@@ -16,6 +16,7 @@ class Core {
             }
         }
         
+        header('Content-Type: text/html;charset=UTF-8');
         self::Maketoken();
     }
     
@@ -27,7 +28,6 @@ class Core {
         $tokenSet = 'ABDEFGHJKLMNPQRSTVWXYabdefghijkmnpqrstvwxy0123456789!@#$%^&*';
         
         self::_shuffle($tokenSet);
-        
         if (!isset($_COOKIE['token'])) {
             setcookie('token', substr($tokenSet, 0, 8));
         }

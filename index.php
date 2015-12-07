@@ -37,23 +37,23 @@ session_start();
 
 # Core API
 require_once 'Here/Core.php';
-require_once 'Here/Router.php';
 
 # Init env
 Core::init();
 
+$theme = new Theme();
+
 (new Router())
 ->error('404', function($params, $message = '') {
     header('HTTP/1.1 404 Not Found');
-    die($message ? $message : $params['status']['message']);
+    $params['theme']->_404();
 })
 ->get(['/', '/index.php'], function(){
     if (!@include_once 'config.php') {
-        file_exists('./install.php') ? include 'install.php' : print('Missing Config File');
-        exit;
+        file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit(1);
     }
 })
-->get('license.php', function() {
-    include 'default/license.php';
+->get('license.php', function($params) {
+    $params['theme']->license();
 })
-->execute('GET', '/');
+->execute(['theme' => $theme]);
