@@ -153,7 +153,7 @@ class Router {
                         unset($params[self::STATUS]);
                     }
                 }
-                $params['_data'][substr($key, 0, $pos)] = $need;
+                $params['_data'][$pos ? substr($key, 0, $pos) : $key] = $need;
                 list($c, $h) = $this->__find($match[$key], $nodes, $params);
 
                 if ($c && is_callable($c)) {
