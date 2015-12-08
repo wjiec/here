@@ -45,14 +45,21 @@ $theme = new Theme();
 
 (new Router())
 ->error('404', function($params, $message = '') {
-    $params['theme']->_404();
+    $params['_theme']->_404();
 })
-->get(['/', '/index.php'], function(){
+->get(['/', '/index.php'], function($params){
     if (!@include_once 'config.php') {
         file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit(1);
     }
 })
 ->get('license.php', function($params) {
-    $params['theme']->license();
+    $params['_theme']->license();
 })
-->execute(['theme' => $theme]);
+->post('/controller/$controller/$action', function($params) {
+    try {
+        call_user_func_array('Controller::request', $params['_data']);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+})
+->execute(['_theme' => &$theme]);

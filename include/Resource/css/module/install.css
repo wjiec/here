@@ -132,10 +132,9 @@ code, pre {
 #Next-Step-Btn::after {
     content: " »";
 }
-._Here_link_disable {
-    cursor: not-allowed !important;
-    pointer-events: none;
-}
 footer {
     margin: 2rem auto;
+}
+.Here-toggle-content-ing {
+    opacity: .7;
 }

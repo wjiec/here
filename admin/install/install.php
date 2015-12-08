@@ -5,19 +5,6 @@
  * @package Here
  * @author  ShadowMan
  */
-
-// $options->router
-// ->post('install.php', function($params) {
-//     if (isset($_POST['step'])) {
-//         switch ((int)$_POST['step']) {
-//             case '2': include 'install/step/' . (int)$_POST['step'] . '.php'; break;
-//             case '3': echo '3'; break;
-//             default: $params['this']->error('404', $params);
-//         }
-//     }
-//     die();
-// });
-
 function _u($path) {
     echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
 }
@@ -65,7 +52,7 @@ function _fastclick() {
         </div>
         <div id="_Here-Next-Step" class="row">
             <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-17">
-                <button id="Next-Step-Btn" class="widget-btn widget-btn-default">Next Step</button>
+                <button id="Next-Step-Btn" class="widget-btn widget-btn-default" value='2'>Next Step</button>
             </div>
         </div>
     </div>
