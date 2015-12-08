@@ -138,3 +138,6 @@ footer {
 .Here-toggle-content-ing {
     opacity: .7;
 }
+.Here-content-hidden {
+    opacity: 0;
+}

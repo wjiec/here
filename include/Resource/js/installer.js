@@ -8,11 +8,17 @@ $(function() {
         $.ajax({
             url: '/controller/installer/step',
             type: 'POST',
-            data: 'step=2',
+            data: 'step=' + $('#Next-Step-Btn').val(),
+            datatype: 'html',
             beforeSend: function() {
+                window.history.pushState({url:'s'}, 'Setting', '/?step=' + $('#Next-Step-Btn').val());
                 $('#_Here-Replace-Container').toggleClass('Here-toggle-content-ing');
-                $('#Next-Step-Btn').toggleClass('widget-cursor-disable').prop('focus');
+                $('#Next-Step-Btn').toggleClass('widget-cursor-disable');
             }
+        }).done(function(data) {
+            $('#_Here-Replace-Container').removeClass().addClass('Here-content-hidden').html(data).removeClass();
+            $('#Next-Step-Btn').toggleClass('widget-cursor-disable widget-loading').val(3);
+        }).error(function() {
         });
     });
 });

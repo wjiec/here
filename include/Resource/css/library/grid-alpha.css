@@ -722,6 +722,10 @@ strong {
   cursor: not-allowed;
   opacity: .65;
 }
+.widget-loading {
+}
+.widget-loading::before {
+}
 /**
  * Widget Style
  */
