@@ -26,11 +26,11 @@ function _fastclick() {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no"/>
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
-    <link rel="stylesheet" href="/include/Resource/css/library/grid-alpha.css" media="all" />
-    <link rel="stylesheet" href="/include/Resource/css/module/install.css" media="all" />
-    <script src="/include/Resource/js/library/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="../../include/Resource/css/library/grid-alpha.css" media="all" />
+    <link rel="stylesheet" href="../../include/Resource/css/module/install.css" media="all" />
+    <script src="../../include/Resource/js/library/jquery-2.1.4.min.js"></script>
     <?php _fastclick(); ?>
-    <script src="/include/Resource/js/installer.js"></script>
+    <script src="../../include/Resource/js/installer.js"></script>
 </head>
 <body>
     <div id="_Here-Installer" class="container-fluid">
