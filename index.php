@@ -42,18 +42,30 @@ require_once 'Here/Core.php';
 Core::init();
 
 $theme = new Theme();
-
 (new Router())
 ->error('404', function($params, $message = '') {
-    $params['_theme']->_404();
+    $params['_theme']->_404($message ? $message : null);
 })
 ->get(['/', '/index.php'], function($params){
     if (!@include_once 'config.php') {
+        file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit(1);
+    }
+})
+->get('install.php', function($params){
+    if (!@include_once 'config.php') {
         file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit(1);
+    } else {
+        exit(1);
     }
 })
 ->get('license.php', function($params) {
-    $params['_theme']->license();
+    $params['_theme']->_license();
+})
+->get('/admin/', function($params) {
+    if (!@include_once 'config.php') {
+        file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit(1);
+    }
+    file_exists('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit(1);
 })
 ->post('/controller/$controller/$action', function($params) {
     try {
