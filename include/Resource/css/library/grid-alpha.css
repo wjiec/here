@@ -23,6 +23,7 @@ tbody, tfoot, thead, tr, th, td {
 }
 html {
   font-size: 62.5%;
+  /* font-size: 12px; */
   font-family: sans-serif;
   overflow-y: scroll;
   -webkit-tap-highlight-color: transparent;
@@ -722,9 +723,42 @@ strong {
   cursor: not-allowed;
   opacity: .65;
 }
-.widget-loading {
+.widget-form-group {
+  margin-bottom: 1rem;
 }
-.widget-loading::before {
+.widget-input-group {
+  width: 100%;
+  display: inline-table;
+}
+.widget-form-control {
+  display: block;
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #55595c;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: .25rem;
+}
+.widget-input-label {
+  display: table-cell;
+  white-space: nowrap;
+  padding: .375rem .75rem;
+  font-size: 1.4rem;
+  vertical-align: middle;
+  font-weight: normal;
+  line-height: 0;
+  color: #55595c;
+  text-align: center;
+  background-color: #eceeef;
+  border: 1px solid #ccc;
+  border-right: 0;
+  border-radius: .25rem 0 0 .25rem;
+}
+.widget-input-label + .widget-form-control {
+    border-radius: 0 .25rem .25rem 0;
 }
 /**
  * Widget Style

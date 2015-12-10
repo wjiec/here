@@ -16,6 +16,10 @@ function _fastclick() {
     }
 }
 
+function _step() {
+    Controller::request('Installer', 'step');
+}
+
 // TODO pjax
 ?>
 <!doctype html>
@@ -41,9 +45,7 @@ function _fastclick() {
             <section id="_Here-Installer-Container" class="col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
                 <h2 class="widget-hidden">Here Installer Guide</h2>
                 <div id="_Here-Replace-Container">
-                    <h3>Welcome to Here.</h3>
-                    <p>Here is distributed under the <a href="<?php _u('license.php'); ?>" target="_blank">MIT</a> license.</p>
-                    <p>This Installer will automatically detect server environment is in line with the minimum configuration requirements. If not meet,  please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
+                    <?php _step(); ?>
                 </div>
             </section>
             <section id="_Here-Server-Env">
