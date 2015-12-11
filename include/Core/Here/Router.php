@@ -24,7 +24,7 @@ class Router {
     }
 
     public function __call($name, $args) {
-        if (in_array($name, array('get', 'post'))) {
+        if (in_array($name, array('get', 'post', 'put', 'patch', 'delete'))) {
             array_unshift($args, strtoupper($name));
             if (is_array($args[1])) {
                 foreach ($args[1] as $path) {
