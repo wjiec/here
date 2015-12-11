@@ -733,23 +733,28 @@ strong {
 .widget-form-control {
   display: block;
   width: 100%;
-  padding: .375rem .75rem;
-  font-size: 1rem;
+  padding: .5rem .75rem;
+  font-size: 1.6rem;
   line-height: 1.5;
   color: #55595c;
   background-color: #fff;
   background-image: none;
   border: 1px solid #ccc;
   border-radius: .25rem;
+  transition: all .35s;
+}
+.widget-form-control:focus {
+  border-color: #66afe9;
+  outline: none;
 }
 .widget-input-label {
   display: table-cell;
   white-space: nowrap;
-  padding: .375rem .75rem;
-  font-size: 1.4rem;
+  padding: .5rem .75rem;
+  font-size: 1.5rem;
   vertical-align: middle;
   font-weight: normal;
-  line-height: 0;
+  line-height: 1;
   color: #55595c;
   text-align: center;
   background-color: #eceeef;

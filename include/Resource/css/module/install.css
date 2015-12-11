@@ -117,8 +117,12 @@ code, pre {
 #_Here-Replace-Container #_Here-Setting-Form {
     margin-left: 0;
 }
-#_Here-Replace-Container input {
+#_Here-Replace-Container label {
     font-size: 1.6rem;
+    font-weight: bold;
+    font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
+}
+#_Here-Replace-Container input {
     cursor: text;
 }
 #_Here-Replace-Container ._Here-Form-Tips {
