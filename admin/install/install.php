@@ -21,8 +21,7 @@ function _step() {
 }
 
 // TODO pjax
-?>
-<!doctype html>
+?><!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -33,6 +32,7 @@ function _step() {
     <link rel="stylesheet" href="../../include/Resource/css/library/grid-alpha.css" media="all" />
     <link rel="stylesheet" href="../../include/Resource/css/module/install.css" media="all" />
     <script src="../../include/Resource/js/library/jquery-2.1.4.min.js"></script>
+    <script src="../../include/Resource/js/library/jquery.pjax.js"></script>
     <?php _fastclick(); ?>
     <script src="../../include/Resource/js/installer.js"></script>
 </head>
