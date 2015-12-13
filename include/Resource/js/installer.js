@@ -11,7 +11,7 @@ $(function() {
     $('#Next-Step-Btn').on('click', function() {
         $.ajax({
             url: '/controller/installer/step',
-            type: 'POST',
+            type: 'post',
             data: 'step=' + $('#Next-Step-Btn').val(),
             datatype: 'html',
             beforeSend: function() {
@@ -24,5 +24,10 @@ $(function() {
             $('#Next-Step-Btn').toggleClass('widget-cursor-disable widget-loading').val(3);
         }).error(function() {
         });
+    });
+    
+    $.pjax({
+        selector:'button',
+        container: '#_Here-Replace-Container'
     });
 });

@@ -74,4 +74,11 @@ $theme = new Theme();
         echo $e->getMessage();
     }
 })
+->get('pjax.php/$controller/$action', function($params) {
+    try {
+        call_user_func_array('Controller::request', $params['_data']);
+    } catch (Exception $e) {
+        echo $e->getMessage();
+    }
+})
 ->execute(['_theme' => &$theme]);
