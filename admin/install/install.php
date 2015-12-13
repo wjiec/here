@@ -9,10 +9,13 @@ function _u($path) {
     echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
 }
 
-function _fastclick() {
+function _mobile() {
     $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
     if (strpos($agent, 'iphone') || strpos($agent, 'ipad') || strpos($agent, 'android') || strpos($agent, 'midp') || strpos($agent, 'ucweb')) {
+        echo "<script src=\"/include/Resource/js/library/mobile/zepto.min.js\"></script>\n    ";
         echo "<script src=\"/include/Resource/js/library/mobile/fastclick.min.js\"></script>\n";
+    } else {
+        echo "<script src=\"/include/Resource/js/library/jquery-2.1.4.min.js\"></script>\n";
     }
 }
 
@@ -31,9 +34,8 @@ function _step() {
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
     <link rel="stylesheet" href="../../include/Resource/css/library/grid-alpha.css" media="all" />
     <link rel="stylesheet" href="../../include/Resource/css/module/install.css" media="all" />
-    <script src="../../include/Resource/js/library/jquery-2.1.4.min.js"></script>
+    <?php _mobile(); ?>
     <script src="../../include/Resource/js/library/jquery.pjax.js"></script>
-    <?php _fastclick(); ?>
     <script src="../../include/Resource/js/installer.js"></script>
 </head>
 <body>
