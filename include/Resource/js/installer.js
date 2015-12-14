@@ -15,7 +15,6 @@ $(function() {
             data: 'step=' + $('#Next-Step-Btn').val(),
             datatype: 'html',
             beforeSend: function() {
-                window.history.pushState({url:'s'}, 'Setting', '?step=' + $('#Next-Step-Btn').val());
                 $('#_Here-Replace-Container').toggleClass('Here-toggle-content-ing');
                 $('#Next-Step-Btn').toggleClass('widget-cursor-disable');
             }
@@ -27,7 +26,10 @@ $(function() {
     });
     
     $.pjax({
-        selector:'button',
-        container: '#_Here-Replace-Container'
+        selector:'p',
+        container: '#_Here-Replace-Container',
+        data: {
+            step: 2
+        }
     });
 });
