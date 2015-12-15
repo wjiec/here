@@ -47,6 +47,12 @@ class Router {
         return $this;
     }
 
+    public function request($path, $callback, $hook = null) {
+         call_user_func_array('self::initNode', ['GET', $path, $callback, isset($hook) ? $hook : null]);
+         call_user_func_array('self::initNode', ['POST', $path, $callback, isset($hook) ? $hook : null]);
+         return $this;
+    }
+
     public function execute($params = [], $method = null, $path = null) {
         $method = strtoupper($method ? $method : $_SERVER['REQUEST_METHOD']);
         $params['_path'] = $path ? $path : parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
