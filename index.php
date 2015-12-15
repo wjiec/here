@@ -67,14 +67,14 @@ $theme = new Theme();
     }
     file_exists('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit(1);
 })
-->post('/controller/$controller/$action', function($params) {
+->request('/controller/$controller/$action', function($params) {
     try {
         call_user_func_array('Controller::request', $params['_data']);
     } catch (Exception $e) {
         echo $e->getMessage();
     }
 })
-->get('pjax.php/$controller/$action', function($params) {
+->get('pjax/$controller/$action', function($params) {
     try {
         call_user_func_array('Controller::request', $params['_data']);
     } catch (Exception $e) {

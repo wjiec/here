@@ -850,3 +850,7 @@ strong {
     pointer-events: none;
     opacity: .65;
 }
+.widget-pjax-error {
+    border: 1px solid rgb(230, 39, 57);
+    box-shadow: 0 0 1px 2px rgba(230, 39, 57, .35);
+}

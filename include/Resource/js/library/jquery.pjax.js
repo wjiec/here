@@ -13,7 +13,8 @@
         options = $.extend({
             selector: null,
             container: null,
-            filter: null
+            filter: null,
+            callback: null
         }, options || {});
 
         if (!options.selector || !options.container) {
@@ -36,12 +37,12 @@
                 url : href,
                 element : this,
                 title: '',
-                push: true
             });
             pjax.request(options);
         });
     }
     pjax.options = {};
+    pjax.state = {};
     pjax.defaultOptions = {
         url: null,
         type: 'GET',
@@ -52,6 +53,14 @@
             xhr && xhr.setRequestHeader('X-REQUEST', 'PJAX');
         }
     }
+    pjax.success = function(options) {
+        pjax.state = {
+            container: pjax.options.container,
+            title: document.title,
+            url: pjax.options.url
+        };
+        history.pushState(pjax.state, document.title, pjax.options.url);
+    }
     pjax.xhr = null;
     pjax.request = function(options) {
         var cache = null;
@@ -60,10 +69,9 @@
         options = $.extend({}, pjax.defaultOptions, options);
         options.beforeSend();
         pjax.options = options;
+        pjax.options.success = pjax.success;
         pjax.xhr = $.ajax(pjax.options);
         console.log(options);
-    }
-    pjax.storage = function() {
     }
     
     $(window).on('popstate', function(event) {
