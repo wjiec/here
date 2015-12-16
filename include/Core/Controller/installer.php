@@ -6,8 +6,15 @@ class Controller_Installer {
     }
     
     public static function validate($params) {
-        if (get_magic_quotes_gpc()) {
-            echo $_POST['host'];
+        if (!get_magic_quotes_gpc()) {
+            foreach ($_POST as &$v) {
+                $v = addslashes($v);
+            }
+            try {
+                DB::connectTest($_POST['user'], $_POST['pawd'], $_POST['name'], $_POST['host'], $_POST['port']);
+            } catch (Exception $e) {
+                echo "{\"fail\":\"1\",\"data\":\"{$e->getCode()}: {$e->getMessage()}\"}";
+            }
         }
     }
 

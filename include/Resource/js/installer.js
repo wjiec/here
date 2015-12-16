@@ -24,20 +24,28 @@ $(function() {
                         user: $('#db-user').val(), pawd: $('#db-pawd').val(),
                         name: $('#db-name').val(), pref: $('#db-pref').val()
                     },
+                    dataType: 'json',
                     success: function(data) {
-                        console.log(data);
+                        data = $.parseJSON(data);
+                        if (data.fail) {
+                            $('#_Here-Setting-Error').toggleClass('widget-hidden');
+                            $('#_Here-Setting-Error').html(data.data);
+                        } else {
+                            
+                        }
                     }
                 });
             }
+        } else {
+            request({
+                url: '/controller/installer/step',
+                data: { step: $('#Next-Step-Btn').val() },
+                success: function(data) {
+                    $('#_Here-Replace-Container').removeClass().addClass('Here-content-hidden').html(data).removeClass();
+                    $('#Next-Step-Btn').toggleClass('widget-cursor-disable widget-loading').val(3);
+                }
+            });
         }
-        request({
-            url: '/controller/installer/step',
-            data: { step: $('#Next-Step-Btn').val() },
-            success: function(data) {
-                $('#_Here-Replace-Container').removeClass().addClass('Here-content-hidden').html(data).removeClass();
-                $('#Next-Step-Btn').toggleClass('widget-cursor-disable widget-loading').val(3);
-            }
-        });
     });
 });
 
