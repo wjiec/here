@@ -9,18 +9,18 @@ class Controller {
     const _PHP  = '.php';
     
     public static function request($controller, $action, $params = null) {
+        $controller = ucfirst($controller);
         if (file_exists(self::_path . $controller . self::_PHP) && !is_dir(self::_path . $controller . self::_PHP)) {
             if (!class_exists(self::_pref . ucfirst($controller))) {
-                throw new Exception("CLASS NOT FOUND");
+                throw new Exception("CLASS<" . self::_pref . ucfirst($controller) . "> NOT FOUND");
             }
             if (!is_callable([self::_pref . ucfirst($controller), $action])) {
-                throw new Exception("METHOD NOT FOUND");
+                throw new Exception(self::_pref . ucfirst($controller) . "::{$action} NOT FOUND");
             }
             call_user_func(self::_pref . ucfirst($controller) . "::" . $action, $params);
         } else {
-            throw new Exception("CONTROLLER NOT FOUND");
+            throw new Exception("CONTROLLER<{$controller}> NOT FOUND");
         }
     }
 }
-
 ?>
