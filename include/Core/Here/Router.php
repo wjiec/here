@@ -26,13 +26,7 @@ class Router {
     public function __call($name, $args) {
         if (in_array($name, array('get', 'post', 'put', 'patch', 'delete'))) {
             array_unshift($args, strtoupper($name));
-            if (is_array($args[1])) {
-                foreach ($args[1] as $path) {
-                    call_user_func_array('self::initNode', [strtoupper($name), $path, $args[2], isset($args[3]) ? $args[3] : null]);
-                }
-            } else {
-                call_user_func_array('self::initNode', $args);
-            }
+            call_user_func_array('self::match', $args);
         }
         if (in_array($name, array('error', 'hook'))) {
             $key  = array_shift($args);
@@ -42,15 +36,10 @@ class Router {
             } else if (isset($this->{$member}[$key]) && is_callable($this->{$member}[$key])) {
                 return call_user_func_array($this->{$member}[$key], $args);
             } else {
+                // ...
             }
         }
         return $this;
-    }
-
-    public function request($path, $callback, $hook = null) {
-         call_user_func_array('self::initNode', ['GET', $path, $callback, isset($hook) ? $hook : null]);
-         call_user_func_array('self::initNode', ['POST', $path, $callback, isset($hook) ? $hook : null]);
-         return $this;
     }
 
     public function execute($params = [], $method = null, $path = null) {
@@ -78,17 +67,27 @@ class Router {
         }
     }
 
-    private function initNode($method, $path, $callback, $hook = null) {
-        $nodes = explode(self::SEPARATOR, str_replace('.', self::SEPARATOR, trim($path, self::SEPARATOR)));
+    public function match($method = [], $path = [], $callback = null, $hook = null) {
         if (!is_array($method)) {
             $method = [ $method ];
         }
+        if (!is_array($path)) {
+            $path = [ $path ];
+        }
         foreach($method as $m){
+            $m = strtoupper($m);
             if (!array_key_exists($m, $this->_tree)) {
                 $this->_tree[$m] = [];
             }
-            $this->createNode($this->_tree[$m], $nodes, $callback, $hook);
+            foreach ($path as $p) {
+                if (!is_string($p)) {
+                    throw new Exception("Route Error");
+                }
+                $nodes = explode(self::SEPARATOR, str_replace('.', self::SEPARATOR, trim($p, self::SEPARATOR)));
+                $this->createNode($this->_tree[$m], $nodes, $callback, $hook);
+            }
         }
+        return $this;
     }
 
     private function createNode(&$tree, $nodes, $callback, $hook) {
