@@ -54,9 +54,8 @@ $theme = new Theme();
 ->get('install.php', function($params){
     if (!@include_once 'config.php') {
         file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit(1);
-    } else {
-        exit(1);
     }
+    exit(1);
 })
 ->get('license.php', function($params) {
     $params['_theme']->_license();
@@ -67,7 +66,7 @@ $theme = new Theme();
     }
     file_exists('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit(1);
 })
-->request('/controller/$controller/$action', function($params) {
+->match(['get', 'post'], '/controller/$controller/$action', function($params) {
     try {
         call_user_func_array('Controller::request', $params['_data']);
     } catch (Exception $e) {

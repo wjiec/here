@@ -2,90 +2,90 @@
 @import url('/include/Resource/css/library/fonts/fira.css');
 @import url('/include/Resource/css/library/fonts/inconsolata.css');
 ::selection {
-    background: rgba(211, 211, 211, .55);
-    color: rgb(230, 39, 57);
+  background: rgba(211, 211, 211, .55);
+  color: rgb(230, 39, 57);
 }
 ::-moz-selection {
-    background: rgba(211, 211, 211, .55);
-    color: rgb(230, 39, 57);
+  background: rgba(211, 211, 211, .55);
+  color: rgb(230, 39, 57);
 }
 ::-webkit-selection {
-    background: rgba(211, 211, 211, .55);
-    color: rgb(230, 39, 57);
+  background: rgba(211, 211, 211, .55);
+  color: rgb(230, 39, 57);
 }
 *,
 *::before,
 *::after {
-    cursor: inherit;
-    -webkit-box-sizing: inherit;
-            box-sizing: inherit;
+  cursor: inherit;
+  -webkit-box-sizing: inherit;
+          box-sizing: inherit;
 }
 html {
-    font-size: 62.5%;
-    font-family: sans-serif;
-    overflow-y: scroll;
-    -webkit-tap-highlight-color: transparent;
-    -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-    -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
+  font-size: 62.5%;
+  font-family: sans-serif;
+  overflow-y: scroll;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
 }
 body {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    line-height: 1.5;
-    color: rgb(51, 51, 51);
-    font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
-    background-color: rgb(241, 241, 241);
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  line-height: 1.5;
+  color: rgb(51, 51, 51);
+  font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+  background-color: rgb(241, 241, 241);
 }
 #_Here-License {
-    padding: 0.5rem;
-    width: 100%;
-    cursor: default;
-    background: #fff;
-    box-shadow: 0 0 0.083rem rgba(0, 0, 0, .15);
-    font-family: "Fira Mono", "Source Code Pro", monospace;
+  padding: 0.5rem;
+  width: 100%;
+  cursor: default;
+  background: #fff;
+  box-shadow: 0 0 0.083rem rgba(0, 0, 0, .15);
+  font-family: "Fira Mono", "Source Code Pro", monospace;
 }
 #_Here-License h1 {
-    text-align: center;
-    font-weight: normal;
-    font-size: 2.5rem;
-    font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
+  text-align: center;
+  font-weight: normal;
+  font-size: 2.5rem;
+  font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
 }
 #_Here-License p {
-    font-size: 1.6rem;
+  font-size: 1.6rem;
 }
 #Holders {
-    font-style: italic;
-    margin: 2rem 0;
+  font-style: italic;
+  margin: 2rem 0;
 }
 @media (min-width: 544px) {
-    #_Here-License h1 {
-        text-align: center;
-    }
+  #_Here-License h1 {
+      text-align: center;
+  }
 }
 @media (min-width: 768px) {
-    #_Here-License {
-        width: 80%;
-        margin-top: 3.5rem;
-    }
-    #_Here-License h1 {
-        text-align: left;
-    }
+  #_Here-License {
+      width: 80%;
+      margin-top: 3.5rem;
+  }
+  #_Here-License h1 {
+      text-align: left;
+  }
 }
 @media (min-width: 992px) {
-    #_Here-License {
-        width: 70%;
-        padding: 1rem;
-    }
+  #_Here-License {
+      width: 70%;
+      padding: 1rem;
+  }
 }
 @media (min-width: 1600px) {
-    #_Here-License {
-        padding: 1rem;
-        width: 50%;
-    }
+  #_Here-License {
+      padding: 1rem;
+      width: 50%;
+  }
 }

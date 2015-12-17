@@ -129,7 +129,13 @@ code, pre {
     margin-top: .233rem;
     margin-left: 1rem;
     color: #ccc;
+    font-size: 1.6rem;
     font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
+}
+@media (max-width: 544px) {
+    #_Here-Replace-Container ._Here-Form-Tips {
+        font-size: 1.3rem;
+    }
 }
 #Btn-Container {
     display: inline;
@@ -149,4 +155,15 @@ footer {
 }
 .Here-content-hidden {
     opacity: 0;
+}
+#_Here-Setting-Error h3 {
+    margin-bottom: 1rem;
+}
+@media (max-width: 544px) {
+    #_Here-Setting-Error {
+        margin-left: 0 !important;
+    }
+    #_Here-Setting-Error p {
+        font-size: 1.2rem;
+    }
 }
