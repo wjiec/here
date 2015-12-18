@@ -1,7 +1,7 @@
 <?php
 /**
  * @author ShadowMan
- * @package Router
+ * @package Core.Router
  */
 class Router {
     private $_hook;
@@ -52,7 +52,7 @@ class Router {
         $this->hook('did', $params);
 
         $params['_handle'] = ['_callback' => $callback, '_hook' => $hook];
-        $params['this'] = $this;
+        $params['_this'] = $this;
         if ($hook && !empty($hook)) {
             foreach ($hook as $h) {
                 $this->hook($h, $params);
