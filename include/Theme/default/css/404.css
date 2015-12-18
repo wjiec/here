@@ -1,23 +1,23 @@
 @CHARSET "UTF-8";
 @import url('/include/Resource/css/library/fonts/inconsolata.css');
 html, body {
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
 }
 body {
-    cursor: default;
-    color: rgb(51, 51, 51);
-    font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
-    background-color: rgb(241, 241, 241);
+  cursor: default;
+  color: rgb(51, 51, 51);
+  font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+  background-color: rgb(241, 241, 241);
 }
 #_Here-404 {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 #_Here-404 h1 {
-    text-align: center;
-    font-weight: normal;
-    font-size: 3rem;
-    font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
+  text-align: center;
+  font-weight: normal;
+  font-size: 3rem;
+  font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
 }

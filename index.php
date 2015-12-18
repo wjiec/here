@@ -43,7 +43,7 @@ Core::init();
 
 $theme = new Theme();
 (new Router())
-->error('404', function($params, $message = '') {
+->error('404', function($params, $message = null) {
     $params['_theme']->_404($message ? $message : null);
 })
 ->get(['/', '/index.php'], function($params){
@@ -68,7 +68,7 @@ $theme = new Theme();
 })
 ->match(['get', 'post'], '/controller/$controller/$action', function($params) {
     try {
-        call_user_func_array('Controller::request', $params['_data']);
+        call_user_func_array('Controller::request', [$params['_data']['controller'], $params['_data']['action'], &$params]);
     } catch (Exception $e) {
         echo $e->getMessage();
     }

@@ -1,8 +1,8 @@
 <?php
 
 class Controller_Installer {
-    public static function step($params) {
-        self::_include(intval(isset($_REQUEST['step']) ? $_REQUEST['step'] : 1));
+    public static function step($route) {
+        self::_include(__FUNCTION__, intval(isset($_REQUEST[__FUNCTION__]) ? $_REQUEST[__FUNCTION__] : 1), $route);
     }
 
     public static function validate($params) {
@@ -20,11 +20,11 @@ class Controller_Installer {
         }
     }
 
-    private static function _include($f) {
-        if ($f >=1 && $f <= 4) {
-            include "install/step/{$f}.php";
+    private static function _include($a, $f, $r = null) {
+        if ($f > 0 && $f < 5) {
+            include "install/{$a}/{$f}.php";
         } else {
-            throw new Exception("", 404);
+            if ($r) { $r['_this']->error('404', $r); }
         }
     }
 }

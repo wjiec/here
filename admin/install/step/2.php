@@ -31,13 +31,13 @@
         <label class="widget-input-label" for="db-name">DB NAME</label>
         <input type="text" id="db-name" class="widget-form-control" name="db-name" value="here" placeholder="Enter Database Name" required="required"/>
       </div>
-      <p class="_Here-Form-Tips">The name of the database you want to run WP in.</p>
+      <p class="_Here-Form-Tips">The name of the database you want to run HERE in.</p>
       <!-- Database Pref -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-pref">DB PREF</label>
         <input type="text" id="db-pref" class="widget-form-control" name="db-pref" value="h_" placeholder="Enter Table Pref" required="required"/>
       </div>
-      <p class="_Here-Form-Tips">If you want to run multiple WordPress installations in a single database, change this.</p>
+      <p class="_Here-Form-Tips">If you want to run multiple Here installations in a single database, change this.</p>
     </div>
   </form>
 </section>

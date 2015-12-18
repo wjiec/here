@@ -23,24 +23,17 @@ $(function() {
                     user: $('#db-user').val(), pawd: $('#db-pawd').val(),
                     name: $('#db-name').val(), pref: $('#db-pref').val()
                 }, datatype: 'json',
-                beforeSend: function() {
-                    $('#_Here-Replace-Container').addClass('Here-toggle-content-ing');
-                    $('#Next-Step-Btn').addClass('widget-cursor-disable');
-                },
+                beforeSend: beforeSend,
                 success: function(data) {
                     data = $.parseJSON(data);
                     if (data.fail) {
-                        $('#_Here-Replace-Container').removeClass('Here-toggle-content-ing');
-                        $('#Next-Step-Btn').removeClass('widget-cursor-disable');
+                        disableloadingStatus();
                         $('#_Here-Setting-Error').addClass('widget-pjax-tips').removeClass('widget-hidden').find('p').html(data.data);
                     } else {
                         request({
                             url: '/controller/installer/step',
                             data: { step: $('#Next-Step-Btn').val() },
-                            success: function(data) {
-                                $('#_Here-Replace-Container').removeClass().addClass('Here-content-hidden').html(data).removeClass();
-                                $('#Next-Step-Btn').removeClass('widget-cursor-disable').val(parseInt($('#Next-Step-Btn').val()) + 1);
-                            }
+                            success: replaceContent
                         });
                     }
                 }
@@ -49,16 +42,11 @@ $(function() {
             request({
                 url: '/controller/installer/step',
                 data: { step: $('#Next-Step-Btn').val() },
-                success: function(data) {
-                    $('#_Here-Replace-Container').removeClass().addClass('Here-content-hidden').html(data).removeClass();
-                    $('#Next-Step-Btn').toggleClass('widget-cursor-disable widget-loading').val(parseInt($('#Next-Step-Btn').val()) + 1);
-                }
+                success: replaceContent
             });
         }
     });
 });
-
-$('#_Here-Replace-Container').removeClass('Here-toggle-content-ing');
 
 function request(options) {
     options = $.extend({
@@ -73,10 +61,7 @@ function request(options) {
         type: options.type ? options.type : 'GET',
         data: options.data,
         datatype: 'html',
-        beforeSend: function() {
-            $('#_Here-Replace-Container').addClass('Here-toggle-content-ing');
-            $('#Next-Step-Btn').addClass('widget-cursor-disable');
-        },
+        beforeSend: beforeSend,
         success: options.success
     });
 }
@@ -84,11 +69,26 @@ function request(options) {
 function validate(inputs, process) {
     var len = inputs.length; var flag = false;
     for (var i = 0; i < len; ++i) {
-        if (!$(inputs[i]).val().length) {
-            process($(inputs[i]));
+        if (!inputs.eq(i).val().length) {
+            process(inputs.eq(i));
             flag = true;
         }
     }
     if (flag) { return false; }
     return true;
+}
+
+function beforeSend() {
+    $('#_Here-Replace-Container').addClass('Here-toggle-content-ing');
+    $('#Next-Step-Btn').addClass('widget-cursor-disable');
+}
+
+function disableloadingStatus() {
+    $('#_Here-Replace-Container').removeClass('Here-toggle-content-ing');
+    $('#Next-Step-Btn').removeClass('widget-cursor-disable');
+}
+
+function replaceContent(data) {
+    $('#_Here-Replace-Container').removeClass().addClass('Here-content-hidden').html(data).removeClass();
+    $('#Next-Step-Btn').removeClass('widget-cursor-disable').val(parseInt($('#Next-Step-Btn').val()) + 1);
 }
