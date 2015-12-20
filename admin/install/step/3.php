@@ -7,9 +7,9 @@
         <!-- Site Title -->
         <div class="widget-input-group">
           <label class="widget-input-label" for="site-title"><em>Site Title</em></label>
-          <input type="text" id="site-title" class="widget-form-control" name="site-title" placeholder="Enter Site Title"  required="required"/>
+          <input type="text" id="site-title" class="widget-form-control" name="site-title" placeholder="Enter Site Title"  required="required" autofocus="autofocus"/>
         </div>
-        <p class="_Here-Form-Tips">You should be able to get this info from your web host, if localhost does not work.</p>
+        <p class="_Here-Form-Tips"></p>
         
         <!-- Site Title -->
         <div class="widget-input-group">
@@ -22,14 +22,10 @@
           <label class="widget-input-label" for="password"><em>Password</em></label>
           <input type="text" id="password" class="widget-form-control" name="password" placeholder="Enter Site Password"  required="required"/>
         </div>
-        <div class="widget-input-group">
-          <label class="widget-input-label" for="again-password"><em>Again</em></label>
-          <input type="text" id="again-password" class="widget-form-control" name="again-password" placeholder="Enter Password again"  required="required"/>
-        </div>
         <p class="_Here-Form-Tips">You should be able to get this info from your web host, if localhost does not work.</p>
         <!-- Site Title -->
         <div class="widget-input-group">
-          <label class="widget-input-label" for="site-title"><em>Admin E-Mail</em></label>
+          <label class="widget-input-label" for="email"><em>E-Mail</em></label>
           <input type="text" id="email" class="widget-form-control" name="email" placeholder="Enter Site E-Mail"  required="required"/>
         </div>
         <p class="_Here-Form-Tips">You should be able to get this info from your web host, if localhost does not work.</p>
