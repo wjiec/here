@@ -766,6 +766,28 @@ strong {
 .widget-input-label + .widget-form-control {
     border-radius: 0 .25rem .25rem 0;
 }
+.widget-table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border-collapse: collapse !important;
+}
+.widget-table td,
+.widget-table th {
+  padding: .75rem;
+  line-height: 1.5;
+  vertical-align: top;
+  border-top: 1px solid #eceeef;
+  background-color: #fff !important;
+}
+.widget-table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #eceeef;
+}
+
+.widget-table tbody + tbody {
+  border-top: 2px solid #eceeef;
+}
 /**
  * Widget Style
  */

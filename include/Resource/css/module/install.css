@@ -135,6 +135,13 @@ code, pre {
     font-size: 1.6rem;
     font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
 }
+#_Here-Replace-Container #_Here-User-Info div.widget-input-group:first-child {
+    margin-bottom: 2rem;
+}
+#_Here-Install-Success-Message > p {
+    font-style: italic;
+    font-size: 1.6rem;
+}
 @media (max-width: 544px) {
     #_Here-Replace-Container ._Here-Form-Tips {
         font-size: 1.3rem;
