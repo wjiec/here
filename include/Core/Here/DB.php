@@ -13,7 +13,18 @@ class DB {
         if ($conn->connect_errno) {
             throw new Exception($conn->connect_error, $conn->connect_errno);
         }
+        if (!$conn->ping()) {
+            throw new Exception($conn->error);
+        }
         return $conn->close();
+    }
+    
+    public static function initTable($user, $password, $database, $pref, $host, $port = 3306) {
+        
+    }
+    
+    public static function addUser($username, $password, $email) {
+        print_r($_POST);
     }
 }
 

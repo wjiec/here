@@ -12,7 +12,12 @@ class Controller_Installer {
                 $v = addslashes($v);
             }
             try {
-                DB::connectTest($_POST['user'], $_POST['pawd'], $_POST['name'], $_POST['host'], $_POST['port']);
+                if ($_POST['action'] == 'db') {
+                    DB::connectTest($_POST['db-user'], $_POST['db-pawd'], $_POST['db-name'], $_POST['db-addr'], $_POST['db-port']);
+                    DB::initTable($_POST['db-user'], $_POST['db-pawd'], $_POST['db-name'], $_POST['db-pref'], $_POST['db-addr'], $_POST['db-port']);
+                } else if ($_POST['action'] == 'user') {
+                    DB::addUser($_POST['username'], $_POST['password'], $_POST['email']);
+                }
                 echo "{\"fail\":0,\"data\":\"\"}";
             } catch (Exception $e) {
                 echo "{\"fail\":1,\"data\":\"{$e->getCode()}: {$e->getMessage()}\"}";
