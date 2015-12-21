@@ -13,16 +13,14 @@ $(function() {
     $('#Next-Step-Btn').on('click', function(event) {
         var inputs = $('#_Here-Replace-Container').find('input');
         if (inputs.length) {
+            var data = {};
             if (!validate(inputs, function(n){n.addClass('widget-pjax-input-require');})) {
                 return false;
             }
+            makeData(data);
             $.ajax({
                 url: '/controller/installer/validate', type: 'post',
-                data: {
-                    host: $('#db-addr').val(), port: $('#db-port').val(),
-                    user: $('#db-user').val(), pawd: $('#db-pawd').val(),
-                    name: $('#db-name').val(), pref: $('#db-pref').val()
-                }, datatype: 'json',
+                data: data, datatype: 'json',
                 beforeSend: beforeSend,
                 success: function(data) {
                     data = $.parseJSON(data);
@@ -91,4 +89,15 @@ function disableloadingStatus() {
 function replaceContent(data) {
     $('#_Here-Replace-Container').removeClass().addClass('Here-content-hidden').html(data).removeClass();
     $('#Next-Step-Btn').removeClass('widget-cursor-disable').val(parseInt($('#Next-Step-Btn').val()) + 1);
+}
+
+function makeData(data) {
+    var is = $('input');
+    data.action = ($('#Next-Step-Btn').val() == '3') ? 'db' : 'user';
+    
+    is.each(function(i, n) {
+        data[$(n).attr('name')] = $(n).val();
+    });
+    
+    console.log(data);
 }
