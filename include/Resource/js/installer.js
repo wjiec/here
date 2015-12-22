@@ -98,6 +98,4 @@ function makeData(data) {
     is.each(function(i, n) {
         data[$(n).attr('name')] = $(n).val();
     });
-    
-    console.log(data);
 }
