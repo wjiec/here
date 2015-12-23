@@ -1,6 +1,10 @@
 <?php
 
 class Controller_Installer {
+    public static function serverDetect() {
+        
+    }
+
     public static function step($route) {
         self::_include(__FUNCTION__, intval(isset($_REQUEST[__FUNCTION__]) ? $_REQUEST[__FUNCTION__] : 1), $route);
     }

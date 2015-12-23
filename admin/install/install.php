@@ -52,6 +52,7 @@ function _step() {
             </section>
             <section id="_Here-Server-Env">
                 <h3 class="widget-hidden">Detect Server Environment</h3>
+                <?php Controller::request('Installer', 'serverDetect'); ?>
             </section>
         </div>
         <div id="_Here-Next-Step" class="row">
