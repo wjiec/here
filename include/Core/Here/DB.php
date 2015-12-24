@@ -19,30 +19,22 @@ class DB {
         return $conn->close();
     }
 
-    public static function initTable($user, $password, $database, $pref, $host, $port = 3306) {
-        
-    }
-
-    public static function addUser($username, $password, $email) {
-        
-    }
-    
     public function query($sql) {
         
     }
-    
+
     public function insert($sql) {
         
     }
-    
+
     public function delete($sql) {
     
     }
-    
+
     public function select($sql) {
         
     }
-    
+
     public function update($sql) {
         
     }

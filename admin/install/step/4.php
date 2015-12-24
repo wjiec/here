@@ -7,14 +7,8 @@
       <h5 class="widget-hidden">Admin Account</h5>
       <table class="widget-table">
         <tbody>
-          <tr>
-            <td>Username</td>
-            <td>ShadowMan</td>
-          </tr>
-          <tr>
-            <td>Password</td>
-            <td>Your chosen password.</td>
-          </tr>
+          <tr><td>Username</td><td>ShadowMan</td></tr>
+          <tr><td>Password</td><td>Your chosen password.</td></tr>
         </tbody>
       </table>
     </section>

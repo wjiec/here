@@ -17,7 +17,7 @@ class Controller {
             if (!is_callable([self::_pref . ucfirst($controller), $action])) {
                 throw new Exception(self::_pref . ucfirst($controller) . "::{$action} NOT FOUND");
             }
-            call_user_func(self::_pref . ucfirst($controller) . "::" . $action, $params);
+            return call_user_func(self::_pref . ucfirst($controller) . "::" . $action, $params);
         } else {
             throw new Exception("CONTROLLER<{$controller}> NOT FOUND");
         }

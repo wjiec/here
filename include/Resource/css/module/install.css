@@ -5,49 +5,46 @@
 @import url('/include/Resource/css/library/fonts/fira.css');
 @import url('/include/Resource/css/library/fonts/inconsolata.css');
 ::-webkit-scrollbar {
-    height: 0.667rem;
-    width: 0.667rem;
+  height: 0.667rem;
+  width: 0.667rem;
 }
 ::-webkit-scrollbar-track {
 }
 ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: rgba(0, 0, 0, .3);
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .3);
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-    background: rgba(0, 0, 0, .15);
-    color: #F00;
+  background: rgba(0, 0, 0, .15);
+  color: #F00;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, .5);
+  background: rgba(0, 0, 0, .5);
 }
 ::-webkit-scrollbar-thumb:active {
-    background: rgba(0, 0, 0, .65);
+  background: rgba(0, 0, 0, .65);
 }
 ::selection {
-    background: rgba(211, 211, 211, .55);
-    color: rgb(230, 39, 57);
+  background: rgba(211, 211, 211, .55);
+  color: rgb(230, 39, 57);
 }
 ::-moz-selection {
-    background: rgba(211, 211, 211, .55);
-    color: rgb(230, 39, 57);
+  background: rgba(211, 211, 211, .55);
+  color: rgb(230, 39, 57);
 }
 ::-webkit-selection {
-    background: rgba(211, 211, 211, .55);
-    color: rgb(230, 39, 57);
+  background: rgba(211, 211, 211, .55);
+  color: rgb(230, 39, 57);
 }
 html, body {
-    -webkit-user-select: none;
-       -moz-user-select: none;
-        -ms-user-select: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
 }
 body {
-    color: rgb(51, 51, 51);
-    font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
-    background-color: rgb(241, 241, 241);
-}
-code, pre {
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
+  color: rgb(51, 51, 51);
+  font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+  background-color: rgb(241, 241, 241);
 }
 #_Here-Installer-Header {
     height: 10rem;
@@ -65,16 +62,8 @@ code, pre {
     letter-spacing: 0.167rem;
 }
 #_Here-Installer-Container {
-    padding: 1rem;
-    cursor: default;
-    margin-top: 3.5rem;
-    background: #fff;
-    box-shadow: 0 0 0.083rem rgba(0, 0, 0, .15);
 }
-@media (max-width: 544px) {
-    #_Here-Installer-Container {
-        margin-top: 0;
-    }
+#_Here-Server-Env {
 }
 #_Here-Replace-Container {
     transition: all .35s;

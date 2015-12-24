@@ -69,8 +69,11 @@ pre {
   overflow: auto;
 }
 code, kbd, pre, samp {
-  font-family: monospace, monospace;
-  font-size: 1em;
+  font-family: monospace;
+  font-size: 1.6rem;
+}
+code, pre {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Droid Sans Mono', 'Consolas', monospace;
 }
 button, input, optgroup, select, textarea {
   margin: 0;
@@ -787,6 +790,18 @@ strong {
 
 .widget-table tbody + tbody {
   border-top: 2px solid #eceeef;
+}
+.widget-container {
+  padding: 1rem;
+  cursor: default;
+  margin-top: 3.5rem;
+  background: #fff;
+  box-shadow: 0 0 0.083rem rgba(0, 0, 0, .15);
+}
+@media (max-width: 544px) {
+    .widget-container {
+        margin-top: 0;
+    }
 }
 /**
  * Widget Style
