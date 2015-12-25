@@ -9,7 +9,7 @@ function _u($path) {
     echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
 }
 
-function _mobile() {
+function _m() {
     $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
     if (strpos($agent, 'iphone') || strpos($agent, 'ipad') || strpos($agent, 'android') || strpos($agent, 'midp') || strpos($agent, 'ucweb')) {
         return true;
@@ -28,7 +28,7 @@ function _mobile() {
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
   <link rel="stylesheet" href="../../include/Resource/css/library/grid-alpha.css" media="all" />
   <link rel="stylesheet" href="../../include/Resource/css/module/install.css" media="all" />
-<?php if (_mobile()): ?>
+<?php if (_m()): ?>
   <script src="../../include/Resource/js/library/mobile/zepto.min.js"></script>
   <script src="../../include/Resource/js/library/mobile/fastclick.min.js"></script>
 <?php else: ?>

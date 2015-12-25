@@ -44,6 +44,10 @@ $(function() {
             });
         }
     });
+    var currStep = location.search.match(/\d+/);
+    if (currStep != null) {
+        $('#Next-Step-Btn').val(parseInt(currStep[0]) + 1);
+    }
 });
 
 function request(options) {
@@ -93,7 +97,7 @@ function replaceContent(data) {
 
 function makeData(data) {
     var is = $('input');
-    data.action = ($('#Next-Step-Btn').val() == '3') ? 'db' : 'user';
+    data.action = ($('#Next-Step-Btn').val() <= '3') ? 'db' : 'user';
     
     is.each(function(i, n) {
         data[$(n).attr('name')] = $(n).val();

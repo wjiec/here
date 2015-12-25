@@ -4,7 +4,14 @@
  * @package Core.DB
  */
 class DB {
-    public function __construct() {
+    private $_pool;
+    private $_data;
+    
+    public function __construct($user, $password, $database, $pref, $host, $port = 3306) {
+        $this->_pool = [];
+        $this->_data = [];
+        
+        $this->_pool[] = new mysqli($host, $user, $password, $database, $port);
     }
 
     public static function connectTest($user, $password, $database, $host, $port = 3306) {
@@ -37,6 +44,19 @@ class DB {
 
     public function update($sql) {
         
+    }
+    
+    public function close() {
+        if (empty($this->_pool)) {
+            return true;
+        }
+        foreach ($this->_pool as $conn) {
+            $conn->close();
+        }
+    }
+    
+    public function __destruct() {
+        $this->close();
     }
 }
 

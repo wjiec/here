@@ -1,12 +1,13 @@
 <?php
 
 class Controller_Installer {
+    const SEPARATOR = ';';
+    
     public static function serverDetect() {
         return true;
     }
     
     public static function failServerItemList() {
-        
     }
 
     public static function step($route) {
@@ -42,7 +43,13 @@ class Controller_Installer {
     }
 
     private static function initTable($user, $password, $database, $pref, $host, $port = 3306) {
-        
+        $scripts = file_get_contents('install/scripts/mysql.sql', true);
+        $scripts = explode(self::SEPARATOR, $scripts);
+        $query = new DB($user, $password, $database, $pref, $host, $port);
+        foreach ($scripts as $script) {
+            $query->query($script);
+        }
+        unset($query);
     }
 
     private static function addUser($username, $password, $email) {
