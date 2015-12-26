@@ -41,6 +41,22 @@ require_once 'Here/Core.php';
 # Init env
 Core::init();
 
+// XSS Attack
+if (!empty($_GET) || !empty($_POST)) {
+    if (empty($_SERVER['HTTP_REFERER'])) {
+        exit;
+    }
+
+    $parts = parse_url($_SERVER['HTTP_REFERER']);
+    if (!empty($parts['port'])) {
+        $parts['host'] = "{$parts['host']}:{$parts['port']}";
+    }
+
+    if (empty($parts['host']) || $_SERVER['HTTP_HOST'] != $parts['host']) {
+        exit;
+    }
+}
+
 $theme = new Theme();
 (new Router())
 ->error('404', function($params, $message = null) {
@@ -70,7 +86,7 @@ $theme = new Theme();
     try {
         call_user_func_array('Controller::request', [$params['_data']['controller'], $params['_data']['action'], &$params]);
     } catch (Exception $e) {
-        echo $e->getMessage();
+        $params['_theme']->_404($e->getMessage());
     }
 })
 ->get('pjax/$controller/$action', function($params) {

@@ -16,13 +16,10 @@ class Controller_Installer {
 
     public static function validate($params) {
         if (!get_magic_quotes_gpc()) {
-            foreach ($_POST as &$v) {
-                if (empty($v)) { exit; }
-                $v = addslashes($v);
-            }
+            array_map(function($v) { addslashes($v); }, $_POST);
             try {
                 if ($_POST['action'] == 'db') {
-                    DB::connectTest($_POST['db-user'], $_POST['db-pawd'], $_POST['db-name'], $_POST['db-addr'], $_POST['db-port']);
+                    DB::ping($_POST['db-user'], $_POST['db-pawd'], $_POST['db-name'], $_POST['db-addr'], $_POST['db-port']);
                     self::initTable($_POST['db-user'], $_POST['db-pawd'], $_POST['db-name'], $_POST['db-pref'], $_POST['db-addr'], $_POST['db-port']);
                 } else if ($_POST['action'] == 'user') {
                     self::addUser($_POST['username'], $_POST['password'], $_POST['email']);
@@ -43,7 +40,7 @@ class Controller_Installer {
     }
 
     private static function initTable($user, $password, $database, $pref, $host, $port = 3306) {
-        $scripts = file_get_contents('install/scripts/mysql.sql', true);
+        $scripts = file_get_contents('scripts/mysql.sql', true);
         $scripts = explode(self::SEPARATOR, $scripts);
         $query = new DB($user, $password, $database, $pref, $host, $port);
         foreach ($scripts as $script) {
@@ -53,6 +50,6 @@ class Controller_Installer {
     }
 
     private static function addUser($username, $password, $email) {
-    
+        
     }
 }

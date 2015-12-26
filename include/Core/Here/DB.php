@@ -11,10 +11,18 @@ class DB {
         $this->_pool = [];
         $this->_data = [];
         
-        $this->_pool[] = new mysqli($host, $user, $password, $database, $port);
+        $conn = new mysqli($host, $user, $password, $database, $port);
+        if ($conn->connect_errno) {
+            throw new Exception($conn->connect_error, $conn->connect_errno);
+        }
+        if (!$conn->ping()) {
+            throw new Exception($conn->error);
+        }
+        $conn->set_charset('utf8');
+        $this->_pool[] = $conn;
     }
 
-    public static function connectTest($user, $password, $database, $host, $port = 3306) {
+    public static function ping($user, $password, $database, $host, $port = 3306) {
         $conn = @new mysqli($host, $user, $password, $database, $port);
 
         if ($conn->connect_errno) {

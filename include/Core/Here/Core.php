@@ -4,8 +4,11 @@
  * @package Core
  */
 class Core {
+    const _version = '0.0.1/15.1.1';
     const _MajorVersion = '0.0.1';
     const _MinorVersion = '15.1.1';
+    
+    const TOKEN = 'token';
     
     public static function init() {
         if (function_exists('spl_autoload_register')) {
@@ -15,9 +18,13 @@ class Core {
                 Core::__autoload($class);
             }
         }
+//         set_error_handler(array('Core', 'exceptionHandle'));
         
         header('Content-Type: text/html;charset=UTF-8');
-        self::Maketoken();
+    }
+    
+    public static function exceptionHandle(Exception $except) {
+        @ob_end_clean();
     }
     
     private static function __autoload( $class ) {
@@ -29,7 +36,8 @@ class Core {
         
         self::_shuffle($tokenSet);
         if (!isset($_COOKIE['token'])) {
-            setcookie('token', substr($tokenSet, 0, 8));
+            $_SESSION[Core::TOKEN] = substr($tokenSet, 0, 8);
+//             setcookie('token', substr($tokenSet, 0, 8));
         }
     }
     
