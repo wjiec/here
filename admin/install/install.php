@@ -5,16 +5,22 @@
  * @package Here
  * @author  ShadowMan
  */
-function _u($path) {
-    echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
-}
 
+/**
+ * return pull url
+ * @param string $path
+ * @return string full url
+ */
+function _u($path) {
+        echo Request::getFullUrl($path);
+}
+/**
+ * is mobile return true
+ * @return boolean
+ */
 function _m() {
     $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
-    if (strpos($agent, 'iphone') || strpos($agent, 'ipad') || strpos($agent, 'android') || strpos($agent, 'midp') || strpos($agent, 'ucweb')) {
-        return true;
-    }
-    return false;
+    return (strpos($agent, 'iphone') || strpos($agent, 'ipad') || strpos($agent, 'android') || strpos($agent, 'midp') || strpos($agent, 'ucweb'));
 }
 
 // TODO pjax
@@ -53,7 +59,7 @@ function _m() {
       <section id="_Here-Server-Env" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
         <h3 class="widget-hidden">Detect Server Environment</h3>
         <ul class="widget-list">
-          <?php Controller::request('Installer', 'failServerItemList'); ?>
+          <?php Controller::request('Installer', 'failServerDetectList'); ?>
         </ul>
       </section>
     <?php endif; ?>

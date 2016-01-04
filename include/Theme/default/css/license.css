@@ -65,13 +65,13 @@ body {
 }
 @media (min-width: 544px) {
   #_Here-License h1 {
-      text-align: center;
+    text-align: center;
   }
 }
 @media (min-width: 768px) {
   #_Here-License {
-      width: 80%;
-      margin-top: 3.5rem;
+    width: 80%;
+    margin-top: 3.5rem;
   }
   #_Here-License h1 {
       text-align: left;
@@ -79,13 +79,13 @@ body {
 }
 @media (min-width: 992px) {
   #_Here-License {
-      width: 70%;
-      padding: 1rem;
+    width: 70%;
+    padding: 1rem;
   }
 }
 @media (min-width: 1600px) {
   #_Here-License {
-      padding: 1rem;
-      width: 50%;
+    padding: 1rem;
+    width: 50%;
   }
 }

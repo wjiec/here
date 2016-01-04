@@ -1,7 +1,7 @@
 <?php
 if (!function_exists('_u')) {
     function _u($path) {
-        echo 'http://' . $_SERVER['HTTP_HOST'] . '/' . $path;
+        echo Request::getFullUrl($path);
     }
 }
 ?>
