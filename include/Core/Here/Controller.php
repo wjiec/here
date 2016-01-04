@@ -4,20 +4,20 @@
  * @package Controller
  */
 class Controller {
-    const _path = 'include/Core/Controller/';
-    const _pref = 'Controller_';
+    const __include_path = 'include/Core/Controller/';
+    const __class_prefix = 'Controller_';
     const _PHP  = '.php';
     
     public static function request($controller, $action, $params = null) {
         $controller = ucfirst($controller);
-        if (file_exists(self::_path . $controller . self::_PHP) && !is_dir(self::_path . $controller . self::_PHP)) {
-            if (!class_exists(self::_pref . ucfirst($controller))) {
-                throw new Exception("CLASS<" . self::_pref . ucfirst($controller) . "> NOT FOUND");
+        if (file_exists(self::__include_path . $controller . self::_PHP) && !is_dir(self::__include_path . $controller . self::_PHP)) {
+            if (!class_exists(self::__class_prefix . $controller)) {
+                throw new Exception("CLASS<" . self::__class_prefix . $controller . "> NOT FOUND");
             }
-            if (!is_callable([self::_pref . ucfirst($controller), $action])) {
-                throw new Exception(self::_pref . ucfirst($controller) . "::{$action} NOT FOUND");
+            if (!is_callable([self::__class_prefix . $controller, $action])) {
+                throw new Exception(self::__class_prefix . $controller . "::{$action} NOT FOUND");
             }
-            return call_user_func(self::_pref . ucfirst($controller) . "::" . $action, $params);
+            return call_user_func(self::__class_prefix . $controller . "::" . $action, $params);
         } else {
             throw new Exception("CONTROLLER<{$controller}> NOT FOUND");
         }

@@ -7,7 +7,7 @@ class Controller_Installer {
         return true;
     }
     
-    public static function failServerItemList() {
+    public static function failServerDetectList() {
     }
 
     public static function step($route) {
@@ -16,13 +16,13 @@ class Controller_Installer {
 
     public static function validate($params) {
         if (!get_magic_quotes_gpc()) {
-            array_map(function($v) { addslashes($v); }, $_POST);
+//             array_map(function($v) { addslashes($v); }, $_POST); TODO
             try {
-                if ($_POST['action'] == 'db') {
-                    DB::ping($_POST['db-user'], $_POST['db-pawd'], $_POST['db-name'], $_POST['db-addr'], $_POST['db-port']);
-                    self::initTable($_POST['db-user'], $_POST['db-pawd'], $_POST['db-name'], $_POST['db-pref'], $_POST['db-addr'], $_POST['db-port']);
-                } else if ($_POST['action'] == 'user') {
-                    self::addUser($_POST['username'], $_POST['password'], $_POST['email']);
+                if (Request::r('action') == 'db') {
+                    DB::server(Request::r('host'), Request::r('user'), Request::r('password'), Request::r('database'), Request::r('port'));
+                    self::initTable();
+                } else if (Request::r('action') == 'user') {
+                    self::addUser(Request::r('username'), Request::r('password'), Request::r('email'));
                 }
                 echo "{\"fail\":0,\"data\":\"\"}";
             } catch (Exception $e) {
@@ -31,18 +31,18 @@ class Controller_Installer {
         }
     }
 
-    private static function _include($a, $f, $r = null) {
-        if ($f > 0 && $f < 5) {
-            include "install/{$a}/{$f}.php";
+    private static function _include($action, $file, &$router = null) {
+        if ($file > 0 && $file < 5) {
+            include "install/{$action}/{$file}.php";
         } else {
-            if ($r) { $r['_this']->error('404', $r); }
+            if ($router) { $router['_this']->error('404', $router); }
         }
     }
 
-    private static function initTable($user, $password, $database, $pref, $host, $port = 3306) {
+    private static function initTable() {
         $scripts = file_get_contents('scripts/mysql.sql', true);
         $scripts = explode(self::SEPARATOR, $scripts);
-        $query = new DB($user, $password, $database, $pref, $host, $port);
+        $query = new DB();
         foreach ($scripts as $script) {
             $query->query($script);
         }
