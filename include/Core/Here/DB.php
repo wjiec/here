@@ -3,26 +3,27 @@
  * @author ShadowMan
  * @package Core.DB
  */
+// TODO. Static Class ?
 class DB {
     private $_pool;
-    private $_data;
+    private $_rows;
     
     /**
      * MySQL Server Info 
      * @var array
      * @access private
      */
-    private static $__server = [];
+    private static $_server = [];
     
     public function __construct($user = null, $password = null, $database = null, $pref = null, $host = null, $port = 3306) {
         $this->_pool = [];
-        $this->_data = [];
+        $this->_rows = [];
 
-        if (empty(self::$__server)) {
-            throw new Exception('Please add MySql Server using DB::server');
+        if (empty(self::$_server)) {
+            throw new Exception('Please add MySql Server using DB::server', 0x1);
         }
 
-        $conn = new mysqli(self::$__server['host'], self::$__server['user'], self::$__server['password'], self::$__server['database'], self::$__server['port']);
+        $conn = new mysqli(self::$_server['host'], self::$_server['user'], self::$_server['password'], self::$_server['database'], self::$_server['port']);
         if ($conn->connect_errno) {
             throw new Exception($conn->connect_error, $conn->connect_errno);
         }
@@ -42,7 +43,7 @@ class DB {
     public static function server($host, $user, $password, $database, $port = 3306) {
         // func_get_args & get_defined_vars
         if (call_user_func_array('self::ping', get_defined_vars())) {
-            self::$__server = array_merge(self::$__server, get_defined_vars());
+            self::$_server = array_merge(self::$_server, get_defined_vars());
         } else {
             // self::ping -> throw Exception
         }
@@ -70,25 +71,26 @@ class DB {
     }
 
     public function query($sql) {
-        
     }
 
-    public function insert($sql) {
-        
+    public function insert(array $key, array $val) {
+        if (count($key) != count($val)) {
+            throw new Exception("");
+        }
     }
 
-    public function delete($sql) {
-    
+    public function delete(array $key, array $val) {
+    }
+
+    public function update(array $key, array $val) {
+        if (count($key) != count($val)) {
+            throw new Exception("");
+        }
     }
 
     public function select($sql) {
-        
     }
 
-    public function update($sql) {
-        
-    }
-    
     public function close() {
         if (empty($this->_pool)) {
             return true;

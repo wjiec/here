@@ -16,11 +16,11 @@ class Controller_Installer {
 
     public static function validate($params) {
         if (!get_magic_quotes_gpc()) {
-//             array_map(function($v) { addslashes($v); }, $_POST); TODO
+//             array_map(function($v) { addslashes($v); }, $_POST); TODO: escape, secure
             try {
                 if (Request::r('action') == 'db') {
                     DB::server(Request::r('host'), Request::r('user'), Request::r('password'), Request::r('database'), Request::r('port'));
-                    self::initTable();
+                    self::initTable(Request::r('prefix'));
                 } else if (Request::r('action') == 'user') {
                     self::addUser(Request::r('username'), Request::r('password'), Request::r('email'));
                 }
@@ -39,17 +39,23 @@ class Controller_Installer {
         }
     }
 
-    private static function initTable() {
+    private static function initTable($prefix) {
         $scripts = file_get_contents('scripts/mysql.sql', true);
+//         self::strReplace('{%database%}', $prefix, $scripts);
+        self::strReplace('{%prefix%}_', $prefix, $scripts);
         $scripts = explode(self::SEPARATOR, $scripts);
-        $query = new DB();
-        foreach ($scripts as $script) {
-            $query->query($script);
-        }
-        unset($query);
+//         $query = new DB();
+//         foreach ($scripts as $script) {
+//             $query->query($script);
+//         }
+//         unset($query);
     }
 
     private static function addUser($username, $password, $email) {
         
+    }
+
+    private static function strReplace($search, $replace, &$subject) {
+        $subject = str_replace($search, $replace, $subject);
     }
 }
