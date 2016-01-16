@@ -1,3 +1,11 @@
+<?php
+if (!function_exists('_m')) {
+function _m() {
+    $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+    return (strpos($agent, 'iphone') || strpos($agent, 'ipad') || strpos($agent, 'android') || strpos($agent, 'midp') || strpos($agent, 'ucweb'));
+}
+}
+?>
 <section id="_Here-Setting-Form">
   <h3>Here Setting</h3>
   <form action="/install.php" method="POST">
@@ -23,7 +31,7 @@
       <!-- Database Password -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-pawd">DB PAWD</label>
-        <input type="password" id="db-pawd" class="widget-form-control" name="password" placeholder="Enter MySQL Password" autofocus="autofocus" required="required"/>
+        <input type="password" id="db-pawd" class="widget-form-control" name="password" placeholder="Enter MySQL Password"<?php if (!_m()):?> autofocus="autofocus"<?php endif; ?> required="required"/>
       </div>
       <p class="_Here-Form-Tips">and your MySQL password.</p>
       <!-- Database Name -->

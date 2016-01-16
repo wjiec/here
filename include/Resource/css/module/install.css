@@ -2,8 +2,6 @@
 /**
  * Webkit Style
  */
-@import url('/include/Resource/css/library/fonts/fira.css');
-@import url('/include/Resource/css/library/fonts/inconsolata.css');
 ::-webkit-scrollbar {
   height: 0.667rem;
   width: 0.667rem;

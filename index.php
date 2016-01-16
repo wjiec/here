@@ -57,6 +57,7 @@ if (!empty($_GET) || !empty($_POST)) {
     }
 }
 
+// TODO React: After the long long time
 $theme = new Theme();
 (new Router())
 ->error('404', function($params, $message = null) {
