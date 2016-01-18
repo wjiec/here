@@ -20,7 +20,7 @@ class Controller_Installer {
             try {
                 if (Request::r('action') == 'db') {
                     DB::server(Request::r('host'), Request::r('user'), Request::r('password'), Request::r('database'), Request::r('port'));
-                    self::initTable(Request::r('prefix'));
+                    self::initTable(Request::r(Request::r('database'), 'prefix'));
                 } else if (Request::r('action') == 'user') {
                     self::addUser(Request::r('username'), Request::r('password'), Request::r('email'));
                 }
@@ -39,16 +39,15 @@ class Controller_Installer {
         }
     }
 
-    private static function initTable($prefix) {
-        $scripts = file_get_contents('scripts/mysql.sql', true);
-//         self::strReplace('{%database%}', $prefix, $scripts);
+    private static function initTable($database, $prefix) {
+        $scripts = file_get_contents('install/scripts/mysql.sql', true);
+        self::strReplace('{%database%}', $database, $scripts);
         self::strReplace('{%prefix%}_', $prefix, $scripts);
         $scripts = explode(self::SEPARATOR, $scripts);
-//         $query = new DB();
-//         foreach ($scripts as $script) {
-//             $query->query($script);
-//         }
-//         unset($query);
+
+        foreach ($scripts as $script) {
+            DB::query($script);
+        }
     }
 
     private static function addUser($username, $password, $email) {

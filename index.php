@@ -59,6 +59,7 @@ if (!empty($_GET) || !empty($_POST)) {
 
 // TODO React: After the long long time
 $theme = new Theme();
+Core::setRouter(
 (new Router())
 ->error('404', function($params, $message = null) {
     $params['_theme']->_404($message ? $message : null);
@@ -97,4 +98,5 @@ $theme = new Theme();
         echo $e->getMessage();
     }
 })
-->execute(['_theme' => &$theme]);
+->execute(['_theme' => &$theme])
+);

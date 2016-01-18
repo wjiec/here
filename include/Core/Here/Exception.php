@@ -5,15 +5,11 @@
  */
 // TODO: error handle
 class Here_Exception extends Exception{
-    private static $_router = null;
-
     public function __construct($message, $code, $previous) {
         $this->message = $message;
         $this->code    = $code;
 
-        if (!self::$_router) {
-            self::tigger();
-        }
+        Core::router()->error('404');
     }
 
     public function getMessage() {

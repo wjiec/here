@@ -33,7 +33,7 @@ class DB {
         $conn->set_charset('utf8');
     }
     /**
-     * set MySQL Server info 
+     * Set MySQL Server info 
      * @param string $user
      * @param string $password
      * @param string $database
@@ -70,12 +70,12 @@ class DB {
         return $conn->close();
     }
 
-    public function query($sql) {
+    public static function query($sql) {
     }
 
     public function insert(array $key, array $val) {
         if (count($key) != count($val)) {
-            throw new Exception("");
+            throw new Exception("Params error");
         }
     }
 

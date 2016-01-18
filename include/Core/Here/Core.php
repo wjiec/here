@@ -7,9 +7,11 @@ class Core {
     const _version = '0.0.1/15.1.1';
     const _MajorVersion = '0.0.1';
     const _MinorVersion = '15.1.1';
-    
+
     const TOKEN = 'token';
-    
+
+    private static $_router = null;
+
     public static function init() {
         if (function_exists('spl_autoload_register')) {
             spl_autoload_register(array('Core', '__autoload'));
@@ -22,15 +24,27 @@ class Core {
         
         header('Content-Type: text/html;charset=UTF-8');
     }
-    
+
     public static function exceptionHandle(Exception $except) {
         @ob_end_clean();
     }
     
+    public static function setRouter(&$router) {
+        self::$_router = $router;
+    }
+    
+    public static function router() {
+        if (self::$_router) {
+            return self::$_router;
+        } else {
+            throw new Exception('Fatal Error: Router not set');
+        }
+    }
+
     private static function __autoload( $class ) {
         @include_once str_replace(array('\\', '_'), '/', $class) . '.php';
     }
-    
+
     private static function Maketoken() {
         $tokenSet = 'ABDEFGHJKLMNPQRSTVWXYabdefghijkmnpqrstvwxy0123456789!@#$%^&*';
         
@@ -40,7 +54,7 @@ class Core {
 //             setcookie('token', substr($tokenSet, 0, 8));
         }
     }
-    
+
     private static function _shuffle(&$var) {
         if (gettype($var) == 'string') {
             $var = str_shuffle($var);
