@@ -6,6 +6,8 @@
  * @author  ShadowMan
  */
 
+// TODO RESTful API
+
 # Root Directory
 define('__HERE_ROOT_DIRECTORY__', dirname(__FILE__));
 
@@ -58,7 +60,10 @@ if (!empty($_GET) || !empty($_POST)) {
 }
 
 // TODO React: After the long long time
+// TODO Theme: Static Class
 $theme = new Theme();
+
+// XXX BUG: Router http://localhost/index.php?t=1 parse error
 Core::setRouter(
 (new Router())
 ->error('404', function($params, $message = null) {

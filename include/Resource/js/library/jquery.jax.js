@@ -82,7 +82,6 @@ function stripHash(location) {
 
 function entry(selector, container, options) {
     var context = this
-    var a = 1
 
     return this.on('click.jax', selector, function(event) { // this => dom obj
         var opts = $.extend({}, optionsFor(container, options))
@@ -140,9 +139,9 @@ function jax(options) {
     var hh = hash(options.url)
     var context = options.context = findContainerFor(options.container)
 
-    function eventTrigger(type, args, props) {
+    function trigger(type, args, props) {
         if (!props) { props = {} }
-        props.relatedTarget = el
+        props.relatedElement = el
 
         var e = $.Event(type, props)
         context.trigger(e, args)
@@ -159,22 +158,25 @@ function jax(options) {
         xhr.setRequestHeader('JAX', true)
         xhr.setRequestHeader('JAX-Container', context.selector)
 
-        if (!eventTrigger('jax:beforeSend', [xhr, settings])) {
+        if (!trigger('jax:beforeSend', [xhr, settings])) {
             return false
         }
 
-        if (setting.timeout) {
+        if (settings.timeout > 0) {
             timeoutTimer = setTimeout(function() {
-                if (eventTrigger('jax:timeout', [xhr, settings])) {
+                if (trigger('jax:timeout', [xhr, settings])) {
                     xhr.abort('timeout')
                 }
-            }, settings.Timeout)
-
+            }, settings.timeout)
             settings.timeout = 0
         }
     }
 
     options.complete = function(xhr, textStatus) {
+        if (timeoutTimer) {
+            clearTimeout(timeoutTimer)
+        }
+        trigger('jax:complete', [xhr, textStatus, options])
     }
 
     options.error = function(xhr, textStatus, errorThrown) {

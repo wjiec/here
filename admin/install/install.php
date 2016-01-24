@@ -22,7 +22,7 @@ function _m() {
     $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
     return (strpos($ua, 'iphone') || strpos($ua, 'ipad') || strpos($ua, 'android') || strpos($ua, 'midp') || strpos($ua, 'ucweb'));
 }
-// TODO Current PJAX
+
 ?><!doctype html>
 <html lang="en">
 <head>
@@ -46,7 +46,7 @@ function _m() {
   <!-- PC library -->
   <script src="../../include/Resource/js/library/jquery-2.1.4.min.js"></script>
 <?php endif; ?>
-  <script src="../../include/Resource/js/library/jquery.pjax.js"></script>
+  <script src="../../include/Resource/js/library/jquery.jax.js"></script>
   <script src="../../include/Resource/js/installer.js"></script>
 </head>
 <body>
