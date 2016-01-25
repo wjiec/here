@@ -1,28 +1,39 @@
 <?php
 /**
- * @author ShadowMan
+ * @author ShadowMan 
  * @package Theme
  */
 class Theme {
-    private $_theme = null;
-    const _default_theme_ = 'default';
-    const _base_path_ = 'include/Theme/';
+    private static $_theme = null;
 
-    public function __construct($theme = null) {
-        if ($theme && file_exists($this->_path . $theme) && is_dir($this->_path . $theme)) {
-            $this->_theme = $theme;
+    private static $_default_theme = 'default';
+    private static $_base_path = 'include/Theme/';
+
+    const GDIE = 1;
+    const GLIVE = 0;
+
+    public static function setTheme($theme) {
+        if (!($theme && is_dir(self::$_base_path . $theme))) {
+            throw new Exception('Invalid Parameter');
         }
+        self::$_theme = $theme;
     }
 
-    public function __call($name, $args) {
-        $_theme_file = Theme::_base_path_ . $this->_theme . '/' . trim($name, '_') . '.php';
-        if (file_exists($_theme_file) && !is_dir($_theme_file)) {
-            @include $_theme_file;
+    public static function __callStatic($name, $args) {
+        if (self::$_theme) {
+            $file = self::$_base_path . self::$_theme . '/' . trim($name, '_') . '.php';
         } else {
-            $_default = Theme::_base_path_ . Theme::_default_theme_ . '/' . trim($name, '_') . '.php';
-            if (file_exists($_default)) {
-                @include $_default;
-            }
+            $file = self::$_base_path . self::$_default_theme . '/' . trim($name, '_') . '.php';
+        }
+
+        if (is_file($file)) {
+            @include $file;
+        } else {
+            Core::router()->error('404', 'File Not Found'); // 451? hhh
+        }
+
+        if (!isset($args[0]) || (isset($args[0]) && $args[0] == self::GDIE)) {
+            exit;
         }
     }
 }
