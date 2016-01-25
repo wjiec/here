@@ -52,7 +52,6 @@ class Router {
         $this->hook('did', $params);
 
         $params['_handle'] = ['_callback' => $callback, '_hook' => $hook];
-        $params['_this'] = $this;
         if ($hook && !empty($hook)) {
             foreach ($hook as $h) {
                 $this->hook($h, $params);

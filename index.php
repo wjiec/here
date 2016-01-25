@@ -60,14 +60,11 @@ if (!empty($_GET) || !empty($_POST)) {
 }
 
 // TODO React: After the long long time
-// TODO Theme: Static Class
-$theme = new Theme();
-
-// XXX BUG: Router http://localhost/index.php?t=1 parse error
+// XXX BUG: Router http://localhost/index.php?t=1 parse error ???
 Core::setRouter(
 (new Router())
 ->error('404', function($params, $message = null) {
-    $params['_theme']->_404($message ? $message : null);
+    Theme::_404($message ? $message : null);
 })
 ->get(['/', '/index.php'], function($params){
     if (!@include_once 'config.php') {
@@ -81,7 +78,7 @@ Core::setRouter(
     exit(1);
 })
 ->get('license.php', function($params) {
-    $params['_theme']->_license();
+    Theme::_license();
 })
 ->get('/admin/', function($params) {
     if (!@include_once 'config.php') {
@@ -93,7 +90,7 @@ Core::setRouter(
     try {
         call_user_func_array('Controller::request', [$params['_data']['controller'], $params['_data']['action'], &$params]);
     } catch (Exception $e) {
-        $params['_theme']->_404($e->getMessage());
+        Theme::_404($e->getMessage());
     }
 })
 ->get('pjax/$controller/$action', function($params) {
@@ -103,5 +100,4 @@ Core::setRouter(
         echo $e->getMessage();
     }
 })
-->execute(['_theme' => &$theme])
-);
+->execute());

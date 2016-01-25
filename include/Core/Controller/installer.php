@@ -2,25 +2,25 @@
 
 class Controller_Installer {
     const SEPARATOR = ';';
-    
+
     public static function serverDetect() {
         return true;
     }
-    
+
     public static function failServerDetectList() {
     }
 
-    public static function step($route) {
-        self::_include('step', intval(isset($_REQUEST['step']) ? $_REQUEST['step'] : 1), $route);
+    public static function step() {
+        self::_include('step', intval(isset($_REQUEST['step']) ? $_REQUEST['step'] : 1));
     }
 
-    public static function validate($params) {
+    public static function validate() {
         if (!get_magic_quotes_gpc()) {
 //             array_map(function($v) { addslashes($v); }, $_POST); TODO: escape, secure
             try {
                 if (Request::r('action') == 'db') {
                     DB::server(Request::r('host'), Request::r('user'), Request::r('password'), Request::r('database'), Request::r('port'));
-                    self::initTable(Request::r(Request::r('database'), 'prefix'));
+                    self::initTable(Request::r('database'), Request::r('prefix'));
                 } else if (Request::r('action') == 'user') {
                     self::addUser(Request::r('username'), Request::r('password'), Request::r('email'));
                 }
@@ -31,11 +31,11 @@ class Controller_Installer {
         }
     }
 
-    private static function _include($action, $file, &$router = null) {
+    private static function _include($action, $file) {
         if ($file > 0 && $file < 5) {
             include "install/{$action}/{$file}.php";
         } else {
-            if ($router) { $router['_this']->error('404', $router); }
+            Core::router()->error('404');
         }
     }
 

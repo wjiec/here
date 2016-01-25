@@ -17,7 +17,7 @@ class Controller {
             if (!is_callable([self::__class_prefix . $controller, $action])) {
                 throw new Exception(self::__class_prefix . $controller . "::{$action} NOT FOUND");
             }
-            return call_user_func(self::__class_prefix . $controller . "::" . $action, $params);
+            return call_user_func(self::__class_prefix . $controller . "::" . $action);
         } else {
             throw new Exception("CONTROLLER<{$controller}> NOT FOUND");
         }
