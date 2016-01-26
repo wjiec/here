@@ -20,8 +20,7 @@ class Core {
                 Core::__autoload($class);
             }
         }
-//         set_error_handler(array('Core', 'exceptionHandle'));
-        
+
         header('Content-Type: text/html;charset=UTF-8');
     }
 
@@ -29,6 +28,7 @@ class Core {
         @ob_end_clean();
     }
     
+    // TODO: Class<Route> convert to Static Class ?
     public static function setRouter(&$router) {
         self::$_router = $router;
     }

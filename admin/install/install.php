@@ -1,6 +1,6 @@
 <?php
 /**
- * HERE Install Program
+ * HERE Install Program 
  * 
  * @package Here
  * @author  ShadowMan
@@ -12,7 +12,7 @@
  * @return string full url
  */
 function _u($path) {
-        echo Request::getFullUrl($path);
+    echo Request::getFullUrl($path);
 }
 /**
  * is mobile return true
@@ -58,17 +58,17 @@ function _m() {
       <section id="_Here-Installer-Container" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
         <h2 class="widget-hidden">Here Installer Guide</h2>
         <div id="_Here-Replace-Container">
-          <?php Controller::request('Installer', 'step'); ?>
+          <?php Controller::installer('step'); ?>
         </div>
       </section>
-      <?php if (!(Controller::request('Installer', 'serverDetect'))): ?>
-      <section id="_Here-Server-Env" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
-        <h3 class="widget-hidden">Detect Server Environment</h3>
-        <ul class="widget-list">
-          <?php Controller::request('Installer', 'failServerDetectList'); ?>
-        </ul>
-      </section>
-    <?php endif; ?>
+      <?php if (!(Controller::installer('serverDetect'))): ?>
+        <section id="_Here-Server-Env" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+          <h3 class="widget-hidden">Detect Server Environment</h3>
+          <ul class="widget-list">
+            <?php Controller::installer('failServerDetectList'); ?>
+          </ul>
+        </section>
+      <?php endif; ?>
     </div>
     <div id="_Here-Next-Step" class="row">
       <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-16">
@@ -76,6 +76,6 @@ function _m() {
       </div>
     </div>
   </div>
-  <footer></footer>
+  <footer><a href="controller/installer/step?step=3">ssssssss</a></footer>
 </body>
 </html>

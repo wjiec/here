@@ -17,6 +17,7 @@ class Router {
     const HOOK = 'hook';
     const STATUS = 'status';
 
+    // TODO: params convert to static member 
     public function __construct() {
         $this->_error = [];
         $this->_hook  = [];

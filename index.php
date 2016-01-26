@@ -88,16 +88,9 @@ Core::setRouter(
 })
 ->match(['get', 'post'], '/controller/$controller/$action', function($params) {
     try {
-        call_user_func_array('Controller::request', [$params['_data']['controller'], $params['_data']['action'], &$params]);
+        Controller::$params['_data']['controller']($params['_data']['action']);
     } catch (Exception $e) {
         Theme::_404($e->getMessage());
-    }
-})
-->get('pjax/$controller/$action', function($params) {
-    try {
-        call_user_func_array('Controller::request', $params['_data']);
-    } catch (Exception $e) {
-        echo $e->getMessage();
     }
 })
 ->execute());

@@ -26,9 +26,8 @@ class Theme {
             $file = self::$_base_path . self::$_default_theme . '/' . trim($name, '_') . '.php';
         }
 
-        if (is_file($file)) {
-            @include $file;
-        } else {
+        if (is_file($file)) { @include $file; }
+        else {
             Core::router()->error('404', 'File Not Found'); // 451? hhh
         }
 
