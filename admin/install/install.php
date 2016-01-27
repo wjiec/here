@@ -18,7 +18,7 @@ function _u($path) {
  * is mobile return true
  * @return boolean
  */
-function _m() {
+function isMobile() {
     $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
     return (strpos($ua, 'iphone') || strpos($ua, 'ipad') || strpos($ua, 'android') || strpos($ua, 'midp') || strpos($ua, 'ucweb'));
 }
@@ -38,7 +38,7 @@ function _m() {
   <link rel="stylesheet" href="../../include/Resource/css/library/fonts/inconsolata.css" media="all" />
   <!-- module style -->
   <link rel="stylesheet" href="../../include/Resource/css/module/install.css" media="all" />
-<?php if (_m()): ?>
+<?php if (isMobile()): ?>
   <!-- mobile lirary -->
   <script src="../../include/Resource/js/library/mobile/zepto.min.js"></script>
   <script src="../../include/Resource/js/library/mobile/fastclick.min.js"></script>
@@ -72,7 +72,7 @@ function _m() {
     </div>
     <div id="_Here-Next-Step" class="row">
       <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-16">
-        <button id="Next-Step-Btn" class="widget-btn widget-btn-default" value='2'>Next Step</button>
+        <button id="Next-Step-Btn" class="widget-btn widget-btn-default" value='2' data-jax-url="controller/installer/step?step=2" data-jax-data='{step:2}'>Next Step</button>
       </div>
     </div>
   </div>

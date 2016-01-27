@@ -1,9 +1,15 @@
 'use strict';
 
 $(function() {
-    $(document).on('contextmenu', function() { return false; });
-    $(document).on('selectstart', function() { return false; });
+    $(document).on('contextmenu', function() { return false })
+    $(document).on('selectstart', function() { return false })
 
+    $(document).jax('button', 'footer', {
+        urlReplace: 'search'
+    })
+    
+    
+    
     if (!(typeof FastClick == 'undefined')) {
         FastClick.attach(document.body);
     }
@@ -28,20 +34,20 @@ $(function() {
                         disableloadingStatus();
                         $('#_Here-Setting-Error').addClass('widget-pjax-tips').removeClass('widget-hidden').find('p').html(data.data);
                     } else {
-                        request({
-                            url: '/controller/installer/step',
-                            data: { step: $('#Next-Step-Btn').val() },
-                            success: replaceContent
-                        });
+//                        request({
+//                            url: '/controller/installer/step',
+//                            data: { step: $('#Next-Step-Btn').val() },
+//                            success: replaceContent
+//                        });
                     }
                 }
             });
         } else {
-            request({
-                url: '/controller/installer/step',
-                data: { step: $('#Next-Step-Btn').val() },
-                success: replaceContent
-            });
+//            request({
+//                url: '/controller/installer/step',
+//                data: { step: $('#Next-Step-Btn').val() },
+//                success: replaceContent
+//            });
         }
     });
     var currStep = location.search.match(/\d+/);

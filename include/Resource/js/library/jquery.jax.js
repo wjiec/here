@@ -1,5 +1,11 @@
 "use strict";
-
+/**
+ * Event List:
+ *      jax:click
+ *      jax:beforeSend
+ *      jax:complete jax:timeout jax:error jax:success
+ *      jax:beforeReplace
+ */
 (function($) {
 /**
  * @author ShadowMan
@@ -9,20 +15,6 @@ const VERSION = '0.0.1/16.1.11'
 
 $.support.pjax = window.history && window.history.pushState && window.history.replaceState && !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/)
 $.support.storage = !!window.localStorage
-
-var stack = []
-var globalState = null
-var lastXHR = null
-var defaultOptions = {
-    timeout: 650,
-    push: true,
-    replace: false,
-    type: 'GET',
-    dataType: 'HTML',
-    scrollTo: null,
-    fullReplace: false,
-    urlReplace: true
-}
 
 function d(msg) {
     return console.log(msg)
@@ -36,12 +28,20 @@ function hostname(url) {
     return (url || '').replace(/#.*$/, '')
 }
 
+function search(url) {
+    return (url || '').match(/\?([^#]*)/)[0]
+}
+
 function hash(url) {
     return (url || '').replace(/^[^#]*(?:#(.*))?$/, '$1')
 }
 
 function int(val) {
     return isNaN(parseInt(val)) ? null : parseInt(val);
+}
+
+function getItemValue(el, key) {
+    return el.attributes.getNamedItem(key).value
 }
 
 function optionsFor(container, options) {
@@ -91,8 +91,7 @@ function filter(el, selector) {
 }
 
 function extractContainer(data, xhr, options) {
-    var obj = {}
-    var fullDocument = /<html/i.test(data)
+    var obj = {}, fullDocument = /<html/i.test(data)
 
     obj.url = options.url
     if (fullDocument) {
@@ -109,11 +108,15 @@ function extractContainer(data, xhr, options) {
 
     var selector = options.container.selector
     obj.contents = filter(body, selector).first().text()
-    if (options.fullReplace) {
+    if (options.fullReplace && !fullDocument) {
         obj.contents = data
     }
 
     obj.title = $.trim(filter(head, 'title').last().text())
+    if (obj.contents) {
+        obj.scripts = filter(obj.contents, 'script[src]').remove()
+        obj.contents = obj.contents.not(obj.scripts)
+    }
 
     return obj
 }
@@ -122,13 +125,20 @@ function unixStamp() {
     return int((new Date).getTime())
 }
 
+function abort(xhr) {
+    if (xhr && xhr.readyState < 4) {
+        xhr.onreadystatechange = $.noop
+        xhr.abort()
+    }
+}
+
 function entry(selector, container, options) {
     var context = this
 
     return this.on('click.jax', selector, function(event) { // this => dom obj
         var opts = $.extend({}, optionsFor(container, options))
         if (!opts.container) {
-            opts.container = $(this).attr(CONTAINER) || context
+            opts.container = context
         }
         handleClick(event, opts)
     })
@@ -137,16 +147,16 @@ function entry(selector, container, options) {
 function handleClick(event, container, options) {
     options = optionsFor(container, options)
 
-    var el = event.currentTarget
+    var context, el = event.currentTarget
     if (el.tagName.toUpperCase() !== 'A' && el.tagName.toUpperCase() !== 'BUTTON') {
-        throw 'require an anchor element'
+        throw 'require an anchor element or a button element'
     }
 
-    if (el.tagName.toUpperCase() === 'BUTTON') { // Replace el
+    if (el.tagName.toUpperCase() === 'BUTTON') { // button convert a
+        context = el
         el = document.createElement('a')
-
-        if (options.url) {
-            el.href = options.url
+        if ($(context).attr('data-jax-url')) {
+            el.href = $(context).attr('data-jax-url')
         }
     }
     if (event.which > 1 || event.ctrlKey || event.altKey || event.shiftKey) {
@@ -162,19 +172,33 @@ function handleClick(event, container, options) {
         return
     }
 
-    var defaults = {
+    var opts = $.extend({}, {
         url: el.href,
-        container: $(this).attr('data-jax-container'),
-        element: el
-    }
-    var opts = $.extend({}, defaults, options)
+        container: $(context).attr('data-jax-container'),
+        element: context
+    }, options)
 
     var clickEvent = $.Event('jax:click')
-    $(el).trigger(clickEvent, [opts])
+    $(context).trigger(clickEvent, [opts])
 
     if (!clickEvent.isDefaultPrevented()) {
         jax(opts)
     }
+}
+
+var jaxNS = {}
+var stack = []
+var globalState = null
+var lastXHR = null
+var defaultOptions = {
+    timeout: 650,
+    push: true,
+    replace: false,
+    type: 'GET',
+    dataType: 'HTML',
+    scrollTo: null,
+    fullReplace: false,
+    urlReplace: null, // search hash
 }
 
 function jax(options) {
@@ -186,14 +210,15 @@ function jax(options) {
 
     var el = options.element
     var hh = hash(options.url)
-    var context = options.context = findContainerFor(options.container)
+    var container = findContainerFor(options.container)
+    var context = options.context = findContainerFor(options.container) // XXX: options.context ?
 
     function trigger(type, args, props) {
         if (!props) { props = {} }
         props.relatedElement = el
 
         var e = $.Event(type, props)
-        context.trigger(e, args)
+        container.trigger(e, args)
 
         return !e.isDefaultPrevented()
     }
@@ -208,13 +233,14 @@ function jax(options) {
         }
 
         xhr.setRequestHeader('JAX', true)
-        xhr.setRequestHeader('JAX-Container', context.selector)
+        xhr.setRequestHeader('JAX-Container', container.selector)
 
         if (!trigger('jax:beforeSend', [xhr, settings])) {
-            return false
+            return false // isDefaultPrevented
         }
 
         if (settings.timeout > 0) {
+            // take over
             timeoutTimer = setTimeout(function() {
                 if (trigger('jax:timeout', [xhr, settings])) {
                     xhr.abort('timeout')
@@ -249,20 +275,28 @@ function jax(options) {
         var responsed = extractContainer(data, xhr, options)
         var prevState = globalState
 
+        if (!responsed.contents) {
+            trigger('jax:empty', [data, xhr])
+            // return
+        }
+
         globalState = {
             id: unixStamp(),
             url: responsed.url,
             title: responsed.title,
             container: options.container.selector,
             timeout: options.timeout,
-            full: {
-                document: /<html/i.test(data),
-                replace: options.fullReplace,
+            fullReplace: options.fullReplace
+        }
+        if (options.fullReplace && !(/<html/i.test(data))) {
+            globalState.full = {
+                document: false,
                 base: location.href
             }
         }
 
-        window.history.replaceState(globalState, responsed.title, options.urlReplace ? responsed.url : null)
+        jaxNS.search = search, jaxNS.hash = hash
+        window.history.replaceState(globalState, responsed.title, options.urlReplace ? jaxNS[options.urlReplace](options.url) : null)
         if ($.contains(options.container, document.activeElement)) {
             try {
                 document.activeElement.blur()
@@ -278,13 +312,50 @@ function jax(options) {
             prevState: prevState
         })
         context.html(responsed.contents)
+
+        trigger('jax:success', [data, status, xhr, options]);
     }
 
+    abort(lastXHR)
     lastXHR = $.ajax(options)
+    if (lastXHR.readyState > 0) {
+        // cache
+        // window.history.pushState(globalState, globalState.title, options.urlReplace ? jaxNS[options.urlReplace](options.url) : null)
+    }
+
+    return lastXHR
+}
+
+function popstateEntry(event) {
+    abort(lastXHR)
+
+    var direction = null
+    var prevState = globalState
+    var currentState = event.state
+    if (currentState && currentState.container) {
+        if (prevState) {
+            if (prevState.id == currentState.id) {
+                return
+            }
+            direction = prevState.id > currentState.id ? 'forward' : 'back'
+        }
+
+        var cache = stack[currentState.id] || []
+        var container = $(cache[0] || currentState.container)
+        var contents = cache[1] || currentState.contens
+        var popstateEvent = $.Event('jax:popstate', {
+            state: currentState,
+            direction: direction
+        })
+        container.trigger(popstateEvent)
+        d(container)
+    }
 }
 
 function enable() {
     $.fn.jax = entry
+    
+    $(window).on('popstate.jax', popstateEntry)
 }
 
 function disable() {
