@@ -4,56 +4,72 @@ $(function() {
     $(document).on('contextmenu', function() { return false })
     $(document).on('selectstart', function() { return false })
 
-    $(document).jax('button', 'footer', {
-        urlReplace: 'search'
+    $(document).jax('#Next-Step-Btn', '#_Here-Replace-Container', {
+        urlReplace: 'search',
+        fullReplace: true,
+        timeout: 0
+    })
+    $('#_Here-Replace-Container').on('jax:beforeSend', function() {
+        var inputs = $('#_Here-Replace-Container').find('input');
+        if (inputs.length) {
+            if (!validate(inputs, function(n){ n.addClass('widget-pjax-input-require') })) {
+                return false;
+            }
+        }
+
+        $(this).addClass('Here-toggle-content-ing');
+        $('#Next-Step-Btn').addClass('widget-cursor-disable');
+    }).on('jax:success', function() {
+        $('#_Here-Replace-Container').removeClass()
+        $('#Next-Step-Btn').removeClass('widget-cursor-disable')
     })
     
     
-    
     if (!(typeof FastClick == 'undefined')) {
-        FastClick.attach(document.body);
+        FastClick.attach(document.body)
     }
-    $(document).delegate('input', 'focus', function(event) {
-        $(this).removeClass('widget-pjax-input-require');
-    });
-    $('#Next-Step-Btn').on('click', function(event) {
-        var inputs = $('#_Here-Replace-Container').find('input');
-        if (inputs.length) {
-            var data = {};
-            if (!validate(inputs, function(n){n.addClass('widget-pjax-input-require');})) {
-                return false;
-            }
-            makeData(data);
-            $.ajax({
-                url: '/controller/installer/validate', type: 'post',
-                data: data, datatype: 'json',
-                beforeSend: beforeSend,
-                success: function(data) {
-                    data = $.parseJSON(data);
-                    if (data.fail) {
-                        disableloadingStatus();
-                        $('#_Here-Setting-Error').addClass('widget-pjax-tips').removeClass('widget-hidden').find('p').html(data.data);
-                    } else {
-//                        request({
-//                            url: '/controller/installer/step',
-//                            data: { step: $('#Next-Step-Btn').val() },
-//                            success: replaceContent
-//                        });
-                    }
-                }
-            });
-        } else {
-//            request({
-//                url: '/controller/installer/step',
-//                data: { step: $('#Next-Step-Btn').val() },
-//                success: replaceContent
+    $(document).on('input', 'input', function(event) {
+        $(this).removeClass('widget-pjax-input-require')
+    })
+    
+//    $('#Next-Step-Btn').on('click', function(event) {
+//        var inputs = $('#_Here-Replace-Container').find('input');
+//        if (inputs.length) {
+//            var data = {};
+//            if (!validate(inputs, function(n){n.addClass('widget-pjax-input-require');})) {
+//                return false;
+//            }
+//            makeData(data);
+//            $.ajax({
+//                url: '/controller/installer/validate', type: 'post',
+//                data: data, datatype: 'json',
+//                beforeSend: beforeSend,
+//                success: function(data) {
+//                    data = $.parseJSON(data);
+//                    if (data.fail) {
+//                        disableloadingStatus();
+//                        $('#_Here-Setting-Error').addClass('widget-pjax-tips').removeClass('widget-hidden').find('p').html(data.data);
+//                    } else {
+////                        request({
+////                            url: '/controller/installer/step',
+////                            data: { step: $('#Next-Step-Btn').val() },
+////                            success: replaceContent
+////                        });
+//                    }
+//                }
 //            });
-        }
-    });
-    var currStep = location.search.match(/\d+/);
-    if (currStep != null) {
-        $('#Next-Step-Btn').val(parseInt(currStep[0]) + 1);
-    }
+//        } else {
+////            request({
+////                url: '/controller/installer/step',
+////                data: { step: $('#Next-Step-Btn').val() },
+////                success: replaceContent
+////            });
+//        }
+//    });
+//    var currStep = location.search.match(/\d+/);
+//    if (currStep != null) {
+//        $('#Next-Step-Btn').val(parseInt(currStep[0]) + 1);
+//    }
 });
 
 function request(options) {

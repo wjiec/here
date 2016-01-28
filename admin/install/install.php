@@ -72,10 +72,10 @@ function isMobile() {
     </div>
     <div id="_Here-Next-Step" class="row">
       <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-16">
-        <button id="Next-Step-Btn" class="widget-btn widget-btn-default" value='2' data-jax-url="controller/installer/step?step=2" data-jax-data='{step:2}'>Next Step</button>
+        <button id="Next-Step-Btn" class="widget-btn widget-btn-default" value='2' data-jax-url="controller/installer/step" data-jax-data='{"step":2}'>Next Step</button>
       </div>
     </div>
   </div>
-  <footer><a href="controller/installer/step?step=3">ssssssss</a></footer>
+  <footer></footer>
 </body>
 </html>

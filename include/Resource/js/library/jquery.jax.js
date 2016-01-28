@@ -29,11 +29,23 @@ function hostname(url) {
 }
 
 function search(url) {
-    return (url || '').match(/\?([^#]*)/)[0]
+    return /\?([^#]*)/.test(url) ? url.match(/\?([^#]*)/)[0] : null
 }
 
 function hash(url) {
     return (url || '').replace(/^[^#]*(?:#(.*))?$/, '$1')
+}
+
+function parseUrl(href, search, hash) {
+    var u = href + '?'
+    if (typeof search == 'object') {
+        for (var k in search) {
+            u += (k + '=' + search[k])
+        }
+    }
+    u += hash ? hash.indexOf('#') ? hash : ('#' + hash) : ''
+
+    return u
 }
 
 function int(val) {
@@ -109,7 +121,7 @@ function extractContainer(data, xhr, options) {
     var selector = options.container.selector
     obj.contents = filter(body, selector).first().text()
     if (options.fullReplace && !fullDocument) {
-        obj.contents = data
+        obj.contents = $(parseHTML(data))
     }
 
     obj.title = $.trim(filter(head, 'title').last().text())
@@ -172,10 +184,15 @@ function handleClick(event, container, options) {
         return
     }
 
+    var data = {}
+    try { data = JSON.parse($(context).attr('data-jax-data')) }
+    catch (e) { throw 'Data {' + $(context).attr('data-jax-data') + '} Syntal Error' }
     var opts = $.extend({}, {
-        url: el.href,
+//        url: el.href,
+        url: parseUrl(el.href, data),
         container: $(context).attr('data-jax-container'),
-        element: context
+        element: context,
+        data: data
     }, options)
 
     var clickEvent = $.Event('jax:click')
@@ -193,10 +210,10 @@ var lastXHR = null
 var defaultOptions = {
     timeout: 650,
     push: true,
-    replace: false,
     type: 'GET',
     dataType: 'HTML',
     scrollTo: null,
+    cache: true, // stack && localStorage
     fullReplace: false,
     urlReplace: null, // search hash
 }
@@ -296,32 +313,41 @@ function jax(options) {
         }
 
         jaxNS.search = search, jaxNS.hash = hash
-        window.history.replaceState(globalState, responsed.title, options.urlReplace ? jaxNS[options.urlReplace](options.url) : null)
+        window.history.pushState(globalState, responsed.title, options.urlReplace ? jaxNS[options.urlReplace](options.url) : null)
         if ($.contains(options.container, document.activeElement)) {
             try {
                 document.activeElement.blur()
             } catch (e) {}
         }
-        
+
         if (responsed.title) {
             document.title = responsed.title
         }
-        
+
         trigger('jax:beforeReplace', [responsed.contents, options], {
             state: globalState,
             prevState: prevState
         })
         context.html(responsed.contents)
 
+        trigger('jax:cache', [responsed, globalState, options])
+        if (options.cache) {
+            stack[globalState.id] = {
+                id: globalState.id,
+                contents: responsed.contents,
+                container: globalState.container,
+                fullReplace: options.fullReplace,
+                full: globalState.full
+            }
+        }
+
+        d(stack)
+        
         trigger('jax:success', [data, status, xhr, options]);
     }
 
     abort(lastXHR)
     lastXHR = $.ajax(options)
-    if (lastXHR.readyState > 0) {
-        // cache
-        // window.history.pushState(globalState, globalState.title, options.urlReplace ? jaxNS[options.urlReplace](options.url) : null)
-    }
 
     return lastXHR
 }
@@ -340,15 +366,14 @@ function popstateEntry(event) {
             direction = prevState.id > currentState.id ? 'forward' : 'back'
         }
 
-        var cache = stack[currentState.id] || []
-        var container = $(cache[0] || currentState.container)
-        var contents = cache[1] || currentState.contens
+        var cache = stack[currentState.id] || {}
+        var container = $(cache.container || currentState.container)
+        var contents = cache.contents
         var popstateEvent = $.Event('jax:popstate', {
             state: currentState,
             direction: direction
         })
         container.trigger(popstateEvent)
-        d(container)
     }
 }
 
