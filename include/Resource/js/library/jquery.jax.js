@@ -5,6 +5,8 @@
  *      jax:beforeSend
  *      jax:complete jax:timeout jax:error jax:success
  *      jax:beforeReplace
+ *      jax:cache
+ *      jax:success
  */
 (function($) {
 /**
@@ -44,7 +46,6 @@ function parseUrl(href, search, hash) {
         }
     }
     u += hash ? hash.indexOf('#') ? hash : ('#' + hash) : ''
-
     return u
 }
 
@@ -100,6 +101,21 @@ function parseHTML(html) {
 
 function filter(el, selector) {
     return el.filter(selector).add(el.find(selector))
+}
+
+function localClean() {
+    var currentDate = unixStamp()
+
+    for (var d in localStorage) {
+        if (int(d / 1000) + 15 * 24 * 3600 * 1000 < int(currentDate / 1000)) {
+            localStorage.removeItem(d)
+        }
+    }
+}
+localClean()
+
+function localPush(stackNode, timeout) {
+    localStorage.setItem(stackNode.id, stackNode)
 }
 
 function extractContainer(data, xhr, options) {
@@ -214,6 +230,7 @@ var defaultOptions = {
     dataType: 'HTML',
     scrollTo: null,
     cache: true, // stack && localStorage
+    localStorage: true,
     fullReplace: false,
     urlReplace: null, // search hash
 }
@@ -340,9 +357,10 @@ function jax(options) {
                 full: globalState.full
             }
         }
+        if (options.localStorage) {
+            localPush(stack[globalState.id])
+        }
 
-        d(stack)
-        
         trigger('jax:success', [data, status, xhr, options]);
     }
 
@@ -352,12 +370,14 @@ function jax(options) {
     return lastXHR
 }
 
+// bug: initial pop -> event.state => null
 function popstateEntry(event) {
     abort(lastXHR)
 
     var direction = null
     var prevState = globalState
     var currentState = event.state
+    d(currentState)
     if (currentState && currentState.container) {
         if (prevState) {
             if (prevState.id == currentState.id) {
@@ -374,6 +394,30 @@ function popstateEntry(event) {
             direction: direction
         })
         container.trigger(popstateEvent)
+
+        var options = {
+            url: currentState.url,
+            container: currentState.container,
+            push: false,
+            timeout: currentState.timeout,
+            fullReplace: currentState.fullReplace
+        }
+        
+        if (contents) {
+            if (currentState.title) {
+                document.title = currentState.title
+            }
+
+            var beforeReplaceEvent = $.Event('jax:beforeReplace', {
+                state: currentState
+            })
+            container.trigger(beforeReplaceEvent, [contents])
+            container.html(contents)
+
+            container.trigger('jax:replaceEnd')
+        } else {
+            jax(options)
+        }
     }
 }
 
@@ -393,5 +437,4 @@ if ($.event.props && $.inArray('state', $.event.props) < 0) {
 
 $.support.pjax ? enable() : disable()
 
-})(typeof jQuery == 'function' ? jQuery : Zepto)
-
+})(typeof jQuery === 'function' ? jQuery : Zepto)
