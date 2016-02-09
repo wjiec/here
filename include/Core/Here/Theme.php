@@ -5,10 +5,11 @@
  */
 class Theme {
     private static $_theme = null;
-
     private static $_default_theme = 'default';
     private static $_base_path = 'include/Theme/';
 
+    private static $params = null;
+    
     const GDIE = 1;
     const GLIVE = 0;
 
@@ -20,6 +21,7 @@ class Theme {
     }
 
     public static function __callStatic($name, $args) {
+        self::$params = $args;
         if (self::$_theme) {
             $file = self::$_base_path . self::$_theme . '/' . trim($name, '_') . '.php';
         } else {

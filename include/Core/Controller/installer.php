@@ -1,17 +1,20 @@
 <?php
 
 class Controller_Installer {
-    const SEPARATOR = ';';
+    private static $SEPARATOR = ';';
+    private static $value = null;
 
     public static function serverDetect() {
         return true;
     }
 
     public static function failServerDetectList() {
+        // <li></li>
     }
 
     public static function step() {
-        self::_include('step', intval(isset($_REQUEST['step']) ? $_REQUEST['step'] : 1));
+        self::$value = Request::r('step') ? Request::r('step') : 1;
+        return self::_include('step');
     }
 
     public static function validate() {
@@ -31,19 +34,18 @@ class Controller_Installer {
         }
     }
 
-    private static function _include($action, $file) {
-        if ($file > 0 && $file < 5) {
-            include "install/{$action}/{$file}.php";
-        } else {
-            Core::router()->error('404');
+    private static function _include($action) {
+        if (include "install/{$action}.php") {
+            return true;
         }
+        Core::router()->error('404', 'File not found');
     }
 
     private static function initTable($database, $prefix) {
         $scripts = file_get_contents('install/scripts/mysql.sql', true);
         self::strReplace('{%database%}', $database, $scripts);
         self::strReplace('{%prefix%}_', $prefix, $scripts);
-        $scripts = explode(self::SEPARATOR, $scripts);
+        $scripts = explode(self::$SEPARATOR, $scripts);
 
         foreach ($scripts as $script) {
             DB::query($script);

@@ -6,14 +6,7 @@
  * @author  ShadowMan
  */
 
-/**
- * return pull url
- * @param string $path
- * @return string full url
- */
-function _u($path) {
-    echo Request::getFullUrl($path);
-}
+
 /**
  * is mobile return true
  * @return boolean
@@ -72,7 +65,7 @@ function isMobile() {
     </div>
     <div id="_Here-Next-Step" class="row">
       <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-16">
-        <button id="Next-Step-Btn" class="widget-btn widget-btn-default" value='2' data-jax-url="controller/installer/step" data-jax-data='{"step":2}'>Next Step</button>
+        <button id="Next-Step-Btn" class="widget-btn widget-btn-default" value='2' data-jax-url="controller/installer/step/2">Next Step</button>
       </div>
     </div>
   </div>
