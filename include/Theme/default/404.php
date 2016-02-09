@@ -15,5 +15,8 @@
   <section id="_Here-404">
     <h1>404 Not Found</h1>
   </section>
+  <pre>
+  <?php print_r(debug_backtrace()); ?>
+  </pre>
 </body>
 </html>

@@ -45,6 +45,9 @@ Core::init();
 
 // XSS Attack
 if (!empty($_GET) || !empty($_POST)) {
+    // XXX RESTful API needn't $_GET $_POST
+    // exit;
+    
     if (empty($_SERVER['HTTP_REFERER'])) {
         exit;
     }
@@ -60,7 +63,7 @@ if (!empty($_GET) || !empty($_POST)) {
 }
 
 // TODO React: After the long long time
-// XXX BUG: Router http://localhost/index.php?t=1 parse error ???
+// TODO RESTful API
 Core::setRouter(
 (new Router())
 ->error('404', function($params, $message = null) {
@@ -86,9 +89,10 @@ Core::setRouter(
     }
     file_exists('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit(1);
 })
-->match(['get', 'post'], '/controller/$controller/$action', function($params) {
+->get('/controller/$controller/$action/$value', function($params) {
     try {
-        Controller::$params['_data']['controller']($params['_data']['action']);
+        Request::s($params['action'], $params['value']);
+        Controller::$params['controller']($params['action']);
     } catch (Exception $e) {
         Theme::_404($e->getMessage());
     }
