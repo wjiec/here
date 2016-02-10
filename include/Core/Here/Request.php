@@ -24,8 +24,7 @@ class Request {
     // XXX: Speed?
     public static function r($name) {
         if (empty(self::$_params)) {
-            // RESTful not need GET or POST params
-//             self::arrayMerge(self::$_params, $_GET, $_POST);
+            self::$_params = array_merge(self::$_params, $_POST);
 //             array_map(function(&$v) { }, self::$_params); TODO: delete?
         }
         if (array_key_exists($name, self::$_params)) {
@@ -51,21 +50,12 @@ class Request {
         }
         return self::$_urlPrefix;
     }
-    
+
     private static function isSecure() {
         return (
             (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off') ||
             (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443')
         );
-    }
-    // XXX: Speed?
-    private static function arrayMerge(&$array) {
-        $argc = func_num_args();
-        $argv = func_get_args();
-
-        for ($i = 1; $i < $argc; ++$i) {
-            $array = array_merge($array, $argv[$i]);
-        }
     }
 }
 

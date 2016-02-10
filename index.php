@@ -6,8 +6,6 @@
  * @author  ShadowMan
  */
 
-// TODO RESTful API
-
 # Root Directory
 define('__HERE_ROOT_DIRECTORY__', dirname(__FILE__));
 
@@ -45,9 +43,6 @@ Core::init();
 
 // XSS Attack
 if (!empty($_GET) || !empty($_POST)) {
-    // XXX RESTful API needn't $_GET $_POST
-    // exit;
-    
     if (empty($_SERVER['HTTP_REFERER'])) {
         exit;
     }
@@ -64,8 +59,7 @@ if (!empty($_GET) || !empty($_POST)) {
 
 // TODO React: After the long long time
 // TODO RESTful API
-Core::setRouter(
-(new Router())
+Core::setRouter((new Router())
 ->error('404', function($params, $message = null) {
     Theme::_404($message ? $message : null);
 })
@@ -78,20 +72,20 @@ Core::setRouter(
     if (!@include_once 'config.php') {
         file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit(1);
     }
-    exit(1);
+    exit;
 })
 ->get('license.php', function($params) {
     Theme::_license();
 })
 ->get('/admin/', function($params) {
     if (!@include_once 'config.php') {
-        file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit(1);
+        file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
     }
-    file_exists('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit(1);
+    is_file('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit;
 })
-->get('/controller/$controller/$action/$value', function($params) {
+->get(['/controller/$controller/$action', '/controller/$controller/$action/$value'], function($params) {
     try {
-        Request::s($params['action'], $params['value']);
+        Request::s($params['action'], isset($params['value']) ? $params['value'] : null);
         Controller::$params['controller']($params['action']);
     } catch (Exception $e) {
         Theme::_404($e->getMessage());

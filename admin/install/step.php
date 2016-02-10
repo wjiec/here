@@ -8,9 +8,11 @@ function _u($path) {
     echo Request::getFullUrl($path);
 }
 
-function _m() {
-    $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
-    return (strpos($agent, 'iphone') || strpos($agent, 'ipad') || strpos($agent, 'android') || strpos($agent, 'midp') || strpos($agent, 'ucweb'));
+if (!function_exists('isMobile')) {
+    function isMobile() {
+        $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+        return (strpos($agent, 'iphone') || strpos($agent, 'ipad') || strpos($agent, 'android') || strpos($agent, 'midp') || strpos($agent, 'ucweb'));
+    }
 }
 
 switch (self::$value) {
@@ -46,7 +48,7 @@ break;
       <!-- Database Password -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-pawd">DB PAWD</label>
-        <input type="password" id="db-pawd" class="widget-form-control" name="password" placeholder="Enter MySQL Password"<?php if (!_m()): ?> autofocus="autofocus"<?php endif; ?> required="required"/>
+        <input type="password" id="db-pawd" class="widget-form-control" name="password" placeholder="Enter MySQL Password"<?php if (!isMobile()): ?> autofocus="autofocus"<?php endif; ?> required="required"/>
       </div>
       <p class="_Here-Form-Tips">and your MySQL password.</p>
       <!-- Database Name -->
@@ -83,7 +85,6 @@ break;
           <input type="text" id="site-title" class="widget-form-control" name="site-title" placeholder="Enter Site Title"  required="required" autofocus="autofocus"/>
         </div>
         <p class="_Here-Form-Tips"></p>
-        
         <!-- Site Title -->
         <div class="widget-input-group">
           <label class="widget-input-label" for="username"><em>Username</em></label>
