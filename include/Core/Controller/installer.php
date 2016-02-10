@@ -19,19 +19,24 @@ class Controller_Installer {
 
     public static function validate() {
         if (!get_magic_quotes_gpc()) {
-//             array_map(function($v) { addslashes($v); }, $_POST); TODO: escape, secure
+            array_map(function($v) { addslashes($v); }, $_POST);
             try {
-                if (Request::r('action') == 'db') {
-                    DB::server(Request::r('host'), Request::r('user'), Request::r('password'), Request::r('database'), Request::r('port'));
-                    self::initTable(Request::r('database'), Request::r('prefix'));
-                } else if (Request::r('action') == 'user') {
-                    self::addUser(Request::r('username'), Request::r('password'), Request::r('email'));
-                }
-                echo "{\"fail\":0,\"data\":\"\"}";
+                DB::server(Request::r('host'), Request::r('user'), Request::r('password'), Request::r('database'), Request::r('port'));
+                self::initTable(Request::r('database'), Request::r('prefix'));
+                echo JSON::fromArray([
+                    'fail' => 0,
+                    'url'  => '/controller/installer/addUser'
+                ]);
             } catch (Exception $e) {
-                echo "{\"fail\":1,\"data\":\"{$e->getCode()}: {$e->getMessage()}\"}";
+                echo JSON::fromArray([
+                    'fail' => 1,
+                    'data' => "{$e->getMessage()}: {$e->getMessage()}"
+                ]);
             }
         }
+    }
+
+    private static function addUser() {
     }
 
     private static function _include($action) {
@@ -50,10 +55,6 @@ class Controller_Installer {
         foreach ($scripts as $script) {
             DB::query($script);
         }
-    }
-
-    private static function addUser($username, $password, $email) {
-        
     }
 
     private static function strReplace($search, $replace, &$subject) {
