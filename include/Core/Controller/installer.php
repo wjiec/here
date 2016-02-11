@@ -36,7 +36,7 @@ class Controller_Installer {
         }
     }
 
-    private static function addUser() {
+    public static function addUser() {
     }
 
     private static function _include($action) {

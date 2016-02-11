@@ -5,6 +5,8 @@
  * @package Here
  * @author  ShadowMan
  */
+// TODO oauth2.0
+
 
 # Root Directory
 define('__HERE_ROOT_DIRECTORY__', dirname(__FILE__));
@@ -37,25 +39,15 @@ session_start();
 
 # Core API
 require_once 'Here/Core.php';
+require_once 'Here/Intercepter.php';
+require_once 'Here/Request.php';
+require_once 'Here/Router.php';
+require_once 'Here/Theme.php';
+require_once 'Here/DB.php';
 
 # Init env
 Core::init();
-
-// XSS Attack
-if (!empty($_GET) || !empty($_POST)) {
-    if (empty($_SERVER['HTTP_REFERER'])) {
-        exit;
-    }
-
-    $parts = parse_url($_SERVER['HTTP_REFERER']);
-    if (!empty($parts['port'])) {
-        $parts['host'] = "{$parts['host']}:{$parts['port']}";
-    }
-
-    if (empty($parts['host']) || $_SERVER['HTTP_HOST'] != $parts['host']) {
-        exit;
-    }
-}
+Intercepter::init();
 
 // TODO React: After the long long time
 // TODO RESTful API

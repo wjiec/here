@@ -21,11 +21,18 @@ class Request {
     const USING_DB = 1;
     const USING_CM = 2;
 
-    // XXX: Speed?
+    // XXX: Speed
     public static function r($name) {
         if (empty(self::$_params)) {
-            self::$_params = array_merge(self::$_params, $_POST);
-//             array_map(function(&$v) { }, self::$_params); TODO: delete?
+            // RESTful API => PUT, PATCH, DELETE parse
+            $params = file_get_contents('php://input');
+            if (!empty($params)) {
+                parse_str($params, $params);
+            } else {
+                $params = [];
+            }
+            self::$_params = array_merge(self::$_params, $_GET, $_POST, $params);
+//             array_map(function(&$v) { var_dump(addslashes($v)); }, self::$_params);
         }
         if (array_key_exists($name, self::$_params)) {
             return self::$_params[$name];
