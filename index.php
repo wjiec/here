@@ -77,7 +77,7 @@ Core::setRouter((new Router())
 })
 ->get(['/controller/$controller/$action', '/controller/$controller/$action/$value'], function($params) {
     try {
-        Request::s($params['action'], isset($params['value']) ? $params['value'] : null);
+        Request::s($params['action'], isset($params['value']) ? $params['value'] : null, Request::RESTFUL);
         Controller::$params['controller']($params['action']);
     } catch (Exception $e) {
         Theme::_404($e->getMessage());

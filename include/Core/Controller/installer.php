@@ -13,7 +13,7 @@ class Controller_Installer {
     }
 
     public static function step() {
-        self::$value = Request::r('step') ? Request::r('step') : 1;
+        self::$value = Request::r('step', Request::RESTFUL) ? Request::r('step', Request::RESTFUL) : 1;
         return self::_include('step');
     }
 

@@ -10,19 +10,20 @@ class Request {
      */
     private static $_urlPrefix = null;
     /**
-     * $_GET & $_POST 
+     * GET POST PUT PATCH DELETE
      * @var array
      */
     private static $_params = [];
+    /**
+     * RESTful API value 
+     * @var unknown
+     */
+    private static $_restValue = [];
 
-    const GET  = 1;
-    const POST = 2;
-
-    const USING_DB = 1;
-    const USING_CM = 2;
+    const RESTFUL = 1;
 
     // XXX: Speed
-    public static function r($name) {
+    public static function r($key, $mode = null) {
         if (empty(self::$_params)) {
             // RESTful API => PUT, PATCH, DELETE parse
             $params = file_get_contents('php://input');
@@ -34,15 +35,27 @@ class Request {
             self::$_params = array_merge(self::$_params, $_GET, $_POST, $params);
 //             array_map(function(&$v) { var_dump(addslashes($v)); }, self::$_params);
         }
-        if (array_key_exists($name, self::$_params)) {
-            return self::$_params[$name];
+        if ($mode == null) {
+            if (array_key_exists($key, self::$_params)) {
+                return self::$_params[$key];
+            } else {
+                return null;
+            }
         } else {
-            return null;
+            if (array_key_exists($key, self::$_restValue)) {
+                return self::$_restValue[$key];
+            } else {
+                return null;
+            }
         }
     }
 
-    public static function s($key, $val) {
-        self::$_params[$key] = $val;
+    public static function s($key, $val, $mode = null) {
+        if ($mode == null) {
+            self::$_params[$key] = $val;
+        } else {
+            self::$_restValue[$key] = $val;
+        }
     }
 
     public static function getFullUrl($path = null) {
