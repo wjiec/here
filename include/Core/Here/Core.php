@@ -44,26 +44,6 @@ class Core {
     private static function __autoload( $class ) {
         @include_once str_replace(array('\\', '_'), '/', $class) . '.php';
     }
-
-    private static function Maketoken() {
-        $tokenSet = 'ABDEFGHJKLMNPQRSTVWXYabdefghijkmnpqrstvwxy0123456789!@#$%^&*';
-        
-        self::_shuffle($tokenSet);
-        if (!isset($_COOKIE['token'])) {
-            $_SESSION[Core::TOKEN] = substr($tokenSet, 0, 8);
-//             setcookie('token', substr($tokenSet, 0, 8));
-        }
-    }
-
-    private static function _shuffle(&$var) {
-        if (gettype($var) == 'string') {
-            $var = str_shuffle($var);
-        } else if (gettype($var) == 'array') {
-            $var = shuffle($var);
-        } else {
-            return $var;
-        }
-    }
 }
 
 ?>
