@@ -11,7 +11,7 @@
 (function($) {
 /**
  * @author ShadowMan
- * @create 1.11.2016
+ * @create 1/11 2016
  */
 const VERSION = '0.0.1/16.1.11'
 
@@ -96,7 +96,8 @@ function stripHash(location) {
 }
 
 function parseHTML(html) {
-    return $.parseHTML(html, document, true)
+//    return $.parseHTML(html, document)
+    return $(html)
 }
 
 function filter(el, selector) {
@@ -129,7 +130,7 @@ function extractContainer(data, xhr, options) {
         var head, body
         head = body = $(parseHTML(data))
     }
-    
+
     if (body.length == 0) {
         return obj
     }
@@ -172,16 +173,16 @@ function entry(selector, container, options) {
     })
 }
 
+var lastXHR = null
 function handleClick(event, container, options) {
     options = optionsFor(container, options)
 
-    var context, el = event.currentTarget
+    var context, el = event.currentTarget, context = el
     if (el.tagName.toUpperCase() !== 'A' && el.tagName.toUpperCase() !== 'BUTTON') {
-        throw 'require an anchor element or a button element'
+        throw 'require an anchor or button element'
     }
 
     if (el.tagName.toUpperCase() === 'BUTTON') { // button convert a
-        context = el
         el = document.createElement('a')
         if ($(context).attr('data-jax-url')) {
             el.href = $(context).attr('data-jax-url')
@@ -201,11 +202,17 @@ function handleClick(event, container, options) {
     }
 
     var data = {}
-    try { data = JSON.parse($(context).attr('data-jax-data')) }
-    catch (e) { throw 'Data {' + $(context).attr('data-jax-data') + '} Syntal Error' }
+    try {
+        data = JSON.parse(JSON.parse($(context).attr('data-jax-data')))
+    } catch (e) {
+        data = {}
+        if (!($(context).attr('data-jax-data') === undefined || $(context).attr('data-jax-data').length == 0)) {
+            console.error('FATAL ERROR: JSON.parse() => params invalid')
+        }
+    }
     var opts = $.extend({}, {
-//        url: el.href,
-        url: parseUrl(el.href, data),
+        url: el.href,
+        type: $(context).attr('data-jax-type'),
         container: $(context).attr('data-jax-container'),
         element: context,
         data: data
@@ -215,41 +222,33 @@ function handleClick(event, container, options) {
     $(context).trigger(clickEvent, [opts])
 
     if (!clickEvent.isDefaultPrevented()) {
-        jax(opts)
+        lastXHR = jax(opts)
     }
 }
 
 var jaxNS = {}
 var stack = []
 var globalState = null
-var lastXHR = null
 var defaultOptions = {
     timeout: 650,
-    push: true,
     type: 'GET',
     dataType: 'HTML',
-    scrollTo: null,
-    cache: true, // stack && localStorage
-    localStorage: true,
+    cache: true,
     fullReplace: false,
     urlReplace: null, // search hash
 }
-
 function jax(options) {
     options = $.extend(true, {}, $.ajaxSettings, defaultOptions, options)
-
-    if ($.isFunction(options.url)) {
-        options.url = options.url()
-    }
 
     var el = options.element
     var hh = hash(options.url)
     var container = findContainerFor(options.container)
-    var context = options.context = findContainerFor(options.container) // XXX: options.context ?
 
     function trigger(type, args, props) {
-        if (!props) { props = {} }
-        props.relatedElement = el
+        if (!props) {
+            props = {}
+        }
+        props.element = el
 
         var e = $.Event(type, props)
         container.trigger(e, args)
@@ -258,9 +257,6 @@ function jax(options) {
     }
 
     var timeoutTimer = null
-    /**
-     * brforeSend Member
-     */
     options.beforeSend = function(xhr, settings) {
         if (settings.type.toUpperCase() !== 'GET') {
             settings.timeout = 0
@@ -274,7 +270,6 @@ function jax(options) {
         }
 
         if (settings.timeout > 0) {
-            // take over
             timeoutTimer = setTimeout(function() {
                 if (trigger('jax:timeout', [xhr, settings])) {
                     xhr.abort('timeout')
@@ -283,18 +278,12 @@ function jax(options) {
             settings.timeout = 0
         }
     }
-    /**
-     * Complete 
-     */
     options.complete = function(xhr, textStatus) {
         if (timeoutTimer) {
             clearTimeout(timeoutTimer)
         }
         trigger('jax:complete', [xhr, textStatus, options])
     }
-    /**
-     * Error Handle
-     */
     options.error = function(xhr, textStatus, errorThrown) {
         var allowed = trigger('jax:error', [xhr, textStatus, errorThrown, options])
         if (options.type.toUpperCase() == 'GET' && textStatus !== 'abort' && allowed) {
@@ -302,16 +291,13 @@ function jax(options) {
             // hard reload ?
         }
     }
-    /**
-     * Success
-     */
     options.success = function(data, status, xhr) {
         var responsed = extractContainer(data, xhr, options)
         var prevState = globalState
 
         if (!responsed.contents) {
             trigger('jax:empty', [data, xhr])
-            // return
+            return false
         }
 
         globalState = {
@@ -330,13 +316,7 @@ function jax(options) {
         }
 
         jaxNS.search = search, jaxNS.hash = hash
-        window.history.pushState(globalState, responsed.title, options.urlReplace ? jaxNS[options.urlReplace](options.url) : null)
-        if ($.contains(options.container, document.activeElement)) {
-            try {
-                document.activeElement.blur()
-            } catch (e) {}
-        }
-
+        window.history.pushState(globalState, null, options.urlReplace ? jaxNS[options.urlReplace](options.url) : null)
         if (responsed.title) {
             document.title = responsed.title
         }
@@ -345,19 +325,13 @@ function jax(options) {
             state: globalState,
             prevState: prevState
         })
-        context.html(responsed.contents)
+        container.html(responsed.contents)
 
         trigger('jax:cache', [responsed, globalState, options])
         if (options.cache) {
-            stack[globalState.id] = {
-                id: globalState.id,
-                contents: responsed.contents,
-                container: globalState.container,
-                fullReplace: options.fullReplace,
-                full: globalState.full
-            }
-        }
-        if (options.localStorage) {
+            stack[globalState.id] = $.extend({
+                contents: responsed.contents
+            }, globalState)
             localPush(stack[globalState.id])
         }
 
@@ -365,19 +339,17 @@ function jax(options) {
     }
 
     abort(lastXHR)
-    lastXHR = $.ajax(options)
-
-    return lastXHR
+    return $.ajax(options)
 }
 
-// bug: initial pop -> event.state => null
+// XXX: initial pop -> event.state => null
 function popstateEntry(event) {
     abort(lastXHR)
 
     var direction = null
     var prevState = globalState
     var currentState = event.state
-    d(currentState)
+
     if (currentState && currentState.container) {
         if (prevState) {
             if (prevState.id == currentState.id) {
@@ -423,7 +395,7 @@ function popstateEntry(event) {
 
 function enable() {
     $.fn.jax = entry
-    
+
     $(window).on('popstate.jax', popstateEntry)
 }
 

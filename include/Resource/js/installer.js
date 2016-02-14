@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 $(function() {
     $(document).on('contextmenu', function() { return false })
@@ -6,14 +6,13 @@ $(function() {
 
     $(document).jax('#Next-Step-Btn', '#_Here-Replace-Container', {
         urlReplace: 'search',
-        fullReplace: true,
-        timeout: 0
+        fullReplace: true
     })
     $('#_Here-Replace-Container').on('jax:beforeSend', function() {
         var inputs = $('#_Here-Replace-Container').find('input');
         if (inputs.length) {
             if (!validate(inputs, function(n){ n.addClass('widget-pjax-input-require') })) {
-                return false;
+                return false
             }
         }
 
@@ -31,7 +30,7 @@ $(function() {
     $(document).on('input', 'input', function(event) {
         $(this).removeClass('widget-pjax-input-require')
     })
-    
+
 //    $('#Next-Step-Btn').on('click', function(event) {
 //        var inputs = $('#_Here-Replace-Container').find('input');
 //        if (inputs.length) {
