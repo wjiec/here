@@ -95,9 +95,33 @@ function stripHash(location) {
     return location.href.replace(/#.*/, '')
 }
 
+function merge(dest, sour) {
+    var len = sour.length
+    for (var i = dest.length, j = 0; j < len; j++ ) {
+        dest[ i++ ] = sour[ j ];
+    }
+
+    dest.length = i;
+    return dest;
+}
+
 function parseHTML(html) {
-//    return $.parseHTML(html, document)
-    return $(html)
+    var rsingleTag = (/^<(\w+)\s*\/?>(?:<\/\1>|)$/)
+
+    if (!html && typeof html !== 'string') {
+        return null;
+    }
+
+    var parsed = /^<(\w+)\s*\/?>(?:<\/\1>|)$/.exec(html)
+    if (parsed) {
+        return [ document.createElement(parsed[1]) ]
+    } else {
+        var fragment = document.createDocumentFragment()
+        var node = fragment.appendChild(document.createElement("div"))
+
+        node.innerHTML = html
+    }
+    return merge([], fragment.childNodes)
 }
 
 function filter(el, selector) {
@@ -161,6 +185,29 @@ function abort(xhr) {
     }
 }
 
+function setJAXAttr(xhr, element) {
+    var url  = xhr.getResponseHeader('JAX-URL')
+    var type = xhr.getResponseHeader('JAX-TYPE')
+    var data = xhr.getResponseHeader('JAX-DATA')
+    var container = xhr.getResponseHeader('JAX-CONTAINER')
+
+    if (url) {
+        $(element).attr('data-jax-url', url)
+    }
+    if (type) {
+        var typeSet = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+        if (typeSet.indexOf(type) != -1) {
+            $(element).attr('data-jax-type', type)
+        }
+    }
+    if (data) {
+        $(element).attr('data-jax-data', data)
+    }
+    if (container) {
+        $(element).attr('data-jax-container', container)
+    }
+}
+
 function entry(selector, container, options) {
     var context = this
 
@@ -217,6 +264,7 @@ function handleClick(event, container, options) {
         element: context,
         data: data
     }, options)
+    // Container => don't replace for options?
 
     var clickEvent = $.Event('jax:click')
     $(context).trigger(clickEvent, [opts])
@@ -233,7 +281,7 @@ var defaultOptions = {
     timeout: 650,
     type: 'GET',
     dataType: 'HTML',
-    cache: true,
+    localStorage: true,
     fullReplace: false,
     urlReplace: null, // search hash
 }
@@ -253,7 +301,7 @@ function jax(options) {
         var e = $.Event(type, props)
         container.trigger(e, args)
 
-        return !e.isDefaultPrevented()
+        return !e.isDefaultPrevented() // true => continue, false => abort
     }
 
     var timeoutTimer = null
@@ -271,7 +319,7 @@ function jax(options) {
 
         if (settings.timeout > 0) {
             timeoutTimer = setTimeout(function() {
-                if (trigger('jax:timeout', [xhr, settings])) {
+                if (!trigger('jax:timeout', [xhr, settings])) {
                     xhr.abort('timeout')
                 }
             }, settings.timeout)
@@ -328,13 +376,14 @@ function jax(options) {
         container.html(responsed.contents)
 
         trigger('jax:cache', [responsed, globalState, options])
-        if (options.cache) {
+        if (options.localStorage) {
             stack[globalState.id] = $.extend({
                 contents: responsed.contents
             }, globalState)
             localPush(stack[globalState.id])
         }
 
+        setJAXAttr(xhr, options.element);
         trigger('jax:success', [data, status, xhr, options]);
     }
 

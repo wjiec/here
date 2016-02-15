@@ -6,7 +6,8 @@ $(function() {
 
     $(document).jax('#Next-Step-Btn', '#_Here-Replace-Container', {
         urlReplace: 'search',
-        fullReplace: true
+        fullReplace: true,
+        localStorage: false
     })
     $('#_Here-Replace-Container').on('jax:beforeSend', function() {
         var inputs = $('#_Here-Replace-Container').find('input');
