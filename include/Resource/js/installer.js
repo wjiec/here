@@ -4,6 +4,13 @@ $(function() {
     $(document).on('contextmenu', function() { return false })
     $(document).on('selectstart', function() { return false })
 
+    if (!(typeof FastClick == 'undefined')) {
+        FastClick.attach(document.body)
+    }
+    $(document).on('input', 'input', function(event) {
+        $(this).removeClass('widget-pjax-input-require')
+    })
+
     $(document).jax('#Next-Step-Btn', '#_Here-Replace-Container', {
         urlReplace: 'search',
         fullReplace: true,
@@ -22,14 +29,6 @@ $(function() {
     }).on('jax:success', function() {
         $('#_Here-Replace-Container').removeClass()
         $('#Next-Step-Btn').removeClass('widget-cursor-disable')
-    })
-    
-    
-    if (!(typeof FastClick == 'undefined')) {
-        FastClick.attach(document.body)
-    }
-    $(document).on('input', 'input', function(event) {
-        $(this).removeClass('widget-pjax-input-require')
     })
 
 //    $('#Next-Step-Btn').on('click', function(event) {
@@ -50,20 +49,20 @@ $(function() {
 //                        disableloadingStatus();
 //                        $('#_Here-Setting-Error').addClass('widget-pjax-tips').removeClass('widget-hidden').find('p').html(data.data);
 //                    } else {
-////                        request({
-////                            url: '/controller/installer/step',
-////                            data: { step: $('#Next-Step-Btn').val() },
-////                            success: replaceContent
-////                        });
+//                        request({
+//                            url: '/controller/installer/step',
+//                            data: { step: $('#Next-Step-Btn').val() },
+//                            success: replaceContent
+//                        });
 //                    }
 //                }
 //            });
 //        } else {
-////            request({
-////                url: '/controller/installer/step',
-////                data: { step: $('#Next-Step-Btn').val() },
-////                success: replaceContent
-////            });
+//            request({
+//                url: '/controller/installer/step/2',
+//                data: { step: $('#Next-Step-Btn').val() },
+//                success: replaceContent
+//            });
 //        }
 //    });
 //    var currStep = location.search.match(/\d+/);

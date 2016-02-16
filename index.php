@@ -75,7 +75,7 @@ Core::setRouter((new Router())
     }
     is_file('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit;
 })
-->get(['/controller/$controller/$action', '/controller/$controller/$action/$value'], function($params) {
+->match(['get', 'post'], ['/controller/$controller/$action', '/controller/$controller/$action/$value'], function($params) {
     try {
         Request::s($params['action'], isset($params['value']) ? $params['value'] : null, Request::RESTFUL);
         Controller::$params['controller']($params['action']);

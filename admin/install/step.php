@@ -71,8 +71,9 @@ break;
   <p></p>
 </section>
 <?php
+header("JAX-DATATYPE: json");
 header("JAX-URL: /controller/installer/validate");
-header("JAX-CONTAINER: #_Here-Setting-Error");
+header("JAX-CONTAINER: #_Here-Setting-Error > p");
 break;
     case 3:?>
 <section id="_Here-User-Info">

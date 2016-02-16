@@ -95,17 +95,17 @@ function stripHash(location) {
     return location.href.replace(/#.*/, '')
 }
 
-function merge(dest, sour) {
-    var len = sour.length
-    for (var i = dest.length, j = 0; j < len; j++ ) {
-        dest[ i++ ] = sour[ j ];
+function parseStringToHTML(text) {
+var i, a = document.createElement("div"), b = document.createDocumentFragment()
+
+    a.innerHTML = text;
+    while (i = a.firstChild) {
+        b.appendChild(i);
     }
-
-    dest.length = i;
-    return dest;
+    return b;
 }
-
 function parseHTML(html) {
+    return parseStringToHTML(html)
     var rsingleTag = (/^<(\w+)\s*\/?>(?:<\/\1>|)$/)
 
     if (!html && typeof html !== 'string') {
@@ -117,11 +117,14 @@ function parseHTML(html) {
         return [ document.createElement(parsed[1]) ]
     } else {
         var fragment = document.createDocumentFragment()
-        var node = fragment.appendChild(document.createElement("div"))
+        var node = document.createElement('div')
 
         node.innerHTML = html
+        while (item = node.firstChild) {
+            fragment.appendChild(item)
+        }
+        return fragment
     }
-    return merge([], fragment.childNodes)
 }
 
 function filter(el, selector) {
@@ -144,6 +147,9 @@ function localPush(stackNode, timeout) {
 }
 
 function extractContainer(data, xhr, options) {
+    if (options.dataType == 'json') {
+        data = data.data
+    }
     var obj = {}, fullDocument = /<html/i.test(data)
 
     obj.url = options.url
@@ -186,25 +192,15 @@ function abort(xhr) {
 }
 
 function setJAXAttr(xhr, element) {
-    var url  = xhr.getResponseHeader('JAX-URL')
-    var type = xhr.getResponseHeader('JAX-TYPE')
-    var data = xhr.getResponseHeader('JAX-DATA')
-    var container = xhr.getResponseHeader('JAX-CONTAINER')
+    var header = xhr.getAllResponseHeaders()
+    var jaxArray = header.match(/(JAX-[A-Z]+: [^\n]+)+/g)
 
-    if (url) {
-        $(element).attr('data-jax-url', url)
-    }
-    if (type) {
-        var typeSet = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
-        if (typeSet.indexOf(type) != -1) {
-            $(element).attr('data-jax-type', type)
-        }
-    }
-    if (data) {
-        $(element).attr('data-jax-data', data)
-    }
-    if (container) {
-        $(element).attr('data-jax-container', container)
+    for (var index in jaxArray) {
+        var item = jaxArray[index]
+        var key = (item.match(/^(JAX-[A-Z]+)/g)[0]).trim().toLowerCase()
+        var val = (item.match(/\s([^\n]+)$/g)[0]).trim()
+
+        $(element).attr('data-' + key, val)
     }
 }
 
@@ -254,17 +250,17 @@ function handleClick(event, container, options) {
     } catch (e) {
         data = {}
         if (!($(context).attr('data-jax-data') === undefined || $(context).attr('data-jax-data').length == 0)) {
-            console.error('FATAL ERROR: JSON.parse() => params invalid')
+            console.error('FATAL ERROR: JSON.parse() => params invalid') // XXX: friendly message to the user
         }
     }
-    var opts = $.extend({}, {
+    var opts = $.extend({}, options, {
         url: el.href,
         type: $(context).attr('data-jax-type'),
         container: $(context).attr('data-jax-container'),
         element: context,
-        data: data
-    }, options)
-    // Container => don't replace for options?
+        data: data,
+        dataType: $(context).attr('data-jax-datatype')
+    })
 
     var clickEvent = $.Event('jax:click')
     $(context).trigger(clickEvent, [opts])
@@ -339,6 +335,7 @@ function jax(options) {
             // hard reload ?
         }
     }
+    // XXX Run Script && reset CSS ...
     options.success = function(data, status, xhr) {
         var responsed = extractContainer(data, xhr, options)
         var prevState = globalState
