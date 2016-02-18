@@ -95,17 +95,7 @@ function stripHash(location) {
     return location.href.replace(/#.*/, '')
 }
 
-function parseStringToHTML(text) {
-var i, a = document.createElement("div"), b = document.createDocumentFragment()
-
-    a.innerHTML = text;
-    while (i = a.firstChild) {
-        b.appendChild(i);
-    }
-    return b;
-}
 function parseHTML(html) {
-    return parseStringToHTML(html)
     var rsingleTag = (/^<(\w+)\s*\/?>(?:<\/\1>|)$/)
 
     if (!html && typeof html !== 'string') {
@@ -118,6 +108,7 @@ function parseHTML(html) {
     } else {
         var fragment = document.createDocumentFragment()
         var node = document.createElement('div')
+        var item
 
         node.innerHTML = html
         while (item = node.firstChild) {
@@ -147,7 +138,7 @@ function localPush(stackNode, timeout) {
 }
 
 function extractContainer(data, xhr, options) {
-    if (options.dataType == 'json') {
+    if (typeof data == 'object') {
         data = data.data
     }
     var obj = {}, fullDocument = /<html/i.test(data)
@@ -173,10 +164,12 @@ function extractContainer(data, xhr, options) {
 
     obj.title = $.trim(filter(head, 'title').last().text())
     if (obj.contents) {
-        obj.scripts = filter(obj.contents, 'script[src]').remove()
+        obj.scripts = filter(obj.contents, 'script').remove()
         obj.contents = obj.contents.not(obj.scripts)
     }
 
+    d(obj)
+    
     return obj
 }
 
@@ -261,6 +254,8 @@ function handleClick(event, container, options) {
         data: data,
         dataType: $(context).attr('data-jax-datatype')
     })
+
+    d(opts)
 
     var clickEvent = $.Event('jax:click')
     $(context).trigger(clickEvent, [opts])
