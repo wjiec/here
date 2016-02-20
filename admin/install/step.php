@@ -70,10 +70,8 @@ break;
   <h3 id="check-error">!!! Error</h3>
   <p></p>
 </section>
+<script>alert('hello')</script>
 <?php
-header("JAX-DATATYPE: json");
-header("JAX-URL: /controller/installer/validate");
-header("JAX-CONTAINER: #_Here-Setting-Error > p");
 break;
     case 3:?>
 <section id="_Here-User-Info">

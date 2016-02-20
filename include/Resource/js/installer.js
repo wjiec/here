@@ -11,12 +11,27 @@ $(function() {
         $(this).removeClass('widget-pjax-input-require')
     })
 
+    var index = 0
+    var urls = [
+        { url:'/controller/installer/step/2' },
+        { url:'/controller/installer/validate', type:'POST', data:{} },
+        { url:'/controller/installer/step/3' },
+        { url:'/controller/installer/addUser', type: 'PUT', data:{} },
+        { url:'/controller/installer/step/4' },
+        { url:'/controller/common/home' }
+    ]
+
     $(document).jax('#Next-Step-Btn', '#_Here-Replace-Container', {
         urlReplace: 'search',
         fullReplace: true,
         localStorage: false
     })
-    $('#_Here-Replace-Container').on('jax:beforeSend', function() {
+    $('#_Here-Replace-Container').on('jax:start', function(event, options) {
+        $.extend(options, {
+            type: 'GET'
+        }, urls[index])
+    })
+    .on('jax:beforeSend', function() {
         var inputs = $('#_Here-Replace-Container').find('input');
         if (inputs.length) {
             if (!validate(inputs, function(n){ n.addClass('widget-pjax-input-require') })) {
@@ -27,67 +42,11 @@ $(function() {
         $(this).addClass('Here-toggle-content-ing');
         $('#Next-Step-Btn').addClass('widget-cursor-disable');
     }).on('jax:success', function() {
+        index += 1
         $('#_Here-Replace-Container').removeClass()
         $('#Next-Step-Btn').removeClass('widget-cursor-disable')
     })
-
-//    $('#Next-Step-Btn').on('click', function(event) {
-//        var inputs = $('#_Here-Replace-Container').find('input');
-//        if (inputs.length) {
-//            var data = {};
-//            if (!validate(inputs, function(n){n.addClass('widget-pjax-input-require');})) {
-//                return false;
-//            }
-//            makeData(data);
-//            $.ajax({
-//                url: '/controller/installer/validate', type: 'post',
-//                data: data, datatype: 'json',
-//                beforeSend: beforeSend,
-//                success: function(data) {
-//                    data = $.parseJSON(data);
-//                    if (data.fail) {
-//                        disableloadingStatus();
-//                        $('#_Here-Setting-Error').addClass('widget-pjax-tips').removeClass('widget-hidden').find('p').html(data.data);
-//                    } else {
-//                        request({
-//                            url: '/controller/installer/step',
-//                            data: { step: $('#Next-Step-Btn').val() },
-//                            success: replaceContent
-//                        });
-//                    }
-//                }
-//            });
-//        } else {
-//            request({
-//                url: '/controller/installer/step/2',
-//                data: { step: $('#Next-Step-Btn').val() },
-//                success: replaceContent
-//            });
-//        }
-//    });
-//    var currStep = location.search.match(/\d+/);
-//    if (currStep != null) {
-//        $('#Next-Step-Btn').val(parseInt(currStep[0]) + 1);
-//    }
 });
-
-function request(options) {
-    options = $.extend({
-        url: null,
-        type: null,
-        data: {},
-        success: $.noop
-    }, options || {});
-
-    $.ajax({
-        url: options.url,
-        type: options.type ? options.type : 'GET',
-        data: options.data,
-        datatype: 'html',
-        beforeSend: beforeSend,
-        success: options.success
-    });
-}
 
 function validate(inputs, process) {
     var len = inputs.length; var flag = false;

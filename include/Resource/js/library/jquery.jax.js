@@ -1,6 +1,7 @@
 "use strict";
 /**
  * Event List:
+ *      jax:start
  *      jax:click
  *      jax:beforeSend
  *      jax:complete jax:timeout jax:error jax:success
@@ -168,8 +169,6 @@ function extractContainer(data, xhr, options) {
         obj.contents = obj.contents.not(obj.scripts)
     }
 
-    d(obj)
-    
     return obj
 }
 
@@ -184,23 +183,26 @@ function abort(xhr) {
     }
 }
 
-function setJAXAttr(xhr, element) {
-    var header = xhr.getAllResponseHeaders()
-    var jaxArray = header.match(/(JAX-[A-Z]+: [^\n]+)+/g)
-
-    for (var index in jaxArray) {
-        var item = jaxArray[index]
-        var key = (item.match(/^(JAX-[A-Z]+)/g)[0]).trim().toLowerCase()
-        var val = (item.match(/\s([^\n]+)$/g)[0]).trim()
-
-        $(element).attr('data-' + key, val)
-    }
-}
+//function setJAXAttr(xhr, element) {
+//    var header = xhr.getAllResponseHeaders()
+//    var jaxArray = header.match(/(JAX-[A-Z]+: [^\n]+)+/g)
+//
+//    for (var index in jaxArray) {
+//        var item = jaxArray[index]
+//        var key = (item.match(/^(JAX-[A-Z]+)/g)[0]).trim().toLowerCase()
+//        var val = (item.match(/\s([^\n]+)$/g)[0]).trim()
+//
+//        $(element).attr('data-' + key, val)
+//    }
+//}
 
 function entry(selector, container, options) {
     var context = this
 
     return this.on('click.jax', selector, function(event) { // this => dom obj
+        var startEvent = $.Event('jax:start')
+        $(container).trigger(startEvent, [options])
+
         var opts = $.extend({}, optionsFor(container, options))
         if (!opts.container) {
             opts.container = context
@@ -218,11 +220,9 @@ function handleClick(event, container, options) {
         throw 'require an anchor or button element'
     }
 
-    if (el.tagName.toUpperCase() === 'BUTTON') { // button convert a
+    if (el.tagName.toUpperCase() == 'BUTTON') { // button convert a
         el = document.createElement('a')
-        if ($(context).attr('data-jax-url')) {
-            el.href = $(context).attr('data-jax-url')
-        }
+        el.href = options.url ? options.url : $(context).attr('data-jax-url')
     }
     if (event.which > 1 || event.ctrlKey || event.altKey || event.shiftKey) {
         return
@@ -237,25 +237,23 @@ function handleClick(event, container, options) {
         return
     }
 
-    var data = {}
-    try {
-        data = JSON.parse(JSON.parse($(context).attr('data-jax-data')))
-    } catch (e) {
-        data = {}
-        if (!($(context).attr('data-jax-data') === undefined || $(context).attr('data-jax-data').length == 0)) {
-            console.error('FATAL ERROR: JSON.parse() => params invalid') // XXX: friendly message to the user
-        }
-    }
-    var opts = $.extend({}, options, {
+//    var data = {}
+//    try {
+//        data = JSON.parse(JSON.parse($(context).attr('data-jax-data')))
+//    } catch (e) {
+//        data = {}
+//        if (!($(context).attr('data-jax-data') === undefined || $(context).attr('data-jax-data').length == 0)) {
+//            console.error('FATAL ERROR: JSON.parse() => params invalid') // XXX: friendly message to the user
+//        }
+//    }
+    var opts = $.extend({}, {
         url: el.href,
         type: $(context).attr('data-jax-type'),
         container: $(context).attr('data-jax-container'),
         element: context,
-        data: data,
+//        data: data,
         dataType: $(context).attr('data-jax-datatype')
-    })
-
-    d(opts)
+    }, options)
 
     var clickEvent = $.Event('jax:click')
     $(context).trigger(clickEvent, [opts])
@@ -375,7 +373,6 @@ function jax(options) {
             localPush(stack[globalState.id])
         }
 
-        setJAXAttr(xhr, options.element);
         trigger('jax:success', [data, status, xhr, options]);
     }
 
