@@ -7,16 +7,17 @@ $(function() {
     if (!(typeof FastClick == 'undefined')) {
         FastClick.attach(document.body)
     }
-    $(document).on('input', 'input', function(event) {
-        $(this).removeClass('widget-pjax-input-require')
+    $(document).on('focus', 'input', function(event) {
+        $(this).removeClass('jax-input-require')
+        $('#_Here-Responsed').removeClass('jax-fail jax-done')
     })
 
     var index = 0
     var urls = [
         { url:'/controller/installer/step/2' },
-        { url:'/controller/installer/validate', type:'POST', data:{} },
+        { url:'/controller/installer/validate', type:'POST', data: formData, dataType:'json', container: '#_Here-Responsed > p' },
         { url:'/controller/installer/step/3' },
-        { url:'/controller/installer/addUser', type: 'PUT', data:{} },
+        { url:'/controller/installer/addUser', type: 'PUT', data: formData, dataType:'json' },
         { url:'/controller/installer/step/4' },
         { url:'/controller/common/home' }
     ]
@@ -26,23 +27,31 @@ $(function() {
         fullReplace: true,
         localStorage: false
     })
-    $('#_Here-Replace-Container').on('jax:start', function(event, options) {
-        $.extend(options, {
-            type: 'GET'
-        }, urls[index])
-    })
-    .on('jax:beforeSend', function() {
+    $('#_Here-Replace-Container').on('jax:jax', function(event, options) {
+        $.extend(options, urls[index])
+    }).on('jax:beforeSend', function() {
         var inputs = $('#_Here-Replace-Container').find('input');
         if (inputs.length) {
-            if (!validate(inputs, function(n){ n.addClass('widget-pjax-input-require') })) {
+            if (!validate(inputs, function(n){ n.addClass('jax-input-require') })) {
                 return false
             }
         }
 
         $(this).addClass('Here-toggle-content-ing');
         $('#Next-Step-Btn').addClass('widget-cursor-disable');
+    }).on('jax:beforeReplace', function(event, data, options) {
+        var container = $('#_Here-Responsed')
+        container.find('h3').removeClass()
+        if (typeof data == 'object' && data.fail == 1) {
+            --index
+            container.addClass('jax-fail')
+            container.find("h3[title='done']").addClass('widget-hidden')
+        } else if (typeof data == 'object' && data.fail == 0) {
+            container.addClass('jax-done')
+            container.find("h3[title='fail']").addClass('widget-hidden')
+        }
     }).on('jax:success', function() {
-        index += 1
+        ++index
         $('#_Here-Replace-Container').removeClass()
         $('#Next-Step-Btn').removeClass('widget-cursor-disable')
     })
@@ -65,21 +74,11 @@ function beforeSend() {
     $('#Next-Step-Btn').addClass('widget-cursor-disable');
 }
 
-function disableloadingStatus() {
-    $('#_Here-Replace-Container').removeClass('Here-toggle-content-ing');
-    $('#Next-Step-Btn').removeClass('widget-cursor-disable');
-}
-
-function replaceContent(data) {
-    $('#_Here-Replace-Container').removeClass().addClass('Here-content-hidden').html(data).removeClass();
-    $('#Next-Step-Btn').removeClass('widget-cursor-disable').val(parseInt($('#Next-Step-Btn').val()) + 1);
-}
-
-function makeData(data) {
-    var is = $('input');
-    data.action = ($('#Next-Step-Btn').val() <= '3') ? 'db' : 'user';
-    
-    is.each(function(i, n) {
-        data[$(n).attr('name')] = $(n).val();
-    });
+function formData() {
+    var data = {}
+    $('input').each(function(inedx, el) {
+        var el = $(el)
+        data[el.attr('name')] = el.val()
+    })
+    return data
 }

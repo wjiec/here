@@ -66,11 +66,10 @@ break;
     </div>
   </form>
 </section>
-<section id="_Here-Setting-Error" class="widget-hidden">
-  <h3 id="check-error">!!! Error</h3>
+<section id="_Here-Responsed" class="widget-hidden">
+  <h3 title="fail">Error</h3><h3 title="done">Success</h3>
   <p></p>
 </section>
-<script>alert('hello')</script>
 <?php
 break;
     case 3:?>

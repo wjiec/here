@@ -23,20 +23,25 @@ class Controller_Installer {
             try {
                 DB::server(Request::r('host'), Request::r('user'), Request::r('password'), Request::r('database'), Request::r('port'));
                 self::initTable(Request::r('database'), Request::r('prefix'));
+
                 echo JSON::fromArray([
                     'fail' => 0,
-                    'url'  => '/controller/installer/addUser'
+                    'data' => 'Server version: 5.5.28 MySQL Community Server (GPL)'
                 ]);
             } catch (Exception $e) {
                 echo JSON::fromArray([
                     'fail' => 1,
-                    'data' => "{$e->getMessage()}: {$e->getMessage()}"
+                    'data' => "{$e->getCode()}: {$e->getMessage()}"
                 ]);
             }
         }
     }
 
     public static function addUser() {
+        echo JSON::fromArray([
+                'fail' => 0,
+                'data' => 'Server version: 5.5.28 MySQL Community Server (GPL)'
+        ]);
     }
 
     private static function _include($action) {

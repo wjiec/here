@@ -19,10 +19,6 @@ const VERSION = '0.0.1/16.1.11'
 $.support.pjax = window.history && window.history.pushState && window.history.replaceState && !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/)
 $.support.storage = !!window.localStorage
 
-function d(msg) {
-    return console.log(msg)
-}
-
 function protocol(url) {
     return (typeof url === 'string') ? ((url.match(/^https:|http:/)) ? (url.match(/^https|http/))[0] : 'http') : null
 }
@@ -60,7 +56,9 @@ function getItemValue(el, key) {
 
 function optionsFor(container, options) {
     if (container && options) {
-        options.container = container
+        if (!options.container) {
+            options.container = container
+        }
     } else if ($.isPlainObject(container)) {
         options = container
     } else {
@@ -183,30 +181,17 @@ function abort(xhr) {
     }
 }
 
-//function setJAXAttr(xhr, element) {
-//    var header = xhr.getAllResponseHeaders()
-//    var jaxArray = header.match(/(JAX-[A-Z]+: [^\n]+)+/g)
-//
-//    for (var index in jaxArray) {
-//        var item = jaxArray[index]
-//        var key = (item.match(/^(JAX-[A-Z]+)/g)[0]).trim().toLowerCase()
-//        var val = (item.match(/\s([^\n]+)$/g)[0]).trim()
-//
-//        $(element).attr('data-' + key, val)
-//    }
-//}
-
 function entry(selector, container, options) {
     var context = this
 
     return this.on('click.jax', selector, function(event) { // this => dom obj
-        var startEvent = $.Event('jax:start')
-        $(container).trigger(startEvent, [options])
-
         var opts = $.extend({}, optionsFor(container, options))
         if (!opts.container) {
             opts.container = context
         }
+
+        var jaxEvent = $.Event('jax:jax')
+        $(opts.container).trigger(jaxEvent, [opts])
         handleClick(event, opts)
     })
 }
@@ -237,21 +222,12 @@ function handleClick(event, container, options) {
         return
     }
 
-//    var data = {}
-//    try {
-//        data = JSON.parse(JSON.parse($(context).attr('data-jax-data')))
-//    } catch (e) {
-//        data = {}
-//        if (!($(context).attr('data-jax-data') === undefined || $(context).attr('data-jax-data').length == 0)) {
-//            console.error('FATAL ERROR: JSON.parse() => params invalid') // XXX: friendly message to the user
-//        }
-//    }
+    options.data = (typeof options.data == 'function') ? options.data() : {}
     var opts = $.extend({}, {
         url: el.href,
         type: $(context).attr('data-jax-type'),
         container: $(context).attr('data-jax-container'),
         element: context,
-//        data: data,
         dataType: $(context).attr('data-jax-datatype')
     }, options)
 
@@ -359,7 +335,7 @@ function jax(options) {
             document.title = responsed.title
         }
 
-        trigger('jax:beforeReplace', [responsed.contents, options], {
+        trigger('jax:beforeReplace', [data, options, responsed.contents], {
             state: globalState,
             prevState: prevState
         })
@@ -373,7 +349,7 @@ function jax(options) {
             localPush(stack[globalState.id])
         }
 
-        trigger('jax:success', [data, status, xhr, options]);
+        trigger('jax:success', [data, status, xhr, options])
     }
 
     abort(lastXHR)
@@ -412,7 +388,7 @@ function popstateEntry(event) {
             timeout: currentState.timeout,
             fullReplace: currentState.fullReplace
         }
-        
+
         if (contents) {
             if (currentState.title) {
                 document.title = currentState.title
