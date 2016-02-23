@@ -30,11 +30,8 @@ $(function() {
     $('#_Here-Replace-Container').on('jax:jax', function(event, options) {
         $.extend(options, urls[index])
     }).on('jax:beforeSend', function() {
-        var inputs = $('#_Here-Replace-Container').find('input');
-        if (inputs.length) {
-            if (!validate(inputs, function(n){ n.addClass('jax-input-require') })) {
-                return false
-            }
+        if (required('#_Here-Replace-Container input', function() { this.addClass('jax-input-require') })) {
+            return false
         }
 
         $(this).addClass('Here-toggle-content-ing');
@@ -44,11 +41,10 @@ $(function() {
         container.find('h3').removeClass()
         if (typeof data == 'object' && data.fail == 1) {
             --index
-            container.addClass('jax-fail')
-            container.find("h3[title='done']").addClass('widget-hidden')
+            container.addClass('jax-fail').find("h3[title='done']").addClass('widget-hidden')
         } else if (typeof data == 'object' && data.fail == 0) {
-            container.addClass('jax-done')
-            container.find("h3[title='fail']").addClass('widget-hidden')
+            container.addClass('jax-done').find("h3[title='fail']").addClass('widget-hidden')
+            $('input').addClass('widget-cursor-disable').attr('disabled', 'disabled')
         }
     }).on('jax:success', function() {
         ++index
@@ -57,21 +53,17 @@ $(function() {
     })
 });
 
-function validate(inputs, process) {
-    var len = inputs.length; var flag = false;
-    for (var i = 0; i < len; ++i) {
-        if (!inputs.eq(i).val().length) {
-            process(inputs.eq(i));
-            flag = true;
-        }
+function required(selector, callback) {
+    var is = $(selector), flag = false
+    if (is.length) {
+        is.each(function(index, el) {
+            el = $(el)
+            if (!el.val().length) {
+                callback.call(el), flag = true
+            }
+        })
     }
-    if (flag) { return false; }
-    return true;
-}
-
-function beforeSend() {
-    $('#_Here-Replace-Container').addClass('Here-toggle-content-ing');
-    $('#Next-Step-Btn').addClass('widget-cursor-disable');
+    return flag
 }
 
 function formData() {
