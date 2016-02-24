@@ -62,6 +62,11 @@ class Request {
         return self::getUrlPrefix() . '/' . $path;
     }
 
+    public static function noCache() {
+        header('Cache-Control: no-cache');
+        header('Pragma: no-cache');
+    }
+
     private static function getUrlPrefix() {
         if (empty(self::$_urlPrefix)) {
             self::$_urlPrefix = (self::isSecure() ? 'https' : 'http') . '://'

@@ -44,9 +44,8 @@ class DB {
         // func_get_args & get_defined_vars
         if (call_user_func_array('self::ping', get_defined_vars())) {
             self::$_server = array_merge(self::$_server, get_defined_vars());
-        } else {
-            // self::ping -> throw Exception
         }
+        // Save to file
     }
     /**
      * connect to Mysql Server Test 
@@ -99,7 +98,7 @@ class DB {
             $conn->close();
         }
     }
-    
+
     public function __destruct() {
         $this->close();
     }

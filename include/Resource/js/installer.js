@@ -13,7 +13,7 @@ $(function() {
     })
 
     var index = 0
-    var urls = [
+    var urls = [ // XXX: /step/3 /step/4
         { url:'/controller/installer/step/2' },
         { url:'/controller/installer/validate', type:'POST', data: formData, dataType:'json', container: '#_Here-Responsed > p' },
         { url:'/controller/installer/step/3' },

@@ -164,7 +164,12 @@ footer {
         font-size: 1.2rem;
     }
 }
-
+#_Here-User-Info label {
+    width: 30%;
+}
+#_Here-User-Info .site-title {
+    margin-bottom: 5rem;
+}
 .jax-input-disable {
     cursor: default !important;
 }
@@ -185,4 +190,9 @@ footer {
 }
 .jax-tips p {
     color: inherit;
+}
+footer {
+    font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+    color: #aaa;
+    border-top: 1px solid #dbdbdb;
 }

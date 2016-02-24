@@ -77,6 +77,7 @@ Core::setRouter((new Router())
 })
 ->match(['get', 'post', 'put', 'patch', 'delete'], ['/controller/$controller/$action', '/controller/$controller/$action/$value'], function($params) {
     try {
+        Request::noCache();
         Request::s($params['action'], isset($params['value']) ? $params['value'] : null, Request::RESTFUL);
         Controller::$params['controller']($params['action']);
     } catch (Exception $e) {

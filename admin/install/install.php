@@ -1,6 +1,6 @@
 <?php
 /**
- * HERE Install Program 
+ * HERE Install Program
  * 
  * @package Here
  * @author  ShadowMan
@@ -68,6 +68,8 @@ function isMobile() {
       </div>
     </div>
   </div>
-  <footer></footer>
+  <!-- 
+  <footer class="container widget-align-vh"><?php Theme::footer(); ?></footer>
+  -->
 </body>
 </html>

@@ -76,13 +76,13 @@ break;
 <section id="_Here-User-Info">
   <h3>Information needed</h3>
   <section id="_Here-Infomation-Form">
-    <h4 class="widget-hidden">Infomation-Form</h4>
+    <h4 class="widget-hidden">Infomation Form</h4>
     <form action="/controller/installer/info" method="POST">
       <div class="widget-form-group">
         <!-- Site Title -->
-        <div class="widget-input-group">
+        <div class="widget-input-group site-title">
           <label class="widget-input-label" for="site-title"><em>Site Title</em></label>
-          <input type="text" id="site-title" class="widget-form-control" name="site-title" placeholder="Enter Site Title"  required="required" autofocus="autofocus"/>
+          <input type="text" id="site-title" class="widget-form-control" name="title" placeholder="Enter Site Title"  required="required" autofocus="autofocus"/>
         </div>
         <p class="_Here-Form-Tips"></p>
         <!-- Site Title -->
@@ -100,7 +100,7 @@ break;
         <!-- Site Title -->
         <div class="widget-input-group">
           <label class="widget-input-label" for="email"><em>E-Mail</em></label>
-          <input type="text" id="email" class="widget-form-control" name="email" placeholder="Enter Site E-Mail"  required="required"/>
+          <input type="text" id="email" class="widget-form-control" name="email" placeholder="Enter Admin E-Mail"  required="required"/>
         </div>
         <p class="_Here-Form-Tips">You should be able to get this info from your web host, if localhost does not work.</p>
       </div>
