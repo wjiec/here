@@ -17,7 +17,7 @@ $(function() {
         { url:'/controller/installer/step/2' },
         { url:'/controller/installer/validate', type:'POST', data: formData, dataType:'json', container: '#_Here-Responsed > p' },
         { url:'/controller/installer/step/3' },
-        { url:'/controller/installer/addUser', type: 'PUT', data: formData, dataType:'json' },
+        { url:'/controller/installer/addUser', type: 'PUT', data: formData, dataType:'json', container: '#_Here-Responsed > p' },
         { url:'/controller/installer/step/4' },
         { url:'/controller/common/home' }
     ]
@@ -58,9 +58,7 @@ function required(selector, callback) {
     if (is.length) {
         is.each(function(index, el) {
             el = $(el)
-            if (!el.val().length) {
-                callback.call(el), flag = true
-            }
+            if (!el.val().length) { callback.call(el), flag = true }
         })
     }
     return flag

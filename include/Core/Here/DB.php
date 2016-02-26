@@ -5,32 +5,28 @@
  */
 // TODO. Static Class ?
 class DB {
-    private $_pool;
-    private $_rows;
-    
     /**
      * MySQL Server Info 
      * @var array
      * @access private
      */
     private static $_server = [];
-    
-    public function __construct($user = null, $password = null, $database = null, $pref = null, $host = null, $port = 3306) {
-        $this->_pool = [];
-        $this->_rows = [];
 
+    private static $_sql = [];
+
+    public function __construct($user = null, $password = null, $database = null, $pref = null, $host = null, $port = 3306) {
         if (empty(self::$_server)) {
             throw new Exception('Please add MySql Server using DB::server', 0x1);
         }
 
-        $conn = new mysqli(self::$_server['host'], self::$_server['user'], self::$_server['password'], self::$_server['database'], self::$_server['port']);
-        if ($conn->connect_errno) {
-            throw new Exception($conn->connect_error, $conn->connect_errno);
-        }
-        if (!$conn->ping()) {
-            throw new Exception($conn->error);
-        }
-        $conn->set_charset('utf8');
+//         $conn = new mysqli(self::$_server['host'], self::$_server['user'], self::$_server['password'], self::$_server['database'], self::$_server['port']);
+//         if ($conn->connect_errno) {
+//             throw new Exception($conn->connect_error, $conn->connect_errno);
+//         }
+//         if (!$conn->ping()) {
+//             throw new Exception($conn->error);
+//         }
+//         $conn->close();
     }
     /**
      * Set MySQL Server info 
@@ -69,7 +65,18 @@ class DB {
         return $conn->close();
     }
 
-    public static function query($sql) {
+    public static function query($sql = null) {
+        if ($sql == null && !empty(self::$_sql)) {
+            return ; // query sql
+        }
+        // build sql
+        // query sql
+    }
+
+    public function row(array $rows) {
+        foreach ($rows as $key => $val) {
+            self::$_sql['rows'][$key] = $val;
+        }
     }
 
     public function insert(array $key, array $val) {

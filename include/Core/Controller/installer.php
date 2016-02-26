@@ -26,7 +26,7 @@ class Controller_Installer {
 
                 echo JSON::fromArray([
                     'fail' => 0,
-                    'data' => 'Server version: 5.5.28 MySQL Community Server (GPL)'
+                    'data' => 'Server version: 5.5.28 MySQL Community Server (GPL)' // mysql: status or select version()
                 ]);
             } catch (Exception $e) {
                 echo JSON::fromArray([
@@ -40,7 +40,7 @@ class Controller_Installer {
     public static function addUser() {
         echo JSON::fromArray([
                 'fail' => 0,
-                'data' => 'Server version: 5.5.28 MySQL Community Server (GPL)' // mysql: status or select version()
+                'data' => 'addUser Complete'
         ]);
     }
 
