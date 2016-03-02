@@ -44,14 +44,14 @@ body {
   font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
   background-color: rgb(241, 241, 241);
 }
-#_Here-Installer-Header {
+#here-installer-Header {
     height: 10rem;
     color: #fff;
     background: #23282d;
     cursor: default;
     text-align: center;
 }
-#_Here-Installer-Header h1 {
+#here-installer-Header h1 {
     margin: 0;
     font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
     font-size: 2rem;
@@ -59,14 +59,14 @@ body {
     line-height: 3rem;
     letter-spacing: 0.167rem;
 }
-#_Here-Installer-Container {
+#here-installer-container {
 }
-#_Here-Server-Env {
+#here-server-env {
 }
-#_Here-Replace-Container {
+#here-replace-container {
     transition: all .35s;
 }
-#_Here-Replace-Container h3 {
+#here-replace-container h3 {
     font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
     font-size: 1.8rem;
     font-style: italic;
@@ -75,47 +75,47 @@ body {
     border-bottom: 1px solid rgb(241, 241, 241);
 }
 @media (max-width: 544px) {
-    #_Here-Replace-Container h3 {
+    #here-replace-container h3 {
         text-align: center;
     }
 }
-#_Here-Replace-Container > *:not(h3) {
+#here-replace-container > *:not(h3) {
     margin-left: 1.5rem;
     margin-right: 1rem;
     font-size: 1.6rem;
     font-family: "Fira Mono", "Source Code Pro", monospace;
 }
-#_Here-Replace-Container p {
+#here-replace-container p {
     margin:  0 0 1rem 0;
 }
-#_Here-Replace-Container a {
+#here-replace-container a {
     color: rgb(102, 102, 102);
     cursor: pointer;
     border-bottom: 1px dashed rgba(0, 0, 0, .3);
     transition: all .35s;
 }
-#_Here-Replace-Container a:focus {
+#here-replace-container a:focus {
     text-decoration: none;
 }
-#_Here-Replace-Container a:hover {
+#here-replace-container a:hover {
     color: rgb(17, 17, 17);
     text-decoration: none;
     border-bottom: 1px dashed rgba(0, 0, 0, .65);
 }
-#_Here-Replace-Container #_Here-Setting-Form,
-#_Here-Replace-Container #_Here-User-Info {
+#here-replace-container #here-setting-form,
+#here-replace-container #_Here-User-Info {
     margin-left: 0;
     margin-right: 0;
 }
-#_Here-Replace-Container label {
+#here-replace-container label {
     font-size: 1.6rem;
     font-weight: bold;
     font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
 }
-#_Here-Replace-Container input {
+#here-replace-container input {
     cursor: text;
 }
-#_Here-Replace-Container ._Here-Form-Tips {
+#here-replace-container .here-form-tips {
     margin-top: .233rem;
     margin-left: 1rem;
     color: #ccc;
@@ -123,26 +123,26 @@ body {
     /* font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace; */
     font-family: "Fira Mono", "Source Code Pro", monospace;
 }
-#_Here-Replace-Container #_Here-User-Info div.input-group:first-child {
+#here-replace-container #_Here-User-Info div.input-group:first-child {
     margin-bottom: 2rem;
 }
-#_Here-Install-Success-Message > p {
+#here-install-complete-msg > p {
     font-style: italic;
     font-size: 1.6rem;
 }
 @media (max-width: 544px) {
-    #_Here-Replace-Container ._Here-Form-Tips {
+    #here-replace-container .here-form-tips {
         font-size: 1.3rem;
     }
 }
-#Btn-Container {
+#btn-container {
     display: inline;
 }
-#Next-Step-Btn {
+#next-step-btn {
     margin-top: 2rem;
     font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', 微软雅黑, Arial, sans-serif;
 }
-#Next-Step-Btn::after {
+#next-step-btn::after {
     content: " »";
 }
 footer {

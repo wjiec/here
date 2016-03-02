@@ -42,19 +42,19 @@ function isMobile() {
   <script src="../../admin/Resource/js/installer.js"></script>
 </head>
 <body>
-  <div id="_Here-Installer" class="container-fluid">
+  <div id="here-installer" class="container-fluid">
     <div class="row">
-      <section id="_Here-Installer-Header" class="widget-align-vh">
+      <section id="here-installer-Header" class="widget-align-vh">
         <h1>Here Installer</h1>
       </section>
-      <section id="_Here-Installer-Container" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+      <section id="here-installer-container" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
         <h2 class="widget-hidden">Here Installer Guide</h2>
-        <div id="_Here-Replace-Container">
+        <div id="here-replace-container">
           <?php Controller::installer('step'); ?>
         </div>
       </section>
       <?php if (!(Controller::installer('serverDetect'))): ?>
-        <section id="_Here-Server-Env" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
+        <section id="here-server-env" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
           <h3 class="widget-hidden">Detect Server Environment</h3>
           <ul class="widget-list">
             <?php Controller::installer('failServerDetectList'); ?>
@@ -62,9 +62,9 @@ function isMobile() {
         </section>
       <?php endif; ?>
     </div>
-    <div id="_Here-Next-Step" class="row">
-      <div id="Btn-Container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-16">
-        <button id="Next-Step-Btn" class="widget-btn widget-btn-default">Next Step</button>
+    <div id="here-next-step" class="row">
+      <div id="btn-container" class="col-lg-offset-3 col-md-offset-8 col-sm-offset-8 col-xs-offset-16">
+        <button id="next-step-btn" class="widget-btn widget-btn-default">Next Step</button>
       </div>
     </div>
   </div>
