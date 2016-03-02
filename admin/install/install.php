@@ -29,7 +29,7 @@ function isMobile() {
   <link rel="stylesheet" href="../../include/Resource/css/library/fonts/fira.css" media="all" />
   <link rel="stylesheet" href="../../include/Resource/css/library/fonts/inconsolata.css" media="all" />
   <!-- module style -->
-  <link rel="stylesheet" href="../../include/Resource/css/module/install.css" media="all" />
+  <link rel="stylesheet" href="../../admin/Resource/css/install.css" media="all" />
 <?php if (isMobile()): ?>
   <!-- mobile lirary -->
   <script src="../../include/Resource/js/library/mobile/zepto.min.js"></script>
@@ -39,7 +39,7 @@ function isMobile() {
   <script src="../../include/Resource/js/library/jquery-2.1.4.min.js"></script>
 <?php endif; ?>
   <script src="../../include/Resource/js/library/jquery.jax.js"></script>
-  <script src="../../include/Resource/js/installer.js"></script>
+  <script src="../../admin/Resource/js/installer.js"></script>
 </head>
 <body>
   <div id="_Here-Installer" class="container-fluid">
