@@ -115,7 +115,7 @@ body {
 #here-replace-container input {
     cursor: text;
 }
-#here-replace-container .here-form-tips {
+#here-replace-container .input-description {
     margin-top: .233rem;
     margin-left: 1rem;
     color: #ccc;
@@ -131,7 +131,7 @@ body {
     font-size: 1.6rem;
 }
 @media (max-width: 544px) {
-    #here-replace-container .here-form-tips {
+    #here-replace-container .input-description {
         font-size: 1.3rem;
     }
 }
