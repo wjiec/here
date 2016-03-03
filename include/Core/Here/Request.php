@@ -5,35 +5,31 @@
  */
 class Request {
     /**
-     * url prefix 
+     * url prefix
      * @var string
      */
     private static $_urlPrefix = null;
     /**
-     * GET POST PUT PATCH DELETE
+     * GET POST PUT PATCH DELETE params
      * @var array
      */
     private static $_params = [];
     /**
-     * RESTful API value 
-     * @var unknown
+     * RESTful API params
+     * @var Config
      */
-    private static $_restValue = [];
+    private static $_config = null;
 
-    const RESTFUL = 1;
+    const REST = 1;
 
-    // XXX: Speed
     public static function r($key, $mode = null) {
-        if (empty(self::$_params)) {
-            // RESTful API => PUT, PATCH, DELETE parse
-            $params = file_get_contents('php://input');
-            if (!empty($params)) {
-                parse_str($params, $params);
-            } else {
-                $params = [];
+        if (empty(self::$_params) || self::$_config == null) {
+            if (self::$_config == null) {
+                self::$_config = Config::factory(file_get_contents('php://input'));
             }
-            self::$_params = array_merge(self::$_params, $_GET, $_POST, $params);
-//             array_map(function(&$v) { var_dump(addslashes($v)); }, self::$_params);
+            self::$_params = array_merge(self::$_params, $_GET, $_POST);
+            // TODO: Secure
+            // array_map(function(&$v) { var_dump(addslashes($v)); }, self::$_params);
         }
         if ($mode == null) {
             if (array_key_exists($key, self::$_params)) {
@@ -42,29 +38,34 @@ class Request {
                 return null;
             }
         } else {
-            if (array_key_exists($key, self::$_restValue)) {
-                return self::$_restValue[$key];
-            } else {
-                return null;
-            }
+            return self::$_config->{$key};
         }
+    }
+
+    public static function rs() {
+        $result = [];
+        $params = func_get_args();
+
+        foreach ($params as $key) {
+            $result[$key] = self::r($key);
+        }
+
+        return $result;
     }
 
     public static function s($key, $val, $mode = null) {
         if ($mode == null) {
             self::$_params[$key] = $val;
         } else {
-            self::$_restValue[$key] = $val;
+            if (self::$_config == null) {
+                self::$_config = Config::factory(file_get_contents('php://input'));
+            }
+            self::$_config->{$key} = $val;
         }
     }
 
     public static function getFullUrl($path = null) {
         return self::getUrlPrefix() . '/' . $path;
-    }
-
-    public static function noCache() {
-        header('Cache-Control: no-cache');
-        header('Pragma: no-cache');
     }
 
     private static function getUrlPrefix() {
