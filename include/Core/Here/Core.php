@@ -21,6 +21,7 @@ class Core {
             }
         }
 
+        error_reporting(E_ALL);
         header('Content-Type: text/html;charset=UTF-8');
     }
 
