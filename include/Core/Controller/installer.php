@@ -13,20 +13,25 @@ class Controller_Installer {
     }
 
     public static function step() {
-        self::$value = Request::r('step', Request::RESTFUL) ? Request::r('step', Request::RESTFUL) : 1;
+        self::$value = Request::r('step', Request::REST) ? Request::r('step', Request::REST) : 1;
         return self::_include('step');
     }
 
     public static function validate() {
         if (!get_magic_quotes_gpc()) {
-            array_map(function($v) { addslashes($v); }, $_POST);
             try {
-                DB::server(Request::r('host'), Request::r('user'), Request::r('password'), Request::r('database'), Request::r('port'));
-                self::initTable(Request::r('database'), Request::r('prefix'));
+                $dbConfig = Request::rs('host', 'user', 'password', 'database', 'port', 'prefix');
+                $dbConfig = array_filter($dbConfig);
+                Db::server($dbConfig);
+
+                # TEST
+                $installDb = new Db();
+                $installDb->query($installDb->insert('here_users')->rows([ 'name' => 'ShadowMan', 'password' => md5('ac.linux'), 'email' => 'shadowman@shellboot.com', 'url' => 'http://www.shellboot.com' ]));
+                # TEST
 
                 echo JSON::fromArray([
                     'fail' => 0,
-                    'data' => 'Server version: 5.5.28 MySQL Community Server (GPL)' // mysql: status or select version()
+                    'data' => 'Server version: ' . $installDb->getServerInfo() . ' MySQL Community Server (GPL)'
                 ]);
             } catch (Exception $e) {
                 echo JSON::fromArray([
@@ -56,10 +61,7 @@ class Controller_Installer {
         self::strReplace('{%database%}', $database, $scripts);
         self::strReplace('{%prefix%}_', $prefix, $scripts);
         $scripts = explode(self::$SEPARATOR, $scripts);
-
-        foreach ($scripts as $script) {
-            DB::query($script);
-        }
+        
     }
 
     private static function strReplace($search, $replace, &$subject) {
