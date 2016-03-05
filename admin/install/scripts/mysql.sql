@@ -12,10 +12,10 @@
 -- --------------------------------------------------------
 
 --
--- 表的结构 `{%prefix%}_users`
+-- 表的结构 `here_users`
 --
 
-CREATE TABLE IF NOT EXISTS `{%prefix%}_users` (
+CREATE TABLE IF NOT EXISTS `here_users` (
   `uid` smallint(8) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) NOT NULL,
   `password` varchar(64) NOT NULL,
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `{%prefix%}_users` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
--- 插入之前先把表清空（truncate） `{%prefix%}_users`
+-- 插入之前先把表清空（truncate） `here_users`
 --
 
 TRUNCATE TABLE `h_users`;
