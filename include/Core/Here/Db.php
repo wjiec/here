@@ -22,6 +22,10 @@ class Db {
     # Sort ASC
     const ASC = 'ASC';
 
+    # Factory Mode
+    const CONNECT = 'connect';
+    const NORMAL  = 'normal';
+
     /**
      * table prefix
      * @var string
@@ -56,6 +60,16 @@ class Db {
         if (!(self::$_config instanceof Config)) {
             throw new Exception('Database config invalid', 'D1');
         }
+    }
+
+    public static function factory($while = Db::NORMAL) {
+        $db = new Db();
+        switch ($while) {
+            case Db::CONNECT: $db->connect(); break;
+            case Db::NORMAL:
+            default: break;
+        }
+        return $db;
     }
 
     public static function server($config) {

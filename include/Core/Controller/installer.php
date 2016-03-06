@@ -24,11 +24,11 @@ class Controller_Installer {
                 $dbConfig = array_filter($dbConfig);
                 Db::server($dbConfig);
 
-                # TEST
+                self::initTable();
                 $installDb = new Db();
                 $installDb->query($installDb->insert('here_users')->rows([ 'name' => 'ShadowMan', 'password' => md5('ac.linux'), 'email' => 'shadowman@shellboot.com', 'url' => 'http://www.shellboot.com' ]));
-                # TEST
 
+                Cookie::set('_config_', base64_encode(serialize($dbConfig)));
                 echo JSON::fromArray([
                     'fail' => 0,
                     'data' => 'Server version: ' . $installDb->getServerInfo() . ' MySQL Community Server (GPL)'
@@ -43,6 +43,9 @@ class Controller_Installer {
     }
 
     public static function addUser() {
+        $dbConfig = unserialize(base64_decode(Cookie::get('_config_')));
+        Db::server($dbConfig);
+
         echo JSON::fromArray([
                 'fail' => 0,
                 'data' => 'addUser Complete'
@@ -56,15 +59,36 @@ class Controller_Installer {
         Core::router()->error('404', 'File not found');
     }
 
-    private static function initTable($database, $prefix) {
+    private static function initTable() {
         $scripts = file_get_contents('install/scripts/mysql.sql', true);
-        self::strReplace('{%database%}', $database, $scripts);
-        self::strReplace('{%prefix%}_', $prefix, $scripts);
+
+        self::filter($scripts);
+        self::strReplace('here_', Request::r('prefix'), $scripts);
         $scripts = explode(self::$SEPARATOR, $scripts);
-        
+
+        $dbConfig = unserialize(base64_decode(Cookie::get('_config_')));
+        Db::server($dbConfig);
+        $tableDb = Db::factory(Db::CONNECT);
+        foreach ($scripts as $script) {
+            $tableDb->query($script);
+        }
     }
 
     private static function strReplace($search, $replace, &$subject) {
         $subject = str_replace($search, $replace, $subject);
     }
+
+    private static function filter(&$string) {
+        $lines = explode("\n", $string);
+        $useful = [];
+
+        foreach ($lines as $key => $line) {
+            if(!preg_match('/^--/', $line)) {
+                $useful[] = $line;
+            }
+        }
+        $string = implode("\n", $useful);
+        $string = trim($string, "\n");
+    }
+    
 }

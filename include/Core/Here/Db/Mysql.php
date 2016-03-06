@@ -35,7 +35,7 @@ class Db_Mysql implements Widget_Db {
     }
 
     public function escapeKey($string) {
-        return '\'' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $string) . '\'';
+        return '`' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $string) . '`';
     }
 
     public function escapeValue($string) {
@@ -43,7 +43,7 @@ class Db_Mysql implements Widget_Db {
     }
 
     public function query($query) {
-        if (!($result = $this->_link->query($query instanceof Db_Query ? $query->__toString() : $query))) {
+        if (!($result = $this->_link->query(($query instanceof Db_Query) ? $query->__toString() : $query))) {
             throw new Exception($this->_link->error, $this->_link->errno);
         }
         return $result;

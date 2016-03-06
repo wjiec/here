@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `here_users` (
   `url` varchar(64) NOT NULL,
   `status` smallint(8) DEFAULT NULL,
   PRIMARY KEY (`uid`),
-  UNIQUE KEY `name` (`name`,`email`)
+  UNIQUE KEY `name` (`uid`,`name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --

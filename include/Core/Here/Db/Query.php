@@ -50,7 +50,7 @@ class Db_Query {
 
     public function rows(array $rows) {
         foreach ($rows as $key => $val) {
-            $this->_preBuilder['rows'][$key] = $this->_instance->escapeValue($val);
+            $this->_preBuilder['rows'][$this->_instance->escapeKey($key)] = $this->_instance->escapeValue($val);
         }
         return $this;
     }
