@@ -60,7 +60,7 @@ break;
       <!-- Database Pref -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-pref">DB PREF</label>
-        <input type="text" id="db-pref" class="widget-form-control" name="prefix" value="h_" placeholder="Enter Table Pref" required="required"/>
+        <input type="text" id="db-pref" class="widget-form-control" name="prefix" value="here_" placeholder="Enter Table Pref" required="required"/>
       </div>
       <p class="input-description">If you want to run multiple Here installations in a single database, change this.</p>
     </div>
