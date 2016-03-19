@@ -4,11 +4,30 @@
  * @package Here.Common
  */
 class Common {
+    const JSON_TO_ARRAY  = 'ARRAY';
+    const JSON_TO_OBJECT = 'OBJECT';
+
     private static $_charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     public static function noCache() {
         header('Cache-Control: no-cache');
         header('Pragma: no-cache');
+    }
+
+    public static function toJSON($value) {
+        if (is_array($value)) {
+            return json_encode($value);
+        } else if (is_string($value)) {
+            return json_encode($value, true);
+        }
+    }
+
+    public static function jsonTo($source, $from = Common::JSON_TO_ARRAY) {
+        switch ($from) {
+            case Common::JSON_TO_ARRAY: return json_decode($source, true);
+            case Common::JSON_TO_OBJECT: return json_decode($source);
+            default: return null;
+        }
     }
 
     public static function pawdEncrypt($pawd, $raw = false) {
