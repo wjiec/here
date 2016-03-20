@@ -25,16 +25,22 @@ class Controller_Installer {
                 Db::server($dbConfig);
 
                 self::initTable();
-                $installDb = new Db();
-                $installDb->query($installDb->insert('here_users')->rows([ 'name' => 'ShadowMan', 'password' => md5('ac.linux'), 'email' => 'shadowman@shellboot.com', 'url' => 'http://www.shellboot.com' ]));
+                $installDb = Db::factory(Db::CONNECT);
 
-                Cookie::set('_config_', base64_encode(serialize($dbConfig)));
-                echo JSON::fromArray([
+                // TEST
+                var_dump($installDb->select()->from('table.options')
+                        ->where('for', Db::OP_GT, 2)->where('for', Db::OP_GT, 2, Db::RS_AND)
+                        ->group('for')->having('for', Db::OP_GT, 1)->having('for', Db::OP_GT, 1, Db::RS_OR)
+                        ->order('name')->limit(3)->offset(0)->__toString());
+                die();
+
+                Common::cookieSet('_config_', base64_encode(serialize($dbConfig)));
+                echo Common::toJSON([
                     'fail' => 0,
                     'data' => 'Server version: ' . $installDb->getServerInfo() . ' MySQL Community Server (GPL)'
                 ]);
             } catch (Exception $e) {
-                echo JSON::fromArray([
+                echo Common::toJSON([
                     'fail' => 1,
                     'data' => "{$e->getCode()}: {$e->getMessage()}"
                 ]);
@@ -43,12 +49,12 @@ class Controller_Installer {
     }
 
     public static function addUser() {
-        $dbConfig = unserialize(base64_decode(Cookie::get('_config_')));
+        $dbConfig = unserialize(base64_decode(Common::cookieGet('_config_')));
         Db::server($dbConfig);
 
-        echo JSON::fromArray([
-                'fail' => 0,
-                'data' => 'addUser Complete'
+        echo Common::toJSON([
+            'fail' => 0,
+            'data' => 'addUser Complete'
         ]);
     }
 
@@ -66,8 +72,6 @@ class Controller_Installer {
         self::strReplace('here_', Request::r('prefix'), $scripts);
         $scripts = explode(self::$SEPARATOR, $scripts);
 
-        $dbConfig = unserialize(base64_decode(Cookie::get('_config_')));
-        Db::server($dbConfig);
         $tableDb = Db::factory(Db::CONNECT);
         foreach ($scripts as $script) {
             $tableDb->query($script);
