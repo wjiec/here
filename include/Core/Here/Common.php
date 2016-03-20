@@ -7,6 +7,8 @@ class Common {
     const JSON_TO_ARRAY  = 'ARRAY';
     const JSON_TO_OBJECT = 'OBJECT';
 
+    private static $_cookiePath = '/';
+
     private static $_charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
     public static function noCache() {
@@ -32,6 +34,19 @@ class Common {
 
     public static function pawdEncrypt($pawd, $raw = false) {
 //         return strtoupper(md5((substr(sha1($pawd), 7, 15) . "F")));
+    }
+
+    public static function cookiePath($path) {
+        self::$_cookiePath = is_string($path) ? $path : '/';
+    }
+
+    public static function cookieSet($name, $val, $expire = 0) {
+        setrawcookie($name, rawurlencode($val), $expire, self::$_cookiePath);
+        $_COOKIE[$name] = $val;
+    }
+
+    public static function cookieGet($key) {
+        return isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
     }
 
     public static function randString($length = 8) {
