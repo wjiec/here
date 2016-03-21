@@ -27,14 +27,7 @@ class Controller_Installer {
                 self::initTable();
                 $installDb = Db::factory(Db::CONNECT);
 
-                // TEST
-                var_dump($installDb->select()->from('table.options')
-                        ->where('for', Db::OP_GT, 2)->where('for', Db::OP_GT, 2, Db::RS_AND)
-                        ->group('for')->having('for', Db::OP_GT, 1)->having('for', Db::OP_GT, 1, Db::RS_OR)
-                        ->order('name')->limit(3)->offset(0)->__toString());
-                die();
-
-                Common::cookieSet('_config_', base64_encode(serialize($dbConfig)));
+                Common::recordSet('_config_', base64_encode(serialize($dbConfig)));
                 echo Common::toJSON([
                     'fail' => 0,
                     'data' => 'Server version: ' . $installDb->getServerInfo() . ' MySQL Community Server (GPL)'
@@ -49,13 +42,34 @@ class Controller_Installer {
     }
 
     public static function addUser() {
-        $dbConfig = unserialize(base64_decode(Common::cookieGet('_config_')));
+        $dbConfig = unserialize(base64_decode(Common::recordGet('_config_')));
         Db::server($dbConfig);
 
-        echo Common::toJSON([
-            'fail' => 0,
-            'data' => 'addUser Complete'
-        ]);
+        try {
+            $userDb = Db::factory(Db::CONNECT);
+            # TODO. encrypt
+            $userDb->query($userDb->insert('table.users')->rows([
+                'name' => Request::r('username'),
+                'password' => Request::r('password'),
+                'email' => Request::r('email'),
+                'created' => time(),
+                'lastlogin' => time()
+            ]));
+            $userDb->query($userDb->insert('table.options')->rows([
+                'name' => 'title',
+                'value' => Request::r('title')
+            ]));
+            echo Common::toJSON([
+                    'fail' => 0,
+                    'data' => 'addUser Complete'
+            ]);
+            # TEST
+        } catch (Exception $e) {
+            echo Common::toJSON([
+                'fail' => 1,
+                'data' => "{$e->getCode()}: {$e->getMessage()}"
+            ]);
+        }
     }
 
     private static function _include($action) {

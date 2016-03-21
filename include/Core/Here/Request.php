@@ -27,7 +27,7 @@ class Request {
             if (self::$_config == null) {
                 self::$_config = Config::factory(file_get_contents('php://input'));
             }
-            self::$_params = array_merge(self::$_params, $_GET, $_POST);
+            self::$_params = array_merge(self::$_params, $_GET, $_POST, Config::export(self::$_config));
             // TODO: Secure
             // array_map(function(&$v) { var_dump(addslashes($v)); }, self::$_params);
         }

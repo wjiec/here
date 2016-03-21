@@ -15,6 +15,18 @@ if (!function_exists('isMobile')) {
     }
 }
 
+function isdef($val, $default) {
+    echo isset($val) ? $val : $default;
+}
+
+function disabled($val) {
+    echo isset($val) ? 'disabled' : null;
+}
+
+function disableClass($val) {
+    echo isset($val) ? 'widget-cursor-disable' : null;
+}
+
 switch (self::$value) {
     case 1:?>
 <h3>Welcome to Here.</h3>
@@ -22,7 +34,8 @@ switch (self::$value) {
 <p>This Installer will automatically detect server environment is in line with the minimum configuration requirements. If not meet,  please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
 <?php
 break;
-    case 2:?>
+    case 2:
+        $dbConfig = Common::recordGet('_config_') ? unserialize(base64_decode(Common::recordGet('_config_'))) : null; ?>
 <section id="here-setting-form">
   <h3>Here Setting</h3>
   <form action="/install.php" method="POST">
@@ -30,37 +43,37 @@ break;
       <!-- Database Host -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-addr"><em>DB Host</em></label>
-        <input type="text" id="db-addr" class="widget-form-control" name="host" value="localhost" placeholder="Enter MySQL Host"  required="required"/>
+        <input type="text" id="db-addr" class="widget-form-control <?php disableClass($dbConfig['host']); ?>" name="host" value="<?php isdef($dbConfig['host'], 'localhost'); ?>" placeholder="Enter MySQL Host"  required="required" <?php disabled($dbConfig['host'])?>/>
       </div>
       <p class="input-description">You should be able to get this info from your web host, if localhost does not work.</p>
       <!-- Database Port -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-port">DB PORT</label>
-        <input type="text" id="db-port" class="widget-form-control" name="port" value="3306" placeholder="Enter MySQL Port" required="required"/>
+        <input type="text" id="db-port" class="widget-form-control <?php disableClass($dbConfig['port']); ?>" name="port" value="<?php isdef($dbConfig['port'], '3306'); ?>" placeholder="Enter MySQL Port" required="required" <?php disabled($dbConfig['host'])?>/>
       </div>
       <p class="input-description">MySQL Server port</p>
       <!-- Database Username -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-user">DB USER</label>
-        <input type="text" id="db-user" class="widget-form-control" name="user" value="root"  placeholder="Enter MySQL User" required="required"/>
+        <input type="text" id="db-user" class="widget-form-control <?php disableClass($dbConfig['user']); ?>" name="user" value="<?php isdef($dbConfig['user'], 'root'); ?>"  placeholder="Enter MySQL User" required="required" <?php disabled($dbConfig['host'])?>/>
       </div>
       <p class="input-description">Your MySQL username.</p>
       <!-- Database Password -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-pawd">DB PAWD</label>
-        <input type="password" id="db-pawd" class="widget-form-control" name="password" placeholder="Enter MySQL Password"<?php if (!isMobile()): ?> autofocus="autofocus"<?php endif; ?> required="required"/>
+        <input type="password" id="db-pawd" class="widget-form-control <?php disableClass($dbConfig['password']); ?>" name="password" value="<?php isdef($dbConfig['password'], ''); ?>" placeholder="Enter MySQL Password"<?php if (!isMobile()): ?> autofocus="autofocus"<?php endif; ?> required="required" <?php disabled($dbConfig['host'])?>/>
       </div>
       <p class="input-description">and your MySQL password.</p>
       <!-- Database Name -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-name">DB NAME</label>
-        <input type="text" id="db-name" class="widget-form-control" name="database" value="here" placeholder="Enter Database Name" required="required"/>
+        <input type="text" id="db-name" class="widget-form-control <?php disableClass($dbConfig['database']); ?>" name="database" value="<?php isdef($dbConfig['database'], 'here'); ?>" placeholder="Enter Database Name" required="required" <?php disabled($dbConfig['host'])?>/>
       </div>
       <p class="input-description">The name of the database you want to run HERE in.</p>
       <!-- Database Pref -->
       <div class="widget-input-group">
         <label class="widget-input-label" for="db-pref">DB PREF</label>
-        <input type="text" id="db-pref" class="widget-form-control" name="prefix" value="here_" placeholder="Enter Table Pref" required="required"/>
+        <input type="text" id="db-pref" class="widget-form-control <?php disableClass($dbConfig['prefix']); ?>" name="prefix" value="<?php isdef($dbConfig['prefix'], 'here_'); ?>" placeholder="Enter Table Pref" required="required" <?php disabled($dbConfig['host'])?>/>
       </div>
       <p class="input-description">If you want to run multiple Here installations in a single database, change this.</p>
     </div>

@@ -49,6 +49,23 @@ class Common {
         return isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
     }
 
+    public static function sessionSet($name, $val) {
+        $_SESSION[$name] = $val;
+    }
+
+    public static function sessionGet($name) {
+        return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+    }
+
+    public static function recordSet($name, $val, $expire = 0) {
+        self::cookieSet($name, $val, $expire);
+        self::sessionSet($name, $val);
+    }
+
+    public static function recordGet($name) {
+        return isset($_SESSION[$name]) ? $_SESSION[$name] : isset($_COOKIE[$name]) ? $_COOKIE[$name] : null;
+    }
+
     public static function randString($length = 8) {
         return substr(self::_shuffleString(), 0, $length);
     }

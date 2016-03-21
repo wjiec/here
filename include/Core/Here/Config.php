@@ -44,10 +44,6 @@ class Config {
         return serialize($this->_config);
     }
 
-    public static function toString(Config $config) {
-        return serialize($config->__toString());
-    }
-
     public static function export(Config $config) {
         return unserialize($config->__toString());
     }
