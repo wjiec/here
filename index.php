@@ -39,6 +39,7 @@ session_start();
 
 # Core API
 require_once 'Here/Core.php';
+require_once 'Here/Config.php';
 require_once 'Here/Intercepter.php';
 require_once 'Here/Request.php';
 require_once 'Here/Router.php';
@@ -50,7 +51,6 @@ Core::init();
 Intercepter::init();
 
 // TODO React: After the long long time
-// TODO RESTful API
 Core::setRouter((new Router())
 ->error('404', function($params, $message = null) {
     Theme::_404($message ? $message : null);
@@ -75,11 +75,11 @@ Core::setRouter((new Router())
     }
     is_file('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit;
 })
-->match(['get', 'post', 'put', 'patch', 'delete'], ['/controller/$controller/$action', '/controller/$controller/$action/$value'], function($params) {
+->match(['get', 'post', 'put', 'patch', 'delete'], ['/service/$service/$action', '/service/$service/$action/$value'], function($params) {
     try {
         Common::noCache();
         Request::s($params['action'], isset($params['value']) ? $params['value'] : null, Request::REST);
-        Controller::$params['controller']($params['action']);
+        Service::$params['service']($params['action']);
     } catch (Exception $e) {
         Theme::_404($e->getMessage());
     }

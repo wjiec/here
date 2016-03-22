@@ -1,6 +1,10 @@
 <?php
-
-class Controller_Installer {
+/**
+ * Installer Service
+ * @author ShadowMan
+ * @package Here.Service Installer
+ */
+class Service_Installer {
     private static $SEPARATOR = ';';
     private static $value = null;
 
@@ -41,13 +45,26 @@ class Controller_Installer {
         }
     }
 
+    private static function initTable() {
+        $scripts = file_get_contents('install/scripts/mysql.sql', true);
+
+        self::scriptFilter($scripts);
+        self::strReplace('here_', Request::r('prefix'), $scripts);
+        $scripts = explode(self::$SEPARATOR, $scripts);
+    
+        $tableDb = Db::factory(Db::CONNECT);
+        foreach ($scripts as $script) {
+            $tableDb->query($script);
+        }
+    }
+
     public static function addUser() {
         $dbConfig = unserialize(base64_decode(Common::recordGet('_config_')));
         Db::server($dbConfig);
 
         try {
             $userDb = Db::factory(Db::CONNECT);
-            # TODO. encrypt
+
             $userDb->query($userDb->insert('table.users')->rows([
                 'name' => Request::r('username'),
                 'password' => Request::r('password'),
@@ -55,21 +72,51 @@ class Controller_Installer {
                 'created' => time(),
                 'lastlogin' => time()
             ]));
+
             $userDb->query($userDb->insert('table.options')->rows([
                 'name' => 'title',
                 'value' => Request::r('title')
             ]));
+
+            $siteInfo = [
+                'username' => Request::r('username'),
+                'email' => Request::r('email'),
+                'title' => Request::r('title')
+            ];
+            Common::sessionSet('_info_', serialize($siteInfo));
+            self::writeConf($dbConfig, $siteInfo);
+
             echo Common::toJSON([
                     'fail' => 0,
                     'data' => 'addUser Complete'
             ]);
-            # TEST
         } catch (Exception $e) {
             echo Common::toJSON([
                 'fail' => 1,
                 'data' => "{$e->getCode()}: {$e->getMessage()}"
             ]);
         }
+    }
+
+    private static function writeConf($dbConfig, $info) {
+        $config = <<<EOF
+<?php
+/**
+ * Config for Here
+ * @author ShadowMan
+ * @package Here Config
+ */
+
+Db::server([
+    'host'     => '{$dbConfig['host']}',
+    'port'     => '{$dbConfig['user']}',
+    'password' => '{$dbConfig['password']}',
+    'database' => '{$dbConfig['database']}',
+    'port'     => '{$dbConfig['port']}',
+    'prefix'   => '{$dbConfig['prefix']}'
+]);
+EOF;
+        file_put_contents('config.php', $config);
     }
 
     private static function _include($action) {
@@ -79,24 +126,11 @@ class Controller_Installer {
         Core::router()->error('404', 'File not found');
     }
 
-    private static function initTable() {
-        $scripts = file_get_contents('install/scripts/mysql.sql', true);
-
-        self::filter($scripts);
-        self::strReplace('here_', Request::r('prefix'), $scripts);
-        $scripts = explode(self::$SEPARATOR, $scripts);
-
-        $tableDb = Db::factory(Db::CONNECT);
-        foreach ($scripts as $script) {
-            $tableDb->query($script);
-        }
-    }
-
     private static function strReplace($search, $replace, &$subject) {
         $subject = str_replace($search, $replace, $subject);
     }
 
-    private static function filter(&$string) {
+    private static function scriptFilter(&$string) {
         $lines = explode("\n", $string);
         $useful = [];
 

@@ -126,7 +126,7 @@ break;
 </section>
 <?php
 break;
-    case 4:?>
+    case 4: $siteInfo = Common::sessionGet('_info_') ? unserialize(Common::sessionGet('_info_')) : null;?><?php if ($siteInfo == null) exit; ?>
 <section id="here-install-complete">
   <h3>Install Success</h3>
   <section id="here-install-complete-msg">
@@ -136,7 +136,7 @@ break;
       <h5 class="widget-hidden">Admin Account</h5>
       <table class="widget-table">
         <tbody>
-          <tr><td>Username</td><td>ShadowMan</td></tr>
+          <tr><td>Username</td><td><?php echo $siteInfo['username']; ?></td></tr>
           <tr><td>Password</td><td>Your chosen password.</td></tr>
         </tbody>
       </table>

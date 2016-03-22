@@ -59,7 +59,7 @@ class Db_Mysql implements Widget_Db {
     }
 
     public function escapeValue($string) {
-        return '\'' . str_replace(array('\'', '\\', ';'), array('\\\'', '\\\\', '\;'), $string) . '\'';
+        return '\'' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $string) . '\'';
     }
 
     public function query($query) {

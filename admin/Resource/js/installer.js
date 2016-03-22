@@ -14,12 +14,12 @@ $(function() {
 
     var index = 0
     var urls = [ // XXX: /step/3 /step/4
-        { url:'/controller/installer/step/2' },
-        { url:'/controller/installer/validate', type:'POST', data: formData, dataType:'json', container: '#here-responsed > p' },
-        { url:'/controller/installer/step/3' },
-        { url:'/controller/installer/addUser', type: 'PUT', data: formData, dataType:'json', container: '#here-responsed > p' },
-        { url:'/controller/installer/step/4' },
-        { url:'/controller/common/home' }
+        { url:'/service/installer/step/2' },
+        { url:'/service/installer/validate', type:'POST', data: formData, dataType:'json', container: '#here-responsed > p' },
+        { url:'/service/installer/step/3' },
+        { url:'/service/installer/addUser', type: 'PUT', data: formData, dataType:'json', container: '#here-responsed > p' },
+        { url:'/service/installer/step/4', callback: function() { $(this).attr('data-jax', 'disabled').html('Complete') } },
+        { url:'/index.php', callback: function() { location.href = '/index.php' } }
     ]
 
     $(document).jax('#next-step-btn', '#here-replace-container', {
@@ -30,7 +30,7 @@ $(function() {
     $('#here-replace-container').on('jax:jax', function(event, options) {
         $.extend(options, urls[index])
     }).on('jax:beforeSend', function() {
-        if (required('#here-replace-container input', function() { this.addClass('jax-input-require') })) {
+        if (required('#here-replace-container input', function() { $(this).addClass('jax-input-require') })) {
             return false
         }
 

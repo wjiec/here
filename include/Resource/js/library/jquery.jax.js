@@ -193,6 +193,9 @@ function entry(selector, container, options) {
         var jaxEvent = $.Event('jax:jax')
         $(opts.container).trigger(jaxEvent, [opts])
         handleClick(event, opts)
+        if (opts.callback != undefined) {
+            opts.callback.call(this)
+        }
     })
 }
 
@@ -221,6 +224,9 @@ function handleClick(event, container, options) {
     if (event.isDefaultPrevented()) {
         return
     }
+    if ($(context).attr('data-jax') == 'disabled' || $(context).attr('data-disabled-jax') != undefined) {
+        return
+    }
 
     options.data = (typeof options.data == 'function') ? options.data() : {}
     var opts = $.extend({}, {
@@ -228,7 +234,8 @@ function handleClick(event, container, options) {
         type: $(context).attr('data-jax-type'),
         container: $(context).attr('data-jax-container'),
         element: context,
-        dataType: $(context).attr('data-jax-datatype')
+        dataType: $(context).attr('data-jax-datatype'),
+        callback: null
     }, options)
 
     var clickEvent = $.Event('jax:click')
