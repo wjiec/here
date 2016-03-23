@@ -105,11 +105,11 @@ class Router {
             return self::createNode($tree[$currentNode], $nodes, $callback, $hook);
         }
 
-        $tree[self::$HANDLE] = [self::$CALLBACK => $callback, self::$HOOK => []];
+        $tree[self::$HANDLE] = [ self::$CALLBACK => $callback, self::$HOOK => [] ];
         if (is_array($hook)) {
-            $tree[self::$HANDLE]['hook'] = array_merge($tree[self::HANDLE]['hook'], $hook);
-        } else if ($hook) {
-            $tree[self::$HANDLE]['hook'][] = $hook;
+            $tree[self::$HANDLE][self::$HOOK] = array_merge($tree[self::$HANDLE][self::$HOOK], $hook);
+        } else if (is_string($hook)) {
+            $tree[self::$HANDLE][self::$HOOK][] = $hook;
         }
     }
 

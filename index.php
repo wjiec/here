@@ -5,9 +5,6 @@
  * @package Here
  * @author  ShadowMan
  */
-// TODO oauth2.0
-
-
 # Root Directory
 define('__HERE_ROOT_DIRECTORY__', dirname(__FILE__));
 
@@ -55,16 +52,20 @@ Core::setRouter((new Router())
 ->error('404', function($params, $message = null) {
     Theme::_404($message ? $message : null);
 })
+->hook('authorization', function($params) {
+    echo 'authorization';
+})
 ->get(['/', '/index.php'], function($params){
     if (!@include_once 'config.php') {
         file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit(1);
     }
-})
+}, ['authorization'])
 ->get('install.php', function($params){
     if (!@include_once 'config.php') {
         file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit(1);
+    } else {
+        Theme::_404('1984', 'Permission Denied.'); // 0x7C0 :D
     }
-    exit;
 })
 ->get('license.php', function($params) {
     Theme::_license();
