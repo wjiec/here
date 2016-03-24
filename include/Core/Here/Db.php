@@ -224,6 +224,10 @@ class Db {
         }
     }
 
+    public function result() {
+        return $this->_result;
+    }
+
     public function fetchAssoc() {
         return $this->_result;
     }

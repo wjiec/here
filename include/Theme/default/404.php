@@ -16,7 +16,7 @@
     <h1>404 Not Found</h1>
   </section>
   <pre>
-  <?php print_r(debug_backtrace()); ?>
+    <?php echo self::$errno . ': ' . self::$error; ?>
   </pre>
 </body>
 </html>

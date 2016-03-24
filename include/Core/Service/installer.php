@@ -73,9 +73,14 @@ class Service_Installer {
                 'lastlogin' => time()
             ]));
 
+            // TODO. $db->insert()->rows()->rows()...
             $userDb->query($userDb->insert('table.options')->rows([
                 'name' => 'title',
                 'value' => Request::r('title')
+            ]));
+            $userDb->query($userDb->insert('table.options')->rows([
+                    'name' => 'theme',
+                    'value' => 'default'
             ]));
 
             $siteInfo = [
@@ -91,6 +96,8 @@ class Service_Installer {
                     'data' => 'addUser Complete'
             ]);
         } catch (Exception $e) {
+            // TODO. if delete config.php but database record not remove
+            // TODO. save or delete
             echo Common::toJSON([
                 'fail' => 1,
                 'data' => "{$e->getCode()}: {$e->getMessage()}"
@@ -98,7 +105,10 @@ class Service_Installer {
         }
     }
 
-    private static function writeConf($dbConfig, $info) {
+    private static function writeConf($dbConfig, $site) {
+        $dbConfig = array_map('addslashes', $dbConfig);
+        $site = array_map('addslashes', $site);
+
         $config = <<<EOF
 <?php
 /**
@@ -107,6 +117,7 @@ class Service_Installer {
  * @package Here Config
  */
 
+# Database
 Db::server([
     'host'     => '{$dbConfig['host']}',
     'port'     => '{$dbConfig['user']}',
@@ -114,6 +125,12 @@ Db::server([
     'database' => '{$dbConfig['database']}',
     'port'     => '{$dbConfig['port']}',
     'prefix'   => '{$dbConfig['prefix']}'
+]);
+
+# Web Site
+Theme::configSet([
+    'title' => '{$site['title']}',
+    'theme' => 'default'
 ]);
 EOF;
         file_put_contents('config.php', $config);
