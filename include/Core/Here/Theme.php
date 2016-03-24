@@ -4,36 +4,95 @@
  * @package Theme
  */
 class Theme {
-    private static $_theme = null;
-    private static $_default_theme = 'default';
-    private static $_base_path = 'include/Theme/';
+    # return with exit
+    const RETURN_WITH_DIE = 1;
 
-    private static $params = null;
-    
-    const GDIE = 1;
-    const GLIVE = 0;
+    # return with continue
+    const RETURN_WITH_GON = 0;
+
+    /**
+     * theme name, default null
+     * @access private
+     * @var string
+     */
+    private static $_themeName = null;
+
+    /**
+     * default theme name
+     * @access private
+     * @var theme
+     */
+    private static $_defaultThemeName = 'default';
+
+    /**
+     * include theme path
+     * @access private
+     * @var string
+     */
+    private static $_themePath = 'include/Theme/';
+
+    /**
+     * error NO.
+     * @access public
+     * @var int
+     */
+    public static $errno = 0;
+
+    /**
+     * error message
+     * @access public
+     * @var string
+     */
+    public static $error = null;
+
+    /**
+     * params
+     * @access private
+     * @var array
+     */
+    private static $_params = null;
+
+    /**
+     * site config
+     * @access private
+     * @var Config
+     */
+    private static $_config = null;
 
     public static function setTheme($theme) {
-        if (!($theme && is_dir(self::$_base_path . $theme))) {
+        if (!($theme && is_dir(self::$_themePath . $theme))) {
             throw new Exception('Invalid Parameter');
         }
-        self::$_theme = $theme;
+        self::$_themeName = $theme;
+    }
+
+    /**
+     * set config
+     * @param array $config
+     */
+    public static function configSet(array $config) {
+        if (is_array($config)) {
+            self::$_config = Config::factory($config);
+        }
     }
 
     public static function __callStatic($name, $args) {
-        self::$params = $args;
-        if (self::$_theme) {
-            $file = self::$_base_path . self::$_theme . '/' . trim($name, '_') . '.php';
+        self::$_params = $args;
+        if (self::$_themeName) {
+            $file = self::$_themePath . self::$_themeName . '/' . trim($name, '_') . '.php';
         } else {
-            $file = self::$_base_path . self::$_default_theme . '/' . trim($name, '_') . '.php';
+            $file = self::$_themePath . self::$_defaultThemeName . '/' . trim($name, '_') . '.php';
         }
 
-        if (is_file($file)) { @include $file; }
-        else {
+        self::$errno = (isset(self::$_params[0]) && ctype_digit(self::$_params[0])) ? intval(self::$_params[0]) : 0;
+        self::$error = (isset(self::$_params[1]) && is_string(self::$_params[1])) ? self::$_params[1] : null;
+        if (is_file($file)) {
+            @include $file;
+        } else {
             Core::router()->error('404', 'File Not Found'); // 451? hhh
         }
 
-        if (!isset($args[0]) || (isset($args[0]) && $args[0] == self::GDIE)) {
+        if (!isset($args[0]) || (isset($args[0]) && $args[0] == self::RETURN_WITH_DIE)) {
             exit;
         }
     }

@@ -9,17 +9,20 @@ class Request {
      * @var string
      */
     private static $_urlPrefix = null;
+
     /**
      * GET POST PUT PATCH DELETE params
      * @var array
      */
     private static $_params = [];
+
     /**
      * RESTful API params
      * @var Config
      */
     private static $_config = null;
 
+    # Params form
     const REST = 1;
 
     public static function r($key, $mode = null) {
@@ -28,8 +31,6 @@ class Request {
                 self::$_config = Config::factory(file_get_contents('php://input'));
             }
             self::$_params = array_merge(self::$_params, $_GET, $_POST, Config::export(self::$_config));
-            // TODO: Secure
-            // array_map(function(&$v) { var_dump(addslashes($v)); }, self::$_params);
         }
         if ($mode == null) {
             if (array_key_exists($key, self::$_params)) {
