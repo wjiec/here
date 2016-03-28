@@ -50,14 +50,14 @@ function isMobile() {
       <section id="here-installer-container" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
         <h2 class="widget-hidden">Here Installer Guide</h2>
         <div id="here-replace-container">
-          <?php Service::installer('step'); ?>
+          <?php Service::install('step'); ?>
         </div>
       </section>
-      <?php if (!(Service::installer('serverDetect'))): ?>
+      <?php if (!(Service::install('serverDetect'))): ?>
         <section id="here-server-env" class="widget-container col-xl-6 col-xl-offset-3 col-lg-7 col-lg-offset-3 col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1">
           <h3 class="widget-hidden">Detect Server Environment</h3>
           <ul class="widget-list">
-            <?php Service::installer('failServerDetectList'); ?>
+            <?php Service::install('failServerDetectList'); ?>
           </ul>
         </section>
       <?php endif; ?>
@@ -68,8 +68,5 @@ function isMobile() {
       </div>
     </div>
   </div>
-  <!-- 
-  <footer class="container widget-align-vh"><?php Theme::footer(); ?></footer>
-  -->
 </body>
 </html>
