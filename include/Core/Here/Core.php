@@ -21,12 +21,14 @@ class Core {
             }
         }
 
+        set_exception_handler('Core::exceptionHandle');
         error_reporting(E_ALL);
         header('Content-Type: text/html;charset=UTF-8');
     }
 
     public static function exceptionHandle(Exception $except) {
         @ob_end_clean();
+        Theme::_404($except->getCode(), $except->getMessage());
     }
     
     // TODO: Class<Route> convert to Static Class ?
