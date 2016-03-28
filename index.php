@@ -8,14 +8,14 @@
 # Root Directory
 define('__HERE_ROOT_DIRECTORY__', dirname(__FILE__));
 
-# Common Resource Directory
-define('__HERE_COMMON_DIRECTORY__', '/include');
-
-# Admin Resource Directory
+# Admin Directory
 define('__HERE_ADMIN_DIRECTORY__', '/admin');
 
-# Core Resource Directory
+# Common Directory
 define('__HERE_CORE_DIRECTORY__', '/include/Core');
+
+# Core Class Directory
+define('__HERE_CLASS_DIRECTORY__', '/include/Core/Here');
 
 # Plugins Directory
 define('__HERE_PLUGINS_DIRECTORY__', '/include/Plugins');
@@ -24,9 +24,9 @@ define('__HERE_PLUGINS_DIRECTORY__', '/include/Plugins');
 define('__HERE_THEME_DIRECTORY__', '/include/Theme');
 
 @set_include_path(get_include_path() . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_COMMON_DIRECTORY__ . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_ADMIN_DIRECTORY__ . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_CORE_DIRECTORY__ . PATH_SEPARATOR.
+    __HERE_ROOT_DIRECTORY__ . __HERE_CLASS_DIRECTORY__ . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__ . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_THEME_DIRECTORY__ . PATH_SEPARATOR
 );
@@ -36,14 +36,17 @@ session_start();
 
 # Core API
 require_once 'Here/Core.php';
-require_once 'Here/Config.php';
-require_once 'Here/Intercepter.php';
-require_once 'Here/Request.php';
-require_once 'Here/Router.php';
-require_once 'Here/Theme.php';
-require_once 'Here/DB.php';
 
-# Init env
+# Theme Support
+require_once 'Here/Theme.php';
+
+# Router Support
+require_once 'Here/Router.php';
+
+# Request Filter
+require_once 'Here/Intercepter.php';
+
+# Init Environment
 Core::init();
 Intercepter::init();
 
@@ -53,21 +56,22 @@ Core::setRouter((new Router())
     Theme::_404($message ? $message : null);
 })
 ->hook('authorization', function($params) {
-    echo 'authorization';
+    // verify
 })
 ->get(['/', '/index.php'], function($params){
-    if (!@include_once 'config.php') {
-        file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit(1);
+    if (!@include_once './config.php') {
+        file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
     }
-}, ['authorization'])
+    Widget_Manage::factory('index');
+})
 ->get('install.php', function($params){
-    if (!@include_once 'config.php') {
-        file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit(1);
+    if (!@include_once './config.php') {
+        file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit;
     } else {
-        Theme::_404('1984', 'Permission Denied.'); // 0x7C0 :D
+        Theme::_404('1984', 'Permission Denied'); // 0x7C0 :D
     }
 })
-->get('license.php', function($params) {
+->get('license.html', function($params) {
     Theme::_license();
 })
 ->get('/admin/', function($params) {
@@ -75,7 +79,7 @@ Core::setRouter((new Router())
         file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
     }
     is_file('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit;
-})
+}, 'authorization')
 ->match(['get', 'post', 'put', 'patch', 'delete'], ['/service/$service/$action', '/service/$service/$action/$value'], function($params) {
     try {
         Common::noCache();
@@ -84,5 +88,5 @@ Core::setRouter((new Router())
     } catch (Exception $e) {
         Theme::_404($e->getMessage());
     }
-})
+}, 'authorization')
 ->execute());

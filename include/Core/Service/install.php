@@ -4,7 +4,7 @@
  * @author ShadowMan
  * @package Here.Service Installer
  */
-class Service_Installer {
+class Service_Install {
     private static $SEPARATOR = ';';
     private static $value = null;
 
