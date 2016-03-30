@@ -72,7 +72,7 @@ class Db_Query {
     public function select() {
         $this->_action = Db::SELECT;
 
-        $args = func_get_arg(0); var_dump($args);
+        $args = func_get_arg(0);
         if ($args[0] == null) {
             $this->_preBuilder['fields'][] = '*';
         } else {

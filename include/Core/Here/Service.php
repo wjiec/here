@@ -20,7 +20,7 @@ class Service {
             }
             return call_user_func(self::$_class_perfix . $service . "::" . $action);
         } else {
-            throw new Exception("SERVICE<{$service}> NOT FOUND");
+            throw new Exception("SERVICE&lt;{$service}&gt; NOT FOUND");
         }
     }
 }

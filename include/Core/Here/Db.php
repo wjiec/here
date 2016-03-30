@@ -71,7 +71,7 @@ class Db {
      * database config
      * @var Config
      */
-    private static $_config;
+    private static $_config = null;
 
     /**
      * Mysqli Instance
@@ -88,14 +88,14 @@ class Db {
     private $_status = null;
 
     public function __construct($prefix = null) {
-        $this->_prefix = ($prefix) ? $prefix : (self::$_config->prefix) ? self::$_config->prefix : null;
+        $this->_prefix = ($prefix) ? $prefix : (self::$_config && self::$_config->prefix) ? self::$_config->prefix : null;
         $this->_instance = new Db_Mysql();
         if (!$this->_prefix) {
-            throw new Exception('Prefix not set', 0x9);
+            throw new Exception('Prefix not set', 9);
         }
 
         if (!(self::$_config instanceof Config)) {
-            throw new Exception('Database config invalid', 0x8);
+            throw new Exception('Database config invalid', 8);
         }
     }
 
