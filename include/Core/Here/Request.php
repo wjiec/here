@@ -1,4 +1,7 @@
 <?php
+if (!defined('__HERE_ROOT_DIRECTORY__')) {
+    exit;
+}
 /**
  * @author ShadowMan 
  * @package Core.Request

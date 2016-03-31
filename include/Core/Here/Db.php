@@ -85,6 +85,8 @@ class Db {
      */
     private $_result = null;
 
+    private $_index = 0;
+
     private $_status = null;
 
     public function __construct($prefix = null) {
@@ -229,7 +231,16 @@ class Db {
     }
 
     public function fetchAssoc() {
+        var_dump($this->_index);
+        return $this->_result[$this->_index];
+    }
+
+    public function fetchAll() {
         return $this->_result;
+    }
+
+    public function resetResult() {
+        $this->_index = 0;
     }
 }
 

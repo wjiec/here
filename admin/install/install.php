@@ -5,6 +5,9 @@
  * @package Here
  * @author  ShadowMan
  */
+// In install mode
+define('_HERE_INSTALL_', true);
+Common::sessionSet('_install_', true);
 
 /**
  * is mobile return true
