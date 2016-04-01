@@ -1,4 +1,8 @@
 <?php
+if (!defined('_HERE_INSTALL_') && !Common::sessionGet('_install_')) {
+    exit;
+}
+
 /**
  * Installer Service
  * @author ShadowMan
@@ -21,11 +25,14 @@ class Service_Install {
         return self::_include('step');
     }
 
-    public static function validate() {
+    public static function dbConfig() {
         if (!get_magic_quotes_gpc()) {
             try {
                 $dbConfig = Request::rs('host', 'user', 'password', 'database', 'port', 'prefix');
                 $dbConfig = array_filter($dbConfig);
+                if (count($dbConfig) != 6) {
+                    throw new Exception('Fatal Error. POST Data cannot match', 9);
+                }
                 Db::server($dbConfig);
 
                 self::initTable();
@@ -58,17 +65,69 @@ class Service_Install {
         }
     }
 
-    public static function addUser() {
+    public static function userConfig() {
         $dbConfig = unserialize(base64_decode(Common::recordGet('_config_')));
         Db::server($dbConfig);
 
-        try {
-            $userDb = Db::factory(Db::CONNECT);
+        $siteInfo = Request::rs('title', 'username', 'password', 'email');
+        $option = Request::r('save');
+        if ($option != null) {
+            self::dbExists($option, $dbConfig);
+        } else {
+            $option = Request::rs('title', 'username', 'password', 'email');
+            $option = array_filter($option);
+            self::newOptions($option, $dbConfig);
+        }
+    }
 
+    private static function dbExists($save, $dbConfig) {
+        try {
+            if ($save == 'YES') {
+                $infoDb = new Db();
+                $infoDb->query($infoDb->select('name', 'email')->from('table.users'));
+                $user = $infoDb->fetchAssoc();
+                $infoDb->query($infoDb->select('value')->from('table.options')->where('name', Db::OP_EQUAL, 'title'));
+                $title = $infoDb->fetchAssoc();
+
+                $siteInfo = [
+                    'username' => $user['name'],
+                    'email' => $user['email'],
+                    'title' => $title['value']
+                ];
+                Common::sessionSet('_info_', serialize($siteInfo));
+
+                self::writeConf($dbConfig, $siteInfo);
+                echo Common::toJSON([
+                    'fail' => 0,
+                    'data' => 'Using origin Data'
+                ]);
+            } else if ($save == 'NO') {
+    
+            } else {
+                throw new Exception('Fatal Error. POST Data cannot match', 9);
+            }
+        } catch (Exception $e) {
+            echo Common::toJSON([
+                'fail' => 1,
+                'data' => "{$e->getCode()}: {$e->getMessage()}"
+            ]);
+        }
+    }
+
+    private static function newOptions($options, $dbConfig) {
+        try {
+            $info = Request::rs('title', 'username', 'password', 'email');
+            $info = array_filter($info);
+
+            if (count($options) != 4) {
+                throw new Exception('Fatal Error. POST Data cannot match', 9);
+            }
+
+            $userDb = Db::factory(Db::NORMAL);
             $userDb->query($userDb->insert('table.users')->rows([
-                'name' => Request::r('username'),
-                'password' => Request::r('password'),
-                'email' => Request::r('email'),
+                'name' => $info['username'],
+                'password' => $info['password'],
+                'email' => $info['email'],
                 'created' => time(),
                 'lastlogin' => time()
             ]));
@@ -76,28 +135,25 @@ class Service_Install {
             // TODO. $db->insert()->rows()->rows()...
             $userDb->query($userDb->insert('table.options')->rows([
                 'name' => 'title',
-                'value' => Request::r('title')
+                'value' => $info['title']
             ]));
             $userDb->query($userDb->insert('table.options')->rows([
-                    'name' => 'theme',
-                    'value' => 'default'
+                'name' => 'theme',
+                'value' => 'default'
             ]));
 
             $siteInfo = [
-                'username' => Request::r('username'),
-                'email' => Request::r('email'),
-                'title' => Request::r('title')
+                'username' => $info['username'],
+                'email' => $info['email'],
+                'title' => $info['title']
             ];
             Common::sessionSet('_info_', serialize($siteInfo));
             self::writeConf($dbConfig, $siteInfo);
-
             echo Common::toJSON([
-                    'fail' => 0,
-                    'data' => 'addUser Complete'
+                'fail' => 0,
+                'data' => 'addUser Complete'
             ]);
         } catch (Exception $e) {
-            // TODO. if delete config.php but database record not remove
-            // TODO. save or delete
             echo Common::toJSON([
                 'fail' => 1,
                 'data' => "{$e->getCode()}: {$e->getMessage()}"
@@ -159,5 +215,4 @@ EOF;
         $string = implode("\n", $useful);
         $string = trim($string, "\n");
     }
-    
 }

@@ -37,6 +37,9 @@ session_start();
 # Core API
 require_once 'Here/Core.php';
 
+# Config Support
+require_once 'Here/Config.php';
+
 # Theme Support
 require_once 'Here/Theme.php';
 
@@ -55,6 +58,9 @@ Core::setRouter((new Router())
 ->error('404', function($params, $message = null) {
     Theme::_404($message ? $message : null);
 })
+->error('403', function($params, $message = null) {
+    Theme::_403($message ? $message : null);
+})
 ->hook('authorization', function($params) {
     // verify
 })
@@ -68,7 +74,7 @@ Core::setRouter((new Router())
     if (!@include_once './config.php') {
         file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit;
     } else {
-        Theme::_404('1984', 'Permission Denied'); // 0x7C0 :D
+        Theme::_404('1984', 'Permission Denied'); // 0x7C0 :D 403
     }
 })
 ->get('license.html', function($params) {

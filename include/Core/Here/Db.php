@@ -209,10 +209,12 @@ class Db {
         $this->connect();
         $result = $this->_instance->query($query);
         if ($result instanceof mysqli_result) {
+            unset($this->_result);
             while ($row = $result->fetch_assoc()) {
                 $this->_result[] = $row;
             }
             $result->free();
+            $this->_index = 0;
         }
         switch($operator) {
             case Db::UPDATE:
@@ -231,7 +233,6 @@ class Db {
     }
 
     public function fetchAssoc() {
-        var_dump($this->_index);
         return $this->_result[$this->_index];
     }
 

@@ -48,5 +48,4 @@ class Config {
         return unserialize($config->__toString());
     }
 }
-
 ?>
