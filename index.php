@@ -37,8 +37,8 @@ session_start();
 # Core API
 require_once 'Here/Core.php';
 
-# Config Support
-require_once 'Here/Config.php';
+// # Config Support
+// require_once 'Here/Config.php';
 
 # Theme Support
 require_once 'Here/Theme.php';
@@ -52,47 +52,4 @@ require_once 'Here/Intercepter.php';
 # Init Environment
 Core::init();
 Intercepter::init();
-
-// TODO React: After the long long time
-Core::setRouter((new Router())
-->error('404', function($params, $message = null) {
-    Theme::_404($message ? $message : null);
-})
-->error('403', function($params, $message = null) {
-    Theme::_403($message ? $message : null);
-})
-->hook('authorization', function($params) {
-    // verify
-})
-->get(['/', '/index.php'], function($params){
-    if (!@include_once './config.php') {
-        file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
-    }
-    Widget_Manage::factory('index');
-})
-->get('install.php', function($params){
-    if (!@include_once './config.php') {
-        file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit;
-    } else {
-        Theme::_404('1984', 'Permission Denied'); // 0x7C0 :D 403
-    }
-})
-->get('license.html', function($params) {
-    Theme::_license();
-})
-->get('/admin/', function($params) {
-    if (!@include_once 'config.php') {
-        file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
-    }
-    is_file('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit;
-}, 'authorization')
-->match(['get', 'post', 'put', 'patch', 'delete'], ['/service/$service/$action', '/service/$service/$action/$value'], function($params) {
-    try {
-        Common::noCache();
-        Request::s($params['action'], isset($params['value']) ? $params['value'] : null, Request::REST);
-        Service::$params['service']($params['action']);
-    } catch (Exception $e) {
-        Theme::_404($e->getMessage());
-    }
-}, 'authorization')
-->execute());
+Core::router()->execute();
