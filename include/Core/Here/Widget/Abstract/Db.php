@@ -3,7 +3,7 @@
  * @author ShadowMan
  * @package Here.Interface.Db
  */
-interface Widget_Db {
+interface Widget_Abstract_Db {
     public function isAvailable();
 
     public function ping();

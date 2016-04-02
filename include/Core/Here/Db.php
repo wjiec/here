@@ -209,13 +209,16 @@ class Db {
         $this->connect();
         $result = $this->_instance->query($query);
         if ($result instanceof mysqli_result) {
-            unset($this->_result);
+            if (is_array($this->_result)) {
+                array_splice($this->_result, 0, count($this->_result));
+            }
             while ($row = $result->fetch_assoc()) {
                 $this->_result[] = $row;
             }
             $result->free();
             $this->_index = 0;
         }
+
         switch($operator) {
             case Db::UPDATE:
             case Db::DELETE:

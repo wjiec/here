@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author ShadowMan
  * @package Here.Interface.Plugin
