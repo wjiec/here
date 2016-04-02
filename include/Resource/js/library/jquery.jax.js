@@ -36,7 +36,7 @@ function hash(url) {
 }
 
 function parseUrl(href, search, hash) {
-    var u = href + '?'
+    let u = href + '?'
     if (typeof search == 'object') {
         for (var k in search) {
             u += (k + '=' + search[k])
@@ -124,7 +124,7 @@ function filter(el, selector) {
 function localClean() {
     var currentDate = unixStamp()
 
-    for (var d in localStorage) {
+    for (let d in localStorage) {
         if (int(d / 1000) + 15 * 24 * 3600 * 1000 < int(currentDate / 1000)) {
             localStorage.removeItem(d)
         }

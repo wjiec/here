@@ -40,7 +40,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
   background-color: rgb(241, 241, 241);
 }
-#_Here-License {
+#here-license {
   padding: 0.5rem;
   width: 100%;
   cursor: default;
@@ -48,41 +48,41 @@ body {
   box-shadow: 0 0 0.083rem rgba(0, 0, 0, .15);
   font-family: "Fira Mono", "Source Code Pro", monospace;
 }
-#_Here-License h1 {
+#here-license h1 {
   text-align: center;
   font-weight: normal;
   font-size: 2.5rem;
   font-family: "Inconsolata", "DejaVu Sans Mono","Bitstream Vera Sans Mono", monospace;
 }
-#_Here-License p {
-  font-size: 1.6rem;
+#here-license p {
+  font-size: 1.8rem;
 }
-#Holders {
+#holders {
   font-style: italic;
   margin: 2rem 0;
 }
 @media (min-width: 544px) {
-  #_Here-License h1 {
+  #here-license h1 {
     text-align: center;
   }
 }
 @media (min-width: 768px) {
-  #_Here-License {
+  #here-license {
     width: 80%;
     margin-top: 3.5rem;
   }
-  #_Here-License h1 {
+  #here-license h1 {
       text-align: left;
   }
 }
 @media (min-width: 992px) {
-  #_Here-License {
+  #here-license {
     width: 70%;
     padding: 1rem;
   }
 }
 @media (min-width: 1600px) {
-  #_Here-License {
+  #here-license {
     padding: 1rem;
     width: 50%;
   }

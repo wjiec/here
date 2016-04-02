@@ -145,6 +145,21 @@ body {
 #next-step-btn::after {
     content: " »";
 }
+#options-btn input {
+    cursor: pointer;
+    width: 8rem;
+    margin-right: 2rem;
+}
+#option-save:hover {
+    color: #FFF;
+    background-color: #286090;
+    border-color: #204d74;
+}
+#option-nosave:hover {
+    color: #FFF;
+    background-color: #c9302c;
+    border-color: #ac2925;
+}
 footer {
     margin: 2rem auto;
 }

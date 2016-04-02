@@ -69,8 +69,7 @@ class Service_Install {
         $dbConfig = unserialize(base64_decode(Common::recordGet('_config_')));
         Db::server($dbConfig);
 
-        $siteInfo = Request::rs('title', 'username', 'password', 'email');
-        $option = Request::r('save');
+        $option = Request::r('option');
         if ($option != null) {
             self::dbExists($option, $dbConfig);
         } else {
@@ -78,6 +77,7 @@ class Service_Install {
             $option = array_filter($option);
             self::newOptions($option, $dbConfig);
         }
+        self::createData();
     }
 
     private static function dbExists($save, $dbConfig) {
@@ -102,7 +102,7 @@ class Service_Install {
                     'data' => 'Using origin Data'
                 ]);
             } else if ($save == 'NO') {
-    
+                self::eraseData($dbConfig);
             } else {
                 throw new Exception('Fatal Error. POST Data cannot match', 9);
             }
@@ -114,28 +114,44 @@ class Service_Install {
         }
     }
 
-    private static function newOptions($options, $dbConfig) {
-        try {
-            $info = Request::rs('title', 'username', 'password', 'email');
-            $info = array_filter($info);
+    private static function eraseData($dbConfig) {
+        define('_REASE_', true);
+        Response::header('JAX-Container', '#here-replace-container');
+        $scripts = "TRUNCATE here_classify|TRUNCATE here_comments|TRUNCATE here_options|TRUNCATE here_posts|TRUNCATE here_users";
 
+        $scripts = str_replace('here_', $dbConfig['prefix'], $scripts);
+        $scripts = explode('|', $scripts);
+        $truncateDb = Db::factory(Db::CONNECT);
+        foreach ($scripts as $script) {
+            $truncateDb->query($script);
+        }
+
+        Request::s('step', 3, Request::REST);
+        Service::install('step');
+    }
+
+    private static function newOptions($options, $dbConfig) {
+        $time = time();
+        $password = self::pawdencrypt($options['password'], $time);
+
+        try {
             if (count($options) != 4) {
                 throw new Exception('Fatal Error. POST Data cannot match', 9);
             }
 
             $userDb = Db::factory(Db::NORMAL);
             $userDb->query($userDb->insert('table.users')->rows([
-                'name' => $info['username'],
-                'password' => $info['password'],
-                'email' => $info['email'],
-                'created' => time(),
-                'lastlogin' => time()
+                'name' => $options['username'],
+                'password' => $password,
+                'email' => $options['email'],
+                'created' => $time,
+                'lastlogin' => $time
             ]));
 
             // TODO. $db->insert()->rows()->rows()...
             $userDb->query($userDb->insert('table.options')->rows([
                 'name' => 'title',
-                'value' => $info['title']
+                'value' => $options['title']
             ]));
             $userDb->query($userDb->insert('table.options')->rows([
                 'name' => 'theme',
@@ -143,9 +159,9 @@ class Service_Install {
             ]));
 
             $siteInfo = [
-                'username' => $info['username'],
-                'email' => $info['email'],
-                'title' => $info['title']
+                'username' => $options['username'],
+                'email' => $options['email'],
+                'title' => $options['title']
             ];
             Common::sessionSet('_info_', serialize($siteInfo));
             self::writeConf($dbConfig, $siteInfo);
@@ -161,9 +177,22 @@ class Service_Install {
         }
     }
 
+    private static function createData() {
+        // TODO. insert test data
+    }
+
+    private static function pawdencrypt($password, $time) {
+        if (function_exists('password_hash') && function_exists('password_verify')) {
+            return password_hash($password, PASSWORD_DEFAULT);
+        } else {
+            return Common::pawdEncrypt($password, $time);
+        }
+    }
+
     private static function writeConf($dbConfig, $site) {
         $dbConfig = array_map('addslashes', $dbConfig);
         $site = array_map('addslashes', $site);
+        $bool = (function_exists('password_hash') && function_exists('password_verify')) ? 'false' : 'true';
 
         $config = <<<EOF
 <?php
@@ -188,8 +217,12 @@ Theme::configSet([
     'title' => '{$site['title']}',
     'theme' => 'default'
 ]);
+
+# Password Encrypt
+Core::setUseCommon({$bool});
+
 EOF;
-        file_put_contents('config.php', $config);
+        file_put_contents('config.inc.php', $config);
     }
 
     private static function _include($action) {

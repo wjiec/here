@@ -1,4 +1,8 @@
 <?php
+if (!defined('_HERE_INSTALL_') && !Common::sessionGet('_install_')) {
+    exit;
+}
+
 /**
  * return full url 
  * @param string $path
@@ -27,7 +31,7 @@ function disableClass($val) {
     echo isset($val) ? 'widget-cursor-disable' : null;
 }
 
-switch (self::$value) {
+switch (intval(self::$value)) {
     case 1:?>
 <h3>Welcome to Here.</h3>
 <p>Here is distributed under the <a href="<?php _u('license.html'); ?>" target="_blank">MIT</a> license.</p>
@@ -85,12 +89,19 @@ break;
 </section>
 <?php
 break;
-    case 3:?>
+    case 3:
+        $dbConfig = unserialize(base64_decode(Common::recordGet('_config_')));
+        Db::server($dbConfig);
+
+        $selectDb = Db::factory(Db::NORMAL);
+        $result = $selectDb->query($selectDb->select()->from('table.users'));
+?>
+<?php if (!isset($result[0]) || defined('_REASE_')): ?>
 <section id="_Here-User-Info">
   <h3>Information needed</h3>
-  <section id="_Here-Infomation-Form">
+  <section id="here-infomation-form">
     <h4 class="widget-hidden">Infomation Form</h4>
-    <form action="/controller/installer/info" method="POST">
+    <form action="/service/install" method="POST">
       <div class="widget-form-group">
         <!-- Site Title -->
         <div class="widget-input-group site-title">
@@ -124,9 +135,34 @@ break;
     <p></p>
   </section>
 </section>
+<?php else: ?>
+<section id="_Here-User-Info">
+  <h3>Data exists</h3>
+  <section id="here-user-exist">
+    <h4 class="widget-hidden">user exists</h4>
+    <form action="/service/install" method="POST">
+      <div class="widget-form-group">
+        <p id="save-user"><span>Data Exists</span>: Whether to use the original data?</p>
+        <div class="widget-input-group" id="options-btn">
+          <input type="button" class="widget-btn widget-btn-default save-item" id="option-save" data-hover="widget-btn-primary" name="save-item" value="YES" />
+          <input type="button" class="widget-btn widget-btn-default save-item" id="option-nosave" data-hover="widget-btn-danger" name="save-item" value="NO" />
+          <input type="hidden" id="save-option" name="option" value="" />
+        </div>
+      </div>
+    </form>
+  </section>
+  <section id="here-responsed" class="widget-hidden">
+    <h3 title="fail">Error</h3><h3 title="done">Success</h3>
+    <p></p>
+  </section>
+</section>
+<?php endif; ?>
 <?php
 break;
-    case 4: $siteInfo = Common::sessionGet('_info_') ? unserialize(Common::sessionGet('_info_')) : null;?><?php if ($siteInfo == null) exit; ?>
+    case 4: 
+        $siteInfo = Common::sessionGet('_info_') ? unserialize(Common::sessionGet('_info_')) : null;
+        if ($siteInfo == null) exit;
+?>
 <section id="here-install-complete">
   <h3>Install Success</h3>
   <section id="here-install-complete-msg">
