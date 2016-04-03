@@ -25,19 +25,18 @@ class Core {
 
         set_exception_handler('Core::exceptionHandle');
         error_reporting(E_ALL);
-        header('Content-Type: text/html;charset=UTF-8');
     }
 
     public static function exceptionHandle(Exception $except) {
         @ob_end_clean();
         Theme::_404($except->getCode(), $except->getMessage());
     }
-    
+
     // TODO: Class<Route> convert to Static Class ?
     public static function setRouter(&$router) {
         self::$_router = $router;
     }
-    
+
     public static function router() {
         if (self::$_router == null) {
             self::routerInit();
@@ -64,13 +63,13 @@ class Core {
         ->hook('authorization', function($params) {
             // verify
         })
-        ->get(['/', '/index.php'], function($params){
+        ->get(['/', '/index.php'], function($params) {
             if (!@include_once './config.inc.php') {
                file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
             }
             Widget_Manage::factory('index');
         })
-        ->get('install.php', function($params){
+        ->get('install.php', function($params) {
             if (!@include_once './config.inc.php') {
                 file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit;
             } else {
@@ -80,7 +79,7 @@ class Core {
         ->get('license.html', function($params) {
             Theme::_license();
         })
-        ->get('/admin /', function($params) {
+        ->get('/admin/', function($params) {
             if (!@include_once 'config.inc.php') {
                 file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
             }
@@ -98,7 +97,7 @@ class Core {
     }
 
     private static function __autoload( $class ) {
-        @include_once str_replace(array('\\', '_'), '/', $class) . '.php';
+        include_once str_replace(array('\\', '_'), '/', $class) . '.php';
     }
 }
 
