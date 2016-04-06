@@ -238,7 +238,7 @@ EOF;
 
     private static function scriptFilter(&$string) {
         $lines = explode("\n", $string);
-        $useful = [];
+        $useful = array();
 
         foreach ($lines as $key => $line) {
             if(!preg_match('/^--/', $line)) {

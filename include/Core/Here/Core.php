@@ -29,7 +29,16 @@ class Core {
 
     public static function exceptionHandle(Exception $except) {
         @ob_end_clean();
-        Theme::_404($except->getCode(), $except->getMessage());
+
+        if (in_array($except->getCode(), [ 404, 403, 502 ])){
+            Theme::{$except->getCode()}($except->getCode(), $except->getMessage());
+        } else {
+            echo Common::toJSON([
+                'code' => $except->getCode(),
+                'message' => $except->getMessage()
+            ]);
+            var_dump(debug_backtrace());
+        }
     }
 
     // TODO: Class<Route> convert to Static Class ?

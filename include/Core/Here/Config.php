@@ -11,7 +11,7 @@ class Config {
     private $_config;
 
     public function __construct($config) {
-        $this->_config = [];
+        $this->_config = array();
 
         if (empty($config)) {
             return;

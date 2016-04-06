@@ -18,9 +18,9 @@ class Router {
     private static $EXCEPTION = '__ep__';
 
     public function __construct() {
-        $this->_error = [];
-        $this->_hook  = [];
-        $this->_tree  = [];
+        $this->_error = array();
+        $this->_hook  = array();
+        $this->_tree  = array();
     }
 
     public function __call($name, $args) {
@@ -41,13 +41,12 @@ class Router {
         return $this;
     }
 
-    public function execute($params = [], $method = null, $path = null) {
+    public function execute($params = array(), $method = null, $path = null) {
         $method = strtoupper($method ? $method : $_SERVER['REQUEST_METHOD']);
         $params['__path__'] = $path ? $path : parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $path = trim($params['__path__'], self::$SEPARATOR);
 
         list($callback, $hook) = self::resolve($method, $path, $params);
-
         if ($hook && !empty($hook)) {
             foreach ($hook as $h) {
                 $this->hook($h, $params);
@@ -62,7 +61,7 @@ class Router {
         }
     }
 
-    public function match($method = [], $path = [], $callback = null, $hook = null) {
+    public function match($method = array(), $path = array(), $callback = null, $hook = null) {
         if (!is_array($method)) {
             $method = [ $method ];
         }
@@ -72,7 +71,7 @@ class Router {
         foreach ($method as $m){
             $m = strtoupper($m);
             if (!array_key_exists($m, $this->_tree)) {
-                $this->_tree[$m] = [];
+                $this->_tree[$m] = array();
             }
             foreach ($path as $p) {
                 if (!is_string($p)) {
@@ -88,16 +87,16 @@ class Router {
     private function createNode(&$tree, $nodes, $callback, $hook) {
         $currentNode = array_shift($nodes);
         if (!array_key_exists(self::$VARPATH, $tree)) {
-            $tree[self::$VARPATH] = [];
+            $tree[self::$VARPATH] = array();
         }
         if ($currentNode && $currentNode[0] == self::$VARPATH) {
             if (!isset($tree[self::$VARPATH][substr($currentNode, 1)])) {
-                $tree[self::$VARPATH][substr($currentNode, 1)] = [];
+                $tree[self::$VARPATH][substr($currentNode, 1)] = array();
             }
             return self::createNode($tree[self::$VARPATH][substr($currentNode, 1)], $nodes, $callback, $hook);
         } else {
             if ($currentNode && !array_key_exists($currentNode, $tree)) {
-                $tree[$currentNode] = [];
+                $tree[$currentNode] = array();
             }
         }
 
@@ -105,7 +104,7 @@ class Router {
             return self::createNode($tree[$currentNode], $nodes, $callback, $hook);
         }
 
-        $tree[self::$HANDLE] = [ self::$CALLBACK => $callback, self::$HOOK => [] ];
+        $tree[self::$HANDLE] = [ self::$CALLBACK => $callback, self::$HOOK => array() ];
         if (is_array($hook)) {
             $tree[self::$HANDLE][self::$HOOK] = array_merge($tree[self::$HANDLE][self::$HOOK], $hook);
         } else if (is_string($hook)) {

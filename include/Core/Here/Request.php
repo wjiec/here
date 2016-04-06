@@ -17,7 +17,7 @@ class Request {
      * GET POST PUT PATCH DELETE params
      * @var array
      */
-    private static $_params = [];
+    private static $_params = array();
 
     /**
      * RESTful API params
@@ -47,7 +47,7 @@ class Request {
     }
 
     public static function rs() {
-        $result = [];
+        $result = array();
         $params = func_get_args();
 
         foreach ($params as $key) {
@@ -69,7 +69,7 @@ class Request {
     }
 
     public static function getFullUrl($path = null) {
-        return self::getUrlPrefix() . '/' . $path;
+        return self::getUrlPrefix() . $path;
     }
 
     private static function getUrlPrefix() {

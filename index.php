@@ -6,7 +6,7 @@
  * @author  ShadowMan
  */
 # Root Directory
-define('__HERE_ROOT_DIRECTORY__', dirname(__FILE__));
+define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
 
 # Admin Directory
 define('__HERE_ADMIN_DIRECTORY__', '/admin');
@@ -37,9 +37,6 @@ session_start();
 # Core API
 require_once 'Here/Core.php';
 
-// # Config Support
-// require_once 'Here/Config.php';
-
 # Theme Support
 require_once 'Here/Theme.php';
 
@@ -51,5 +48,12 @@ require_once 'Here/Intercepter.php';
 
 # Init Environment
 Core::init();
+
+# Intercepter
 Intercepter::init();
+
+# Plugins
+Plugins_Manage::init();
+
+# Router init and execute
 Core::router()->execute();
