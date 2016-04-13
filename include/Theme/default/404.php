@@ -17,6 +17,7 @@
   </section>
   <pre>
     <?php echo self::$errno . ': ' . self::$error; ?>
+    <?php var_dump(debug_backtrace()); ?>
   </pre>
 </body>
 </html>

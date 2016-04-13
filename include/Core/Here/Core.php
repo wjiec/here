@@ -41,7 +41,6 @@ class Core {
         }
     }
 
-    // TODO: Class<Route> convert to Static Class ?
     public static function setRouter(&$router) {
         self::$_router = $router;
     }
@@ -61,6 +60,7 @@ class Core {
         return self::$_useCommon;
     }
 
+    // TODO. move to config.inc.php
     private static function routerInit() {
         self::$_router = (new Router())
         ->error('404', function($params, $message = null) {
@@ -76,6 +76,8 @@ class Core {
             if (!@include_once './config.inc.php') {
                file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
             }
+
+            Plugins_Manage::init();
             Widget_Manage::factory('index');
         })
         ->get('install.php', function($params) {

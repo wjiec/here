@@ -76,16 +76,23 @@ class Service_Install {
             $option = Request::rs('title', 'username', 'password', 'email');
             $option = array_filter($option);
             self::newOptions($option, $dbConfig);
+            self::createData(Request::r('title'));
+
+            echo Common::toJSON([
+                    'fail' => 0,
+                    'data' => 'addUser Complete'
+            ]);
         }
-        self::createData();
     }
 
     private static function dbExists($save, $dbConfig) {
         try {
             if ($save == 'YES') {
                 $infoDb = new Db();
+
                 $infoDb->query($infoDb->select('name', 'email')->from('table.users'));
                 $user = $infoDb->fetchAssoc();
+
                 $infoDb->query($infoDb->select('value')->from('table.options')->where('name', Db::OP_EQUAL, 'title'));
                 $title = $infoDb->fetchAssoc();
 
@@ -103,6 +110,9 @@ class Service_Install {
                 ]);
             } else if ($save == 'NO') {
                 self::eraseData($dbConfig);
+
+                Request::s('step', 3, Request::REST);
+                Service::install('step');
             } else {
                 throw new Exception('Fatal Error. POST Data cannot match', 9);
             }
@@ -121,13 +131,11 @@ class Service_Install {
 
         $scripts = str_replace('here_', $dbConfig['prefix'], $scripts);
         $scripts = explode('|', $scripts);
+
         $truncateDb = Db::factory(Db::CONNECT);
         foreach ($scripts as $script) {
             $truncateDb->query($script);
         }
-
-        Request::s('step', 3, Request::REST);
-        Service::install('step');
     }
 
     private static function newOptions($options, $dbConfig) {
@@ -148,16 +156,6 @@ class Service_Install {
                 'lastlogin' => $time
             ]));
 
-            // TODO. $db->insert()->rows()->rows()...
-            $userDb->query($userDb->insert('table.options')->rows([
-                'name' => 'title',
-                'value' => $options['title']
-            ]));
-            $userDb->query($userDb->insert('table.options')->rows([
-                'name' => 'theme',
-                'value' => 'default'
-            ]));
-
             $siteInfo = [
                 'username' => $options['username'],
                 'email' => $options['email'],
@@ -165,10 +163,6 @@ class Service_Install {
             ];
             Common::sessionSet('_info_', serialize($siteInfo));
             self::writeConf($dbConfig, $siteInfo);
-            echo Common::toJSON([
-                'fail' => 0,
-                'data' => 'addUser Complete'
-            ]);
         } catch (Exception $e) {
             echo Common::toJSON([
                 'fail' => 1,
@@ -177,8 +171,29 @@ class Service_Install {
         }
     }
 
-    private static function createData() {
-        // TODO. insert test data
+    private static function createData($title) {
+        try {
+            $insertDb = new Db();
+    
+            $insertDb->query($insertDb->insert('table.options')->rows([
+                'name' => 'title',
+                'value' => $title
+            ]));
+            $insertDb->query($insertDb->insert('table.options')->rows([
+                'name' => 'theme',
+                'value' => 'default'
+            ]));
+            $insertDb->query($insertDb->insert('table.options')->rows([
+                'name' => 'activePlugins',
+                'value' => serialize(array('HelloWorld'))
+            ]));
+        } catch (Exception $e) {
+            ob_clean();
+            echo Common::toJSON([
+                'fail' => 1,
+                'data' => "{$e->getCode()}: {$e->getMessage()}"
+            ]);
+        }
     }
 
     private static function pawdencrypt($password, $time) {
@@ -205,7 +220,7 @@ class Service_Install {
 # Database
 Db::server([
     'host'     => '{$dbConfig['host']}',
-    'port'     => '{$dbConfig['user']}',
+    'user'     => '{$dbConfig['user']}',
     'password' => '{$dbConfig['password']}',
     'database' => '{$dbConfig['database']}',
     'port'     => '{$dbConfig['port']}',

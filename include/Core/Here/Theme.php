@@ -95,7 +95,7 @@ class Theme {
         self::$errno = (isset(self::$_params[0]) && ctype_digit(self::$_params[0])) ? intval(self::$_params[0]) : 0;
         self::$error = (isset(self::$_params[1]) && is_string(self::$_params[1])) ? self::$_params[1] : null;
         if (is_file($file)) {
-            @include $file;
+            include $file;
         } else {
             Core::router()->error('404', 'File Not Found'); // 451? hhh
         }

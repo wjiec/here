@@ -235,16 +235,16 @@ class Db {
         return $this->_result;
     }
 
-    public function fetchAssoc() {
-        return $this->_result[$this->_index];
+    public function fetchAssoc($key = null) {
+        return ($key == null) ? $this->_result[$this->_index] : $this->_result[$this->_index][$key];
     }
 
     public function fetchAll() {
         return $this->_result;
     }
 
-    public function resetResult() {
-        $this->_index = 0;
+    public function resetResult($index = 0) {
+        $this->_index = $index;
     }
 }
 
