@@ -58,9 +58,6 @@ class Db {
     # Factory Mode: Auto connect
     const CONNECT = 'CONNECT';
 
-    # Factory Mode: Connect By Hand
-    const NORMAL  = 'NORMAL';
-
     /**
      * table prefix
      * @var string
@@ -74,7 +71,7 @@ class Db {
     private static $_config = null;
 
     /**
-     * Mysqli Instance
+     * Mysqli instance
      * @var Db_Mysql
      */
     private $_instance = null;
@@ -93,23 +90,18 @@ class Db {
         $this->_prefix = ($prefix) ? $prefix : (self::$_config && self::$_config->prefix) ? self::$_config->prefix : null;
         $this->_instance = new Db_Mysql();
         if (!$this->_prefix) {
-            throw new Exception('Prefix not set', 9);
+            throw new Exception('table prefix not defined', 9);
         }
 
         if (!(self::$_config instanceof Config)) {
-            throw new Exception('Database config invalid', 8);
+            throw new Exception('database config invalid', 8);
         }
     }
 
-    public static function factory($while = Db::NORMAL) {
+    public static function factory($connect = null) {
         $db = new Db();
-        switch ($while) {
-            case Db::CONNECT:
-                $db->connect();
-                $db->_status = Db::CONNECT;
-                break;
-            case Db::NORMAL:
-            default: break;
+        if ($connect) {
+            $db->connect();
         }
         return $db;
     }

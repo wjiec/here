@@ -8,7 +8,7 @@ class Db_Query {
      * pretreatment
      * @var array
      */
-    private $_preBuilder;
+    private $_preBuilder = array();
 
     private $_action = null;
 
@@ -25,8 +25,8 @@ class Db_Query {
     private $_prefix = null;
 
     /**
-     * 
-     * @var Widget_Db
+     * Mysqli instance
+     * @var Db_Mysql
      */
     private $_instance = null;
 
@@ -38,45 +38,65 @@ class Db_Query {
     }
 
     private function initBuilder() {
-        $this->_preBuilder = [
-            'rows' => [],
-            'fields' => [],
-            'group' => null,
-            'having' => null,
-            'where' => null,
-            'order' => null,
-            'limit' => null,
+        $this->_preBuilder = array(
+            'rows'   => array('keys' => array(), 'values' => array()),
+            'fields' => array(),
+            'join'   => array(),
+            'group'  => array(),
+            'having' => array(),
+            'where'  => array(),
+            'order'  => array(),
+            'limit'  => null,
             'offset' => null
-        ];
+        );
     }
 
     private function tableFilter($table) {
         return '`' . ((strpos($table, 'table.') === 0) ? substr_replace($table, $this->_prefix, 0, 6) : $table) . '`';
     }
 
-    public function getAction() {
-        return ($this->_action) ? $this->_action : null;
-    }
-
     public function rows(array $rows) {
-        foreach ($rows as $key => $val) {
-            $this->_preBuilder['rows'][$this->_instance->escapeKey($key)] = is_string($val) ? $this->_instance->escapeValue($val) : $val;
+        $keys = array_keys($rows);
+        $vals = array_values($rows);
+
+        if (empty($this->_preBuilder['rows']['keys'])) {
+            $this->_preBuilder['rows']['keys'] = $keys;
         }
+        $this->_preBuilder['rows']['values'] = array_merge($this->_preBuilder['rows']['values'], $vals);
         return $this;
     }
 
-    /**
-     * select
-     * @return Db_Query
-     */
-    public function select() {
+    public function keys(array $keys) {
+        if (!is_array($keys) && !empty($this->_preBuilder['rows']['keys'])) {
+            return $this;
+        }
+
+        foreach ($keys as &$key) {
+            $key = $this->_instance->escapeKey($key);
+        }
+        $this->_preBuilder['rows']['keys'] = $keys;
+        return $this;
+    }
+
+    public function values() {
+        $rows = array_map(array('Db_Query', 'valuesFilter'), func_get_args());
+
+        foreach ($rows as &$row) {
+            foreach ($row as &$val) {
+                $val = $this->_instance->escapeValue($val);
+            }
+        }
+        $this->_preBuilder['rows']['values'] = array_merge($this->_preBuilder['rows']['values'], $rows);
+        return $this;
+    }
+
+    public function select($fields) {
         $this->_action = Db::SELECT;
 
-        $args = func_get_arg(0);
-        if ($args[0] == null) {
+        if ($fields[0] == null) {
             $this->_preBuilder['fields'][] = '*';
         } else {
-            foreach ($args as $val) {
+            foreach ($fields as $val) {
                 $this->_preBuilder['fields'][] = $this->_instance->escapeKey($val);
             }
         }
@@ -123,16 +143,10 @@ class Db_Query {
     }
 
     public function group($by, $sort = Db::DESC) {
-        if (!is_string($by)) {
+        if (!is_string($by) || !in_array($sort, array(Db::DESC, Db::ASC))) {
             return $this;
-        } else {
-            $by = $this->_instance->escapeKey($by);
         }
-        if (empty($this->_preBuilder['group'])) {
-            $this->_preBuilder['group'] = (in_array($sort, [ Db::DESC, Db::ASC ])) ? " GROUP BY {$by} {$sort}" : null;
-        } else {
-            $this->_preBuilder['group'] .= (in_array($sort, [ Db::DESC, Db::ASC ])) ? ", {$by} {$sort} " : null;
-        }
+        $this->_preBuilder['group'][] = array('by' => $by, 'sort' => $sort);
         return $this;
     }
 
@@ -148,72 +162,85 @@ class Db_Query {
      * @return Db_Query
      */
     public function having($object, $op, $condition, $relation = Db::RS_AND) {
-        $object = $this->_instance->escapeKey($object);
-        $condition = $this->_instance->escapeValue($condition);
-
-        if (!is_string($object) || !in_array($op, [Db::OP_EQUAL, Db::OP_NOT_EQUAL, Db::OP_GT, Db::OP_GT_EQUAL, Db::OP_LT, Db::OP_LT_EQUAL])) {
+        if (!is_scalar($object) || !is_string($condition)
+                || !in_array($op, array(Db::OP_EQUAL, Db::OP_GT, Db::OP_GT_EQUAL, Db::OP_LT, Db::OP_LT_EQUAL, Db::OP_NOT_EQUAL))
+                || !in_array($relation, array(Db::RS_AND, Db::RS_OR))) {
             return $this;
         }
-        if (empty($this->_preBuilder['having'])) {
-            $this->_preBuilder['having'] = " HAVING {$object} {$op} {$condition} ";
-        } else {
-            $this->_preBuilder['having'] .= "{$relation} {$object} {$op} {$condition} ";
-        }
+        $this->_preBuilder['having'][] = array('object' => $object, 'op' => $op, 'condition' => $condition, 'relation' => $relation);
         return $this;
     }
 
     public function where($object, $op, $condition, $relation = Db::RS_AND) {
-        $object = $this->_instance->escapeKey($object);
-        $condition = $this->_instance->escapeValue($condition);
-    
-        if (!is_string($object) || !in_array($op, [Db::OP_EQUAL, Db::OP_NOT_EQUAL, Db::OP_GT, Db::OP_GT_EQUAL, Db::OP_LT, Db::OP_LT_EQUAL])) {
+        if (!is_scalar($object) || !is_string($condition)
+                || !in_array($op, array(Db::OP_EQUAL, Db::OP_GT, Db::OP_GT_EQUAL, Db::OP_LT, Db::OP_LT_EQUAL, Db::OP_NOT_EQUAL))
+                || !in_array($relation, array(Db::RS_AND, Db::RS_OR))) {
             return $this;
         }
-        if (empty($this->_preBuilder['where'])) {
-            $this->_preBuilder['where'] = " WHERE {$object} {$op} {$condition} ";
-        } else {
-            $this->_preBuilder['where'] .= "{$relation} {$object} {$op} {$condition} ";
-        }
+        $this->_preBuilder['where'][] = array('object' => $object, 'op' => $op, 'condition' => $condition, 'relation' => $relation);
         return $this;
     }
 
     public function order($by, $sort = Db::DESC) {
-        if (!is_string($by)) {
+        if (!is_string($by) || !in_array($sort, array(Db::DESC, Db::ASC))) {
             return $this;
-        } else {
-            $by = $this->_instance->escapeKey($by);
         }
-        if (empty($this->_preBuilder['order'])) {
-            $this->_preBuilder['order'] = (in_array($sort, [ Db::DESC, Db::ASC ])) ? " ORDER BY {$by} {$sort}" : null;
-        } else {
-            $this->_preBuilder['order'] .= (in_array($sort, [ Db::DESC, Db::ASC ])) ? ", {$by} {$sort} " : null;
-        }
+        $this->_preBuilder['order'][] = array('by' => $by, 'sort' => $sort);
         return $this;
+    }
+
+    public function getAction() {
+        return $this->_action;
     }
 
     public function __toString() {
         switch ($this->_action) {
-            case Db::DELETE:
-                break;
-            case Db::INSERT:
-                return 'INSERT INTO ' . $this->_table
-                    . '( ' . implode(', ', array_keys($this->_preBuilder['rows'])) . ' )'
-                    . ' VALUES '
-                    . '( ' . implode(', ', array_values($this->_preBuilder['rows'])) . ' )';
-            case Db::SELECT:
-                $limit = (strlen($this->_preBuilder['limit'] == 0)) ? NULL : ' LIMIT ' . $this->_preBuilder['limit'];
-                $offset = (strlen($this->_preBuilder['offset']) == 0) ? NULL : ' OFFSET ' . $this->_preBuilder['offset'];
-
-                return 'SELECT ' . implode(',', array_values($this->_preBuilder['fields'])) . ' FROM ' . $this->_table
-                    . $this->_preBuilder['where']
-                    . $this->_preBuilder['group']
-                    . $this->_preBuilder['having']
-                    . $this->_preBuilder['order']
-                    . $limit . $offset;
-            case Db::UPDATE:
-                break;
-            default: return null;
+            case Db::DELETE: return $this->parseDelete(); break;
+            case Db::INSERT: return $this->parseInsert(); break;
+            case Db::SELECT: return $this->parseSelect(); break;
+            case Db::UPDATE: return $this->parseDelete(); break;
+            default: throw new Exception('FATAL ERROR: Query ACTION not defined', 0);
         }
+    }
+
+    private function valuesFilter($value) {
+        if (!is_array($value)) {
+            return array($value);
+        }
+        return $value;
+    }
+
+    private function parseSelect() {
+        $sql = 'SELECT ';
+    }
+
+    private function parseUpdate() {
+        $sql = 'UPDATE ';
+    }
+
+    private function parseInsert() {
+        $sql = 'INSERT INTO ';
+        $sql .= $this->_table;
+
+        if (!empty($this->_preBuilder['rows']['keys'])) {
+            $sql .= ' ( ' . implode(', ', array_values($this->_preBuilder['rows']['keys'])) . ' )';
+        }
+
+        $sql .= ' VALUES ';
+        if (empty(($this->_preBuilder['rows']['values']))) {
+            return null;
+        } else {
+            foreach ($this->_preBuilder['rows']['values'] as $row) {
+                $sql .= '( ' . implode(', ', array_values($row)) . ' ), ';
+            }
+        }
+        $sql = substr($sql, 0, strlen($sql) - 2); // Remove unnecessary ', '
+
+        return $sql;
+    }
+
+    private function parseDelete() {
+        $sql = 'DELETE ';
     }
 }
 

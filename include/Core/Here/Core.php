@@ -77,6 +77,15 @@ class Core {
                file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
             }
 
+            // TEST START
+            $db = new Db();
+            
+            $db->query($db->insert('table.options')->keys(array('name', 'value'))
+                    ->values(array('theme', 'default'), array('activePlugins', serialize(array('HelloWorld_Plugin'))))
+            );
+            die();
+            // TEST END
+
             Plugins_Manage::init();
             Widget_Manage::factory('index');
         })

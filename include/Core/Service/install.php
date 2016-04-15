@@ -147,7 +147,7 @@ class Service_Install {
                 throw new Exception('Fatal Error. POST Data cannot match', 9);
             }
 
-            $userDb = Db::factory(Db::NORMAL);
+            $userDb = new Db();
             $userDb->query($userDb->insert('table.users')->rows([
                 'name' => $options['username'],
                 'password' => $password,
