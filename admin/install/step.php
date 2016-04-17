@@ -93,7 +93,7 @@ break;
         $dbConfig = unserialize(base64_decode(Common::recordGet('_config_')));
         Db::server($dbConfig);
 
-        $selectDb = Db::factory(Db::NORMAL);
+        $selectDb = new Db();
         $result = $selectDb->query($selectDb->select()->from('table.users'));
 ?>
 <?php if (!isset($result[0]) || defined('_REASE_')): ?>

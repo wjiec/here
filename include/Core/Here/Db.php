@@ -23,7 +23,7 @@ class Db {
     const LEFT_JOIN = 'LEFT JOIN';
 
     # RIGHT JOIN
-    const RIGHT_JOIN = 'RIGHT_JOIN';
+    const RIGHT_JOIN = 'RIGHT JOIN';
 
     # Sort DESC
     const DESC = 'DESC';
@@ -57,6 +57,10 @@ class Db {
 
     # Factory Mode: Auto connect
     const CONNECT = 'CONNECT';
+
+    const DATA_DEFAULT = '$_$DEFAULT$_$';
+
+    const DATA_NULL    = '$_$NULL$_$';
 
     /**
      * table prefix
@@ -223,12 +227,19 @@ class Db {
         }
     }
 
-    public function result() {
-        return $this->_result;
-    }
+    public function fetchAssoc($keys = null) {
+        if (is_array($keys)) {
+            $values = array();
 
-    public function fetchAssoc($key = null) {
-        return ($key == null) ? $this->_result[$this->_index] : $this->_result[$this->_index][$key];
+            foreach ($keys as $key) {
+                $values[] = isset($this->_result[$this->_index][$key]) ? $this->_result[$this->_index][$key] : null;
+            }
+            return $values;
+        } else if (is_string($keys)) {
+            return isset($this->_result[$this->_index][$key]) ? $this->_result[$this->_index][$key] : null;
+        } else {
+            return $this->_result[$this->_index];
+        }
     }
 
     public function fetchAll() {

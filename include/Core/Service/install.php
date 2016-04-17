@@ -75,12 +75,12 @@ class Service_Install {
         } else {
             $option = Request::rs('title', 'username', 'password', 'email');
             $option = array_filter($option);
-            self::newOptions($option, $dbConfig);
-            self::createData(Request::r('title'));
+            self::newUser($option, $dbConfig);
+            self::initOption(Request::r('title'));
 
             echo Common::toJSON([
-                    'fail' => 0,
-                    'data' => 'addUser Complete'
+                'fail' => 0,
+                'data' => 'addUser Complete'
             ]);
         }
     }
@@ -138,7 +138,7 @@ class Service_Install {
         }
     }
 
-    private static function newOptions($options, $dbConfig) {
+    private static function newUser($options, $dbConfig) {
         $time = time();
         $password = self::pawdencrypt($options['password'], $time);
 
@@ -171,22 +171,14 @@ class Service_Install {
         }
     }
 
-    private static function createData($title) {
+    private static function initOption($title) {
         try {
             $insertDb = new Db();
-    
-            $insertDb->query($insertDb->insert('table.options')->rows([
-                'name' => 'title',
-                'value' => $title
-            ]));
-            $insertDb->query($insertDb->insert('table.options')->rows([
-                'name' => 'theme',
-                'value' => 'default'
-            ]));
-            $insertDb->query($insertDb->insert('table.options')->rows([
-                'name' => 'activePlugins',
-                'value' => serialize(array('HelloWorld'))
-            ]));
+            $insertDb->query($insertDb->insert('table.options')->keys(array('name', 'value'))->values(
+                array('title', $title),
+                array('theme', 'default'),
+                array('activePlugins', serialize(array('HelloWorld')))
+            ));
         } catch (Exception $e) {
             ob_clean();
             echo Common::toJSON([
@@ -208,7 +200,7 @@ class Service_Install {
         $dbConfig = array_map('addslashes', $dbConfig);
         $site = array_map('addslashes', $site);
         $bool = (function_exists('password_hash') && function_exists('password_verify')) ? 'false' : 'true';
-
+// TODO Router configure
         $config = <<<EOF
 <?php
 /**

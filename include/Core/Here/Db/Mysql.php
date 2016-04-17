@@ -19,7 +19,7 @@ class Db_Mysql implements Widget_Abstract_Db {
     }
 
     public function connect(Config $config) {
-        $this->_link = new mysqli($config->host, $config->user, $config->password, $config->database, $config->port);
+        $this->_link = @new mysqli($config->host, $config->user, $config->password, $config->database, $config->port);
 
         if ($this->_link->connect_errno) {
             throw new Exception($this->_link->connect_error, $this->_link->connect_errno);
