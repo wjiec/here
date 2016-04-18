@@ -177,7 +177,14 @@ class Service_Install {
             $insertDb->query($insertDb->insert('table.options')->keys(array('name', 'value'))->values(
                 array('title', $title),
                 array('theme', 'default'),
-                array('activePlugins', serialize(array('HelloWorld')))
+                array('activePlugins', serialize(array(
+                    'HelloWorld_Plugin' => array(
+                        Plugins_Manage::PLUGIN_HOOKS      => array('index@header' => array('HelloWorld_Plugin', 'render')),
+                        Plugins_Manage::PLUGIN_STYLE      => array(),
+                        Plugins_Manage::PLUGIN_JAVASCRIPT => array(),
+                        Plugins_Manage::PLUGIN_STATUS     => Plugins_Manage::PLUGIN_SS_ACTIVE
+                    )
+                )))
             ));
         } catch (Exception $e) {
             ob_clean();
@@ -230,6 +237,8 @@ Core::setUseCommon({$bool});
 
 EOF;
         file_put_contents('config.inc.php', $config);
+
+        Common::cookieSet('_config_', false, time() - 1);
     }
 
     private static function _include($action) {

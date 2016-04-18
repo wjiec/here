@@ -236,7 +236,7 @@ class Db {
             }
             return $values;
         } else if (is_string($keys)) {
-            return isset($this->_result[$this->_index][$key]) ? $this->_result[$this->_index][$key] : null;
+            return isset($this->_result[$this->_index][$keys]) ? $this->_result[$this->_index][$keys] : null;
         } else {
             return $this->_result[$this->_index];
         }

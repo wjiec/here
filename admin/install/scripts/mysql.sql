@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `here_users` (
 CREATE TABLE IF NOT EXISTS `here_options` (
   `name` VARCHAR(16) NOT NULL,
   `value` TEXT NOT NULL,
-  `for` SMALLINT(8) DEFAULT 0,
+  `for` SMALLINT(8) NOT NULL DEFAULT 0,
   UNIQUE `option` (`name`, `for`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
