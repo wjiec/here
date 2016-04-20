@@ -38,7 +38,7 @@ class Service_Install {
                 self::initTable();
                 $installDb = Db::factory(Db::CONNECT);
 
-                Common::recordSet('_config_', base64_encode(serialize($dbConfig)));
+                Common::recordSet('_config_', base64_encode(serialize($dbConfig)), time() + 1440); // 24min
                 echo Common::toJSON([
                     'fail' => 0,
                     'data' => 'Server version: ' . $installDb->getServerInfo() . ' MySQL Community Server (GPL)'
@@ -180,8 +180,6 @@ class Service_Install {
                 array('activePlugins', serialize(array(
                     'HelloWorld_Plugin' => array(
                         Plugins_Manage::PLUGIN_HOOKS      => array('index@header' => array('HelloWorld_Plugin', 'render')),
-                        Plugins_Manage::PLUGIN_STYLE      => array(),
-                        Plugins_Manage::PLUGIN_JAVASCRIPT => array(),
                         Plugins_Manage::PLUGIN_STATUS     => Plugins_Manage::PLUGIN_SS_ACTIVE
                     )
                 )))

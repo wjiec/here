@@ -13,8 +13,8 @@
 /**
  * @author ShadowMan
  * @create 1/11 2016
+ * @version 1.0.0/16.1.1
  */
-const VERSION = '0.0.1/16.1.11'
 
 $.support.pjax = window.history && window.history.pushState && window.history.replaceState && !navigator.userAgent.match(/((iPod|iPhone|iPad).+\bOS\s+[1-4]\D|WebApps\/.+CFNetwork)/)
 $.support.storage = !!window.localStorage
@@ -36,7 +36,7 @@ function hash(url) {
 }
 
 function parseUrl(href, search, hash) {
-    let u = href + '?'
+    var u = href + '?'
     if (typeof search == 'object') {
         for (var k in search) {
             u += (k + '=' + search[k])
@@ -81,7 +81,7 @@ function findContainerFor(container) {
      */
     if (!container.length) {
         throw 'no jax container for ' + container.selector
-    } else if (container.selector !== '' && container.context === document) {
+    } else if (container.selector !== '' && ((container.context === document) || ($ === Zepto && container.context == undefined))) {
         return container
     } else if (container.attr('id')) {
         return $('#' + container.attr('id'))
@@ -124,7 +124,7 @@ function filter(el, selector) {
 function localClean() {
     var currentDate = unixStamp()
 
-    for (let d in localStorage) {
+    for (var d in localStorage) {
         if (int(d / 1000) + 15 * 24 * 3600 * 1000 < int(currentDate / 1000)) {
             localStorage.removeItem(d)
         }
@@ -229,12 +229,10 @@ function handleClick(event, container, options) {
     }
 
     options.data = (typeof options.data == 'function') ? options.data() : {}
+    context = $(context)
     var opts = $.extend({}, {
         url: el.href,
-        type: $(context).attr('data-jax-type'),
-        container: $(context).attr('data-jax-container'),
         element: context,
-        dataType: $(context).attr('data-jax-datatype'),
         callback: null
     }, options)
 
@@ -278,7 +276,7 @@ function jax(options) {
 
     var timeoutTimer = null
     options.beforeSend = function(xhr, settings) {
-        if (settings.type.toUpperCase() !== 'GET') {
+        if (settings.type && settings.type.toUpperCase() !== 'GET') {
             settings.timeout = 0
         }
 
@@ -306,7 +304,7 @@ function jax(options) {
     }
     options.error = function(xhr, textStatus, errorThrown) {
         var allowed = trigger('jax:error', [xhr, textStatus, errorThrown, options])
-        if (options.type.toUpperCase() == 'GET' && textStatus !== 'abort' && allowed) {
+        if (options.type && options.type.toUpperCase() == 'GET' && textStatus !== 'abort' && allowed) {
             var contents = extractContainer("", xhr, options)
             // hard reload ?
         }
@@ -415,13 +413,16 @@ function popstateEntry(event) {
 }
 
 function enable() {
-    $.fn.jax = entry
-
+    $.extend($.fn, {
+        jax: entry
+    })
     $(window).on('popstate.jax', popstateEntry)
 }
 
 function disable() {
-    $.fn.pjax = function() { return this }
+    $.extend($.fn, {
+        jax: $.noop
+    })
 }
 
 if ($.event.props && $.inArray('state', $.event.props) < 0) {
@@ -430,4 +431,4 @@ if ($.event.props && $.inArray('state', $.event.props) < 0) {
 
 $.support.pjax ? enable() : disable()
 
-})(typeof jQuery === 'function' ? jQuery : Zepto)
+})(typeof jQuery === 'function' ? jQuery : Zepto);

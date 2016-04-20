@@ -23,7 +23,7 @@ $(function() {
     ]
 
     $(document).on('click', '.save-item', function() {
-        let curr = $(this)
+        var curr = $(this)
         document.querySelector('#save-option').value = this.value
         $('.save-item').removeClass('widget-btn-primary widget-btn-danger jax-input-require')
         curr.addClass(curr.attr('data-hover'))
@@ -34,6 +34,7 @@ $(function() {
         fullReplace: true,
         localStorage: false
     })
+
     $('#here-replace-container').on('jax:jax', function(event, options) {
         $.extend(options, urls[index])
     }).on('jax:beforeSend', function() {
@@ -59,8 +60,8 @@ $(function() {
         $('#next-step-btn').removeClass('widget-cursor-disable')
     }).on('jax:error', function(event, xhr, textStatus, errorThrown) {
         if (textStatus == 'parsererror') {
-            let container = xhr.getResponseHeader('JAX-Container')
-            let data = xhr.responseText;
+            var container = xhr.getResponseHeader('JAX-Container')
+            var data = xhr.responseText;
 
             $(container).html(data)
 
