@@ -34,7 +34,7 @@ function disableClass($val) {
 switch (intval(self::$value)) {
     case 1:?>
 <h3>Welcome to Here.</h3>
-<p>Here is distributed under the <a href="<?php _u('license.html'); ?>" target="_blank">MIT</a> license.</p>
+<p>Here is distributed under the <a href="<?php _u('/license.html'); ?>" target="_blank">MIT</a> license.</p>
 <p>This Installer will automatically detect server environment is in line with the minimum configuration requirements. If not meet,  please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
 <?php
 break;
@@ -106,7 +106,7 @@ break;
         <!-- Site Title -->
         <div class="widget-input-group site-title">
           <label class="widget-input-label" for="site-title"><em>Site Title</em></label>
-          <input type="text" id="site-title" class="widget-form-control" name="title" placeholder="Enter Site Title"  required="required" autofocus="autofocus"/>
+          <input type="text" id="site-title" class="widget-form-control" name="title" placeholder="Enter Site Title" required="required"/>
         </div>
         <p class="input-description"></p>
         <!-- Site Title -->

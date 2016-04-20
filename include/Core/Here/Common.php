@@ -77,7 +77,7 @@ class Common {
     }
 
     public static function recordGet($name) {
-        return is_string($_SESSION[$name]) ? $_SESSION[$name] : (is_string($_COOKIE[$name]) ? $_COOKIE[$name] : null);
+        return isset($_SESSION[$name]) ? $_SESSION[$name] : (isset($_COOKIE[$name]) ? $_COOKIE[$name] : null);
     }
 
     public static function randString($length = 8) {
