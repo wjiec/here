@@ -131,8 +131,11 @@ body {
     font-size: 1.6rem;
 }
 @media (max-width: 544px) {
+    #here-replace-container input {
+        letter-spacing: .15rem;
+    }
     #here-replace-container .input-description {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
     }
 }
 #btn-container {

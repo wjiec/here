@@ -73,54 +73,54 @@ class Service_Install {
         if ($option != null) {
             self::dbExists($option, $dbConfig);
         } else {
-            $option = Request::rs('title', 'username', 'password', 'email');
-            $option = array_filter($option);
-            self::newUser($option, $dbConfig);
-            self::initOption(Request::r('title'));
-
-            echo Common::toJSON([
-                'fail' => 0,
-                'data' => 'addUser Complete'
-            ]);
+            try {
+                $option = Request::rs('title', 'username', 'password', 'email');
+                $option = array_filter($option);
+                self::newUser($option, $dbConfig);
+                self::initOption(Request::r('title'));
+    
+                echo Common::toJSON([
+                    'fail' => 0,
+                    'data' => 'addUser Complete'
+                ]);
+            } catch (Exception $e) {
+                echo Common::toJSON([
+                    'fail' => 1,
+                    'data' => "{$e->getCode()}: {$e->getMessage()}"
+                ]);
+            }
         }
     }
 
     private static function dbExists($save, $dbConfig) {
-        try {
-            if ($save == 'YES') {
-                $infoDb = new Db();
+        if ($save == 'YES') {
+            $infoDb = new Db();
 
-                $infoDb->query($infoDb->select('name', 'email')->from('table.users'));
-                $user = $infoDb->fetchAssoc();
+            $infoDb->query($infoDb->select('name', 'email')->from('table.users'));
+            $user = $infoDb->fetchAssoc();
 
-                $infoDb->query($infoDb->select('value')->from('table.options')->where('name', Db::OP_EQUAL, 'title'));
-                $title = $infoDb->fetchAssoc();
+            $infoDb->query($infoDb->select('value')->from('table.options')->where('name', Db::OP_EQUAL, 'title'));
+            $title = $infoDb->fetchAssoc();
 
-                $siteInfo = [
-                    'username' => $user['name'],
-                    'email' => $user['email'],
-                    'title' => $title['value']
-                ];
-                Common::sessionSet('_info_', serialize($siteInfo));
+            $siteInfo = [
+                'username' => $user['name'],
+                'email' => $user['email'],
+                'title' => $title['value']
+            ];
+            Common::sessionSet('_info_', serialize($siteInfo));
 
-                self::writeConf($dbConfig, $siteInfo);
-                echo Common::toJSON([
-                    'fail' => 0,
-                    'data' => 'Using origin Data'
-                ]);
-            } else if ($save == 'NO') {
-                self::eraseData($dbConfig);
-
-                Request::s('step', 3, Request::REST);
-                Service::install('step');
-            } else {
-                throw new Exception('Fatal Error. POST Data cannot match', 9);
-            }
-        } catch (Exception $e) {
+            self::writeConf($dbConfig, $siteInfo);
             echo Common::toJSON([
-                'fail' => 1,
-                'data' => "{$e->getCode()}: {$e->getMessage()}"
+                'fail' => 0,
+                'data' => 'Using origin Data'
             ]);
+        } else if ($save == 'NO') {
+            self::eraseData($dbConfig);
+
+            Request::s('step', 3, Request::REST);
+            Service::install('step');
+        } else {
+            throw new Exception('Fatal Error. POST Data cannot match', 9);
         }
     }
 
@@ -142,55 +142,48 @@ class Service_Install {
         $time = time();
         $password = self::pawdencrypt($options['password'], $time);
 
-        try {
-            if (count($options) != 4) {
-                throw new Exception('Fatal Error. POST Data cannot match', 9);
-            }
-
-            $userDb = new Db();
-            $userDb->query($userDb->insert('table.users')->rows([
-                'name' => $options['username'],
-                'password' => $password,
-                'email' => $options['email'],
-                'created' => $time,
-                'lastlogin' => $time
-            ]));
-
-            $siteInfo = [
-                'username' => $options['username'],
-                'email' => $options['email'],
-                'title' => $options['title']
-            ];
-            Common::sessionSet('_info_', serialize($siteInfo));
-            self::writeConf($dbConfig, $siteInfo);
-        } catch (Exception $e) {
-            echo Common::toJSON([
-                'fail' => 1,
-                'data' => "{$e->getCode()}: {$e->getMessage()}"
-            ]);
+        if (count($options) != 4) {
+            throw new Exception('Fatal Error. POST Data cannot match', 9);
         }
+
+        $userDb = new Db();
+        $userDb->query($userDb->insert('table.users')->rows([
+            'name'      => $options['username'],
+            'password'  => $password,
+            'email'     => $options['email'],
+            'created'   => $time,
+            'lastlogin' => $time
+        ]));
+
+        $siteInfo = [
+            'username' => $options['username'],
+            'email'    => $options['email'],
+            'title'    => $options['title']
+        ];
+        Common::sessionSet('_info_', serialize($siteInfo));
+        self::writeConf($dbConfig, $siteInfo);
     }
 
     private static function initOption($title) {
-        try {
-            $insertDb = new Db();
-            $insertDb->query($insertDb->insert('table.options')->keys(array('name', 'value'))->values(
-                array('title', $title),
-                array('theme', 'default'),
-                array('activePlugins', serialize(array(
-                    'HelloWorld_Plugin' => array(
-                        Plugins_Manage::PLUGIN_HOOKS      => array('index@header' => array('HelloWorld_Plugin', 'render')),
-                        Plugins_Manage::PLUGIN_STATUS     => Plugins_Manage::PLUGIN_SS_ACTIVE
+        $insertDb = new Db();
+        $insertDb->query($insertDb->insert('table.options')->keys(array('name', 'value'))->values(
+            array('title', $title),
+            array('theme', 'default'),
+            array('activePlugins', serialize(array(
+                'HelloWorld_Plugin' => array(
+                    Plugins_Manage::PLUGIN_STATUS  => Plugins_Manage::PLUGIN_SS_ACTIVE,
+                    Plugins_Manage::PLUGIN_VERSION => '1.0.0'
+                )
+            ))),
+            array('pluginHooks', serialize(array(
+                'index' => array(
+                    'header' => array(
+                        'HelloWorld_Plugin' => array('HelloWorld_Plugin', 'render')
                     )
-                )))
-            ));
-        } catch (Exception $e) {
-            ob_clean();
-            echo Common::toJSON([
-                'fail' => 1,
-                'data' => "{$e->getCode()}: {$e->getMessage()}"
-            ]);
-        }
+                ),
+                'admin' => array()
+            )))
+        ));
     }
 
     private static function pawdencrypt($password, $time) {

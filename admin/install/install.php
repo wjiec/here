@@ -71,6 +71,6 @@ function isMobile() {
       </div>
     </div>
   </div>
-  <footer></footer>
+  <footer class="container"></footer>
 </body>
 </html>
