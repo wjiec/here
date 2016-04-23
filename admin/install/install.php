@@ -38,8 +38,8 @@ function isMobile() {
   <script src="../../include/Resource/js/library/mobile/zepto.min.js"></script>
   <script src="../../include/Resource/js/library/mobile/fastclick.min.js"></script>
 <?php else: ?>
-  <script src="../../include/Resource/js/library/jquery-2.1.4.min.js"></script>
   <!-- PC library -->
+  <script src="../../include/Resource/js/library/jquery-2.1.4.min.js"></script>
 <?php endif; ?>
   <script src="../../include/Resource/js/library/jquery.jax.js"></script>
   <script src="../../admin/Resource/js/installer.js"></script>

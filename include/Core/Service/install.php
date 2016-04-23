@@ -180,8 +180,7 @@ class Service_Install {
                     'header' => array(
                         'HelloWorld_Plugin' => array('HelloWorld_Plugin', 'render')
                     )
-                ),
-                'admin' => array()
+                )
             )))
         ));
     }
