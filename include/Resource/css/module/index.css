@@ -1,0 +1,81 @@
+@CHARSET "UTF-8";
+::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(0, 0, 0, 0.1);
+    color: #F00;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.25);
+}
+::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, 0.4);
+}
+body {
+    
+}
+#here-jax-loader-bar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: 99;
+    transition: all 0.4s linear 0.4s;
+}
+#here-jax-loader-bar.is-loading {
+    opacity: 100;
+}
+#here-jax-loader-bar .progress {
+    width: 100%;
+    height: .2rem;
+    background: #77b6ff;
+    box-shadow: 0 0 10px rgba(119,182,255,0.7);
+    transition: all .35s ease;
+}
+#here-index-left {
+    float: left;
+    margin-right: -100%;
+    max-width: 413px;
+    position: relative;
+    width: 29.4118%;
+    border: 1px solid red;
+    height: 2500px;
+}
+#here-index-right {
+    display: block;
+    float: left;
+    margin-left: 29.4118%;
+    width: 70.5882%;
+    height: 9000px;
+    float: left;
+    border: 1px solid blue;
+}
+footer {
+    color: #555;
+    text-align: center;
+    font-family: "Fira Mono", "Source Code Pro", monospace;
+    font-size: 1.6rem;
+}
+footer a {
+    color: #666;
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(0, 0, 0, .3);
+    transition: all .35s;
+}
+footer a:focus {
+    text-decoration: none;
+}
+footer a:hover {
+    color: #111;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(0, 0, 0, .65);
+}
