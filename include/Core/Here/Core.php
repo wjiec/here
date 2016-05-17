@@ -31,12 +31,14 @@ class Core {
         @ob_end_clean();
 
         if (in_array($except->getCode(), [ 404, 403, 502 ])){
+            // ?
             Theme::{$except->getCode()}($except->getCode(), $except->getMessage());
         } else {
             echo Common::toJSON([
                 'code' => $except->getCode(),
                 'message' => $except->getMessage()
             ]);
+            // TODO Exception
             var_dump(debug_backtrace());
         }
     }
@@ -78,7 +80,7 @@ class Core {
             }
 
             Plugins_Manage::init();
-            Widget_Manage::factory('index');
+//             Widget_Manage::factory('index');
         })
         ->get('install.php', function($params) {
             if (!@include_once './config.inc.php') {

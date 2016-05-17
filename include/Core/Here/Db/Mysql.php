@@ -2,7 +2,7 @@
 /**
  * @author ShadowMan
  */
-class Db_Mysql implements Widget_Abstract_Db {
+class Db_Mysql implements Interface_Db {
     /**
      * @var mysqli
      */

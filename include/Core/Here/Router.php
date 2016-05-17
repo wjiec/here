@@ -30,7 +30,7 @@ class Router {
         }
         if (in_array($name, array('error', 'hook'))) {
             $key = array_shift($args);
-            $member = '_'. $name;
+            $member = '_' . $name;
             if (isset($args[0]) && is_callable($args[0])) {
                 $this->{$member}[$key] = $args[0];
             } else if (isset($this->{$member}[$key]) && is_callable($this->{$member}[$key])) {

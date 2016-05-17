@@ -2,17 +2,15 @@ $(function() {
 //    document.oncontextmenu = function() { return false }
 //    document.onselectstart = function() { return false }
 
-    var leftHeight = $('#here-index-left').height()
+    var leftContents  = document.querySelector('#here-left-contents')
+    var rightContents = document.querySelector('#here-right-contents')
 
-    $(window).scroll(function() {
-        if (($(window).scrollTop() + $(window).height()) > $('#here-index-left').height()) {
-            $('#here-index-left').css({
-                'position': 'fixed',
-                'bottom': 0
-            })
-        } else if ($(window).scrollTop() < $('#here-index-left').height()) {
-            console.log($(window).scrollTop() + $(window).height())
-            $('#here-index-left').attr('style', '')
+    window.onscroll = function(event) {
+        if (window.scrollY + document.documentElement.clientHeight > leftContents.clientHeight) {
+            leftContents.style.position = 'fixed'
+            leftContents.style.bottom   = 0
+        } else if (window.scrollY < leftContents.clientHeight) {
+            leftContents.setAttribute('style', '')
         }
-    })
+    }
 })

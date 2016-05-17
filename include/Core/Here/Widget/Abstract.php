@@ -1,10 +1,11 @@
 <?php
 /**
- *
  * @author ShadowMan
  */
-interface Widget_Abstract {
-    public static function start();
+abstract class Widget_Abstract implements Interface_Widget {
+    public static function start() {
+        /* noop */
+    }
 }
 
 ?>

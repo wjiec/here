@@ -20,7 +20,8 @@
     background: rgba(0, 0, 0, 0.4);
 }
 body {
-    
+    color: rgb(51, 51, 51);
+    background-color: rgb(241, 241, 241);
 }
 #here-jax-loader-bar {
     width: 100%;
@@ -41,29 +42,31 @@ body {
     box-shadow: 0 0 10px rgba(119,182,255,0.7);
     transition: all .35s ease;
 }
-#here-index-left {
+#here-left-contents {
     float: left;
-    margin-right: -100%;
-    max-width: 413px;
-    position: relative;
-    width: 29.4118%;
+    width: 38.1966%;
+    height: 100rem;
+    max-width: 48rem;
     border: 1px solid red;
-    height: 2500px;
+    background: #fff;
 }
-#here-index-right {
-    display: block;
-    float: left;
-    margin-left: 29.4118%;
-    width: 70.5882%;
-    height: 9000px;
-    float: left;
+#here-right-contents {
+    margin-left: 38.1966%;
+    width: 70%;
+    height: 300rem;
     border: 1px solid blue;
+    background: #fff;
 }
 footer {
+    margin-left: 29.4118%;
     color: #555;
     text-align: center;
     font-family: "Fira Mono", "Source Code Pro", monospace;
     font-size: 1.6rem;
+}
+footer p {
+    margin-top: 1rem;
+    margin-bottom: .5rem;
 }
 footer a {
     color: #666;

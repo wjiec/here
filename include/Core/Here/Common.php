@@ -54,6 +54,14 @@ class Common {
         self::$_cookiePath = is_string($path) ? $path : '/';
     }
 
+    public static function cookie($key, $val = null, $expire = 0) {
+        if ($val == null && $expire == 0) {
+            return isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
+        }
+
+        setrawcookie($key, rawurlencode($val), $expire, self::$_cookiePath);
+    }
+
     public static function cookieSet($name, $val, $expire = 0) {
         setrawcookie($name, rawurlencode($val), $expire, self::$_cookiePath);
         $_COOKIE[$name] = $val;
@@ -80,7 +88,7 @@ class Common {
         return isset($_SESSION[$name]) ? $_SESSION[$name] : (isset($_COOKIE[$name]) ? $_COOKIE[$name] : null);
     }
 
-    public static function randString($length = 8) {
+    public static function randomString($length = 8) {
         return substr(self::_shuffleString(), 0, $length);
     }
 
@@ -88,7 +96,7 @@ class Common {
         return str_shuffle(self::$_charSet);
     }
 
-    private static function _shuffle(&$var) {
+    public static function shuffle(&$var) {
         if (gettype($var) == 'string') {
             $var = str_shuffle($var);
         } else if (gettype($var) == 'array') {

@@ -22,11 +22,11 @@ class Intercepter {
     }
 
     public static function token() {
-        // TODO
+        // TODO token
     }
 
     public static function check() {
-        // TODO
+        // TODO check token
     }
 }
 
