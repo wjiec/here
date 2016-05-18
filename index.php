@@ -56,5 +56,8 @@ Core::init();
 # Intercepter
 Intercepter::init();
 
-# Router init and execute
+# Widget Init
+Widget_Manage::factory('Init');
+
+# Start
 Core::router()->execute();

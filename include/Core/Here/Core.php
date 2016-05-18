@@ -23,7 +23,7 @@ class Core {
             }
         }
 
-        set_exception_handler('Core::exceptionHandle');
+        set_exception_handler(array('Core', 'exceptionHandle'));
         error_reporting(E_ALL);
     }
 
@@ -49,7 +49,7 @@ class Core {
 
     public static function router() {
         if (self::$_router == null) {
-            self::routerInit();
+            throw new Exception('Router Not Found', 1);
         }
         return self::$_router;
     }
@@ -60,53 +60,6 @@ class Core {
 
     public static function getUseCommon() {
         return self::$_useCommon;
-    }
-
-    // TODO. move to config.inc.php
-    private static function routerInit() {
-        self::$_router = (new Router())
-        ->error('404', function($params, $message = null) {
-            Theme::_404($message ? $message : null);
-        })
-        ->error('403', function($params, $message = null) {
-            Theme::_403($message ? $message : null);
-        })
-        ->hook('authorization', function($params) {
-            // verify
-        })
-        ->get(['/', '/index.php'], function($params) {
-            if (!@include_once './config.inc.php') {
-               file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
-            }
-
-            Plugins_Manage::init();
-//             Widget_Manage::factory('index');
-        })
-        ->get('install.php', function($params) {
-            if (!@include_once './config.inc.php') {
-                file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit;
-            } else {
-                Theme::_404('1984', 'Permission Denied'); // 0x7C0 :D 403
-            }
-        })
-        ->get('license.html', function($params) {
-            Theme::_license();
-        })
-        ->get('/admin/', function($params) {
-            if (!@include_once 'config.inc.php') {
-                file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
-            }
-            is_file('admin/index.php') ? include 'admin/index.php' : print('FATAL ERROR'); exit;
-        }, 'authorization')
-        ->match(['get', 'post', 'put', 'patch', 'delete'], ['/service/$service/$action', '/service/$service/$action/$value'], function($params) {
-            try {
-                Common::noCache();
-                Request::s($params['action'], isset($params['value']) ? $params['value'] : null, Request::REST);
-                Service::$params['service']($params['action']);
-            } catch (Exception $e) {
-                Theme::_404($e->getMessage());
-            }
-        }, 'authorization');
     }
 
     private static function __autoload( $class ) {
