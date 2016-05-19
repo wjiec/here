@@ -4,9 +4,9 @@
  * @author ShadowMan
  */
 
-class Widget_Init extends Widget_Abstract {
+class Widget_Init extends Abstract_Widget {
     public static function start() {
-        Widget_Manage::factory('Router');
+        Manager_Widget::factory('Router');
     }
 }
 

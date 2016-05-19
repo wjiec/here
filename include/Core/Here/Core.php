@@ -63,7 +63,7 @@ class Core {
     }
 
     private static function __autoload( $class ) {
-        include_once str_replace(array('\\', '_'), '/', $class) . '.php';
+         require_once str_replace(array('\\', '_'), '/', $class) . '.php';
     }
 }
 

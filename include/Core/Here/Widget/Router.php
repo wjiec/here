@@ -4,7 +4,7 @@
  * @author ShadowMan
  */
 
-class Widget_Router extends \Widget_Abstract {
+class Widget_Router extends Abstract_Widget {
     private static $_instance = null;
 
     private static $_self = null;
@@ -58,7 +58,9 @@ class Widget_Router extends \Widget_Abstract {
            file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
         }
 
-        Plugins_Manage::init();
+        Manager_Plugin::init();
+
+        HelloWorld_Plugin::pluginInfo();
     }
 
     public function install($params) {
