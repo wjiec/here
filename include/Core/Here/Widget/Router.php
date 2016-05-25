@@ -10,13 +10,15 @@ class Widget_Router extends Abstract_Widget {
     private static $_self = null;
     /**
      * Router initialize
+     * 
+     * @see Abstract_Widget
      */
-    public static function start() {
-        if (self::$_instance != null) {
+    public function start() {
+        if (self::$_instance instanceof Router) {
             return self::$_instance;
         }
 
-        self::$_self     = new Widget_Router();
+        self::$_self = new Widget_Router();
         self::$_instance = (new Router())
         # Request Error: 404 Not Found
         ->error('404', array(self::$_self, 'error_404'))
@@ -36,9 +38,10 @@ class Widget_Router extends Abstract_Widget {
         ->match(array('get', 'post', 'patch', 'put', 'delete'), array('/service/$service/$action', '/service/$service/$action/$value'), array(self::$_self, 'service'))
         # End
         ;
+    }
 
-        # Export Router
-        Core::setRouter(self::$_instance);
+    public static function export() {
+        return self::$_instance;
     }
 
     public function error_404($params, $message = null) {
@@ -54,21 +57,21 @@ class Widget_Router extends Abstract_Widget {
     }
 
     public function index($params) {
-        if (!@include_once './config.inc.php') {
-           file_exists('admin/install/install.php') ? header('Location: install.php') : print('Missing Config File'); exit;
-        }
-
-        Manager_Plugin::init();
-
-        HelloWorld_Plugin::pluginInfo();
+        // Widget Initialize
+        Manager_Widget::widget('Init')->start();
     }
 
     public function install($params) {
-        if (!@include_once './config.inc.php') {
-            file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit;
-        } else {
+        if (is_file('./config.inc.php') && @include_once './config.inc.php') {
             Theme::_404('1984', 'Permission Denied'); // 0x7C0 :D 403
+        } else {
+            is_file('admin/install/install.php') ? include 'install/install.php' : print('Missing Install.php File'); exit;
         }
+//         if (!@include_once './config.inc.php') {
+//             file_exists('admin/install/install.php') ? include 'install/install.php' : print('Missing Config File'); exit;
+//         } else {
+//             Theme::_404('1984', 'Permission Denied'); // 0x7C0 :D 403
+//         }
     }
 
     public function admin($params) {

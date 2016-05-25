@@ -28,7 +28,7 @@ class Core {
     }
 
     public static function exceptionHandle(Exception $except) {
-        @ob_end_clean();
+//         @ob_end_clean();
 
         if (in_array($except->getCode(), [ 404, 403, 502 ])){
             // ?
@@ -43,15 +43,8 @@ class Core {
         }
     }
 
-    public static function setRouter(&$router) {
-        self::$_router = $router;
-    }
-
     public static function router() {
-        if (self::$_router == null) {
-            throw new Exception('Router Not Found', 1);
-        }
-        return self::$_router;
+        return Widget_Router::export();
     }
 
     public static function setUseCommon($useCommon) {

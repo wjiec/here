@@ -92,7 +92,7 @@ class Db {
 
     public function __construct($prefix = null) {
         $this->_prefix = ($prefix) ? $prefix : (self::$_config && self::$_config->prefix) ? self::$_config->prefix : null;
-        $this->_instance = new Db_Mysql();
+        $this->_instance = new Widget_Db_Mysql();
         if (!$this->_prefix) {
             throw new Exception('table prefix not defined', 9);
         }
@@ -136,15 +136,15 @@ class Db {
 
     /**
      * Pre Builder
-     * @return Db_Query
+     * @return Widget_Db_Query
      */
     public function builder() {
-        return new Db_Query($this->_prefix, $this->_instance);
+        return new Widget_Db_Query($this->_prefix, $this->_instance);
     }
 
     /**
      * query method
-     * @return Db_Query
+     * @return Widget_Db_Query
      */
     public function select() {
         $args = func_get_args();
@@ -154,7 +154,7 @@ class Db {
     /**
      * query method
      * @param string $table
-     * @return Db_Query
+     * @return Widget_Db_Query
      */
     public function update($table) {
         return $this->builder()->update($table);
@@ -163,7 +163,7 @@ class Db {
     /**
      * query method
      * @param string $table
-     * @return Db_Query
+     * @return Widget_Db_Query
      */
     public function delete($table) {
         return $this->builder()->delete($table);
@@ -172,7 +172,7 @@ class Db {
     /**
      * query method
      * @param string $table
-     * @return Db_Query
+     * @return Widget_Db_Query
      */
     public function insert($table) {
         return $this->builder()->insert($table);
@@ -192,7 +192,7 @@ class Db {
      * @return NULL|Config
      */
     public function query($query, $operator = Db::SELECT) {
-        if ($query instanceof Db_Query) {
+        if ($query instanceof Widget_Db_Query) {
             $operator = $query->getAction();
         } else if (!is_string($query)) {
             return null;

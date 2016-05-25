@@ -5,7 +5,7 @@
  */
 
 interface Interface_Widget {
-    public static function start();
+    public function start();
 }
 
 ?>

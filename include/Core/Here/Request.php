@@ -1,11 +1,12 @@
 <?php
-if (!defined('__HERE_ROOT_DIRECTORY__')) {
-    exit;
-}
 /**
  * @author ShadowMan 
  * @package Core.Request
  */
+if (!defined('__HERE_ROOT_DIRECTORY__')) {
+    exit;
+}
+
 class Request {
     /**
      * url prefix
@@ -23,17 +24,18 @@ class Request {
      * RESTful API params
      * @var Config
      */
-    private static $_config = null;
+    private static $_RESTful = null;
 
     # Params form
     const REST = 1;
 
     public static function r($key, $mode = null) {
-        if (empty(self::$_params) || self::$_config == null) {
-            if (self::$_config == null) {
-                self::$_config = Config::factory(file_get_contents('php://input'));
+        if (empty(self::$_params) || self::$_RESTful == null) {
+            if (self::$_RESTful == null) {
+                // from PUT PATCH method
+                self::$_RESTful = Config::factory(file_get_contents('php://input'));
             }
-            self::$_params = array_merge(self::$_params, $_GET, $_POST, Config::export(self::$_config));
+            self::$_params = array_merge(self::$_params, $_GET, $_POST, Config::export(self::$_RESTful));
         }
         if ($mode == null) {
             if (array_key_exists($key, self::$_params)) {
@@ -42,7 +44,7 @@ class Request {
                 return null;
             }
         } else {
-            return self::$_config->{$key};
+            return self::$_RESTful->{$key};
         }
     }
 
@@ -61,10 +63,10 @@ class Request {
         if ($mode == null) {
             self::$_params[$key] = $val;
         } else {
-            if (self::$_config == null) {
-                self::$_config = Config::factory(file_get_contents('php://input'));
+            if (self::$_RESTful == null) {
+                self::$_RESTful = Config::factory(file_get_contents('php://input'));
             }
-            self::$_config->{$key} = $val;
+            self::$_RESTful->{$key} = $val;
         }
     }
 

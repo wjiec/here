@@ -1,9 +1,9 @@
 <?php
 /**
  * @author ShadowMan
- * @package here::Db_Query
+ * @package here::Widget_Db_Query
  */
-class Db_Query {
+class Widget_Db_Query {
     /**
      * pretreatment
      * @var array
@@ -80,7 +80,7 @@ class Db_Query {
     }
 
     public function values() {
-        $rows = array_map(array('Db_Query', 'valuesFilter'), func_get_args());
+        $rows = array_map(array('Widget_Db_Query', 'valuesFilter'), func_get_args());
 
         foreach ($rows as &$row) {
             foreach ($row as &$val) {
@@ -98,7 +98,7 @@ class Db_Query {
     /**
      * 
      * @param array $fields
-     * @return Db_Query
+     * @return Widget_Db_Query
      */
     public function select($fields) {
         $this->_action = Db::SELECT;
@@ -193,7 +193,7 @@ class Db_Query {
      * @param string $op
      * @param mixed $condition
      * @param string $relation
-     * @return Db_Query
+     * @return Widget_Db_Query
      */
     public function having($field, $op, $condition, $relation = Db::RS_AND) {
         if (!is_string($field) || !is_string($condition)

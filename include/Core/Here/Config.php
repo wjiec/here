@@ -10,6 +10,10 @@ class Config {
      */
     private $_config;
 
+    /**
+     * 
+     * @param array $config
+     */
     public function __construct($config) {
         $this->_config = array();
 
@@ -24,6 +28,11 @@ class Config {
         $this->_config = array_merge($this->_config, $params);
     }
 
+    /**
+     * 
+     * @param array $config
+     * @param string $core
+     */
     public static function factory($config, $core = null) {
         return new Config($config);
     }

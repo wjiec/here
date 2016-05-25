@@ -3,7 +3,7 @@
  * @author ShadowMan 
  * @package Core.Router
  */
-// XXX Static Router Class?
+
 class Router {
     private $_hook;
     private $_error;

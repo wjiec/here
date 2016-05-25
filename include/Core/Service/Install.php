@@ -1,15 +1,17 @@
 <?php
-if (!defined('_HERE_INSTALL_') && !Common::sessionGet('_install_')) {
-    exit;
-}
-
 /**
  * Installer Service
  * @author ShadowMan
  * @package Here.Service Installer
  */
+if (!defined('_HERE_INSTALL_') && !Common::sessionGet('_install_')) {
+    exit;
+}
+
 class Service_Install {
     private static $SEPARATOR = ';';
+
+    // export valiable
     private static $value = null;
 
     public static function serverDetect() {
@@ -35,10 +37,10 @@ class Service_Install {
                 }
                 Db::server($dbConfig);
 
-                self::initTable();
-                $installDb = Db::factory(Db::CONNECT);
-
+                self::initDatabase();
                 Common::recordSet('_config_', base64_encode(serialize($dbConfig)), time() + 1440); // 24min
+
+                $installDb = Db::factory(Db::CONNECT);
                 echo Common::toJSON([
                     'fail' => 0,
                     'data' => 'Server version: ' . $installDb->getServerInfo() . ' MySQL Community Server (GPL)'
@@ -52,13 +54,13 @@ class Service_Install {
         }
     }
 
-    private static function initTable() {
+    private static function initDatabase() {
         $scripts = file_get_contents('install/scripts/mysql.sql', true);
 
         self::scriptFilter($scripts);
         self::strReplace('here_', Request::r('prefix'), $scripts);
         $scripts = explode(self::$SEPARATOR, $scripts);
-    
+
         $tableDb = Db::factory(Db::CONNECT);
         foreach ($scripts as $script) {
             $tableDb->query($script);
@@ -74,11 +76,10 @@ class Service_Install {
             self::dbExists($option, $dbConfig);
         } else {
             try {
-                $option = Request::rs('title', 'username', 'password', 'email');
-                $option = array_filter($option);
-                self::newUser($option, $dbConfig);
-                self::initOption(Request::r('title'));
-    
+                $option = array_filter(Request::rs('title', 'username', 'password', 'email'));
+                self::initUserInfo($option, $dbConfig);
+                self::initOptions(Request::r('title'));
+
                 echo Common::toJSON([
                     'fail' => 0,
                     'data' => 'addUser Complete'
@@ -92,29 +93,30 @@ class Service_Install {
         }
     }
 
-    private static function dbExists($save, $dbConfig) {
-        if ($save == 'YES') {
+    // TODO. Verify User Password
+    private static function dbExists($storeOrigin, $dbConfig) {
+        if ($storeOrigin == 'YES') {
             $infoDb = new Db();
 
             $infoDb->query($infoDb->select('name', 'email')->from('table.users'));
             $user = $infoDb->fetchAssoc();
 
             $infoDb->query($infoDb->select('value')->from('table.options')->where('name', Db::OP_EQUAL, 'title'));
-            $title = $infoDb->fetchAssoc();
+            $title = $infoDb->fetchAssoc('value');
 
-            $siteInfo = [
+            $siteInfo = array(
                 'username' => $user['name'],
                 'email' => $user['email'],
-                'title' => $title['value']
-            ];
+                'title' => $title
+            );
             Common::sessionSet('_info_', serialize($siteInfo));
-
             self::writeConf($dbConfig, $siteInfo);
+
             echo Common::toJSON([
                 'fail' => 0,
-                'data' => 'Using origin Data'
+                'data' => 'Complete. Using origin Data'
             ]);
-        } else if ($save == 'NO') {
+        } else if ($storeOrigin == 'NO') {
             self::eraseData($dbConfig);
 
             Request::s('step', 3, Request::REST);
@@ -138,7 +140,7 @@ class Service_Install {
         }
     }
 
-    private static function newUser($options, $dbConfig) {
+    private static function initUserInfo($options, $dbConfig) {
         $time = time();
         $password = self::pawdencrypt($options['password'], $time);
 
@@ -164,25 +166,28 @@ class Service_Install {
         self::writeConf($dbConfig, $siteInfo);
     }
 
-    private static function initOption($title) {
+    private static function initOptions($title) {
         $insertDb = new Db();
+
         $insertDb->query($insertDb->insert('table.options')->keys(array('name', 'value'))->values(
             array('title', $title),
             array('theme', 'default'),
             array('activePlugins', serialize(array(
                 'HelloWorld_Plugin' => array(
-                    Plugins_Manage::PLUGIN_STATUS  => Plugins_Manage::PLUGIN_SS_ACTIVE,
-                    Plugins_Manage::PLUGIN_VERSION => '1.0.0'
-                )
-            ))),
+                    Manager_Plugin::PLUGIN_STATUS  => Manager_Plugin::PLUGIN_SS_ACTIVE,
+                    Manager_Plugin::PLUGIN_VERSION => '1.0.0'
+                )))
+            ),
             array('pluginHooks', serialize(array(
                 'index' => array(
                     'header' => array(
                         'HelloWorld_Plugin' => array('HelloWorld_Plugin', 'render')
                     )
-                )
-            )))
+                )))
+            )
         ));
+
+        // TODO. Insert Posts and Comments
     }
 
     private static function pawdencrypt($password, $time) {
@@ -197,7 +202,6 @@ class Service_Install {
         $dbConfig = array_map('addslashes', $dbConfig);
         $site = array_map('addslashes', $site);
         $bool = (function_exists('password_hash') && function_exists('password_verify')) ? 'false' : 'true';
-// TODO Router configure
         $config = <<<EOF
 <?php
 /**
@@ -217,10 +221,10 @@ Db::server([
 ]);
 
 # Web Site
-Theme::configSet([
+Theme::configSet(array(
     'title' => '{$site['title']}',
     'theme' => 'default'
-]);
+));
 
 # Password Encrypt
 Core::setUseCommon({$bool});

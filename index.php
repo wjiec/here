@@ -6,9 +6,10 @@
  * @author    ShadowMan <shadowman@shellboot.com>
  * @copyright Copyright (C) 2016 ShadowMan
  * @license   MIT License
- * @version   Develop: 0.1
+ * @version   Develop: 0.1.0
  * @link      https://github.com/JShadowMan/here
  */
+
 # Root Directory
 define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
 
@@ -53,11 +54,11 @@ require_once 'Here/Intercepter.php';
 # Init Environment
 Core::init();
 
-# Intercepter
-Intercepter::init();
+# Intercepter Init
+Interceptor::init();
 
-# Widget Init
-Manager_Widget::factory('Init');
+// Create Router
+Manager_Widget::widget('Router')->start();
 
-# Start
+# Entry
 Core::router()->execute();

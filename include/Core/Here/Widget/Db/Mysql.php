@@ -2,7 +2,7 @@
 /**
  * @author ShadowMan
  */
-class Db_Mysql implements Interface_Db {
+class Widget_Db_Mysql implements Interface_Db {
     /**
      * @var mysqli
      */
@@ -65,7 +65,7 @@ class Db_Mysql implements Interface_Db {
     }
 
     public function query($query) {
-        $query = trim(($query instanceof Db_Query) ? $query->__toString() : $query);
+        $query = trim(($query instanceof Widget_Db_Query) ? $query->__toString() : $query);
         $result = null;
 
         if (strlen($query) && !($result = $this->_link->query($query))) {

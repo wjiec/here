@@ -3,7 +3,7 @@
  * @package Here.Intercepter
  * @author ShadowMan
  */
-class Intercepter {
+class Interceptor {
     public static function init() {
         if (!empty($_GET) || !empty($_POST)) {
             if (empty($_SERVER['HTTP_REFERER'])) {
