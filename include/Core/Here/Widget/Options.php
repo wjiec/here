@@ -5,8 +5,18 @@
  */
 
 class Widget_Options extends Abstract_Widget {
+    /**
+     * store table.options record
+     * 
+     * @var Config
+     */
     private $_options = null;
 
+    /**
+     * reload method
+     * 
+     * @see Abstract_Widget::start()
+     */
     public function start() {
         $optionDb = new Db();
 
@@ -14,7 +24,7 @@ class Widget_Options extends Abstract_Widget {
         $this->generate($optionDb->fetchAll());
     }
 
-    public function generate($rows) {
+    private function generate($rows) {
         $this->_options = Config::factory(array());
 
         foreach ($rows as $row) {
@@ -24,6 +34,14 @@ class Widget_Options extends Abstract_Widget {
 
     public function export() {
         return $this->_options;
+    }
+
+    public function __get($key) {
+        return $this->_options->{$key};
+    }
+
+    public function __set($key, $val) {
+        $this->_options->{$key} = $val;
     }
 }
 
