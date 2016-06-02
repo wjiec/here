@@ -56,5 +56,11 @@ class Config {
     public static function export(Config $config) {
         return unserialize($config->__toString());
     }
+
+    public function earse($key) {
+        if (isset($this->_config[$key])) {
+            unset($this->_config[$key]);
+        }
+    }
 }
 ?>

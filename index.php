@@ -58,7 +58,7 @@ Core::init();
 Interceptor::init();
 
 // Create Router
-Manager_Widget::widget('Router')->start();
+Manager_Widget::widget('router')->start();
 
 # Entry
 Core::router()->execute();

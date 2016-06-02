@@ -58,7 +58,7 @@ class Widget_Router extends Abstract_Widget {
 
     public function index($params) {
         // Widget Initialize
-        Manager_Widget::widget('Init')->start();
+        Manager_Widget::widget('index')->start();
     }
 
     public function install($params) {
