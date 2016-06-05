@@ -1,5 +1,6 @@
 <?php
-if (!defined('_HERE_INSTALL_') && !Common::sessionGet('_install_')) {
+// stopping invalid access
+if (Core::sessionStart() && !Common::sessionGet('_install_')) {
     exit;
 }
 
@@ -159,7 +160,7 @@ break;
 <?php endif; ?>
 <?php
 break;
-    case 4: 
+    case 4:
         $siteInfo = Common::sessionGet('_info_') ? unserialize(Common::sessionGet('_info_')) : null;
         if ($siteInfo == null) exit;
 ?>

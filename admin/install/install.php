@@ -6,7 +6,6 @@
  * @author  ShadowMan
  */
 
-define('_HERE_INSTALL_', true);
 Common::sessionSet('_install_', true);
 
 /**
