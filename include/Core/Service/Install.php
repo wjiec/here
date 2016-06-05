@@ -4,7 +4,8 @@
  * @author ShadowMan
  * @package Here.Service Installer
  */
-if (!defined('_HERE_INSTALL_') && !Common::sessionGet('_install_')) {
+
+if (Core::sessionStart() && !Common::sessionGet('_install_')) {
     exit;
 }
 
@@ -110,7 +111,7 @@ class Service_Install {
                 'title' => $title
             );
             Common::sessionSet('_info_', serialize($siteInfo));
-            self::writeConf($dbConfig, $siteInfo);
+            self::writeConf($dbConfig);
 
             echo Common::toJSON([
                 'fail' => 0,
@@ -163,7 +164,7 @@ class Service_Install {
             'title'    => $options['title']
         ];
         Common::sessionSet('_info_', serialize($siteInfo));
-        self::writeConf($dbConfig, $siteInfo);
+        self::writeConf($dbConfig);
     }
 
     private static function initOptions($title) {
@@ -198,10 +199,13 @@ class Service_Install {
         }
     }
 
-    private static function writeConf($dbConfig, $site) {
+    private static function writeConf($dbConfig) {
         $dbConfig = array_map('addslashes', $dbConfig);
-        $site = array_map('addslashes', $site);
-        $bool = (function_exists('password_hash') && function_exists('password_verify')) ? 'false' : 'true';
+        $encryptionMode = serialize(
+                (function_exists('password_hash') && function_exists('password_verify')) ? array('Common', 'pawdEncrypt')
+                    : array('Common', 'pawdEncrypt')
+            );
+        self::strReplace('\'', '\\\'', $encryptionMode);
         $config = <<<EOF
 <?php
 /**
@@ -220,14 +224,8 @@ Db::server([
     'prefix'   => '{$dbConfig['prefix']}'
 ]);
 
-# Web Site
-Theme::configSet(array(
-    'title' => '{$site['title']}',
-    'theme' => 'default'
-));
-
 # Password Encrypt
-Core::setUseCommon({$bool});
+Core::encryptionMode(unserialize('{$encryptionMode}'));
 
 EOF;
         file_put_contents('config.inc.php', $config);

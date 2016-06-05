@@ -7,7 +7,7 @@
 class Abstract_Widget implements Interface_Widget {
     protected $_config;
 
-    static protected $_options;
+//     static protected $_options;
 
     public function __construct($params = array()) {
         $this->_config = Config::factory($params);
@@ -36,11 +36,11 @@ class Abstract_Widget implements Interface_Widget {
         }
     }
 
-    public static function options(&$widget) {
-        if ($widget instanceof Widget_Options) {
-            self::$_options = $widget;
-        }
-    }
+//     public static function options(&$widget) {
+//         if ($widget instanceof Widget_Options) {
+//             self::$_options = $widget;
+//         }
+//     }
 
     /**
      * (non-PHPdoc)

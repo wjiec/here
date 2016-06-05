@@ -36,9 +36,6 @@ define('__HERE_THEME_DIRECTORY__', '/include/Theme');
     __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__ . PATH_SEPARATOR
 );
 
-ob_start();
-session_start();
-
 # Core API
 require_once 'Here/Core.php';
 

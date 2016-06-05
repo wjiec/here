@@ -15,6 +15,8 @@ class Widget_Options extends Abstract_Widget {
 
         $optionDb->query($optionDb->select()->from('table.options')->where('for', Db::OP_EQUAL, '0'));
         $this->import($optionDb->fetchAll(), true);
+
+        return $this;
     }
 
     public function __get($key) {

@@ -94,6 +94,9 @@ class Db {
         $this->_prefix = ($prefix) ? $prefix : (self::$_config && self::$_config->prefix) ? self::$_config->prefix : null;
         $this->_instance = new Widget_Db_Mysql();
         if (!$this->_prefix) {
+            if (self::$_config == null) {
+                throw new Exception('database server not defined', 9);
+            }
             throw new Exception('table prefix not defined', 9);
         }
 

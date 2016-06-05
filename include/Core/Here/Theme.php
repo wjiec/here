@@ -4,12 +4,6 @@
  * @package Theme
  */
 class Theme {
-    # return with exit
-    const RETURN_WITH_DIE = 1;
-
-    # return with continue
-    const RETURN_WITH_GON = 0;
-
     /**
      * theme name, default null
      * @access private
@@ -78,7 +72,7 @@ class Theme {
 
     public static function configGet() {
         if (self::$_config == null) {
-            Theme::_404(1984, 'Missing Config.php File.', Theme::RETURN_WITH_DIE);
+            Theme::_404(1984, 'Missing Config File.');
         } else {
             return self::$_config;
         }
@@ -100,9 +94,7 @@ class Theme {
             Core::router()->error('404', 'File Not Found'); // 451? hhh
         }
 
-        if (!isset($args[0]) || (isset($args[func_num_args()]) && $args[func_num_args()] == self::RETURN_WITH_DIE)) {
-            exit;
-        }
+        exit;
     }
 }
 

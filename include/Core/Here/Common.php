@@ -24,20 +24,12 @@ class Common {
         }
     }
 
-    public static function jsonTo($source, $from = Common::JSON_TO_ARRAY) {
-        switch ($from) {
-            case Common::JSON_TO_ARRAY: return json_decode($source, true);
-            case Common::JSON_TO_OBJECT: return json_decode($source);
-            default: return null;
-        }
-    }
-
     public static function pawdEncrypt($password, $time) {
         $length = strlen($password) / 2;
         $prev = substr($password, 0, $length);
         $end  = substr($password, $length);
         $end .= $time;
-
+    
         return strtoupper(md5((substr(sha1($prev), 7, 15) . "F"))) . strtolower(md5((substr(sha1($end), 7, 15) . "F")));
     }
 
@@ -47,6 +39,14 @@ class Common {
             return $temp === $encrypt;
         } else {
             return false;
+        }
+    }
+
+    public static function jsonTo($source, $from = Common::JSON_TO_ARRAY) {
+        switch ($from) {
+            case Common::JSON_TO_ARRAY: return json_decode($source, true);
+            case Common::JSON_TO_OBJECT: return json_decode($source);
+            default: return null;
         }
     }
 
