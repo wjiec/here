@@ -71,6 +71,8 @@ class Widget_Router extends Abstract_Widget {
 
         // theme entry
         Manager_Widget::widget('helper@theme.helper')->start();
+
+        Widget_Theme_Helper::self()->required('index.php');
     }
 
     # Installer Entry

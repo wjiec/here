@@ -30,7 +30,7 @@ class Manager_Widget {
         }
 
         if (class_exists($widget)) {
-            if (isset(self::$_widgetPool[$scope])) {
+            if (!isset(self::$_widgetPool[$scope])) {
                 self::$_widgetPool[$scope] = array();
             }
             return self::$_widgetPool[$scope][$alias] = new $widget($params);

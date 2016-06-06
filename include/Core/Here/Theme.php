@@ -46,36 +46,11 @@ class Theme {
      */
     private static $_params = null;
 
-    /**
-     * site config
-     * @access private
-     * @var Config
-     */
-    private static $_config = null;
-
     public static function setTheme($theme) {
         if (!($theme && is_dir(self::$_themePath . $theme))) {
             throw new Exception('Invalid Parameter');
         }
         self::$_themeName = $theme;
-    }
-
-    /**
-     * set config
-     * @param array $config
-     */
-    public static function configSet(array $config) {
-        if (is_array($config)) {
-            self::$_config = Config::factory($config);
-        }
-    }
-
-    public static function configGet() {
-        if (self::$_config == null) {
-            Theme::_404(1984, 'Missing Config File.');
-        } else {
-            return self::$_config;
-        }
     }
 
     public static function __callStatic($name, $args) {

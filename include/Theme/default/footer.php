@@ -1,1 +1,2 @@
-<div><p>&copy; 2015-<?php echo date("Y") ?> Power By Here.</p></div>
+</body>
+</html>
