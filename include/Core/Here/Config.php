@@ -53,6 +53,20 @@ class Config {
         return serialize($this->_config);
     }
 
+    public function contains($key) {
+        return array_key_exists($key, $this->_config);
+    }
+
+    public function import($config, $earse = false) {
+        if (is_array($config)) {
+            if ($earse == true) {
+                $this->_config = $config;
+            } else {
+                $this->_config = array_merge($this->_config, $config);
+            }
+        }
+    }
+
     public static function export(Config $config) {
         return unserialize($config->__toString());
     }

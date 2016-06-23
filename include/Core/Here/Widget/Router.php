@@ -56,28 +56,16 @@ class Widget_Router extends Abstract_Widget {
 
     # Main Entry
     public function index($params) {
-        if (Manager_Widget::widget('user')->logined()) {
-            session_start();
+        if (!Manager_Widget::widget('flags')->flag('ConfigLoaded')) {
+            $this->redirection('/install.php');
         }
 
-        // Turn on output buffering
-        ob_start();
-
-        // loading configure
-        Core::loadConfig();
-
-        // initialize plugins
-        Manager_Plugin::init();
-
-        // theme entry
-        Manager_Widget::widget('helper@theme.helper')->start();
-
-        Widget_Theme_Helper::self()->required('index.php');
+        // inlcude index.php
+        Manager_Widget::widget('helper')->required('index.php');
     }
 
     # Installer Entry
     public function install($params) {
-
         if (Core::sessionStart() && is_file('./config.inc.php') && @include_once './config.inc.php') {
             Theme::_404('1984', 'Permission Denied'); // 0x7C0 :D 403
         } else {
@@ -100,6 +88,10 @@ class Widget_Router extends Abstract_Widget {
         Common::noCache();
         Request::s($params['action'], isset($params['value']) ? $params['value'] : null, Request::REST);
         Service::$params['service']($params['action']);
+    }
+
+    private function redirection($url) {
+        Response::header('Location', $url);
     }
 }
 

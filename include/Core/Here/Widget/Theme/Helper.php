@@ -24,21 +24,38 @@ class Widget_Theme_Helper extends Abstract_Widget {
             : Manager_Widget::widget('options')->start();
 
         $this->_theme = array(
-            'name' => $this->_options->theme,
-            'path' => 'include/Theme/'
+            'name'  => $this->_options->theme,
+            'root'  => 'include/Theme/',
+            'default' => 'default',
+            'error' => array(
+                'template' => 'error.php',
+                '404'      => null
+            )
         );
 
         return $this;
     }
 
     public function required($themeFile) {
-        $path = $this->_theme['path'] . $this->_theme['name'] . '/'
+        $file  = $this->_theme['root'] . '%s%' . '/'
                 . ((strpos($themeFile, '.php')) ? $themeFile : ($themeFile . '.php'));
 
-        if (is_file($path)) {
-            include $path;
+        # Include Theme File
+        if (is_file(str_replace('%s%', $this->_theme['theme'], $file))) {
+            include str_replace('%s%', $this->_theme['theme'], $file);
+        # Include Default File
+        } else if (is_file(str_replace('%s%', $this->_theme['default'], $file))) {
+            include str_replace('%s%', $this->_theme['default'], $file);
         } else {
             throw new Exception('Cannot include theme file' . $themeFile, 1);
+        }
+    }
+
+    public function httpError($code, $params) {
+        if (array_key_exists(is_string($code) ? $code : strval($code), $this->_theme['error'])) {
+            $params['code'] = intval($code);
+
+            
         }
     }
 

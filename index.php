@@ -39,23 +39,22 @@ define('__HERE_THEME_DIRECTORY__', '/include/Theme');
 # Core API
 require_once 'Here/Core.php';
 
-# Theme Support
-require_once 'Here/Theme.php';
-
 # Router Support
 require_once 'Here/Router.php';
 
-# Request Filter
-require_once 'Here/Intercepter.php';
+
+# TODO. Will Be Remove
+# Theme Support
+require_once 'Here/Theme.php';
+
 
 # Init Environment
 Core::init();
 
-# Intercepter Init
-Interceptor::init();
+// loading configure, ignore error
+Core::loadConfigure(true);
 
-// Create Router
-Manager_Widget::widget('router')->start();
+Manager_Widget::widget('init')->start();
 
 # Entry
 Core::router()->execute();

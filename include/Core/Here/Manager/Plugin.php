@@ -58,6 +58,7 @@ class Manager_Plugin {
         if (self::$ABSOLUTE_PATH == null) {
             self::$ABSOLUTE_PATH = __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__;
         }
+
         self::collectPlugins();
         self::initActivatePlugins();
         self::initHooks();

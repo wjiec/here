@@ -72,11 +72,19 @@ class Common {
     }
 
     public static function sessionSet($name, $val) {
+        Core::sessionStart();
+
         $_SESSION[$name] = $val;
     }
 
     public static function sessionGet($name) {
         return isset($_SESSION[$name]) ? $_SESSION[$name] : null;
+    }
+
+    public static function earseSession($name) {
+        if (isset($_SESSION[$name])) {
+            unset($_SESSION[$name]);
+        }
     }
 
     public static function recordSet($name, $val, $expire = 0) {

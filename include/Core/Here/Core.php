@@ -8,8 +8,6 @@ class Core {
     const _MajorVersion = '0.0.1';
     const _MinorVersion = '15.1.1';
 
-    const TOKEN = 'token';
-
     private static $_router = null;
 
     private static $_encryptionMode = null;
@@ -23,13 +21,29 @@ class Core {
             }
         }
 
+        # Error Handler, TODO. fix this
         set_exception_handler(array('Core', 'exceptionHandle'));
-        error_reporting(E_ALL);
+
+        # Initialize Global Flags
+        Manager_Widget::widget('flags')->start();
+
+        // Theme Helper
+        Manager_Widget::widget('helper@theme.helper')->start();
+
+        if (defined('DEVELOPER')) {
+            Manager_Widget::widget('flags')->enable('Developer');
+
+            error_reporting(E_ALL);
+        }
+
+        // Create Router
+        Manager_Widget::widget('router')->start();
     }
 
     public static function exceptionHandle(Exception $except) {
 //         @ob_end_clean();
 
+        print_r(debug_backtrace());
         echo "In {$except->getFile()} At Line {$except->getLine()}<br/>";
 
         if (in_array($except->getCode(), [ 404, 403, 502 ])){
@@ -66,18 +80,19 @@ class Core {
         }
     }
 
-    public static function loadConfig($location = true) {
-        if (!is_file('./config.inc.php')) {
+    public static function loadConfigure($ignore = false) {
+        if (!is_file('./config.inc.php') && !is_file('admin/install/install.php')) {
             // install file exists
-            if ($location && is_file('admin/install/install.php')) {
-                // location
-                header('Location: install.php');
-            } else {
-                Theme::_404('Missing Install File');
-            }
+            Theme::_404('Missing Install File');
         } else if (!@include './config.inc.php') {
-            Theme::_404('Error Occurs For Config File');
+            if ($ignore == true) {
+                return Manager_Widget::widget('flags')->disable('ConfigLoaded');
+            }
+
+            Theme::_404('Error Occurs For Config File'); # Must 500
         }
+
+        Manager_Widget::widget('flags')->enable('ConfigLoaded');
     }
 
     private static function __autoload( $class ) {

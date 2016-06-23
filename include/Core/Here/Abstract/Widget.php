@@ -5,6 +5,10 @@
  */
 
 class Abstract_Widget implements Interface_Widget {
+    /**
+     * 
+     * @var Config
+     */
     protected $_config;
 
 //     static protected $_options;

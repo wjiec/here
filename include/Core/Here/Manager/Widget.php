@@ -15,7 +15,9 @@ class Manager_Widget {
     );
 
     /**
+     * Widget Factory Method
      * 
+     * @return Abstract_Widget
      */
     public static function widget($alias, $params = array(), $scope = '_global') {
         if (!is_string($alias) || !is_string($scope)) {
