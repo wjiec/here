@@ -13,6 +13,7 @@ class Core {
     private static $_encryptionMode = null;
 
     public static function init() {
+        // register autoload function
         if (function_exists('spl_autoload_register')) {
             spl_autoload_register(array('Core', '__autoload'));
         } else {
@@ -26,9 +27,6 @@ class Core {
 
         # Initialize Global Flags
         Manager_Widget::widget('flags')->start();
-
-        // Theme Helper
-        Manager_Widget::widget('helper@theme.helper')->start();
 
         if (defined('DEVELOPER')) {
             Manager_Widget::widget('flags')->enable('Developer');

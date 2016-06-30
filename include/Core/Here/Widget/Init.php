@@ -23,6 +23,9 @@ class Widget_Init extends Abstract_Widget {
 
             // Initialize Plugins
             Manager_Plugin::init();
+
+            // Theme Helper
+            Manager_Widget::widget('helper@theme.helper')->start();
         }
     }
 

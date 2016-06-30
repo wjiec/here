@@ -33,8 +33,12 @@ class Config {
      * @param array $config
      * @param string $core
      */
-    public static function factory($config, $core = null) {
+    public static function factory($config = array(), $core = null) {
         return new Config($config);
+    }
+
+    public function __call($name, $args) {
+        echo (isset($this->_config[$key])) ? $this->_config[$name] : '';
     }
 
     public function __get($key) {

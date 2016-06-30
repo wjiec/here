@@ -71,7 +71,7 @@ class Request {
     }
 
     public static function getFullUrl($path = null) {
-        return self::getUrlPrefix() . $path;
+        return self::getUrlPrefix() . (($path[0] == '/') ? $path : ('/' . $path));
     }
 
     private static function getUrlPrefix() {

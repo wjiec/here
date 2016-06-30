@@ -13,8 +13,12 @@ class Abstract_Widget implements Interface_Widget {
 
 //     static protected $_options;
 
-    public function __construct($params = array()) {
-        $this->_config = Config::factory($params);
+    public function __construct() {
+        $this->_config = Config::factory();
+
+        if (method_exists($this, 'constructor')) {
+            call_user_func_array(array($this, 'constructor'), func_get_args());
+        }
     }
 
     /**

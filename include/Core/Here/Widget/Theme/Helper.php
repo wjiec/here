@@ -10,14 +10,14 @@ class Widget_Theme_Helper extends Abstract_Widget {
      * 
      * @var Widget_Options
      */
-    private $_options = null;
+    protected $_options = null;
 
     /**
      * store theme options
      * 
      * @var array
      */
-    private $_theme = array();
+    protected $_theme = array();
 
     public function start() {
         $this->_options = ($this->_options != null) ? self::$_options
@@ -33,29 +33,34 @@ class Widget_Theme_Helper extends Abstract_Widget {
             )
         );
 
+        try {
+            $this->required('function');
+        } catch (Exception $e) {
+            ;
+        }
+
         return $this;
     }
 
-    public function required($themeFile) {
-        $file  = $this->_theme['root'] . '%s%' . '/'
-                . ((strpos($themeFile, '.php')) ? $themeFile : ($themeFile . '.php'));
+    public function required($file) {
+        $file = $this->_theme['root'] . '%s%' . '/'
+            . ((((strpos($file, '.php') + 4) == strlen($file)) ? $file : ($file . '.php')));
 
         # Include Theme File
-        if (is_file(str_replace('%s%', $this->_theme['theme'], $file))) {
-            include str_replace('%s%', $this->_theme['theme'], $file);
+        if (is_file(str_replace('%s%', $this->_theme['name'], $file))) {
+            include str_replace('%s%', $this->_theme['name'], $file);
         # Include Default File
         } else if (is_file(str_replace('%s%', $this->_theme['default'], $file))) {
             include str_replace('%s%', $this->_theme['default'], $file);
+        # File Not Found
         } else {
-            throw new Exception('Cannot include theme file' . $themeFile, 1);
+            throw new Exception('Cannot include theme file' . $file, 1);
         }
     }
 
     public function httpError($code, $params) {
         if (array_key_exists(is_string($code) ? $code : strval($code), $this->_theme['error'])) {
             $params['code'] = intval($code);
-
-            
         }
     }
 
@@ -63,20 +68,17 @@ class Widget_Theme_Helper extends Abstract_Widget {
         return $this->_options;
     }
 
-    public function p2u($fullPath, $inTheme = false) {
+    public function path2url($fullPath) {
         $fullPath = ltrim($fullPath, '/');
         $fullPath = '/' . $fullPath;
 
         if (is_file(ltrim($fullPath, '/'))) {
-            echo Request::getFullUrl($fullPath);
+            return Request::getFullUrl($fullPath);
         }
     }
 
-    /**
-     * @return Widget_Theme_Helper
-     */
-    public static function self() {
-        return Manager_Widget::widget('helper');
+    public function renderer($file) {
+        return new Widget_Theme_Renderer($file, $this->_theme);
     }
 }
 
