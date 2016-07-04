@@ -26,21 +26,21 @@ function isMobile() {
   <meta name="format-detection" content="telephone=no"/>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
   <!-- style library -->
-  <link rel="stylesheet" href="../../include/Resource/css/library/grid-alpha.css" media="all" />
+  <link rel="stylesheet" href="../../include/Theme/default/css/library/grid-alpha.css" media="all" />
   <!-- Font -->
-  <link rel="stylesheet" href="../../include/Resource/css/library/fonts/fira.css" media="all" />
-  <link rel="stylesheet" href="../../include/Resource/css/library/fonts/inconsolata.css" media="all" />
+  <link rel="stylesheet" href="../../include/Theme/default/css/library/fonts/fira.css" media="all" />
+  <link rel="stylesheet" href="../../include/Theme/default/css/library/fonts/inconsolata.css" media="all" />
   <!-- module style -->
   <link rel="stylesheet" href="../../admin/Resource/css/install.css" media="all" />
 <?php if (isMobile()): ?>
   <!-- mobile lirary -->
-  <script src="../../include/Resource/js/library/mobile/zepto.min.js"></script>
-  <script src="../../include/Resource/js/library/mobile/fastclick.min.js"></script>
+  <script src="../../include/Theme/default/js/library/mobile/zepto.min.js"></script>
+  <script src="../../include/Theme/default/js/library/mobile/fastclick.min.js"></script>
 <?php else: ?>
   <!-- PC library -->
-  <script src="../../include/Resource/js/library/jquery-2.1.4.min.js"></script>
+  <script src="../../include/Theme/default/js/library/jquery-2.1.4.min.js"></script>
 <?php endif; ?>
-  <script src="../../include/Resource/js/library/jquery.jax.js"></script>
+  <script src="../../include/Theme/default/js/library/jquery.jax.js"></script>
   <script src="../../admin/Resource/js/installer.js"></script>
 </head>
 <body>
