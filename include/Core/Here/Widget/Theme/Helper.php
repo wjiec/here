@@ -77,8 +77,12 @@ class Widget_Theme_Helper extends Abstract_Widget {
         }
     }
 
-    public function renderer($file) {
-        return new Widget_Theme_Renderer($file, $this->_theme);
+    public function headerRenderer($file = 'header.php') {
+        return new Widget_Theme_Renderer_Header($file, $this->_theme);
+    }
+
+    public function footerRenderer($file = 'footer.php') {
+        return new Widget_Theme_Renderer_Footer($file, $this->_theme);
     }
 }
 

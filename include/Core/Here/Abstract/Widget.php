@@ -15,10 +15,6 @@ class Abstract_Widget implements Interface_Widget {
 
     public function __construct() {
         $this->_config = Config::factory();
-
-        if (method_exists($this, 'constructor')) {
-            call_user_func_array(array($this, 'constructor'), func_get_args());
-        }
     }
 
     /**

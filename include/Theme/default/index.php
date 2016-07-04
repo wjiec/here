@@ -1,8 +1,7 @@
 <?php
-    $this->renderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
-         ->stylesheet('library/grid-alpha')
-         ->stylesheet('modules/index')
-         ->javascript('index')
+    $this->headerRenderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
+         ->stylesheets('library/grid-alpha', 'modules/index', '123')
+         ->javascripts('index')
          ->render()
     ;
 ?>
@@ -14,4 +13,6 @@
     <h1 class="widget-hidden">Main Screen</h1>
     
 </section>
-<?php $this->renderer('footer.php'); ?>
+<?php $this->footerRenderer()
+           ->render()
+?>
