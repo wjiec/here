@@ -23,6 +23,10 @@ class Widget_Options extends Abstract_Widget {
         return $this->_config->{$key};
     }
 
+    public function __call($name, $args) {
+        echo $this->_config->{$name};
+    }
+
     public function output($key) {
         echo htmlspecialchars(($this->_config->{$key}) ? $this->_config->{$key} : null);
     }
@@ -30,6 +34,8 @@ class Widget_Options extends Abstract_Widget {
     public function push($key, $val) {
         $this->_config->{$key} = $val;
     }
+
+    
 
     public function earse($key) {
         $this->_config->earse($key);
