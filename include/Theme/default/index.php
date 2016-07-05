@@ -1,18 +1,45 @@
 <?php
     $this->headerRenderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
-         ->stylesheets('library/grid-alpha', 'modules/index', '123')
+         ->stylesheets('library/grid-alpha', 'modules/index')
          ->javascripts('index')
-         ->render()
-    ;
+         ->render();
 ?>
-<section id="left-screen">
+<!-- Header { loader-bar } -->
+<header>
+    <div id="jax-loader-bar" class="is-loading"></div>
+</header>
+<!-- Left Contents { Title, Category, Article List, Admin, More } -->
+<section id="left-screen left-screen-hidden">
     <h1 class="widget-hidden">Left Screen</h1>
-    
+    <!-- Title -->
+    <section id="index-left-title">
+        <h1><?php $this->options()->title() ?></h1>
+        <h2><?php $this->options()->subTitle() ?></h2>
+    </section>
+    <!-- Category -->
+    <section id="index-left-category">
+        <ul id="left-category-list"></ul>
+    </section>
+    <!-- Article List -->
+    <section id="index-left-article-list">
+        <ul id="left-article-list"></ul>
+    </section>
+    <!-- Admin -->
+    <section id="index-left-admin">
+        
+    </section>
+    <!-- More -->
+    <section id="index-left-more">
+        
+    </section>
 </section>
+<!-- Main Contents { Article [ Hot, New ] } -->
 <section id="main-screen" class="container">
     <h1 class="widget-hidden">Main Screen</h1>
-    
+    <div id="index-main-article-list">
+        <article class="index-article"></article>
+        <article class="index-article"></article>
+        <article class="index-article"></article>
+    </div>
 </section>
-<?php $this->footerRenderer()
-           ->render()
-?>
+<?php $this->footerRenderer()->render(); ?>
