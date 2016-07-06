@@ -175,8 +175,7 @@ class Service_Install {
             array('theme', 'default'),
             array('activePlugins', serialize(array(
                 'HelloWorld_Plugin' => array(
-                    Manager_Plugin::PLUGIN_STATUS  => Manager_Plugin::PLUGIN_SS_ACTIVE,
-                    Manager_Plugin::PLUGIN_VERSION => '1.0.0'
+                    // TODO Plugin Info
                 )))
             ),
             array('pluginHooks', serialize(array(

@@ -3,6 +3,7 @@
  * @author ShadowMan
  * @package here::Db
  */
+// TODO Anonymous Query
 class Db {
     # Keyword: SELECT
     const SELECT = 'SELECT';
@@ -110,6 +111,7 @@ class Db {
         if ($connect) {
             $db->connect();
         }
+
         return $db;
     }
 

@@ -13,6 +13,12 @@ class HelloWorld_Plugin extends Abstract_Plugin {
         return 'HelloWorld';
     }
 
+    public static function resource() {
+        return array_merge(
+            Manager_Plugin::registerStylesheet('HelloWorld', 'Second_Stylesheet'),
+            Manager_Plugin::registerJavascript('HelloWorld', 'Second_Javascript')
+        );
+    }
 }
 
 ?>

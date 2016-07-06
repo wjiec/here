@@ -5,9 +5,21 @@
  */
 
 class Widget_Theme_Renderer_Header extends Abstract_Widget {
+    /**
+     * referer theme information
+     * 
+     * @var array
+     */
     private $_theme = null;
 
+    /**
+     * render text
+     * 
+     * @var array
+     */
     private $_text = null;
+
+    private static $_pluginsResourece = array( 'stylesheet' => array(), 'javascript' => array() );
 
     public function __construct($file, $theme) {
         parent::__construct();
@@ -64,6 +76,58 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         return $this;
     }
 
+    /**
+     * 
+     * 
+     * @param array|string $css
+     * @param string $pluginRootPath
+     * @return boolean
+     */
+    public static function pluginStylesheet($csss, $plugin) {
+        if (is_string($csss)) {
+            $csss = array( $csss );
+        } else if (!is_array($csss)) {
+            return false;
+        }
+
+        $tempArray = array();
+        foreach ($csss as $css) {
+            $tempArray[] = $css; // TODO. Full Path ( URL )
+        }
+
+        if (!array_key_exists($plugin, self::$_pluginsResourece['stylesheet'])) {
+            self::$_pluginsResourece['stylesheet'][$plugin] = array();
+        }
+        self::$_pluginsResourece['stylesheet'][$plugin] = array_merge(self::$_pluginsResourece['stylesheet'][$plugin], array_filter($tempArray));
+
+        return true;
+    }
+
+    /**
+     * 
+     * @param array|string $js
+     * @param string $pluginRootPath
+     */
+    public static function pluginJavascript($jss, $plugin) {
+        if (is_string($jss)) {
+            $csss = array( $jss );
+        } else if (!is_array($jss)) {
+            return false;
+        }
+
+        $tempArray = array();
+        foreach ($jss as $js) {
+            $tempArray[] = $js; // TODO. Full Path ( URL )
+        }
+        
+        if (!array_key_exists($plugin, self::$_pluginsResourece['javascript'])) {
+            self::$_pluginsResourece['javascript'][$plugin] = array();
+        }
+        self::$_pluginsResourece['javascript'][$plugin] = array_merge(self::$_pluginsResourece['javascript'][$plugin], array_filter($tempArray));
+
+        return true;
+    }
+
     public function render() {
         $this->_text = null;
 
@@ -110,8 +174,16 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         }
     }
 
-    private function _FullResourceURI($module, $ext) {
-        $file = $this->_theme['root'] . "%s%" . "/{$ext}/"
+    private function _FullResourceURI($module, $ext, $root = null) {
+        if ($root == null) {
+            $root = $this->_theme['root'];
+        } else {
+            if (!is_dir($root) || !is_dir($root . PATH_SEPARATOR . $ext)) {
+                return null;
+            }
+        }
+
+        $file = $root . "%s%" . "/{$ext}/"
         . ((((strpos($module, ".{$ext}") + strlen($ext) + 1) == strlen($module)) ? $module : ($module . ".{$ext}")));
 
         if (is_file(str_replace('%s%', $this->_theme['name'], $file))) {

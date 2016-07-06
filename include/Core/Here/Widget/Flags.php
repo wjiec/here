@@ -9,7 +9,7 @@ class Widget_Flags extends Abstract_Widget {
             'ConfigLoaded' => false,
             'Developer'    => false,
             'Updateing'    => false,
-            'UserLogined'  => false
+            'UpdatePlugin' => false
         ));
     }
 

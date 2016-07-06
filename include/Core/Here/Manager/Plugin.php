@@ -1,173 +1,146 @@
 <?php
 /**
+ *
  * @author ShadowMan
- * @package Plugin
  */
-class Manager_Plugin {
-    const PLUGIN_SS_ACTIVE    = 'STATUS_ACTIVE';
 
-    const PLUGIN_SS_DISABLE   = 'STATUS_DISABLE';
+if (!defined('__HERE_ROOT_DIRECTORY__')) {
+    die('Permission Denied');
+}
 
-    const PLUGIN_HOOKS        = 'HOOKS';
+const _PATH_SEPARATOR = '/';
 
-    const PLUGIN_JAVASCRIPT   = 'JAVASCRIPT';
-
-    const PLUGIN_SS_NOT_FOUND = 'STATUS_NOT_FOUND';
-
-    const PLUGIN_STYLE        = 'STYLE';
-
-    const PLUGIN_STATUS       = 'STATUS';
-
-    const PLUGIN_VERSION      = 'VERSION';
-
-    private static $PLUGIN_INFO = 'INFO';
-
+class Manager_Plugin extends Abstract_Widget {
     /**
-     * Plugin directory
-     * 
-     * @var string
-     * @access private
-     */
-    private static $ABSOLUTE_PATH = null;
-
-    /**
-     * Plugins list
+     * store all plugins information
      * 
      * @var array
-     * @access private
      */
     private static $_plugins = array();
 
     /**
-     * activated plugins list
+     * store active plugins
      * 
      * @var array
      */
-    private static $_actives = array();
+    private static $_activePlugins = array();
 
     /**
-     * Hooks list
+     * hook list and callback function
      * 
      * @var array
      */
     private static $_hooks = array();
 
-    // TODO. get activate plugins list from database
-    //       merge activate and plugin to activate
+    /**
+     * absolute plugins path
+     * 
+     * @var string
+     */
+    private static $_absolutePath = null;
+
     public static function init() {
-        if (self::$ABSOLUTE_PATH == null) {
-            self::$ABSOLUTE_PATH = __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__;
+        if (self::$_absolutePath == null) {
+            self::$_absolutePath = __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__;
         }
 
-        self::collectPlugins();
-        self::initActivatePlugins();
-        self::initHooks();
-    }
-
-    public static function hook($hook) {
-        if (($executors = self::executor($hook)) != null) {
-            foreach ($executors as $exector) {
-                $exector->execute();
-            }
-        }
-    }
-
-    /**
-     * bind hook
-     * @param string $hook
-     * @param array|string $method
-     */
-    public static function bind($hook, $method) {
-        $hook = explode('@', $hook);
-        list($module, $position) = (count($hook) == 2) ? $hook : [ null, null ];
-
-        if ($module == null && $position == null) {
-            throw new Exception('Params error occurs', 1111);
-        }
-
-        if (is_callable($method)) {
-            self::$_hooks[$module][$position] = $method;
-        }
-    }
-
-    /**
-     * execute hook or create new hook
-     * @param string $hook
-     * @return Plugins_Exector
-     */
-    private static function executor($hook) {
-        $hook = explode('@', $hook);
-        list($module, $position) = (count($hook) == 2) ? $hook : [ null, null ];
-
-        if ($module == null && $position == null) {
-            throw new Exception("Params error occurs.(`{$hook}` NOT FOUND IN " . __FUNCTION__ . ")", 1111);
-        }
-
-        if (isset(self::$_hooks[$module][$position])) {
-            $exectors = array();
-            foreach (self::$_hooks[$module][$position] as $plugin => $method) {
-                $exectors[] = Plugins_Exector::factory($module, $position, $method);
-            }
-            return $exectors;
-        } else {
-            return null;
-        }
-    }
-
-    private static function collectPlugins() {
-        $directory = dir(self::$ABSOLUTE_PATH);
-
+        # Collect All Plugins
+        $directory = dir(self::$_absolutePath);
         while (($entry = $directory->read()) !== false) {
             if ($entry == '.' || $entry == '..') {
                 continue;
             }
 
-            if (is_dir(self::$ABSOLUTE_PATH . '/' . $entry) && is_file(self::$ABSOLUTE_PATH . '/' . $entry . '/' . 'Plugin.php')) {
-                self::$_plugins[$entry . '_Plugin'] = self::getPluginInfo(self::$ABSOLUTE_PATH . '/' . $entry . '/' . 'Plugin.php');
+            if (is_dir(self::$_absolutePath . _PATH_SEPARATOR . $entry) && is_file(self::$_absolutePath . _PATH_SEPARATOR . $entry . _PATH_SEPARATOR . 'Plugin.php')) {
+                self::$_plugins[$entry . '_Plugin'] = self::_createPlugin(self::$_absolutePath . _PATH_SEPARATOR . $entry . _PATH_SEPARATOR . 'Plugin.php');
             }
         }
-        $directory->close();
+
+        # From Database Getting Active Plugins & Plugins Information
+        $pluginDb = new Db();
+        $pluginDb->query($pluginDb->select()->from('table.options')->where('name', Db::OP_EQUAL, 'activePlugins'));
+        self::$_activePlugins = unserialize($pluginDb->fetchAssoc('value'));
+        foreach (array_keys(self::$_activePlugins) as $plugin) {
+            if (!array_key_exists($plugin, self::$_plugins)) {
+                unset($_activePlugins[$plugin]);
+                self::$_plugins[$plugin]['valid'] = false;
+            }
+        }
+
+        # Setting Active Plugins Resource
+        foreach (array_keys(self::$_activePlugins) as $plugin) {
+            $source = self::_valueFilter(call_user_func(array($plugin, 'resource')));
+
+            if (array_key_exists('stylesheet', $source)) {
+                Widget_Theme_Renderer_Header::pluginStylesheet($source['stylesheet'], $plugin);
+            }
+
+            if (array_key_exists('javascript', $source)) {
+                Widget_Theme_Renderer_Header::pluginJavascript($source['javascript'], $plugin);
+            }
+        }
     }
 
-    /**
-     * get info from this plugin file
-     * 
-     * @param string $filename
-     * @return array
-     */
-    private static function getPluginInfo($filename) {
-        $content = file_get_contents($filename);
+    public static function hook($hook) {
+        
+    }
+
+    public static function activate($plugin) {
+        
+    }
+
+    public static function registerStylesheet() {
+        return array('stylesheet' => func_get_args());;
+    }
+
+    public static function registerJavascript() {
+        return array('javascript' => func_get_args());
+    }
+
+    private static function _createPlugin($name, $author = null, $version = null, $license = null, $link = null) {
+        $information = array();
+
+        if (array_key_exists($name, self::$_plugins)) {
+            return null;
+        } else {
+            $information = array_merge($information, self::_pluginFinder($name));
+        }
+
+        return $information;
+    }
+
+    private static function _pluginFinder($pluginPath) {
         $plugin  = array();
 
-        $KEY = 1; $VALUE = 2;
-        preg_match_all('/^\s*\*\s*\@(author|version|license|link)\s*(.*)$/m', $content, $result);
-        for ($length = count($result[$KEY]), $index = 0; $index < $length; ++$index) {
-            $plugin[$result[$KEY][$index]] = trim($result[$VALUE][$index]);
+        if (is_file($pluginPath)) {
+            $contents = file_get_contents($pluginPath);
+
+            preg_match_all('/^\s*\*\s*\@(author|version|license|link)\s*(.*)$/m', $contents, $result);
+            for ($length = count($result[1]), $index = 0; $index < $length; ++$index) {
+                $plugin[$result[1][$index]] = trim($result[2][$index]);
+            }
+            $plugin['path'] = $pluginPath;
+            $plugin['valid'] = true;
+        } else if (is_file(self::$_absolutePath . _PATH_SEPARATOR . $pluginPath . _PATH_SEPARATOR . 'Plugin.php')) {
+            return self::_pluginFinder(self::$_absolutePath . _PATH_SEPARATOR . $pluginPath . _PATH_SEPARATOR . 'Plugin.php');
+        } else {
+            return array();
         }
+
         return $plugin;
     }
 
-    private static function initActivatePlugins() {
-        $activeDb = new Db();
-
-        $activeDb->query($activeDb->select()->from('table.options')->where('name', Db::OP_EQUAL, 'activePlugins'));
-        self::$_actives = unserialize($activeDb->fetchAssoc('value'));
-
-        foreach (self::$_plugins as $plugin => $info) {
-            if (array_key_exists($plugin, self::$_actives)) {
-                unset(self::$_plugins[$plugin]);
-                self::$_actives[$plugin][self::$PLUGIN_INFO] = $info;
-            }
+    private static function _valueFilter($array) {
+        if (!is_array($array)) {
+            return array();
         }
-    }
 
-    private static function initHooks() {
-        $plugins = array_keys(self::$_plugins);
-        $hookDb  = new Db();
-
-        $hookDb->query($hookDb->select()->from('table.options')->where('name', Db::OP_EQUAL, 'pluginHooks'));
-        self::$_hooks = unserialize($hookDb->fetchAssoc('value'));
+        return array_filter(array_map(function($value) {
+            if (is_string($value)) {
+                return $value;
+            } else if (is_array($value)) {
+                return self::_valueFilter($value);
+            }
+        }, $array));
     }
 }
-
-?>

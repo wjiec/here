@@ -18,6 +18,16 @@ class Abstract_Widget implements Interface_Widget {
     }
 
     /**
+     * (non-PHPdoc)
+     *
+     * @see Interface_Widget::start()
+     *
+     */
+    public function start() {
+        /* noop */
+    }
+
+    /**
      * 
      * @param array|Config $config
      * @param bool $fromDb
@@ -38,22 +48,6 @@ class Abstract_Widget implements Interface_Widget {
         } else if (is_array($config)) {
             $this->_config = Config::factory($config);
         }
-    }
-
-//     public static function options(&$widget) {
-//         if ($widget instanceof Widget_Options) {
-//             self::$_options = $widget;
-//         }
-//     }
-
-    /**
-     * (non-PHPdoc)
-     * 
-     * @see Interface_Widget::start()
-     *
-     */
-    public function start() {
-        /* noop */
     }
 
     public function __get($key) {

@@ -1,4 +1,5 @@
 <?php
+    // @var $this Widget_Theme_Helper
     $this->headerRenderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
          ->stylesheets('library/grid-alpha', 'modules/index')
          ->javascripts('index')
@@ -7,6 +8,7 @@
 <!-- Header { loader-bar } -->
 <header>
     <div id="jax-loader-bar" class="is-loading"></div>
+    <?php Manager_Plugin::hook('index@header') ?>
 </header>
 <!-- Left Contents { Title, Category, Article List, Admin, More } -->
 <section id="left-screen left-screen-hidden">
