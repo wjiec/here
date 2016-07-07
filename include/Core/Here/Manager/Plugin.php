@@ -8,8 +8,6 @@ if (!defined('__HERE_ROOT_DIRECTORY__')) {
     die('Permission Denied');
 }
 
-const _PATH_SEPARATOR = '/';
-
 class Manager_Plugin extends Abstract_Widget {
     /**
      * store all plugins information
@@ -51,8 +49,8 @@ class Manager_Plugin extends Abstract_Widget {
                 continue;
             }
 
-            if (is_dir(self::$_absolutePath . _PATH_SEPARATOR . $entry) && is_file(self::$_absolutePath . _PATH_SEPARATOR . $entry . _PATH_SEPARATOR . 'Plugin.php')) {
-                self::$_plugins[$entry . '_Plugin'] = self::_createPlugin(self::$_absolutePath . _PATH_SEPARATOR . $entry . _PATH_SEPARATOR . 'Plugin.php');
+            if (is_dir(self::$_absolutePath . DIRECTORY_SEPARATOR . $entry) && is_file(self::$_absolutePath . DIRECTORY_SEPARATOR . $entry . DIRECTORY_SEPARATOR . 'Plugin.php')) {
+                self::$_plugins[$entry . '_Plugin'] = self::_createPlugin(self::$_absolutePath . DIRECTORY_SEPARATOR . $entry . DIRECTORY_SEPARATOR . 'Plugin.php');
             }
         }
 
@@ -121,8 +119,8 @@ class Manager_Plugin extends Abstract_Widget {
             }
             $plugin['path'] = $pluginPath;
             $plugin['valid'] = true;
-        } else if (is_file(self::$_absolutePath . _PATH_SEPARATOR . $pluginPath . _PATH_SEPARATOR . 'Plugin.php')) {
-            return self::_pluginFinder(self::$_absolutePath . _PATH_SEPARATOR . $pluginPath . _PATH_SEPARATOR . 'Plugin.php');
+        } else if (is_file(self::$_absolutePath . DIRECTORY_SEPARATOR . $pluginPath . DIRECTORY_SEPARATOR . 'Plugin.php')) {
+            return self::_pluginFinder(self::$_absolutePath . DIRECTORY_SEPARATOR . $pluginPath . DIRECTORY_SEPARATOR . 'Plugin.php');
         } else {
             return array();
         }

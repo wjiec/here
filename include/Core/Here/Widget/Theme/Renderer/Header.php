@@ -4,13 +4,14 @@
  * @author ShadowMan
  */
 
+
 class Widget_Theme_Renderer_Header extends Abstract_Widget {
     /**
      * referer theme information
      * 
      * @var array
      */
-    private $_theme = null;
+    private static $_theme = null;
 
     /**
      * render text
@@ -21,11 +22,10 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
 
     private static $_pluginsResourece = array( 'stylesheet' => array(), 'javascript' => array() );
 
-    public function __construct($file, $theme) {
+    public function __construct($file) {
         parent::__construct();
 
         try {
-            $this->_theme = $theme;
             $this->_config->file = $this->_findThemeFile($file);
         } catch (Exception $except) {
             throw $except;
@@ -36,6 +36,11 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         $this->_config->javascript = array();
 
         return $this;
+    }
+
+    public static function init($theme) {
+        self::$_theme = $theme;
+        self::$_theme['pluginResourceRoot'] = __HERE_PLUGINS_DIRECTORY__;
     }
 
     public function title($title) {
@@ -57,7 +62,7 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         $cssArray = $this->_config->stylesheet;
 
         foreach ($csss as $css) {
-            $cssArray[] = $this->_FullResourceURI($css, 'css');
+            $cssArray[] = self::_FullResourceURI($css, 'css');
         }
 
         $this->_config->stylesheet = array_filter($cssArray);
@@ -69,10 +74,14 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         $jsArray = $this->_config->javascript;
 
         foreach ($jss as $js) {
-            $jsArray[] = $this->_FullResourceURI($js, 'js');
+            $jsArray[] = self::_FullResourceURI($js, 'js');
         }
 
-        $this->_config->javascript = array_filter($jsArray);
+        $this->_config->javascript = array_filter($jsArray, function($v) {
+            if ($v !== null || !empty($v)) {
+                return true;
+            }
+        });
         return $this;
     }
 
@@ -84,21 +93,20 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
      * @return boolean
      */
     public static function pluginStylesheet($csss, $plugin) {
-        if (is_string($csss)) {
-            $csss = array( $csss );
-        } else if (!is_array($csss)) {
+        if (!is_array($csss)) {
             return false;
         }
 
         $tempArray = array();
         foreach ($csss as $css) {
-            $tempArray[] = $css; // TODO. Full Path ( URL )
+            $tempArray[] = self::_FullResourceURI($css, 'css', __HERE_PLUGINS_DIRECTORY__ . _DIRECTORY_SEPARATOR . str_replace('_Plugin', '', $plugin));
         }
 
         if (!array_key_exists($plugin, self::$_pluginsResourece['stylesheet'])) {
             self::$_pluginsResourece['stylesheet'][$plugin] = array();
         }
         self::$_pluginsResourece['stylesheet'][$plugin] = array_merge(self::$_pluginsResourece['stylesheet'][$plugin], array_filter($tempArray));
+        self::$_pluginsResourece['stylesheet'] = array_filter(self::$_pluginsResourece['stylesheet']);
 
         return true;
     }
@@ -109,27 +117,28 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
      * @param string $pluginRootPath
      */
     public static function pluginJavascript($jss, $plugin) {
-        if (is_string($jss)) {
-            $csss = array( $jss );
-        } else if (!is_array($jss)) {
+        if (!is_array($jss)) {
             return false;
         }
 
         $tempArray = array();
         foreach ($jss as $js) {
-            $tempArray[] = $js; // TODO. Full Path ( URL )
+            $tempArray[] = self::_FullResourceURI($js, 'js', __HERE_PLUGINS_DIRECTORY__ . _DIRECTORY_SEPARATOR . str_replace('_Plugin', '', $plugin));
         }
-        
+
         if (!array_key_exists($plugin, self::$_pluginsResourece['javascript'])) {
             self::$_pluginsResourece['javascript'][$plugin] = array();
         }
-        self::$_pluginsResourece['javascript'][$plugin] = array_merge(self::$_pluginsResourece['javascript'][$plugin], array_filter($tempArray));
 
+        self::$_pluginsResourece['javascript'][$plugin] = array_merge(self::$_pluginsResourece['javascript'][$plugin], array_filter($tempArray));
+        self::$_pluginsResourece['javascript'] = array_filter(self::$_pluginsResourece['javascript']);
+        
         return true;
     }
 
     public function render() {
         $this->_text = null;
+        var_dump(self::$_pluginsResourece);
 
         if ($this->_config->title) {
             $this->_text .= "<title>{$this->_config->title}</title>\n";
@@ -159,43 +168,48 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
     }
 
     private function _findThemeFile($file) {
-        $file = $this->_theme['root'] . '%s%' . '/'
+        $file = self::$_theme['root'] . '%s%' . '/'
                 . ((((strpos($file, '.php') + 4) == strlen($file)) ? $file : ($file . '.php')));
 
         # Include Customer Theme File
-        if (is_file(str_replace('%s%', $this->_theme['name'], $file))) {
-            return str_replace('%s%', $this->_theme['name'], $file);
+        if (is_file(str_replace('%s%', self::$_theme['name'], $file))) {
+            return str_replace('%s%', self::$_theme['name'], $file);
         # Include Default Theme File
-        } else if (is_file(str_replace('%s%', $this->_theme['default'], $file))) {
-            return str_replace('%s%', $this->_theme['default'], $file);
+        } else if (is_file(str_replace('%s%', self::$_theme['default'], $file))) {
+            return str_replace('%s%', self::$_theme['default'], $file);
         # File Not Found
         } else {
-            throw new Exception('Cannot include theme file' . $file, 1);
+            throw new Exception('Cannot include theme file ' . $file, 1);
         }
     }
 
-    private function _FullResourceURI($module, $ext, $root = null) {
-        if ($root == null) {
-            $root = $this->_theme['root'];
+    private static function _FullResourceURI($module, $ext, $root = null) {
+        if ($root === null) {
+            $root = self::$_theme['root'];
         } else {
-            if (!is_dir($root) || !is_dir($root . PATH_SEPARATOR . $ext)) {
+            $root = ltrim($root, '/');
+            if (!is_dir($root) || !is_dir($root . _DIRECTORY_SEPARATOR . $ext)) {
                 return null;
+            } else {
+                if (is_file($root . _DIRECTORY_SEPARATOR . $ext . _DIRECTORY_SEPARATOR . $module . '.' . $ext)) {
+                    return self::_path2url($root . _DIRECTORY_SEPARATOR . $ext . _DIRECTORY_SEPARATOR . $module . '.' . $ext);
+                }
             }
         }
 
         $file = $root . "%s%" . "/{$ext}/"
-        . ((((strpos($module, ".{$ext}") + strlen($ext) + 1) == strlen($module)) ? $module : ($module . ".{$ext}")));
+            . ((((strpos($module, ".{$ext}") + strlen($ext) + 1) == strlen($module)) ? $module : ($module . ".{$ext}")));
 
-        if (is_file(str_replace('%s%', $this->_theme['name'], $file))) {
-            return $this->_path2url(str_replace('%s%', $this->_theme['name'], $file));
-        } else if (is_file(str_replace('%s%', $this->_theme['default'], $file))) {
-            return $this->_path2url(str_replace('%s%', $this->_theme['default'], $file));
+        if (is_file(str_replace('%s%', self::$_theme['name'], $file))) {
+            return self::_path2url(str_replace('%s%', self::$_theme['name'], $file));
+        } else if (is_file(str_replace('%s%', self::$_theme['default'], $file))) {
+            return self::_path2url(str_replace('%s%', self::$_theme['default'], $file));
         } else {
             return null;
         }
     }
 
-    private function _path2url($fullPath) {
+    private static function _path2url($fullPath) {
         $fullPath = ltrim($fullPath, '/');
         $fullPath = '/' . $fullPath;
 

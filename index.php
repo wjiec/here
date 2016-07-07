@@ -28,6 +28,8 @@ define('__HERE_PLUGINS_DIRECTORY__', '/include/Plugins');
 # Theme Directory
 define('__HERE_THEME_DIRECTORY__', '/include/Theme');
 
+define('_DIRECTORY_SEPARATOR', '/');
+
 @set_include_path(get_include_path() . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_CORE_DIRECTORY__ . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_ADMIN_DIRECTORY__ . PATH_SEPARATOR.

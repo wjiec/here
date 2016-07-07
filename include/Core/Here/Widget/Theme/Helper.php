@@ -33,6 +33,9 @@ class Widget_Theme_Helper extends Abstract_Widget {
             )
         );
 
+        Widget_Theme_Renderer_Header::init($this->_theme);
+        Widget_Theme_Renderer_Footer::init($this->_theme);
+
         try {
             $this->required('function');
         } catch (Exception $e) {
@@ -78,11 +81,11 @@ class Widget_Theme_Helper extends Abstract_Widget {
     }
 
     public function headerRenderer($file = 'header.php') {
-        return new Widget_Theme_Renderer_Header($file, $this->_theme);
+        return new Widget_Theme_Renderer_Header($file);
     }
 
     public function footerRenderer($file = 'footer.php') {
-        return new Widget_Theme_Renderer_Footer($file, $this->_theme);
+        return new Widget_Theme_Renderer_Footer($file);
     }
 }
 

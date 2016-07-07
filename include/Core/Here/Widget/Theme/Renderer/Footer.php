@@ -4,7 +4,8 @@
  * @author ShadowMan
  */
 
-class Widget_Theme_Renderer_Footer extends \Abstract_Widget {
+class Widget_Theme_Renderer_Footer extends Abstract_Widget {
+    private static $_theme = null;
 
     public function __construct($file, $theme) {
         parent::__construct();
@@ -18,6 +19,12 @@ class Widget_Theme_Renderer_Footer extends \Abstract_Widget {
 
         return $this;
     }
+
+    public static function init($theme) {
+        self::$_theme = $theme;
+        self::$_theme['pluginResourceRoot'] = __HERE_PLUGINS_DIRECTORY__;
+    }
+    
 
     public function render() {
         include $this->_config->file;
