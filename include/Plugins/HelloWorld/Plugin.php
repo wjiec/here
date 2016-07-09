@@ -14,11 +14,14 @@ class HelloWorld_Plugin extends Abstract_Plugin {
     }
 
     public static function resource() {
-        return array_merge(
-            Manager_Plugin::registerStylesheet('HelloWorld', 'Second_Stylesheet'),
-            Manager_Plugin::registerJavascript('HelloWorld', 'Second_Javascript')
+        Manager_Plugin::registerResocures('index',
+            Manager_Plugin::registerStylesheet('HelloWorld'),
+            Manager_Plugin::registerJavascript('HelloWorld')
+        );
+
+        Manager_Plugin::registerResocures('admin',
+            Manager_Plugin::registerStylesheet('HelloWorld'),
+            Manager_Plugin::registerJavascript('HelloWorld')
         );
     }
 }
-
-?>

@@ -92,14 +92,14 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
      * @param string $pluginRootPath
      * @return boolean
      */
-    public static function pluginStylesheet($csss, $plugin) {
+    public static function pluginStylesheet($csss, $plugin, $page) {
         if (!is_array($csss)) {
             return false;
         }
 
         $tempArray = array();
         foreach ($csss as $css) {
-            $tempArray[] = self::_FullResourceURI($css, 'css', __HERE_PLUGINS_DIRECTORY__ . _DIRECTORY_SEPARATOR . str_replace('_Plugin', '', $plugin));
+            $tempArray[$page] = self::_FullResourceURI($css, 'css', __HERE_PLUGINS_DIRECTORY__ . _DIRECTORY_SEPARATOR . str_replace('_Plugin', '', $plugin));
         }
 
         if (!array_key_exists($plugin, self::$_pluginsResourece['stylesheet'])) {
@@ -116,14 +116,14 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
      * @param array|string $js
      * @param string $pluginRootPath
      */
-    public static function pluginJavascript($jss, $plugin) {
+    public static function pluginJavascript($jss, $plugin, $page) {
         if (!is_array($jss)) {
             return false;
         }
 
         $tempArray = array();
         foreach ($jss as $js) {
-            $tempArray[] = self::_FullResourceURI($js, 'js', __HERE_PLUGINS_DIRECTORY__ . _DIRECTORY_SEPARATOR . str_replace('_Plugin', '', $plugin));
+            $tempArray[$page] = self::_FullResourceURI($js, 'js', __HERE_PLUGINS_DIRECTORY__ . _DIRECTORY_SEPARATOR . str_replace('_Plugin', '', $plugin));
         }
 
         if (!array_key_exists($plugin, self::$_pluginsResourece['javascript'])) {

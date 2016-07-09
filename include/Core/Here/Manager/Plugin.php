@@ -67,15 +67,7 @@ class Manager_Plugin extends Abstract_Widget {
 
         # Setting Active Plugins Resource
         foreach (array_keys(self::$_activePlugins) as $plugin) {
-            $source = self::_valueFilter(call_user_func(array($plugin, 'resource')));
-
-            if (array_key_exists('stylesheet', $source)) {
-                Widget_Theme_Renderer_Header::pluginStylesheet($source['stylesheet'], $plugin);
-            }
-
-            if (array_key_exists('javascript', $source)) {
-                Widget_Theme_Renderer_Header::pluginJavascript($source['javascript'], $plugin);
-            }
+            call_user_func(array($plugin, 'resource'));
         }
     }
 
@@ -87,8 +79,26 @@ class Manager_Plugin extends Abstract_Widget {
         
     }
 
+    public static function registerResocures($page/* [, ...] */) {
+        $plugin = Common::prevClass();
+
+        $args = func_get_args(); array_shift($args);
+        $resource = array();
+        foreach ($args as $val) {
+            $resource = array_merge($resource, $val);
+        }
+
+        if (array_key_exists('stylesheet', $resource)) {
+            Widget_Theme_Renderer_Header::pluginStylesheet($resource['stylesheet'], $plugin, $page);
+        }
+
+        if (array_key_exists('javascript', $resource)) {
+            Widget_Theme_Renderer_Header::pluginJavascript($resource['javascript'], $plugin, $page);
+        }
+    }
+
     public static function registerStylesheet() {
-        return array('stylesheet' => func_get_args());;
+        return array('stylesheet' => func_get_args());
     }
 
     public static function registerJavascript() {

@@ -100,6 +100,20 @@ class Common {
         return substr(self::_shuffleString(), 0, $length);
     }
 
+    public static function prevClass() {
+        $debug_backtrace = debug_backtrace();
+        $callerInformation = $debug_backtrace[2];
+
+        return array_key_exists('class', $callerInformation) ? $callerInformation['class'] : null;
+    }
+
+    public static function prevFunction() {
+        $debug_backtrace = debug_backtrace();
+        $callerInformation = $debug_backtrace[2];
+
+        return array_key_exists('function', $callerInformation) ? $callerInformation['function'] : null;
+    }
+
     private static function _shuffleString() {
         return str_shuffle(self::$_charSet);
     }
