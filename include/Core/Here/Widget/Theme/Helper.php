@@ -80,11 +80,11 @@ class Widget_Theme_Helper extends Abstract_Widget {
         }
     }
 
-    public function headerRenderer($file = 'header.php') {
+    public static function headerRenderer($file = 'header.php') {
         return new Widget_Theme_Renderer_Header($file);
     }
 
-    public function footerRenderer($file = 'footer.php') {
+    public static function footerRenderer($file = 'footer.php') {
         return new Widget_Theme_Renderer_Footer($file);
     }
 }

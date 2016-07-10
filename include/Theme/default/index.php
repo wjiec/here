@@ -1,6 +1,6 @@
 <?php
     // @var $this Widget_Theme_Helper
-    $this->headerRenderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
+    Widget_Theme_Helper::headerRenderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
          ->stylesheets('library/grid-alpha', 'modules/index')
          ->javascripts('index')
          ->render();
@@ -44,4 +44,4 @@
         <article class="index-article"></article>
     </div>
 </section>
-<?php $this->footerRenderer()->render(); ?>
+<?php Widget_Theme_Helper::footerRenderer()->render() ?>

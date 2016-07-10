@@ -69,12 +69,39 @@ class Manager_Plugin extends Abstract_Widget {
         foreach (array_keys(self::$_activePlugins) as $plugin) {
             call_user_func(array($plugin, 'resource'));
         }
+
+        # Getting Hook Function From Database
+        $pluginDb->query($pluginDb->select()->from('table.options')->where('name', Db::OP_EQUAL, 'pluginHooks'));
+        self::$_hooks = unserialize($pluginDb->fetchAssoc('value'));
     }
 
-    public static function hook($hook) {
+    public static function hook($hook, $default = null) {
+        list($page, $position) = strpos($hook, '@') ? explode('@', $hook) : [ $hook, null ];
+
+        if ($page == null || $position == null || !strlen($page) || !strlen($position)) {
+            throw new Exception('Hook Error Occurs, Invalid Hook Name');
+        }
+
+        # non hook function
+        if (empty(self::$_hooks[$page][$position])) {
+            return null;
+        }
+
+        foreach (self::$_hooks[$page][$position] as $plugin => $function) {
+            if (is_callable($function)) {
+                if (call_user_func_array($function, array()) === false) {
+                    throw new Exception("Plugin { {$plugin} } Hook { " . self::_arrayToString($function) . " } Error Occurs.");
+                }
+            }
+        }
+    }
+
+    // activate with call
+    public static function bind($hook, $function) {
         
     }
 
+    // administrator operator
     public static function activate($plugin) {
         
     }
@@ -150,5 +177,9 @@ class Manager_Plugin extends Abstract_Widget {
                 return self::_valueFilter($value);
             }
         }, $array));
+    }
+
+    private static function _arrayToString(array $array) {
+        return "array( " . implode(',', $array) . " )";
     }
 }

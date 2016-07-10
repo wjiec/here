@@ -101,15 +101,15 @@ class Common {
     }
 
     public static function prevClass() {
-        $debug_backtrace = debug_backtrace();
-        $callerInformation = $debug_backtrace[2];
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        $callerInformation = $backtrace[2];
 
         return array_key_exists('class', $callerInformation) ? $callerInformation['class'] : null;
     }
 
     public static function prevFunction() {
-        $debug_backtrace = debug_backtrace();
-        $callerInformation = $debug_backtrace[2];
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
+        $callerInformation = $backtrace[2];
 
         return array_key_exists('function', $callerInformation) ? $callerInformation['function'] : null;
     }

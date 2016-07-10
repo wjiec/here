@@ -26,6 +26,9 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         parent::__construct();
 
         try {
+            $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+
+            $this->_config->page = self::_fileFilter($backtrace[1]['file']);
             $this->_config->file = $this->_findThemeFile($file);
         } catch (Exception $except) {
             throw $except;
@@ -138,25 +141,42 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
 
     public function render() {
         $this->_text = null;
-        var_dump(self::$_pluginsResourece);
 
         if ($this->_config->title) {
             $this->_text .= "<title>{$this->_config->title}</title>\n";
         }
 
+        # Favicon Loader
         if ($this->_config->favicon) {
-            $this->_text .= "<link rel=\"shortcut icon\" href=\"/favicon.ico\"/><link rel=\"bookmark\" href=\"/favicon.ico\"/>\n";
+            $this->_text .= "    <link rel=\"shortcut icon\" href=\"/favicon.ico\"/><link rel=\"bookmark\" href=\"/favicon.ico\"/>\n";
         }
 
+        # Stylesheet Setting
         if (!empty($this->_config->stylesheet)) {
             foreach ($this->_config->stylesheet as $css) {
-                $this->_text .= "<link rel=\"stylesheet\" href=\"{$css}\" media=\"all\" />\n";
+                $this->_text .= "    <link rel=\"stylesheet\" href=\"{$css}\" media=\"all\" />\n";
             }
         }
 
         if (!empty($this->_config->javascript)) {
             foreach ($this->_config->javascript as $js) {
-                $this->_text .= "<script src=\"{$js}\"></script>\n";
+                $this->_text .= "    <script src=\"{$js}\"></script>\n";
+            }
+        }
+
+        if (!empty(self::$_pluginsResourece['stylesheet'])) {
+            foreach (self::$_pluginsResourece['stylesheet'] as $plugin => $csss) {
+                if (array_key_exists($this->_config->page, $csss)) {
+                    $this->_text .= "    <link rel=\"stylesheet\" href=\"{$csss[$this->_config->page]}\" media=\"all\" />\n";
+                }
+            }
+        }
+
+        if (!empty(self::$_pluginsResourece['javascript'])) {
+            foreach (self::$_pluginsResourece['javascript'] as $plugin => $jss) {
+                if (array_key_exists($this->_config->page, $jss)) {
+                    $this->_text .= "    <script src=\"{$jss[$this->_config->page]}\"></script>\n";
+                }
             }
         }
 
@@ -216,5 +236,11 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         if (is_file(ltrim($fullPath, '/'))) {
             return Request::getFullUrl($fullPath);
         }
+    }
+
+    private static function _fileFilter($path) {
+        $path = str_replace('\\', '/', $path);
+
+        return rtrim(substr($path, strrpos($path, '/') + 1), '.php');
     }
 }

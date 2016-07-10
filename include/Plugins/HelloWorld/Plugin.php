@@ -14,14 +14,18 @@ class HelloWorld_Plugin extends Abstract_Plugin {
     }
 
     public static function resource() {
-        Manager_Plugin::registerResocures('index',
-            Manager_Plugin::registerStylesheet('HelloWorld'),
-            Manager_Plugin::registerJavascript('HelloWorld')
+        Manager_Plugin::registerResocures('index', // page setting
+            Manager_Plugin::registerStylesheet('HelloWorld'), // only one file
+            Manager_Plugin::registerJavascript('HelloWorld') // too
         );
 
         Manager_Plugin::registerResocures('admin',
             Manager_Plugin::registerStylesheet('HelloWorld'),
             Manager_Plugin::registerJavascript('HelloWorld')
         );
+    }
+
+    public static function render() {
+        echo '<div class="hello-world"><p>Hello World</p></div>';
     }
 }
