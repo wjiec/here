@@ -10,7 +10,7 @@
 
 class HelloWorld_Plugin extends Abstract_Plugin {
     public static function activate() {
-        return 'HelloWorld';
+        Manager_Plugin::bind('index@header', array('HelloWorld_Plugin', 'render'));
     }
 
     public static function resource() {

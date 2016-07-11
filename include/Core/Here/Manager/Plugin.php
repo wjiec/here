@@ -37,6 +37,16 @@ class Manager_Plugin extends Abstract_Widget {
      */
     private static $_absolutePath = null;
 
+    /**
+     * temporary hooks, When the administrator activates the plugin to save the hooks
+     * 
+     * @var array
+     */
+    private static $_tempHooks = array();
+
+    /**
+     * Manager_Plugins Initializer
+     */
     public static function init() {
         if (self::$_absolutePath == null) {
             self::$_absolutePath = __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__;
@@ -75,6 +85,13 @@ class Manager_Plugin extends Abstract_Widget {
         self::$_hooks = unserialize($pluginDb->fetchAssoc('value'));
     }
 
+    /**
+     * Execute registered hooks
+     * 
+     * @param string $hook
+     * @param string $default
+     * @throws Exception
+     */
     public static function hook($hook, $default = null) {
         list($page, $position) = strpos($hook, '@') ? explode('@', $hook) : [ $hook, null ];
 
@@ -96,12 +113,37 @@ class Manager_Plugin extends Abstract_Widget {
         }
     }
 
-    // activate with call
+    /**
+     * bind hook(queue)
+     * 
+     * @param string $hook
+     * @param function $function
+     * @throws Exception
+     */
     public static function bind($hook, $function) {
-        
+        list($page, $position) = strpos($hook, '@') ? explode('@', $hook) : [ $hook, null ];
+
+        if ($page == null || $position == null || !strlen($page) || !strlen($position)) {
+            throw new Exception('Hook Error Occurs, Invalid Hook Name');
+        }
+
+        # Create Node
+        if (!array_key_exists($page, self::$_tempHooks)) {
+            self::$_tempHooks[$page] = array();
+        }
+
+        # Create Node
+        if (!array_key_exists($position, self::$_tempHooks[$page])) {
+            self::$_tempHooks[$position] = array();
+        }
+
+        # Save
+        if (is_callable($function)) {
+            self::$_tempHooks[$page][$position][] = $function;
+        }
     }
 
-    // administrator operator
+    // TODO. administrator operator
     public static function activate($plugin) {
         
     }

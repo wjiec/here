@@ -16,7 +16,7 @@
     <!-- Title -->
     <section id="index-left-title">
         <h1><?php $this->options()->title() ?></h1>
-        <h2><?php $this->options()->subTitle() ?></h2>
+        <h2><?php $this->options()->subTitle() // TODO. SubTitle ?></h2>
     </section>
     <!-- Category -->
     <section id="index-left-category">
