@@ -102,6 +102,12 @@ class Manager_Plugin extends Abstract_Widget {
         # non hook function
         if (empty(self::$_hooks[$page][$position])) {
             return null;
+        } else {
+            if (is_callable($default)) {
+                call_user_func_array($default, array());
+            } else if (is_string($default)) {
+                echo htmlentities($default);
+            }
         }
 
         foreach (self::$_hooks[$page][$position] as $plugin => $function) {
@@ -119,6 +125,7 @@ class Manager_Plugin extends Abstract_Widget {
      * @param string $hook
      * @param function $function
      * @throws Exception
+     * @return array 
      */
     public static function bind($hook, $function) {
         list($page, $position) = strpos($hook, '@') ? explode('@', $hook) : [ $hook, null ];
@@ -141,6 +148,8 @@ class Manager_Plugin extends Abstract_Widget {
         if (is_callable($function)) {
             self::$_tempHooks[$page][$position][] = $function;
         }
+
+        return array($hook, $function);
     }
 
     // TODO. administrator operator
