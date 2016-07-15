@@ -1,9 +1,8 @@
 "use strict"
 
+document.oncontextmenu = function() { return false }
+document.onselectstart = function() { return false }
 document.addEventListener('DOMContentLoaded', function() {
-    document.oncontextmenu = function() { return false }
-    document.onselectstart = function() { return false }
-
     var leftContents = document.querySelector('#left-screen')
     var mainContents = document.querySelector('#main-screen')
 
