@@ -11,7 +11,7 @@
     <?php Manager_Plugin::hook('index@header') ?>
 </header>
 <!-- Left Contents { Title, Category, Article List, Admin, More } -->
-<section id="left-screen left-screen-hidden">
+<section id="left-screen" class="screen-show">
     <h1 class="widget-hidden">Left Screen</h1>
     <!-- Title -->
     <section id="index-left-title">
@@ -34,6 +34,7 @@
     <section id="index-left-more">
         
     </section>
+    <div id="touch-toggle"></div>
 </section>
 <!-- Main Contents { Article [ Hot, New ] } -->
 <section id="main-screen" class="container">
@@ -44,4 +45,8 @@
         <article class="index-article"></article>
     </div>
 </section>
+
+<footer>
+    <?php Manager_Plugin::hook('index@footer') ?>
+</footer>
 <?php Widget_Theme_Helper::footerRenderer()->render() ?>

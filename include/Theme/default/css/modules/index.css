@@ -38,6 +38,29 @@ body {
 #jax-loader-bar.is-loading {
     opacity: 1;
 }
+
+#left-screen {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 38%;
+    transform: translateX(-100%);
+    transition: all .5s ease-in-out;
+    border: 1px solid red;
+    z-index: 99;
+}
+#main-screen {
+    border: 1px solid blue;
+}
+#left-screen.screen-show {
+    transform: translateX(0);
+}
+#left-screen section:not(#touch-toggle) {
+    width: 90%;
+    height: 5rem;
+    border: 1px solid green;
+}
 footer {
     margin-left: 29.4118%;
     color: #555;
