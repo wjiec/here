@@ -38,28 +38,70 @@ body {
 #jax-loader-bar.is-loading {
     opacity: 1;
 }
-
 #left-screen {
     position: fixed;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     width: 38%;
-    transform: translateX(-100%);
+    height: 100%;
+    transform: translateX(-90%);
     transition: all .5s ease-in-out;
-    border: 1px solid red;
+    background-color: transparent;
     z-index: 99;
 }
 #main-screen {
+    transition: all .5s;
     border: 1px solid blue;
 }
 #left-screen.screen-show {
+    background: #eee;
     transform: translateX(0);
 }
-#left-screen section:not(#touch-toggle) {
+#left-screen #left-contents {
     width: 90%;
+}
+#left-screen #index-left-title {
+    display: flex;
+    justify-content: center;
+    font-size: 2.6rem;
+    font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+    font-style: italic;
+}
+#left-screen section:not(#touch-toggle) {
+    width: 100%;
     height: 5rem;
-    border: 1px solid green;
+}
+#left-contents {
+    padding: 2rem;
+}
+#left-screen.screen-show #left-contents {
+    background: url('../images/tbg.png');
+}
+#touch-toggle {
+    cursor: pointer;
+    color: rgba(180, 180, 180, .75);
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    transition: all .5s ease-in-out;
+}
+#touch-toggle::after {
+    content: "»";
+    color: inherit;
+    font-size: 4rem;
+    transition: transform .5s ease-in-out;
+}
+#touch-toggle:hover {
+    color: rgba(0, 0, 0, .9);
+    background-color: #eee;
+    box-shadow: 5px 0 15px 0px rgba(0, 0, 0, .1)
+}
+#left-screen.screen-show #touch-toggle {
+    background-color: rgba(0, 0, 0, .05);
+}
+#left-screen.screen-show #touch-toggle::after {
+    transform: rotate(-180deg);
 }
 footer {
     margin-left: 29.4118%;

@@ -11,29 +11,31 @@
     <?php Manager_Plugin::hook('index@header') ?>
 </header>
 <!-- Left Contents { Title, Category, Article List, Admin, More } -->
-<section id="left-screen" class="screen-show">
+<section id="left-screen">
     <h1 class="widget-hidden">Left Screen</h1>
-    <!-- Title -->
-    <section id="index-left-title">
-        <h1><?php $this->options()->title() ?></h1>
-        <h2><?php $this->options()->subTitle() // TODO. SubTitle ?></h2>
-    </section>
-    <!-- Category -->
-    <section id="index-left-category">
-        <ul id="left-category-list"></ul>
-    </section>
-    <!-- Article List -->
-    <section id="index-left-article-list">
-        <ul id="left-article-list"></ul>
-    </section>
-    <!-- Admin -->
-    <section id="index-left-admin">
-        
-    </section>
-    <!-- More -->
-    <section id="index-left-more">
-        
-    </section>
+    <div id="left-contents">
+        <!-- Title -->
+        <section id="index-left-title">
+            <h1><?php $this->options()->title() ?></h1>
+            <h2><?php $this->options()->subTitle() // TODO. SubTitle ?></h2>
+        </section>
+        <!-- Category -->
+        <section id="index-left-category">
+            <ul id="left-category-list"></ul>
+        </section>
+        <!-- Article List -->
+        <section id="index-left-article-list">
+            <ul id="left-article-list"></ul>
+        </section>
+        <!-- Admin -->
+        <section id="index-left-admin">
+            
+        </section>
+        <!-- More -->
+        <section id="index-left-more">
+            
+        </section>
+    </div>
     <div id="touch-toggle"></div>
 </section>
 <!-- Main Contents { Article [ Hot, New ] } -->

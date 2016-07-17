@@ -14,4 +14,8 @@ document.addEventListener('DOMContentLoaded', function() {
             this.removeAttribute('style')
         }
     }, true);
+
+    document.querySelector('#touch-toggle').addEventListener('click', function() {
+        leftContents.classList.toggle('screen-show')
+    }, true)
 })
