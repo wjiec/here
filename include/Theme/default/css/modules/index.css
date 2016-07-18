@@ -40,7 +40,6 @@ body {
 }
 #left-screen {
     position: fixed;
-    display: flex;
     width: 38%;
     height: 100%;
     transform: translateX(-90%);
@@ -60,8 +59,7 @@ body {
     width: 90%;
 }
 #left-screen #index-left-title {
-    display: flex;
-    justify-content: center;
+    cursor: default;
     font-size: 2.6rem;
     font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
     font-style: italic;
@@ -80,9 +78,6 @@ body {
     cursor: pointer;
     color: rgba(180, 180, 180, .75);
     width: 10%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     background-color: transparent;
     transition: all .5s ease-in-out;
 }
@@ -95,13 +90,14 @@ body {
 #touch-toggle:hover {
     color: rgba(0, 0, 0, .9);
     background-color: #eee;
-    box-shadow: 5px 0 15px 0px rgba(0, 0, 0, .1)
+    box-shadow: 5px 0 11px -3px rgba(0, 0, 0, .1);
 }
 #left-screen.screen-show #touch-toggle {
     background-color: rgba(0, 0, 0, .05);
 }
 #left-screen.screen-show #touch-toggle::after {
     transform: rotate(-180deg);
+    color: rgba(0, 0, 0, .9);
 }
 footer {
     margin-left: 29.4118%;

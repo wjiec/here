@@ -1,7 +1,7 @@
 <?php
     // @var $this Widget_Theme_Helper
     Widget_Theme_Helper::headerRenderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
-         ->stylesheets('library/grid-alpha', 'modules/index')
+         ->stylesheets('library/grid-alpha-flex', 'modules/index')
          ->javascripts('index')
          ->render();
 ?>
@@ -11,11 +11,11 @@
     <?php Manager_Plugin::hook('index@header') ?>
 </header>
 <!-- Left Contents { Title, Category, Article List, Admin, More } -->
-<section id="left-screen">
+<section id="left-screen" class="flex-container">
     <h1 class="widget-hidden">Left Screen</h1>
     <div id="left-contents">
         <!-- Title -->
-        <section id="index-left-title">
+        <section id="index-left-title" class="flex-container flex-items-align-vh">
             <h1><?php $this->options()->title() ?></h1>
             <h2><?php $this->options()->subTitle() // TODO. SubTitle ?></h2>
         </section>
@@ -36,7 +36,7 @@
             
         </section>
     </div>
-    <div id="touch-toggle"></div>
+    <div id="touch-toggle" class="flex-container flex-items-align-vh"></div>
 </section>
 <!-- Main Contents { Article [ Hot, New ] } -->
 <section id="main-screen" class="container">
