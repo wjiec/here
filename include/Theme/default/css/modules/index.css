@@ -41,7 +41,7 @@ body {
 #left-screen {
     position: fixed;
     width: 38%;
-    height: 100%;
+    min-height: 100%;
     transform: translateX(-90%);
     transition: all .5s ease-in-out;
     background-color: transparent;
@@ -56,17 +56,86 @@ body {
     transform: translateX(0);
 }
 #left-screen #left-contents {
+    cursor: default;
     width: 90%;
 }
+#left-screen section:not(#touch-toggle) {
+    margin: 1.5rem auto;
+}
 #left-screen #index-left-title {
-    cursor: default;
-    font-size: 2.6rem;
+    padding: 1rem 0;
     font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
     font-style: italic;
 }
-#left-screen section:not(#touch-toggle) {
-    width: 100%;
-    height: 5rem;
+#left-screen #index-left-title h1 {
+    font-size: 2.6rem;
+    font-weight: bold;
+    /*text-shadow: 7px 7px 6px rgba(0, 0, 0, .33);*/
+}
+#left-screen #index-left-title h2 {
+    font-size: 1.6em;
+}
+#left-screen #index-left-category,
+#left-screen #index-left-article-list,
+#index-left-admin-list,
+#index-left-more {
+    font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+    font-style: italic;
+    font-size: 2.4rem;
+    font-weight: bold;
+    letter-spacing: .08rem;
+    padding-left: 3rem;
+}
+#left-screen #index-left-category ul,
+#left-screen #index-left-article-list ul,
+#index-left-admin-list ul,
+#index-left-more ul {
+    padding-left: 1rem;
+}
+#left-screen #index-left-category ul li,
+#left-screen #index-left-article-list ul li,
+#index-left-admin-list ul li,
+#index-left-more ul li {
+    cursor: pointer;
+    color: #333;
+    line-height: 1.8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 1.8rem;
+    transition: all .35s ease-in-out;
+}
+#left-screen #index-left-category ul li::before,
+#left-screen #index-left-article-list ul li::before,
+#index-left-admin-list ul li::before,
+#index-left-more ul li::before {
+    content: "»";
+    padding-right: .5rem;
+    color: rgba(0, 0, 0, .35);
+}
+#left-screen #index-left-category ul li:hover,
+#left-screen #index-left-article-list ul li:hover,
+#index-left-admin-list ul li:hover,
+#index-left-more ul li:hover {
+    color: #999;
+}
+#left-screen #index-left-category ul li ul {
+    padding-left: 2.5rem;
+}
+#left-screen #index-left-category a,
+#left-screen #index-left-article-list a,
+#index-left-admin-list a,
+#index-left-more a {
+    color: inherit;
+}
+#left-screen #index-left-category a:hover,
+#left-screen #index-left-article-list a:hover,
+#index-left-admin-list a:hover,
+#index-left-more a:hover {
+    text-decoration: none;
+}
+#left-screen #index-left-article-list ul li.lock-top {
+    color: #F00;
 }
 #left-contents {
     padding: 2rem;
@@ -78,6 +147,7 @@ body {
     cursor: pointer;
     color: rgba(180, 180, 180, .75);
     width: 10%;
+    min-width: 5.6rem !important;
     background-color: transparent;
     transition: all .5s ease-in-out;
 }

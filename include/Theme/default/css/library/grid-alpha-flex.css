@@ -179,6 +179,10 @@ strong {
 .flex-container {
     display: flex;
 }
+.flex-container-column {
+    display: flex;
+    flex-direction: column;
+}
 .flex-items-align-v {
     justify-content: center;
 }
@@ -188,6 +192,15 @@ strong {
 .flex-items-align-vh {
     justify-content: center;
     align-items: center;
+}
+.flex-item-self-align-start {
+    align-self: flex-start;
+}
+.flex-item-self-align-end {
+    align-self: flex-end;
+}
+.flex-item-top {
+    order: -1;
 }
 /**
  * Grid Style

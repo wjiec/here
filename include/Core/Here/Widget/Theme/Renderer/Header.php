@@ -34,7 +34,7 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
             throw $except;
         }
 
-        $this->_config->favicon = false;
+        $this->_config->favicon = false; // TODO. auto detect favicon.ico
         $this->_config->stylesheet = array();
         $this->_config->javascript = array();
 

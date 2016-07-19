@@ -15,26 +15,60 @@
     <h1 class="widget-hidden">Left Screen</h1>
     <div id="left-contents">
         <!-- Title -->
-        <section id="index-left-title" class="flex-container flex-items-align-vh">
-            <h1><?php $this->options()->title() ?></h1>
-            <h2><?php $this->options()->subTitle() // TODO. SubTitle ?></h2>
+        <section id="index-left-title" class="flex-container-column flex-items-align-vh">
+            <h1><?php $this->options()->title('Anonymous Blog. WOW') ?></h1>
+            <h2><?php $this->options()->subTitle('Hello World, Hello Here Blog') // TODO. SubTitle ?></h2>
         </section>
+        <?php Manager_Plugin::hook('index@left-title-after') ?>
         <!-- Category -->
         <section id="index-left-category">
-            <ul id="left-category-list"></ul>
+            <h1>Category</h1>
+            <ul id="left-category-list">
+                <li class="left-category-item"><a href="">Default (100)</a></li>
+                <li class="left-category-item"><a href="">Life (10)</a>
+                    <ul id="left-category-list">
+                        <li class="left-category-item"><a href="">Project (56)</a></li>
+                        <li class="left-category-item"><a href="">Photo (12)</a></li>
+                    </ul>
+                </li>
+                <li class="left-category-item"><a href="">Project (12)</a></li>
+                <li class="left-category-item"><a href="">Photo (2)</a></li>
+                <li class="left-category-item"><a href="">Where are you from (56)</a></li>
+                <li class="left-category-item"><a href="" title="Very long long long category name">Very long long long category name (1)</a></li>
+            </ul>
         </section>
+        <?php Manager_Plugin::hook('index@left-category-after') ?>
         <!-- Article List -->
         <section id="index-left-article-list">
-            <ul id="left-article-list"></ul>
+            <h1>Article List</h1>
+            <ul id="left-article-list" class="flex-container-column">
+                <li class="left-article-item"><a href="">Hello World</a></li>
+                <li class="left-article-item flex-item-top lock-top"><a href="">Hello Here Blog</a></li>
+                <li class="left-article-item"><a href="">Very Long Long Long Article Title</a></li>
+                <li class="left-article-item"><a href="">This is a article title</a></li>
+                <li class="left-article-item"><a href="">Nice to meet you</a></li>
+            </ul>
         </section>
+        <?php Manager_Plugin::hook('index@left-article-after') ?>
         <!-- Admin -->
-        <section id="index-left-admin">
-            
+        <section id="index-left-admin-list">
+            <h1>Admin</h1>
+            <ul id="left-admin-list">
+                <li class="left-admin-item"><a href="<?php echo Request::getFullUrl('/dashboard/') ?>">LOGIN</a></li>
+              <?php if (Manager_Widget::widget('user')->logined()): ?>
+                <li class="left-admin-item"><a href="">CUSTOM</a></li>
+              <?php endif ?>
+            </ul>
         </section>
+        <?php Manager_Plugin::hook('index@left-admin-after') ?>
         <!-- More -->
         <section id="index-left-more">
-            
+            <h1>More</h1>
+            <ul id="left-more-items">
+                <li class="left-more-item"><a href="">About Me</a></li>
+            </ul>
         </section>
+        <?php Manager_Plugin::hook('index@left-end') ?>
     </div>
     <div id="touch-toggle" class="flex-container flex-items-align-vh"></div>
 </section>
