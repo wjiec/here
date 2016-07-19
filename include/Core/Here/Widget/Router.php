@@ -31,7 +31,7 @@ class Widget_Router extends Abstract_Widget {
         # Std Router: License Page
         ->get(array('license.html', 'license.php'), array($this, 'license'))
         # Std Router: Admin Dashboard
-        ->get(array('/admin/'), array($this, 'admin'))
+        ->get(array('/dashboard/'), array($this, 'admin'))
         # API Router: Service
         ->match(array('get', 'post', 'patch', 'put', 'delete'), array('/service/$service/$action', '/service/$service/$action/$value'), array($this, 'service'))
         # End

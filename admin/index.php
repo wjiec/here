@@ -1,13 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="format-detection" content="telephone=no"/>
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
-    <title>Dashboard</title>
-</head>
-<body>
-    
-</body>
-</html>
+<?php
+    // @var $this Widget_Theme_Helper
+    Widget_Theme_Helper::headerRenderer('header.php')->title('Dashboard')
+         ->stylesheets('library/grid-alpha-flex', 'modules/admin')
+         ->javascripts('admin')
+         ->render();
+?>
+<header>
+    <div id="jax-loader-bar" class="is-loading"></div>
+    <?php Manager_Plugin::hook('admin@header') ?>
+</header>
+<footer>
+    <?php Manager_Plugin::hook('admin@footer') ?>
+</footer>
+<?php Widget_Theme_Helper::footerRenderer()->render() ?>
