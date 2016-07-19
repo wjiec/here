@@ -24,7 +24,15 @@ class Widget_Options extends Abstract_Widget {
     }
 
     public function __call($name, $args) {
-        echo $this->_config->{$name};
+        if ($this->_config->{$name} == null) {
+            if (is_string($default = array_shift($args))) {
+                echo $default;
+            } else {
+                throw new Exception('Default args is not except a String');
+            }
+        } else {
+            echo $this->_config->{$name};
+        }
     }
 
     public function output($key) {
