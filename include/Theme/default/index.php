@@ -2,6 +2,7 @@
     // @var $this Widget_Theme_Helper
     Widget_Theme_Helper::headerRenderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
          ->stylesheets('library/grid-alpha-flex', 'modules/index')
+         ->stylesheets('library/fonts/fira', 'library/fonts/inconsolata')
          ->javascripts('index')
          ->render();
 ?>
@@ -75,13 +76,51 @@
 <!-- Main Contents { Article [ Hot, New ] } -->
 <section id="main-screen" class="container">
     <h1 class="widget-hidden">Main Screen</h1>
-    <div id="index-main-article-list">
-        <article class="index-article"></article>
-        <article class="index-article"></article>
-        <article class="index-article"></article>
+    <div id="index-main-article-list" class="flex-container-column">
+        <article class="index-article">
+            <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
+            <div class="index-article-contents">
+                <section>Welcome to this family. This family is fun, firendly.</section>
+                <section>Homepage: here.shellboot.com</section>
+                <section>Github: github.com/JShadowMan/here</section>
+                <section>We are family.</section>
+            </div>
+            <div class="index-article-footer"></div>
+        </article>
+        <article class="index-article">
+            <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
+            <div class="index-article-contents">
+                <section>Welcome to this family. This family is fun, firendly.</section>
+                <section>Homepage: here.shellboot.com</section>
+                <section>Github: github.com/JShadowMan/here</section>
+                <section>We are family.</section>
+                <section>Welcome to this family. This family is fun, firendly.</section>
+                <section>Homepage: here.shellboot.com</section>
+                <section>Github: github.com/JShadowMan/here</section>
+                <section>We are family.</section>
+                <section>Welcome to this family. This family is fun, firendly.</section>
+                <section>Homepage: here.shellboot.com</section>
+                <section>Github: github.com/JShadowMan/here</section>
+                <section>We are family.</section>
+                <section>Welcome to this family. This family is fun, firendly.</section>
+                <section>Homepage: here.shellboot.com</section>
+                <section>Github: github.com/JShadowMan/here</section>
+                <section>We are family.</section>
+            </div>
+            <div class="index-article-footer"></div>
+        </article>
+        <article class="index-article">
+            <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
+            <div class="index-article-contents">
+                <section>Welcome to this family. This family is fun, firendly.</section>
+                <section>Homepage: here.shellboot.com</section>
+                <section>Github: github.com/JShadowMan/here</section>
+                <section>We are family.</section>
+            </div>
+            <div class="index-article-footer"></div>
+        </article>
     </div>
 </section>
-
 <footer>
     <?php Manager_Plugin::hook('index@footer') ?>
 </footer>
