@@ -37,6 +37,9 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         $this->_config->favicon = false; // TODO. auto detect favicon.ico
         $this->_config->stylesheet = array();
         $this->_config->javascript = array();
+        $this->_config->keywords = array();
+        $this->_config->description = null;
+        $this->_config->meta = array();
 
         return $this;
     }
@@ -85,6 +88,33 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
                 return true;
             }
         });
+        return $this;
+    }
+
+    public function keywords() {
+        $keywords = func_get_args();
+
+        $keywords = array_filter($keywords, function($val) {
+            if (is_string($val)) {
+                return true;
+            }
+        });
+
+        $this->_config->keywords = array_merge($this->_config->keywords, $keywords);
+        return $this;
+    }
+
+    public function description($description) {
+        if (is_string($description)) {
+            $this->_config->description = $description;
+        }
+
+        return $this;
+    }
+
+    public function meta($name, $content) {
+        $this->_config->meta = array_merge($this->_config->meta, array(array( 'name' => $name, 'content' => $content )));
+
         return $this;
     }
 
@@ -149,6 +179,25 @@ class Widget_Theme_Renderer_Header extends Abstract_Widget {
         # Favicon Loader
         if ($this->_config->favicon) {
             $this->_text .= "    <link rel=\"shortcut icon\" href=\"/favicon.ico\"/><link rel=\"bookmark\" href=\"/favicon.ico\"/>\n";
+        }
+
+        # Keywords
+        if (!empty($this->_config->keywords)) {
+            $this->_text .= "    <meta name=\"keywords\" content=\"" . join(',', $this->_config->keywords) . "\" />\n";
+        }
+
+        # Description
+        if ($this->_config->description) {
+            $this->_text .= "    <meta name=\"description\" content=\"{$this->_config->description}\" />\n";
+        }
+
+        # Other Meta Tags
+        if (!empty($this->_config->meta)) {
+            $metas = $this->_config->meta;
+
+            foreach ($metas as $meta) {
+                $this->_text .= "    <meta name=\"{$meta['name']}\" content=\"{$meta['content']}\" />\n";
+            }
         }
 
         # Stylesheet Setting
