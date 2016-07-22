@@ -1,6 +1,9 @@
 <?php
     // @var $this Widget_Theme_Helper
     Widget_Theme_Helper::headerRenderer('header.php')->title(Manager_Widget::widget('helper')->options()->title)
+         ->keywords('Blog', 'Person Blog', 'JShadowMan') // fetch from database
+         ->description('JShadowMan\'Blog, Test Case')
+         ->meta('og:type', 'blog') // test case
          ->stylesheets('library/grid-alpha-flex', 'modules/index')
          ->stylesheets('library/fonts/fira', 'library/fonts/inconsolata')
          ->javascripts('index')
@@ -80,42 +83,51 @@
         <article class="index-article">
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
             <div class="index-article-contents">
-                <section>Welcome to this family. This family is fun, firendly.</section>
-                <section>Homepage: here.shellboot.com</section>
-                <section>Github: github.com/JShadowMan/here</section>
-                <section>We are family.</section>
+                <p>Welcome to this family. This family is fun, firendly.</p>
+                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
+                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
+                <p>We are family.</p>
+                <pre>
+#include &lt;stdio.h&gt;
+
+int main(void) {
+    printf("Hello World!");
+
+    return 0;
+}
+                </pre>
             </div>
             <div class="index-article-footer"></div>
         </article>
         <article class="index-article">
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
             <div class="index-article-contents">
-                <section>Welcome to this family. This family is fun, firendly.</section>
-                <section>Homepage: here.shellboot.com</section>
-                <section>Github: github.com/JShadowMan/here</section>
-                <section>We are family.</section>
-                <section>Welcome to this family. This family is fun, firendly.</section>
-                <section>Homepage: here.shellboot.com</section>
-                <section>Github: github.com/JShadowMan/here</section>
-                <section>We are family.</section>
-                <section>Welcome to this family. This family is fun, firendly.</section>
-                <section>Homepage: here.shellboot.com</section>
-                <section>Github: github.com/JShadowMan/here</section>
-                <section>We are family.</section>
-                <section>Welcome to this family. This family is fun, firendly.</section>
-                <section>Homepage: here.shellboot.com</section>
-                <section>Github: github.com/JShadowMan/here</section>
-                <section>We are family.</section>
+                <p>Welcome to this family. This family is fun, firendly.</p>
+                <p>Homepage: here.shellboot.com</p>
+                <p>Github: github.com/JShadowMan/here</p>
+                <p>We are family.</p>
+                <p>Welcome to this family. This family is fun, firendly.</p>
+                <p>Homepage: here.shellboot.com</p>
+                <p>Github: github.com/JShadowMan/here</p>
+                <p>We are family.</p>
+                <p>Welcome to this family. This family is fun, firendly.</p>
+                <p>Homepage: here.shellboot.com</p>
+                <p>Github: github.com/JShadowMan/here</p>
+                <p>We are family.</p>
+                <p>Welcome to this family. This family is fun, firendly.</p>
+                <p>Homepage: here.shellboot.com</p>
+                <p>Github: github.com/JShadowMan/here</p>
+                <p>We are family.</p>
             </div>
             <div class="index-article-footer"></div>
         </article>
         <article class="index-article">
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
             <div class="index-article-contents">
-                <section>Welcome to this family. This family is fun, firendly.</section>
-                <section>Homepage: here.shellboot.com</section>
-                <section>Github: github.com/JShadowMan/here</section>
-                <section>We are family.</section>
+                <p>Welcome to this family. This family is fun, firendly.</p>
+                <p>Homepage: here.shellboot.com</p>
+                <p>Github: github.com/JShadowMan/here</p>
+                <p>We are family.</p>
             </div>
             <div class="index-article-footer"></div>
         </article>
