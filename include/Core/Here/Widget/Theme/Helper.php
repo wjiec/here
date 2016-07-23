@@ -80,6 +80,10 @@ class Widget_Theme_Helper extends Abstract_Widget {
         }
     }
 
+    public static function eP2U($path) {
+        echo Request::getFullUrl($path);
+    }
+
     public static function headerRenderer($file = 'header.php') {
         return new Widget_Theme_Renderer_Header($file);
     }
