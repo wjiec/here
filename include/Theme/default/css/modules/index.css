@@ -23,7 +23,8 @@ body {
     color: rgb(51, 51, 51);
     background-color: rgb(241, 241, 241);
 }
-a {
+a, a:visited, a:focus {
+    text-decoration: none;
     color: inherit;
 }
 a:hover {
@@ -132,7 +133,8 @@ a:hover {
     padding: 2rem;
 }
 #left-screen.screen-show #left-contents {
-    background: url('../images/tbg.png');
+    /* background: url('../images/bg.png'); */
+    background-color: #fefefe;
 }
 #touch-toggle {
     cursor: pointer;
@@ -194,7 +196,8 @@ a:hover {
     line-height: 1.8;
 }
 #main-screen .index-article .index-article-contents a,
-#main-screen .index-article .index-article-contents a:visited {
+#main-screen .index-article .index-article-contents a:visited,
+#main-screen .index-article .index-article-contents a:focus {
     font-family: "Fira Mono", Georgia, "Times New Roman", STHeiti, serif;
     color: #666;
     border-bottom: 1px dashed rgba(0, 0, 0, .15);
@@ -219,27 +222,22 @@ a:hover {
     padding: 1rem;
 }
 footer {
-    margin-left: 29.4118%;
-    color: #555;
+    color: #666;
     text-align: center;
     font-family: "Fira Mono", "Source Code Pro", monospace;
     font-size: 1.6rem;
+    margin: 1rem 0;
+    border-top: 1px dashed rgba(0, 0, 0, .1);
 }
 footer p {
-    margin-top: 1rem;
-    margin-bottom: .5rem;
+    line-height: 2;
 }
-footer a {
-    color: #666;
-    cursor: pointer;
-    border-bottom: 1px dashed rgba(0, 0, 0, .3);
-    transition: all .35s;
-}
-footer a:focus {
-    text-decoration: none;
+footer a, footer a:visited, footer a:focus {
+    font-family: "Fira Mono", Georgia, "Times New Roman", STHeiti, serif;
+    border-bottom: 1px dashed rgba(0, 0, 0, .15);
+    transition: all .35s ease-in-out;
 }
 footer a:hover {
     color: #111;
-    text-decoration: none;
     border-bottom: 1px dashed rgba(0, 0, 0, .65);
 }

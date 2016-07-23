@@ -5,9 +5,9 @@
   <title>Here Lincense</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
-  <link rel="stylesheet" href="../../../include/Theme/default/css/license.css" media="all" />
-  <link rel="stylesheet" href="../../../include/Resource/css/library/fonts/fira.css" media="all" />
-  <link rel="stylesheet" href="../../../include/Resource/css/library/fonts/inconsolata.css" media="all" />
+  <link rel="stylesheet" href="<?php Manager_Widget::widget('helper')->eP2U('include/Theme/default/css/license.css') ?>" media="all" />
+  <link rel="stylesheet" href="<?php Manager_Widget::widget('helper')->eP2U('include/Theme/default/css/library/fonts/fira.css') ?>" media="all" />
+  <link rel="stylesheet" href="<?php Manager_Widget::widget('helper')->eP2U('include/Theme/default/css/library/fonts/inconsolata.css') ?>" media="all" />
   <script type="text/javascript">
     document.oncontextmenu = () => { return false }
     document.onselectstart = () => { return false }

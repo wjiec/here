@@ -133,7 +133,4 @@ int main(void) {
         </article>
     </div>
 </section>
-<footer>
-    <?php Manager_Plugin::hook('index@footer') ?>
-</footer>
 <?php Widget_Theme_Helper::footerRenderer()->render() ?>
