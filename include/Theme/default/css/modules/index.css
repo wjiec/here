@@ -52,16 +52,17 @@ a:hover {
     min-height: 100%;
     transform: translateX(-90%);
     transition: all .5s ease-in-out;
-    background-color: transparent;
+    background-color: #eee;
     z-index: 99;
 }
 #left-screen.screen-show {
-    background: #eee;
     transform: translateX(0);
 }
 #left-screen #left-contents {
     cursor: default;
     width: 90%;
+    background-color: #fefefe;
+    padding: 2rem;
 }
 #left-screen section:not(#touch-toggle) {
     margin: 1.5rem auto;
@@ -100,9 +101,8 @@ a:hover {
 #left-screen #index-left-article-list ul li,
 #index-left-admin-list ul li,
 #index-left-more ul li {
-    cursor: pointer;
-    color: #333;
     line-height: 1.8;
+    color: #333;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -114,27 +114,29 @@ a:hover {
 #index-left-admin-list ul li::before,
 #index-left-more ul li::before {
     content: "»";
-    padding-right: .5rem;
+    padding-right: .8rem;
     color: rgba(0, 0, 0, .35);
+    transition: all .15s linear;
 }
-#left-screen #index-left-category ul li:hover,
-#left-screen #index-left-article-list ul li:hover,
-#index-left-admin-list ul li:hover,
-#index-left-more ul li:hover {
-    color: #999;
+#left-screen li:hover::before {
+    padding-right: 1.3rem !important;
+}
+#left-screen a {
+    padding: .2rem 0;
+    cursor: pointer;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0);
+    transition: all .35s ease-in-out;
+    border-bottom: 1px dashed rgba(0, 0, 0, .15);
+}
+#left-screen ul li a:hover {
+    color: #666;
+    border-bottom: 1px dashed rgba(0, 0, 0, .65);
 }
 #left-screen #index-left-category ul li ul {
     padding-left: 2.5rem;
 }
 #left-screen #index-left-article-list ul li.lock-top {
     color: #F00;
-}
-#left-contents {
-    padding: 2rem;
-}
-#left-screen.screen-show #left-contents {
-    /* background: url('../images/bg.png'); */
-    background-color: #fefefe;
 }
 #touch-toggle {
     cursor: pointer;
@@ -215,7 +217,7 @@ a:hover {
     border: 1px solid #ddd;
     box-shadow: inset 0 0 3px rgba(0, 0, 0, .15);
 }
-#main-screen .index-article .index-article-contents pre {
+#main-screen .index-article .index-article-contents codeblock {
     
 }
 #main-screen .index-article .index-article-footer {
