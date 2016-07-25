@@ -18,6 +18,28 @@ class Widget_Html_Parser extends Abstract_Widget {
     public static function rtn() {
         
     }
+
+    public static function article() {
+        
+    }
+
+    public function contents() {
+        
+    }
+
+    public function attribute() {
+        
+    }
+
+    public function section() {
+        
+    }
+
+    public function loop() {
+        
+    }
+
+    
 }
 
 ?>

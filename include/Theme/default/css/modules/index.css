@@ -212,7 +212,7 @@ a:hover {
 #main-screen .index-article .index-article-contents pre {
     padding: 1rem 2rem;
     line-height: 1.5;
-    font-family: "Fira Mono", monospace;
+    font-family: "Fira Mono", monospace !important;
     background: #f1f1f1;
     border: 1px solid #ddd;
     box-shadow: inset 0 0 3px rgba(0, 0, 0, .15);

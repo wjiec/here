@@ -103,20 +103,28 @@ int main(void) {
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
             <div class="index-article-contents">
                 <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: here.shellboot.com</p>
-                <p>Github: github.com/JShadowMan/here</p>
+                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
+                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
                 <p>We are family.</p>
                 <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: here.shellboot.com</p>
-                <p>Github: github.com/JShadowMan/here</p>
+                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
+                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
                 <p>We are family.</p>
                 <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: here.shellboot.com</p>
-                <p>Github: github.com/JShadowMan/here</p>
+                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
+                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
                 <p>We are family.</p>
                 <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: here.shellboot.com</p>
-                <p>Github: github.com/JShadowMan/here</p>
+                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
+                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
+                <p>We are family.</p>
+                <p>Welcome to this family. This family is fun, firendly.</p>
+                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
+                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
+                <p>We are family.</p>
+                <p>Welcome to this family. This family is fun, firendly.</p>
+                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
+                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
                 <p>We are family.</p>
             </div>
             <div class="index-article-footer"></div>
@@ -125,8 +133,8 @@ int main(void) {
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
             <div class="index-article-contents">
                 <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: here.shellboot.com</p>
-                <p>Github: github.com/JShadowMan/here</p>
+                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
+                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
                 <p>We are family.</p>
             </div>
             <div class="index-article-footer"></div>
