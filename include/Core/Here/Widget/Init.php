@@ -18,17 +18,17 @@ class Widget_Init extends Abstract_Widget {
         ob_start();
 
         if (Manager_Widget::widget('flags')->flag('ConfigLoaded')) {
+            // Theme Helper
+            Manager_Widget::widget('helper@theme.helper')->start();
+
             // alias html.parser to parser
-            Manager_Widget::widget('parser@html.parser');
+            Manager_Widget::widget('parser@html.parser')->start();
 
             // alias html.template to template
             Manager_Widget::widget('template@html.template');
 
             // Initialize Plugins
             Manager_Plugin::init();
-
-            // Theme Helper
-            Manager_Widget::widget('helper@theme.helper')->start();
         }
     }
 

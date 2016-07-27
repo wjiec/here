@@ -82,16 +82,18 @@
     <div id="index-main-article-list" class="flex-container-column">
       <?php Manager_Widget::widget('parser')->article(function() {
           # from database getting articles
-          return array(
+          return array(array(
               'url'  => 'http://localhost/article/template-test-case',
+              'title' => 'Template Test Case',
               'time' => '1469614077',
               'contents' => '123124121312312341231231231231',
               'count(`id`)' => '21'
-          );
+          ));
       }, array(
+          'url' => 'article_url',
           'time' => 'post_time',
           'contents' => 'article_contents',
-          'count(`id`)' => 'comments-count'
+          'count(`id`)' => 'comments_count'
       )) ?>
         <article class="index-article">
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>

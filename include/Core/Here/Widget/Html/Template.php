@@ -37,7 +37,7 @@ class Widget_Html_Template extends Abstract_Widget {
         "<?php echo (isset(\$__value)) ? \$__value[\"\\1\"] : \$\\1 ?>",
         "<?php echo (isset(\$__value)) ? \$__value[\"\\1\"][\"\\2\"] : \$\\1[\"\\2\"] ?>",
         "<?php echo (isset(\$__value)) ? \$__value[\"\\1\"][\"\\2\"][\"\\3\"] : \$\\1[\"\\2\"][\"\\3\"] ?>",
-        "<?php echo &\\2(\\3, $\\1) ?>",
+        "<?php echo &\\2(\\3, (isset(\$__value)) ? \$__value[\"\\1\"] : \$\\1) ?>",
         "<?php foreach (((isset(\$__value)) ? \$__value[\"\\1\"] : \$\\1) as \$\\2): ?>",
         "<?php foreach (((isset(\$__value)) ? \$__value[\"\\1\"][\"\\2\"] : \$\\1[\"\\2\"]) as \$\\3): ?>",
         "<?php foreach (((isset(\$__value)) ? \$__value[\"\\1\"][\"\\2\"][\"\\3\"] : \$\\1[\"\\2\"][\"\\3\"]) as \$\\4): ?>",
@@ -45,20 +45,34 @@ class Widget_Html_Template extends Abstract_Widget {
         "<?php foreach (((isset(\$__value)) ? \$__value[\"\\1\"][\"\\2\"] : \$\\1[\"\\2\"]) as \$\\3 => \$\\4): ?>",
         "<?php foreach (((isset(\$__value)) ? \$__value[\"\\1\"][\"\\2\"][\"\\3\"] : \$\\1[\"\\2\"][\"\\3\"]) as \$\\4 => \$\\5): ?>",
         "<?php endforeach ?>",
-        "<?php foreach (\$data as \$__index => \$__value) ?>",
+        "<?php foreach (\$data as \$__index => \$__value): ?>",
         "<?php endforeach ?>",
     );
 
-    public function template($fullFileName) {
-        
+    public function template($fullFileName, $data = array()) {
+        $cache = $this->cache($fullFileName);
+
+        include $cache;
     }
 
-    public function cache($filename) {
-        
+    public function cache($fullFileName) {
+        $template = basename($fullFileName);
+        $directory = dirname($fullFileName);
+        $cacheFile = dirname($fullFileName) . '/' . join('.', array($template, md5($template), 'php'));
+
+        if (!is_file($cacheFile) || (filemtime($fullFileName) > filemtime($cacheFile))) {
+            if ($this->compile($fullFileName, $cacheFile) == false) {
+                throw new Exception("Cannot Touch Template File");
+            }
+        }
+
+        return $cacheFile;
     }
 
-    public function compile($string) {
-        return preg_replace(array_keys(self::$_functionMapping), array_values(self::$_functionMapping), 
-               preg_replace(self::$_patterns, self::$_replacements, $string));
+    public function compile($template, $cacheFile) {
+        $cache =  preg_replace(array_keys(self::$_functionMapping), array_values(self::$_functionMapping), 
+            preg_replace(self::$_patterns, self::$_replacements, file_get_contents($template)));
+
+        return file_put_contents($cacheFile, $cache);
     }
 }
