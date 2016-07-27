@@ -21,6 +21,9 @@ class Widget_Init extends Abstract_Widget {
             // alias html.parser to parser
             Manager_Widget::widget('parser@html.parser');
 
+            // alias html.template to template
+            Manager_Widget::widget('template@html.template');
+
             // Initialize Plugins
             Manager_Plugin::init();
 

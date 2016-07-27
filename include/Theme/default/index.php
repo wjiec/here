@@ -80,6 +80,19 @@
 <section id="main-screen" class="container">
     <h1 class="widget-hidden">Main Screen</h1>
     <div id="index-main-article-list" class="flex-container-column">
+      <?php Manager_Widget::widget('parser')->article(function() {
+          # from database getting articles
+          return array(
+              'url'  => 'http://localhost/article/template-test-case',
+              'time' => '1469614077',
+              'contents' => '123124121312312341231231231231',
+              'count(`id`)' => '21'
+          );
+      }, array(
+          'time' => 'post_time',
+          'contents' => 'article_contents',
+          'count(`id`)' => 'comments-count'
+      )) ?>
         <article class="index-article">
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
             <div class="index-article-contents">
@@ -87,17 +100,11 @@
                 <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
                 <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
                 <p>We are family.</p>
-                <pre>
-#include &lt;stdio.h&gt;
-
-int main(void) {
-    printf("Hello World!");
-
-    return 0;
-}
-                </pre>
             </div>
-            <div class="index-article-footer"></div>
+            <div class="index-article-footer flex-container">
+                <div class="article-footer-post-time">Mar 15, 2016</div>
+                <div class="article-footer-comments"><a href="#comments">15 Comments</a></div>
+            </div>
         </article>
         <article class="index-article">
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
@@ -127,7 +134,10 @@ int main(void) {
                 <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
                 <p>We are family.</p>
             </div>
-            <div class="index-article-footer"></div>
+            <div class="index-article-footer flex-container">
+                <div class="article-footer-post-time">Mar 15, 2016</div>
+                <div class="article-footer-comments"><a href="#comments">15 Comments</a></div>
+            </div>
         </article>
         <article class="index-article">
             <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
@@ -137,7 +147,10 @@ int main(void) {
                 <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
                 <p>We are family.</p>
             </div>
-            <div class="index-article-footer"></div>
+            <div class="index-article-footer flex-container">
+                <div class="article-footer-post-time">Mar 15, 2016</div>
+                <div class="article-footer-comments"><a href="#comments">15 Comments</a></div>
+            </div>
         </article>
     </div>
 </section>

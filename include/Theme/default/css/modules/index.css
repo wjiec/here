@@ -172,6 +172,7 @@ a:hover {
     cursor: default;
     margin: 2.5rem 0;
     padding: 1.25rem;
+    padding-bottom: 0;
     background: #fff;
     border: 1px solid #eee;
     box-shadow: 0 0 10px rgba(0, 0, 0, .15);
@@ -187,6 +188,9 @@ a:hover {
     font-weight: bold;
     padding: .5rem 0 .5rem 1rem;
     border-bottom: 1px solid rgba(0, 0, 0, .15);
+}
+#main-screen .index-article .index-article-title:hover {
+    color: #f00;
 }
 #main-screen .index-article .index-article-contents {
     font-size: 1.9rem;
@@ -222,6 +226,19 @@ a:hover {
 }
 #main-screen .index-article .index-article-footer {
     padding: 1rem;
+    font-size: 1.6rem;
+    line-height: 1.8;
+    font-family: "Fira Mono", Georgia, "Times New Roman", STHeiti, serif;
+}
+#main-screen .index-article .index-article-footer div {
+    flex-grow: 1;
+}
+#main-screen .index-article .index-article-footer .article-footer-comments a {
+    color: #888;
+    transition: all .35s ease-in-out;
+}
+#main-screen .index-article .index-article-footer .article-footer-comments a:hover {
+    color: #333;
 }
 footer {
     color: #666;

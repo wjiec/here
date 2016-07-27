@@ -5,41 +5,19 @@
  */
 
 class Widget_Html_Parser extends Abstract_Widget {
-    private static $_echoMode = false;
+    public function article($data, array $mapping = array(), $template = 'article.tpl') {
+        if (is_callable($data)) {
+            $data = $data();
+        }
 
-    public function p($pString) {
-        
+        $s = file_get_contents('include/Theme/default/templates/article.tpl');
+
+        $r = Manager_Widget::widget('template')->compile($s);
+
+        echo "<pre>";
+        echo htmlentities($r);
+        echo "</pre>";
     }
-
-    public function a($aString, $href = null, $hover = null) {
-        
-    }
-
-    public static function rtn() {
-        
-    }
-
-    public static function article() {
-        
-    }
-
-    public function contents() {
-        
-    }
-
-    public function attribute() {
-        
-    }
-
-    public function section() {
-        
-    }
-
-    public function loop() {
-        
-    }
-
-    
 }
 
 ?>
