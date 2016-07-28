@@ -5,13 +5,13 @@ Template File Using `tpl` suffix.
 Syntax
 ---
 
-#### __Print Variable__
+### __Print Variable__
 __Example__:
 ```
 { @variable }
 ```
 
-#### __Print Array Element__
+### __Print Array Element__
 __Example__:
 ```
 { @array.element }
@@ -23,7 +23,7 @@ __Example__:
 > ```
 > DEVELOP VERSION.
 
-#### __Function Callback__
+### __Function Callback__
 __Example__:
 ```
 { @timestamp $ (class.method(args, ...)) }
@@ -32,7 +32,7 @@ __Available Method__:
 * `time.format(format)`: Print a string formatted according to the given format 
 string using the given integer timestamp(`@timestamp`).
 
-#### __Foreach__
+### __Foreach__
 __Example__:
 ```
 { foreach @array - @element }
@@ -46,7 +46,7 @@ __Example__:
 { endforeach }
 ```
 
-#### __Special loop__
+### __Special loop__
 __Example__:
 ```
 { loop }
@@ -62,7 +62,7 @@ variables in this scope will give priority to judge the elements of this array
 > ```
 > DEVELOP VERSION.
 
-#### __If__
+### __If__
 __Example__:
 ```
 { if @variable == 1 }
@@ -70,4 +70,10 @@ __Example__:
 { else }
     { @other }
 { endif }
+```
+
+### __Comments__
+__Example__:
+```
+#- Only the interval 1 spaces with or without interval
 ```
