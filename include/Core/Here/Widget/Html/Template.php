@@ -21,7 +21,7 @@ class Widget_Html_Template extends Abstract_Widget {
         "/{\s*@([^\$\\.]+?)\s*}/", # Simple Variable
         "/{\s*@([a-zA-Z0-9_]*?)\\.([a-zA-Z0-9_]*?)\s*}/",
         "/{\s*@([a-zA-Z0-9_]*?)\\.([a-zA-Z0-9_]*?)\\.([a-zA-Z0-9_]*?)\s*}/",
-        "/{\s*@([a-zA-Z0-9_]+)\s*\\$\s*\\(([a-zA-Z_\\.]*)\\((.*)\\)\\)\s*}/", # Simple Callback
+        "/{\s*@([a-zA-Z0-9_]+)\s*\\$\s*\\(([a-zA-Z_\\.]*)\\((.*)\\)\\)\s*}/", # Simple callback
         "/{\s*foreach\s*:\s*@([a-zA-Z0-9_]*)\s*-\s*@([a-zA-Z0-9_]*)\s*}/", # Syntax: foreach
         "/{\s*foreach\s*:\s*@([a-zA-Z0-9_]*?)\\.([a-zA-Z0-9_]*?)\s*-\s*@([a-zA-Z0-9_]*)\s*}/",
         "/{\s*foreach\s*:\s*@([a-zA-Z0-9_]*?)\\.([a-zA-Z0-9_]*?)\\.([a-zA-Z0-9_]*?)\s*-\s*@([a-zA-Z0-9_]*)\s*}/",
@@ -31,6 +31,12 @@ class Widget_Html_Template extends Abstract_Widget {
         "/{\s*endforeach\s*}/",
         "/{\s*loop\s*}/", # Syntax: loop
         "/{\s*endloop\s*}/",
+        "/{\s*if\s*@([a-zA-Z0-9_]*)\s*([=<>]*)\s*([a-zA-Z0-9_]*)\s*:\s*}/", # Syntax: if
+        "/{\s*if\s*([a-zA-Z0-9_]*)\s*([=<>]*)\s*@([a-zA-Z0-9_]*)\s*:\s*}/",
+        "/{\s*if\s*@([a-zA-Z0-9_]*)\s*([=<>]*)\s*@([a-zA-Z0-9_]*)\s*:\s*}/",
+        "/{\s*else\s*}/",
+        "/{\s*endif\s*}/",
+        "/^\s*#-\s?(.*)/m", # Comment
     );
 
     private static $_replacements = array(
@@ -47,6 +53,12 @@ class Widget_Html_Template extends Abstract_Widget {
         "<?php endforeach ?>",
         "<?php foreach (\$data as \$__index => \$__value): ?>",
         "<?php endforeach ?>",
+        "<?php if (((isset(\$__value)) ? \$__value[\"\\1\"] : \$\\1) \\2 \\3): ?>",
+        "<?php if (((isset(\$__value)) ? \$__value[\"\\3\"] : \$\\3) \\2 \\1): ?>",
+        "<?php if (((isset(\$__value)) ? \$__value[\"\\1\"] : \$\\1) \\2 ((isset(\$__value)) ? \$__value[\"\\3\"] : \$\\3)): ?>",
+        "<?php else: ?>",
+        "<?php endif ?>",
+        null
     );
 
     public function template($fullFileName, $data = array()) {
