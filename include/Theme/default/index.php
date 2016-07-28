@@ -85,11 +85,11 @@
           return array(array(
               'url'  => 'http://localhost/article/template-test-case',
               'title' => 'Template Test Case',
-              'time' => '1469614077',
-              'contents' => '123124121312312341231231231231',
+              'time' => '1469614077', # timestrap
+              'contents' => '<p>Template Test Case</p><p>This is an article contents.</p>',
               'count(`id`)' => '21'
           ));
-      }, array(
+      }, array( # keys mapping
           'url' => 'article_url',
           'time' => 'post_time',
           'contents' => 'article_contents',
