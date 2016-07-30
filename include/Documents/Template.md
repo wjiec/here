@@ -19,7 +19,7 @@ __Example__:
 > NOTE: Can only print up to two-dimensional array
 > ```
 > { @array.element1.element2 } # OK
-> { @@array.element1.element2.element3... } # Failure
+> { @array.element1.element2.element3... } # Failure
 > ```
 > DEVELOP VERSION.
 
