@@ -54,6 +54,8 @@ class Common {
         self::$_cookiePath = is_string($path) ? $path : '/';
     }
 
+#--------------- TODO COOKIE SESSION ----------------------
+
     public static function cookie($key, $val = null, $expire = 0) {
         if ($val == null && $expire == 0) {
             return isset($_COOKIE[$key]) ? $_COOKIE[$key] : null;
@@ -96,6 +98,8 @@ class Common {
         return isset($_SESSION[$name]) ? $_SESSION[$name] : (isset($_COOKIE[$name]) ? $_COOKIE[$name] : null);
     }
 
+#----------------------------------------------------------
+
     public static function randomString($length = 8) {
         return substr(self::_shuffleString(), 0, $length);
     }
@@ -112,6 +116,24 @@ class Common {
         $callerInformation = $backtrace[2];
 
         return array_key_exists('function', $callerInformation) ? $callerInformation['function'] : null;
+    }
+
+    public static function eDefault($conditions, $default = true, $htmlentities = false) {
+        if ((is_string($conditions) || $conditions == null) && $default === true) {
+            echo $conditions;
+        }
+
+        if ((is_string($default) || is_callable($default)) && ($conditions != null || $conditions == true || $conditions)) {
+            if (is_callable($default)) {
+                $default = $default();
+
+                if (!is_string($default)) {
+                    return;
+                }
+            }
+
+            echo $htmlentities ? htmlentities($default) : $default;
+        }
     }
 
     private static function _shuffleString() {

@@ -12,6 +12,10 @@ class Widget_Html_Parser extends Abstract_Widget {
         $this->_config->_templateDir = 'templates';
     }
 
+    public function a($href, $text, $blank = true, $title = null) {
+        return "<a href=\"{$href}\" title=\"{$title}\"" . ($blank ? " target=\"_blank\"" : null) . ">{$text}</a>";
+    }
+
     public function article($data, array $mapping = array(), $template = 'article.tpl') {
         if (is_callable($data)) {
             $data = $data();
