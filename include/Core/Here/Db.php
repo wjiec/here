@@ -77,7 +77,7 @@ class Db {
 
     /**
      * Mysqli instance
-     * @var Db_Mysql
+     * @var Widget_Db_Mysql
      */
     private $_instance = null;
 
@@ -137,6 +137,10 @@ class Db {
      */
     public function getServerInfo() {
         return $this->_instance->serverInfo();
+    }
+
+    public function setCharsetUTF8() {
+        $this->_instance->setCharset('utf8');
     }
 
     /**

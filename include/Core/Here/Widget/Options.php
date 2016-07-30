@@ -13,6 +13,7 @@ class Widget_Options extends Abstract_Widget {
     public function start() {
         $optionDb = new Db();
 
+        $optionDb->setCharsetUTF8();
         $optionDb->query($optionDb->select()->from('table.options')->where('for', Db::OP_EQUAL, '0'));
         $this->import($optionDb->fetchAll(), true);
 
@@ -42,8 +43,6 @@ class Widget_Options extends Abstract_Widget {
     public function push($key, $val) {
         $this->_config->{$key} = $val;
     }
-
-    
 
     public function earse($key) {
         $this->_config->earse($key);

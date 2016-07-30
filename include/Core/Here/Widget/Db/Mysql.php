@@ -10,6 +10,8 @@ class Widget_Db_Mysql implements Interface_Db {
 
     private $_connected = false;
 
+    private $_charset = null;
+
     public function isAvailable() {
         return class_exists('mysqli') ? true : function_exists('mysqli_connect') ? true : false;
     }
@@ -24,8 +26,15 @@ class Widget_Db_Mysql implements Interface_Db {
         if ($this->_link->connect_errno) {
             throw new Exception($this->_link->connect_error, $this->_link->connect_errno);
         }
+
+        if ($this->_charset != null) {
+            $this->_link->set_charset($this->_charset);
+        }
     }
-    
+
+    public function setCharset($charset) {
+        $this->_charset = $charset;
+    }
 
     public function fetchObject($resource) {
     }
