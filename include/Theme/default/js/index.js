@@ -18,4 +18,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#touch-toggle').addEventListener('click', function() {
         leftContents.classList.toggle('screen-show')
     }, true)
+
+    document.querySelectorAll('#index-paging div[id]').forEach(function(element) {
+        if (element.classList.contains('paging-disable')) {
+            return
+        }
+        element.addEventListener('click', function() {
+            console.log(this)
+        })
+    })
 })

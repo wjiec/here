@@ -82,13 +82,15 @@
     <div id="index-main-article-list" class="flex-container-column">
       <?php Manager_Widget::widget('parser')->article(function() {
           # from database getting articles
-          return array(array(
-              'url'  => 'http://localhost/article/template-test-case',
-              'title' => 'Template Test Case',
-              'time' => '1469614077', # timestrap
-              'contents' => '<p>Template Test Case</p><p>This is an article contents.</p>',
-              'count(`id`)' => '21'
-          ));
+          return array(
+              array( # article, database
+                  'url'  => 'http://localhost/article/template-test-case', # user-customer or auto generate(baidu or google?)
+                  'title' => 'Template Test Case',
+                  'time' => '1469614077', # timestrap
+                  'contents' => '<p>Template Test Case</p><p>This is an article contents.</p>', # markdown
+                  'count(`id`)' => '21' # left join `table.comments` 
+              )
+          );
       }, array( # keys mapping
           'url' => 'article_url',
           'time' => 'post_time',
@@ -154,6 +156,11 @@
                 <div class="article-footer-comments"><a href="#comments">15 Comments</a></div>
             </div>
         </article>
+    </div>
+    
+    <div id="index-paging" class="flex-container">
+        <div><div id="index-paging-left" class="paging-disable"></div></div>
+        <div><div id="index-paging-right"></div></div>
     </div>
 </section>
 <?php Widget_Theme_Helper::footerRenderer()->render() ?>

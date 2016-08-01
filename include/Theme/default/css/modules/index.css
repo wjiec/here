@@ -237,6 +237,41 @@ a:hover {
 #main-screen .index-article .index-article-footer .article-footer-comments a:hover {
     color: #333;
 }
+#index-paging {
+    padding: 3rem;
+    font-size: 5rem;
+}
+#index-paging > div {
+    flex-grow: 1;
+}
+#index-paging > div:last-child {
+    text-align: end;
+}
+#index-paging #index-paging-left,
+#index-paging #index-paging-right {
+    cursor: pointer;
+    display: inline;
+    opacity: .5;
+    transition: all .35s ease-in-out;
+}
+#index-paging #index-paging-left:hover,
+#index-paging #index-paging-right:hover {
+    z-index: 99;
+    text-shadow: 0 0 1px #fff, 0 0 5px rgba(0, 0, 0, .53);
+    opacity: 1;
+}
+#index-paging #index-paging-left::before {
+    content: "«";
+    cursor: inherit;
+}
+#index-paging #index-paging-right::before {
+    content: "»";
+    cursor: inherit;
+}
+.paging-disable {
+    cursor: default !important;
+    opacity: .1 !important;
+}
 footer {
     cursor: default;
     color: #666;
