@@ -80,84 +80,23 @@
 <section id="main-screen" class="container">
     <h1 class="widget-hidden">Main Screen</h1>
     <div id="index-main-article-list" class="flex-container-column">
-      <?php Manager_Widget::widget('parser')->article(function() {
-          # from database getting articles
-          return array(
-              array( # article, database
-                  'url'  => 'http://localhost/article/template-test-case', # user-customer or auto generate(baidu or google?)
-                  'title' => 'Template Test Case',
-                  'time' => '1469614077', # timestrap
-                  'contents' => '<p>Template Test Case</p><p>This is an article contents.</p>', # markdown
-                  'count(`id`)' => '21' # left join `table.comments` 
-              )
-          );
-      }, array( # keys mapping
-          'url' => 'article_url',
-          'time' => 'post_time',
-          'contents' => 'article_contents',
-          'count(`id`)' => 'comments_count'
-      )) ?>
-        <article class="index-article">
-            <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
-            <div class="index-article-contents">
-                <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
-                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
-                <p>We are family.</p>
-            </div>
-            <div class="index-article-footer flex-container">
-                <div class="article-footer-post-time">Mar 15, 2016</div>
-                <div class="article-footer-comments"><a href="#comments">15 Comments</a></div>
-            </div>
-        </article>
-        <article class="index-article">
-            <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
-            <div class="index-article-contents">
-                <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
-                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
-                <p>We are family.</p>
-                <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
-                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
-                <p>We are family.</p>
-                <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
-                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
-                <p>We are family.</p>
-                <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
-                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
-                <p>We are family.</p>
-                <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
-                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
-                <p>We are family.</p>
-                <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
-                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
-                <p>We are family.</p>
-            </div>
-            <div class="index-article-footer flex-container">
-                <div class="article-footer-post-time">Mar 15, 2016</div>
-                <div class="article-footer-comments"><a href="#comments">15 Comments</a></div>
-            </div>
-        </article>
-        <article class="index-article">
-            <header><h1 class="index-article-title"><a href="">Hello Here Blog</a></h1></header>
-            <div class="index-article-contents">
-                <p>Welcome to this family. This family is fun, firendly.</p>
-                <p>Homepage: <a href="http://here.shellboot.com" target="_blank">ShellBoot</a></p>
-                <p>Github: <a href="https://github.com/JShadowMan/here" target="_blank">Github</a></p>
-                <p>We are family.</p>
-            </div>
-            <div class="index-article-footer flex-container">
-                <div class="article-footer-post-time">Mar 15, 2016</div>
-                <div class="article-footer-comments"><a href="#comments">15 Comments</a></div>
-            </div>
-        </article>
+        <?php Manager_Widget::widget('parser')->article(function() {
+            $articleDb = new Db();
+
+            # from database getting articles
+            # TODO. table.posts -> table.articles
+            $articleDb->query($articleDb->select()->from('table.posts'));
+
+            return $articleDb->fetchAll();
+        }, array( # keys mapping
+            # TODO db design
+            'pid' => 'article_url',
+            'modified' => 'post_time',
+            'content' => 'article_contents',
+            'author_id' => 'comments_count'
+        )) ?>
     </div>
-    
+
     <div id="index-paging" class="flex-container">
         <div><div id="index-paging-left" class="paging-disable"></div></div>
         <div><div id="index-paging-right"></div></div>
