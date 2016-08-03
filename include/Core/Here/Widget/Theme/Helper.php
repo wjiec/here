@@ -71,6 +71,31 @@ class Widget_Theme_Helper extends Abstract_Widget {
         return $this->_options;
     }
 
+    public function allPageCount() {
+        $apcDb = new Db();
+        $apcDb->query($apcDb->select('pid')->from('table.articles'));
+
+        $articlesCount = count($apcDb->fetchAll());
+
+        return intval($articlesCount / Manager_Widget::widget('options')->pageSize) + 1;
+    }
+
+    public function currentPageNumber() {
+        if (Common::server('REQUEST_URI') == '/index.php' || Common::server('REQUEST_URI') == '/index.php' || Common::server('REQUEST_URI') == '/') {
+            return 1;
+        } else {
+            return 9;
+        }
+    }
+
+    public function isFirstPage() {
+        return $this->currentPageNumber() == 1;
+    }
+
+    public function isLastPage() {
+        return $this->currentPageNumber() == $this->allPageCount();
+    }
+
     public function path2url($fullPath) {
         $fullPath = ltrim($fullPath, '/');
         $fullPath = '/' . $fullPath;

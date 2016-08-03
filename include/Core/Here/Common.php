@@ -4,18 +4,31 @@
  * @package Here.Common
  */
 class Common {
-    const JSON_TO_ARRAY  = 'ARRAY';
-    const JSON_TO_OBJECT = 'OBJECT';
-
+    /**
+     * cookie path
+     * 
+     * @var string
+     */
     private static $_cookiePath = '/';
 
+    /**
+     * sequential string
+     * @var string
+     */
     private static $_charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-    public static function noCache() {
+    /**
+     * disable cache operator
+     */
+    public static function disableCache() {
         header('Cache-Control: no-cache');
         header('Pragma: no-cache');
     }
 
+    /**
+     * variable(string or array) encode to JSON encoded string
+     * @param string $value
+     */
     public static function toJSON($value) {
         if (is_array($value)) {
             return json_encode($value);
@@ -24,15 +37,28 @@ class Common {
         }
     }
 
+    /**
+     * Compatible practice
+     * 
+     * @param string $password
+     * @param string $time
+     */
     public static function pawdEncrypt($password, $time) {
         $length = strlen($password) / 2;
         $prev = substr($password, 0, $length);
         $end  = substr($password, $length);
         $end .= $time;
-    
+
         return strtoupper(md5((substr(sha1($prev), 7, 15) . "F"))) . strtolower(md5((substr(sha1($end), 7, 15) . "F")));
     }
 
+    /**
+     * Compatible practice
+     * 
+     * @param string $password
+     * @param string $encrypt
+     * @param string $time
+     */
     public static function pawdVerify($password, $encrypt, $time) {
         if (is_string($password) && is_string($encrypt)) {
             $temp = self::pawdEncrypt($password, $time);
@@ -42,6 +68,12 @@ class Common {
         }
     }
 
+    /**
+     * JSON encoded string to object or array
+     * 
+     * @param string $source
+     * @param int $from
+     */
     public static function jsonTo($source, $from = Common::JSON_TO_ARRAY) {
         switch ($from) {
             case Common::JSON_TO_ARRAY: return json_decode($source, true);
@@ -50,8 +82,16 @@ class Common {
         }
     }
 
+    /**
+     * set cookie path
+     * @param unknown $path
+     */
     public static function cookiePath($path) {
         self::$_cookiePath = is_string($path) ? $path : '/';
+    }
+
+    public static function server($key) {
+        return array_key_exists($key, $_SERVER) ? $_SERVER[$key] : null;
     }
 
 #--------------- TODO COOKIE SESSION ----------------------
@@ -149,6 +189,10 @@ class Common {
             return null;
         }
     }
+
+    const JSON_TO_ARRAY  = 'ARRAY';
+
+    const JSON_TO_OBJECT = 'OBJECT';
 }
 
 ?>
