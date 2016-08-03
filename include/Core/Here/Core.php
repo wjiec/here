@@ -44,18 +44,21 @@ class Core {
         print_r(debug_backtrace());
         echo "In {$except->getFile()} At Line {$except->getLine()}<br/>";
 
-        if (in_array($except->getCode(), [ 404, 403, 502 ])){
+        if (in_array($except->getCode(), array( 404, 403, 502 ))){
             $errorCode = ctype_digit($except->getCode()) ? '_' . $except->getCode() : $except->getCode();
             Theme::{$errorCode}($except->getCode(), $except->getMessage());
         } else {
-            echo Common::toJSON([
+            echo htmlentities(Common::toJSON(array(
                 'code' => $except->getCode(),
                 'message' => $except->getMessage()
-            ]);
+            )));
             // TODO Exception
         }
     }
 
+    /**
+     * @return Router
+     */
     public static function router() {
         return Widget_Router::export();
     }

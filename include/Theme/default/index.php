@@ -84,22 +84,21 @@
             $articleDb = new Db();
 
             # from database getting articles
-            # TODO. table.posts -> table.articles
-            $articleDb->query($articleDb->select()->from('table.posts'));
-
+            $articleDb->query($articleDb->select()->from('table.articles'));
             return $articleDb->fetchAll();
         }, array( # keys mapping
-            # TODO db design
-            'pid' => 'article_url',
-            'modified' => 'post_time',
-            'content' => 'article_contents',
-            'author_id' => 'comments_count'
+            'url' => 'article_url',
+            'created' => 'post_time',
+            'contents' => 'article_contents',
+            'comments_cnt' => 'comments_count'
         )) ?>
     </div>
 
+    <?php if (!Manager_Widget::widget('helper')->isLastPage()): ?>
     <div id="index-paging" class="flex-container">
         <div><div id="index-paging-left" class="paging-disable"></div></div>
         <div><div id="index-paging-right"></div></div>
     </div>
+    <?php endif ?>
 </section>
 <?php Widget_Theme_Helper::footerRenderer()->render() ?>

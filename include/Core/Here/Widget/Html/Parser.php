@@ -44,6 +44,10 @@ class Widget_Html_Parser extends Abstract_Widget {
         $combine = array_combine($search, $replacement);
         $temp = array();
 
+        if (!is_array($subject)) {
+            return $temp;
+        }
+
         foreach ($subject as $key => &$val) {
             if (is_array($val)) {
                 $val = self::array_keys_replace($search, $replacement, $val);

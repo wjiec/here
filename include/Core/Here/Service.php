@@ -11,7 +11,6 @@ class Service {
         $service = ucfirst($service);
         if (is_file(self::$_include_path . $service . '.php')) {
             $action = array_shift($args);
-            // TODO : output required htmlentities
             if (!class_exists(self::$_class_perfix . $service)) {
                 throw new Exception("CLASS<" . self::$_class_perfix . $service . "> NOT FOUND", 404);
             }
