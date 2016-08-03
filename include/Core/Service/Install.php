@@ -130,7 +130,7 @@ class Service_Install {
     private static function eraseData($dbConfig) {
         define('_REASE_', true);
         Response::header('JAX-Container', '#here-replace-container');
-        $scripts = "TRUNCATE here_classify|TRUNCATE here_comments|TRUNCATE here_options|TRUNCATE here_posts|TRUNCATE here_users";
+        $scripts = "TRUNCATE here_classify|TRUNCATE here_comments|TRUNCATE here_options|TRUNCATE here_articles|TRUNCATE here_users";
 
         $scripts = str_replace('here_', $dbConfig['prefix'], $scripts);
         $scripts = explode('|', $scripts);
@@ -150,19 +150,19 @@ class Service_Install {
         }
 
         $userDb = new Db();
-        $userDb->query($userDb->insert('table.users')->rows([
+        $userDb->query($userDb->insert('table.users')->rows(array(
             'name'      => $options['username'],
             'password'  => $password,
             'email'     => $options['email'],
             'created'   => $time,
             'lastlogin' => $time
-        ]));
+        )));
 
-        $siteInfo = [
+        $siteInfo = array(
             'username' => $options['username'],
             'email'    => $options['email'],
             'title'    => $options['title']
-        ];
+        );
         Common::sessionSet('_info_', serialize($siteInfo));
         self::writeConf($dbConfig);
     }
@@ -185,10 +185,27 @@ class Service_Install {
                         'HelloWorld_Plugin' => array('HelloWorld_Plugin', 'render')
                     )
                 )))
-            )
+            ),
+            array('articleRESTful', 'article')
         ));
 
-        // TODO. Insert Posts and Comments
+        # category
+        $insertDb->query($insertDb->insert('table.classify')->rows(array(
+            'type'  => 'category',
+            'value' => 'default'
+        )));
+
+        # default article
+        $insertDb->query($insertDb->insert('table.articles')->rows(array(
+            'title'      => 'Welcome to this family',
+            'url'        => 'article/welcome-to-this-family',
+            'author_id'  => '1',
+            'created'    => time(),
+            'modified'   => time(),
+            'contents'   => 'Welcome to this family. This is a friendly, open family.',
+        )));
+
+        // TODO comment
     }
 
     private static function pawdencrypt($password, $time) {
