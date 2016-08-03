@@ -26,7 +26,7 @@ class Widget_Db_Query {
 
     /**
      * Mysqli instance
-     * @var Db_Mysql
+     * @var Widget_Db_Mysql
      */
     private $_instance = null;
 
@@ -58,7 +58,7 @@ class Widget_Db_Query {
 
     public function rows(array $rows) {
         $keys = array_map(function($key) { return $this->_instance->escapeKey($key); }, array_keys($rows));
-        $vals = array_map(function($key) { return $this->_instance->escapeValue($key); }, array_values($rows));
+        $vals = array_map(function($val) { return $this->_instance->escapeValue($val); }, array_values($rows));
 
         if (empty($this->_preBuilder['rows']['keys'])) {
             $this->_preBuilder['rows']['keys'] = $keys;

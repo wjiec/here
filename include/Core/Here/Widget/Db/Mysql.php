@@ -59,7 +59,7 @@ class Widget_Db_Mysql implements Interface_Db {
 
         for ($index = 0; $index < $length; ++$index) {
             $ch = $string[$index];
-            if (ctype_alnum($ch)) {
+            if (ctype_alnum($ch) || $ch == '_') {
                 $result .= $ch;
             } else if ($ch == '.') {
                 $result .= '`.`';
@@ -70,6 +70,9 @@ class Widget_Db_Mysql implements Interface_Db {
     }
 
     public function escapeValue($string) {
+        if (!is_string($string)) {
+            $string = strval($string);
+        }
         return '\'' . str_replace(array('\'', '\\'), array('\'\'', '\\\\'), $string) . '\'';
     }
 
