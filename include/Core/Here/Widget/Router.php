@@ -30,6 +30,8 @@ class Widget_Router extends Abstract_Widget {
         ->get('install.php', array($this, 'install'))
         # Std Router: License Page
         ->get(array('license.html', 'license.php'), array($this, 'license'))
+        # Std Router: Article Page
+        ->get('article/$articleTitle', array($this, 'article'))
         # Std Router: Admin Dashboard
         ->get(array('/dashboard/'), array($this, 'admin'))
         # API Router: Service
@@ -38,6 +40,9 @@ class Widget_Router extends Abstract_Widget {
         ;
     }
 
+    /**
+     * @return Router
+     */
     public static function export() {
         return self::$_instance;
     }
@@ -64,6 +69,11 @@ class Widget_Router extends Abstract_Widget {
         Manager_Widget::widget('helper')->required('index.php');
     }
 
+    # Article Page
+    public function article($params) {
+        var_dump($params);
+    }
+
     # Installer Entry
     public function install($params) {
         if (Core::sessionStart() && is_file('./config.inc.php') && @include_once './config.inc.php') {
@@ -85,7 +95,7 @@ class Widget_Router extends Abstract_Widget {
     }
 
     public function service($params) {
-        Common::noCache();
+        Common::disableCache();
         Request::s($params['action'], isset($params['value']) ? $params['value'] : null, Request::REST);
         Service::$params['service']($params['action']);
     }
