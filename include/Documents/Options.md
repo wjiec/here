@@ -13,6 +13,7 @@ Blog subtitle
 
 ### theme
 Blog theme name
+> default `default`
 
 ### activePlugins
 Activate plugin, including plugin status
@@ -28,3 +29,10 @@ ICP filing(China Only)
 ### ICPFilingHref
 ICP fling must be
 
+### articleRESTful
+article prefix for RESTful API
+> default `article`
+
+### pageSize
+The number of articles displayed on a page
+> default `10`
