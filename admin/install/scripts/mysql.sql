@@ -42,22 +42,23 @@ CREATE TABLE IF NOT EXISTS `here_options` (
 -- Table structure for table `here_posts`
 --
 
-CREATE TABLE IF NOT EXISTS `here_posts` (
+CREATE TABLE IF NOT EXISTS `here_articles` (
   `pid` SMALLINT(8) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `title` VARCHAR(64) NOT NULL,
+  `url` VARCHAR(256) NOT NULL,
   `description` TEXT DEFAULT NULL,
   `author_id` SMALLINT UNSIGNED NOT NULL,
-  `author` VARCHAR(32) NOT NULL,
+  `author` VARCHAR(32) DEFAULT NULL,
   `created` VARCHAR(10) NOT NULL,
   `modified` VARCHAR(10) NOT NULL,
-  `content` TEXT DEFAULT NULL,
+  `contents` TEXT DEFAULT NULL,
   `type` VARCHAR(16) DEFAULT NULL,
   `access` VARCHAR(16) DEFAULT 'public',
   `password` VARCHAR(32) DEFAULT NULL,
-  `comment_cnt` SMALLINT(8) UNSIGNED NOT NULL DEFAULT 0,
-  `permission` SET('allowComment', 'allowFeed', 'allowCopy') NOT NULL,
+  `comments_cnt` SMALLINT(8) UNSIGNED NOT NULL DEFAULT 0,
+  `permission` SET('closeComment', 'disableReproduce', 'allowCopy') DEFAULT NULL,
   `parent` SMALLINT(8) UNSIGNED NULL DEFAULT 0,
-  UNIQUE KEY (`title`)
+  UNIQUE KEY (`title`, `url`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -68,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `here_posts` (
 
 CREATE TABLE IF NOT EXISTS `here_classify` (
   `cid` SMALLINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  `type` VARCHAR(16) NOT NULL DEFAULT 'comment',
+  `type` SET('comment', 'category') NOT NULL DEFAULT 'comment',
   `value` VARCHAR(64) NOT NULL,
   `parent` SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   UNIQUE KEY `category` (`type`, `value`)
