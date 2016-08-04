@@ -326,7 +326,7 @@ class Widget_Db_Query {
         if ($this->_preBuilder['limit'] != null) {
             $sql .= " LIMIT {$this->_preBuilder['limit']}";
         }
-        if ($this->_preBuilder['limit'] != null) {
+        if ($this->_preBuilder['offset'] != null) {
             $sql .= " OFFSET {$this->_preBuilder['offset']}";
         }
         return $sql;

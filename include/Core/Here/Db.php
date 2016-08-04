@@ -224,8 +224,6 @@ class Db {
             $this->_index = 0;
         }
 
-        
-
         switch($operator) {
             case Db::UPDATE:
             case Db::DELETE:
