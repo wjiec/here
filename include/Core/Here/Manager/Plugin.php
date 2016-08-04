@@ -65,9 +65,7 @@ class Manager_Plugin extends Abstract_Widget {
         }
 
         # From Database Getting Active Plugins & Plugins Information
-        $pluginDb = new Db();
-        $pluginDb->query($pluginDb->select()->from('table.options')->where('name', Db::OP_EQUAL, 'activePlugins'));
-        self::$_activePlugins = unserialize($pluginDb->fetchAssoc('value'));
+        self::$_activePlugins = unserialize(Manager_Widget::widget('options')->activePlugins);
         foreach (array_keys(self::$_activePlugins) as $plugin) {
             if (!array_key_exists($plugin, self::$_plugins)) {
                 unset($_activePlugins[$plugin]);
@@ -80,9 +78,7 @@ class Manager_Plugin extends Abstract_Widget {
             call_user_func(array($plugin, 'resource'));
         }
 
-        # Getting Hook Function From Database
-        $pluginDb->query($pluginDb->select()->from('table.options')->where('name', Db::OP_EQUAL, 'pluginHooks'));
-        self::$_hooks = unserialize($pluginDb->fetchAssoc('value'));
+        self::$_hooks = unserialize(Manager_Widget::widget('options')->pluginHooks);
     }
 
     /**
