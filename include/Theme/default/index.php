@@ -84,7 +84,7 @@
             $articleDb = new Db();
 
             # from database getting articles
-            $articleDb->query($articleDb->select()->from('table.articles'));
+            $articleDb->query($articleDb->select()->from('table.articles')->limit(Manager_Widget::widget('options')->pageSize));
             return $articleDb->fetchAll();
         }, array( # keys mapping
             'url' => 'article_url',
@@ -94,7 +94,7 @@
         )) ?>
     </div>
 
-    <?php if (!Manager_Widget::widget('helper')->isLastPage()): ?>
+    <?php if (Manager_Widget::widget('helper')->allPageCount() > 1): ?>
     <div id="index-paging" class="flex-container">
         <div><div id="index-paging-left" class="paging-disable"></div></div>
         <div><div id="index-paging-right"></div></div>

@@ -22,7 +22,6 @@ class Widget_Html_Parser extends Abstract_Widget {
         }
 
         $data = self::array_keys_replace(array_keys($mapping), array_values($mapping), $data);
-
         if ($template = $this->fileFinder($template)) {
             $contents = Manager_Widget::widget('template')->template($template, $data);
         } else {
