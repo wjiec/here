@@ -29,6 +29,10 @@ class Widget_Html_Parser extends Abstract_Widget {
         }
     }
 
+    public function uList() {
+        
+    }
+
     private function fileFinder($filename) {
         if (is_file(join('/', array($this->_config->_rootPath, $this->_config->_themeName, $this->_config->_templateDir, $filename)))) {
             return join('/', array($this->_config->_rootPath, $this->_config->_themeName, $this->_config->_templateDir, $filename));

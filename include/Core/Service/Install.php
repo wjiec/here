@@ -186,12 +186,12 @@ class Service_Install {
                     )
                 )))
             ),
-            array('articleRESTful', 'article')
+            array('articleRESTful', 'article'),
+            array('pageSize', '10')
         ));
 
         # category
         $insertDb->query($insertDb->insert('table.classify')->rows(array(
-            'type'  => 'category',
             'value' => 'default'
         )));
 

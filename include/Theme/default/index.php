@@ -25,6 +25,7 @@
         </section>
         <?php Manager_Plugin::hook('index@left-title-after') ?>
         <!-- Category -->
+        <?php Manager_Widget::widget('parser')->uList() ?>
         <section id="index-left-category">
             <h1>Category</h1>
             <ul id="left-category-list">
@@ -60,7 +61,7 @@
             <ul id="left-admin-list">
                 <li class="left-admin-item"><a href="<?php echo Request::getFullUrl('/dashboard/') ?>">LOGIN</a></li>
               <?php if (Manager_Widget::widget('user')->logined()): ?>
-                <li class="left-admin-item"><a href="">CUSTOM</a></li>
+                <li class="left-admin-item"><a href="">OTHER</a></li>
               <?php endif ?>
             </ul>
         </section>
@@ -80,7 +81,7 @@
 <section id="main-screen" class="container">
     <h1 class="widget-hidden">Main Screen</h1>
     <div id="index-main-article-list" class="flex-container-column">
-        <?php Manager_Widget::widget('parser')->article(function() {
+        <?php Manager_Widget::widget('parser')->article(function() { # templeta automatic generation
             $articleDb = new Db();
 
             # from database getting articles
