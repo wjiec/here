@@ -25,7 +25,15 @@
         </section>
         <?php Manager_Plugin::hook('index@left-title-after') ?>
         <!-- Category -->
-        <?php Manager_Widget::widget('parser')->uList() ?>
+        <?php Manager_Widget::widget('parser')->uList(function() {
+            $classifyDb = new Db();
+
+            $classifyDb->query($classifyDb->select(array('value', 'name'), array('count(`pid`)', 'article_count'), 'table.classify.parent')
+                ->from('table.classify')->join('table.articles')
+                    ->on('table.articles.parent', Db::OP_EQUAL, 'table.classify.cid'));
+
+            var_dump($classifyDb->fetchAll());
+        }) ?>
         <section id="index-left-category">
             <h1>Category</h1>
             <ul id="left-category-list">
