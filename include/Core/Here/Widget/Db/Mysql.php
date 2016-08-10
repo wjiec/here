@@ -59,13 +59,18 @@ class Widget_Db_Mysql implements Interface_Db {
 
         for ($index = 0; $index < $length; ++$index) {
             $ch = $string[$index];
-            if (ctype_alnum($ch) || $ch == '_') {
+            if (ctype_alnum($ch) || in_array($ch, array('_', '(', ')', '`'))) {
                 $result .= $ch;
             } else if ($ch == '.') {
                 $result .= '`.`';
             }
         }
         $result .= '`';
+
+        if ($this->bracketsMatch($result)) {
+            return trim($result, '`');
+        }
+
         return $result;
     }
 
@@ -98,6 +103,29 @@ class Widget_Db_Mysql implements Interface_Db {
      * @param $resource
      */
     public function fetch($resource) {
+    }
+
+    private function bracketsMatch($string) {
+        $stack = array();
+        $pushFlags = false;
+
+        $string = str_split($string);
+        foreach ($string as $ch) {
+            if (in_array($ch, array('(', '[', '{'))) {
+                $pushFlags = true;
+                $stack[] = $ch;
+            } else if (in_array($ch, array(')', ']', '}'))) {
+                if ((end($stack) == '(' && $ch == ')') ||
+                    (end($stack) == '[' && $ch == ']') ||
+                    (end($stack) == '{' && $ch == '}')) {
+                    array_pop($stack);
+                } else {
+                    return false;
+                }
+            }
+        }
+
+        return empty($stack) && $pushFlags;
     }
 }
 

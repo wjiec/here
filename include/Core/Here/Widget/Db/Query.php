@@ -103,11 +103,15 @@ class Widget_Db_Query {
     public function select($fields) {
         $this->_action = Db::SELECT;
 
-        if ($fields[0] == null) {
+        if ($fields == null) {
             $this->_preBuilder['fields'][] = '*';
         } else {
             foreach ($fields as $val) {
-                $this->_preBuilder['fields'][] = $this->_instance->escapeKey($val);
+                if (is_array($val) && count($val) >= 2) {
+                    $this->_preBuilder['fields'][] = array($this->_instance->escapeKey($val[0]), $this->_instance->escapeKey($val[1]));
+                } else {
+                    $this->_preBuilder['fields'][] = $this->_instance->escapeKey(trim($this->tableFilter($val), '`'));
+                }
             }
         }
         return $this;
@@ -173,11 +177,12 @@ class Widget_Db_Query {
             || !in_array($relation, array(Db::RS_AND, Db::RS_OR))) {
                 return $this;
         }
+
         $left = explode('.', self::tableFilter($left));
         $right = explode('.', self::tableFilter($right));
         $references = array(
-            'left' => array('table' => $left[0] . '`', 'field' => '`' . $left[1]),
-            'right' => array('table' => $right[0] . '`', 'field' => '`' . $right[1])
+            'left' => array('table' => $left[0] . "`", 'field' => '`' . $left[1]),
+            'right' => array('table' => $right[0] . "`", 'field' => '`' . $right[1])
         );
 
         $this->_preBuilder['on'][] = array('left' => $references['left'], 'op' => $op, 'right' => $references['right'], 'relation' => $relation);
@@ -212,7 +217,6 @@ class Widget_Db_Query {
         $this->_preBuilder['group'][] = array('by' => $this->_instance->escapeKey($by), 'sort' => $sort);
         return $this;
     }
-
 
     public function where($field, $op, $condition, $relation = Db::RS_AND) {
         if (!is_string($field) || !is_string($condition)
@@ -255,7 +259,7 @@ class Widget_Db_Query {
 
     private function parseSelect() {
         $sql = 'SELECT ';
-        $sql .= implode(', ', array_values($this->_preBuilder['fields']));
+        $sql .= implode(', ', $this->parseField($this->_preBuilder['fields']));
         $sql .= ' FROM ' . $this->_table;
 
         // Syntax: JOIN
@@ -378,6 +382,16 @@ class Widget_Db_Query {
             $on = substr($on, 0, strlen($on) - 5);
         }
         return $on;
+    }
+
+    private function parseField(array $fields) {
+        foreach ($fields as &$field) {
+            if (is_array($field)) {
+                $field = $field[0] . " AS " . $field[1];
+            }
+        }
+
+        return $fields;
     }
 }
 

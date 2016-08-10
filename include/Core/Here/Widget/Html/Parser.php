@@ -29,8 +29,10 @@ class Widget_Html_Parser extends Abstract_Widget {
         }
     }
 
-    public function uList() {
-        
+    public function uList($data) {
+        if (is_callable($data)) {
+            $data = $data();
+        }
     }
 
     private function fileFinder($filename) {
