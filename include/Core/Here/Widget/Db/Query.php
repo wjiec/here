@@ -282,7 +282,7 @@ class Widget_Db_Query {
                 if ($condition == Db::DATA_DEFAULT || $condition == Db::DATA_NULL) {
                     $condition = trim($condition, '$_$');
                 }
-                $sql .= "{$row['field']} {$row['op']} {$condition} {$row['relation']} ";
+                $sql .= "{$row['field']} {$row['op']} {$row['relation']} {$condition} ";
             }
             if ($sql[strlen($sql) - 2] == 'R') { // OR
                 $sql = substr($sql, 0, strlen($sql) - 4);
@@ -299,7 +299,7 @@ class Widget_Db_Query {
                 if ($condition == Db::DATA_DEFAULT || $condition == Db::DATA_NULL) {
                     $condition = trim($condition, '$_$');
                 }
-                $sql .= "{$row['field']} {$row['op']} {$condition} {$row['relation']} ";
+                $sql .= "{$row['field']} {$row['op']} {$row['relation']} {$condition} ";
             }
             if ($sql[strlen($sql) - 2] == 'R') { // OR
                 $sql = substr($sql, 0, strlen($sql) - 4);

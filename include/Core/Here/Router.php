@@ -8,7 +8,7 @@ class Router {
     private $_hook;
     private $_error;
     private $_tree;
-    private $_check = ['A' => 'alnum', 'a' => 'alpha', 'd' => 'digit', 'l' => 'lower', 'u' => 'upper'];
+    private $_check = array('A' => 'alnum', 'a' => 'alpha', 'd' => 'digit', 'l' => 'lower', 'u' => 'upper');
 
     private static $SEPARATOR = '/';
     private static $HANDLE    = '$$';
@@ -63,10 +63,10 @@ class Router {
 
     public function match($method = array(), $path = array(), $callback = null, $hook = null) {
         if (!is_array($method)) {
-            $method = [ $method ];
+            $method = array($method);
         }
         if (!is_array($path)) {
-            $path = [ $path ];
+            $path = array($path);
         }
         foreach ($method as $m){
             $m = strtoupper($m);
@@ -104,7 +104,7 @@ class Router {
             return self::createNode($tree[$currentNode], $nodes, $callback, $hook);
         }
 
-        $tree[self::$HANDLE] = [ self::$CALLBACK => $callback, self::$HOOK => array() ];
+        $tree[self::$HANDLE] = array( self::$CALLBACK => $callback, self::$HOOK => array() );
         if (is_array($hook)) {
             $tree[self::$HANDLE][self::$HOOK] = array_merge($tree[self::$HANDLE][self::$HOOK], $hook);
         } else if (is_string($hook)) {
@@ -114,8 +114,8 @@ class Router {
 
     private function resolve($method, $path, &$params) {
         if (!array_key_exists($method, $this->_tree)) {
-            $params = array_merge($params, [self::$EXCEPTION => ['error' => '404', 'message' => 'METHOD NOT FOUND']]);
-            return [null, null];
+            $params = array_merge($params, array(self::$EXCEPTION => array('error' => '404', 'message' => 'METHOD NOT FOUND')));
+            return array(null, null);
         }
         $nodes = explode(self::$SEPARATOR, str_replace('.', self::$SEPARATOR, $path));
         return self::_find($this->_tree[$method], $nodes, $params);
@@ -125,28 +125,30 @@ class Router {
         $need = array_shift($nodes);
         if (empty($need)) {
             if (array_key_exists(self::$HANDLE, $tree)) {
-                return [$tree[self::$HANDLE][self::$CALLBACK], $tree[self::$HANDLE][self::$HOOK]];
+                return array($tree[self::$HANDLE][self::$CALLBACK], $tree[self::$HANDLE][self::$HOOK]);
             } else {
-                $params = array_merge($params, [self::$EXCEPTION => ['error' => '404', 'message' => 'HANDLE NOT FOUND']]);
-                return [null, null];
+                $params = array_merge($params, array(self::$EXCEPTION => array('error' => '404', 'message' => 'HANDLE NOT FOUND')));
+                return array(null, null);
             }
         }
         foreach ($tree as $node => $value) {
-            if ($node == self::$HANDLE || $node == self::$VARPATH) { continue; }
+            if ($node == self::$HANDLE || $node == self::$VARPATH) {
+                continue;
+            }
             if ($need == $node) {
                 return $this->_find($tree[$node], $nodes, $params);
             }
         }
 
         if (empty($tree[self::$VARPATH])) {
-            $params = array_merge($params, [self::$EXCEPTION => ['error' => '404', 'message' => 'PATH NOT FOUND']]);
-            return [null, null];
+            $params = array_merge($params, array(self::$EXCEPTION => array('error' => '404', 'message' => 'PATH NOT FOUND')));
+            return array(null, null);
         } else {
             $match = $tree[self::$VARPATH];
             foreach ($match as $key => $val) {
                 if ($pos = strpos($key, '\\')) {
                     if (array_key_exists($key[$pos + 1], $this->_check) && !call_user_func('ctype_' . $this->_check[$key[$pos + 1]], $need)) {
-                        $params = array_merge($params, [self::$EXCEPTION => ['error' => '404', 'message' => 'VALIDATE FAILURE']]);
+                        $params = array_merge($params, array(self::$EXCEPTION => array('error' => '404', 'message' => 'VALIDATE FAILURE')));
                         continue;
                     } else {
                         unset($params[self::$EXCEPTION]);
@@ -156,7 +158,7 @@ class Router {
                 list($c, $h) = $this->_find($match[$key], $nodes, $params);
 
                 if ($c && is_callable($c)) {
-                    return [$c, $h];
+                    return array($c, $h);
                 }
                 unset($params[$key]);
             }
