@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `here_users` (
   `password` VARCHAR(64) NOT NULL,
   `email` VARCHAR(64) NOT NULL,
   `nickname` VARCHAR(32) DEFAULT NULL,
-  `avator` varchar(64) DEFAULT NULL,
+  `avatar` varchar(64) DEFAULT NULL,
   `description` TEXT DEFAULT NULL,
   `created` VARCHAR(10) NOT NULL,
   `lastlogin` VARCHAR(10) NOT NULL,
