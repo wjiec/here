@@ -1,0 +1,16 @@
+@CHARSET "utf-8"
+
+@import 'normalize/html5';
+
+@import "compass/css3";
+
+body {
+    background: #fff;
+
+    div {
+        background: {
+            color: '#fff';
+            position: 50% 0;
+        }
+    }
+}

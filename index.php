@@ -9,54 +9,45 @@
  * @version   Develop: 0.1.0
  * @link      https://github.com/JShadowMan/here
  */
-
-# Root Directory
+# root directory
 define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
 
-# Admin Directory
-define('__HERE_ADMIN_DIRECTORY__', '/admin');
+# /bin directory
+define('__HERE_BIN_DIRECTORY__', '/bin');
 
-# Common Directory
-define('__HERE_CORE_DIRECTORY__', '/include/Core');
+# /etc directory
+define('__HERE_ETC_DIRECTORY__', '/etc');
 
-# Core Class Directory
-define('__HERE_CLASS_DIRECTORY__', '/include/Core/Here');
+# /home directory
+define('__HERE_HOME_DIRECTORY__', '/home');
 
-# Plugins Directory
-define('__HERE_PLUGINS_DIRECTORY__', '/include/Plugins');
+# /sbin directory
+define('__HERE_SBIN_DIRECTORY__', '/sbin');
 
-# Theme Directory
-define('__HERE_THEME_DIRECTORY__', '/include/Theme');
+# /tmp directory
+define('__HERE_TMP_DIRECTORY__', '/tmp');
 
-define('_DIRECTORY_SEPARATOR', '/');
+# /usr directory
+define('__HERE_USR_DIRECTORY__', '/usr');
+
+# /var directory
+define('__HERE_VAR_DIRECTORY__', '/var');
 
 @set_include_path(get_include_path() . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_CORE_DIRECTORY__ . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_ADMIN_DIRECTORY__ . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_CLASS_DIRECTORY__ . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_THEME_DIRECTORY__ . PATH_SEPARATOR.
-    __HERE_ROOT_DIRECTORY__ . __HERE_PLUGINS_DIRECTORY__ . PATH_SEPARATOR
+    __HERE_ROOT_DIRECTORY__ . __HERE_BIN_DIRECTORY__ . PATH_SEPARATOR.
+    __HERE_ROOT_DIRECTORY__ . __HERE_ETC_DIRECTORY__ . PATH_SEPARATOR.
+    __HERE_ROOT_DIRECTORY__ . __HERE_HOME_DIRECTORY__ . PATH_SEPARATOR.
+    __HERE_ROOT_DIRECTORY__ . __HERE_SBIN_DIRECTORY__ . PATH_SEPARATOR.
+    __HERE_ROOT_DIRECTORY__ . __HERE_TMP_DIRECTORY__ . PATH_SEPARATOR.
+    __HERE_ROOT_DIRECTORY__ . __HERE_USR_DIRECTORY__ . PATH_SEPARATOR.
+    __HERE_ROOT_DIRECTORY__ . __HERE_VAR_DIRECTORY__ . PATH_SEPARATOR
 );
 
-# Core API
-require_once 'Here/Core.php';
+# Here core API
+require_once 'here/core.php';
 
-# Router Support
-require_once 'Here/Router.php';
-
-
-# TODO. Will Be Remove
-# Theme Support
-require_once 'Here/Theme.php';
-
-
-# Init Environment
+# Initialize environment
 Core::init();
 
-// loading configure, ignore error
-Core::loadConfigure(true);
-
-Manager_Widget::widget('init')->start();
-
-# Entry
-Core::router()->execute();
+# single entry
+Core::router_instance()->entry();

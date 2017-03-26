@@ -1,0 +1,12 @@
+@CHARSET "utf-8"
+
+@import 'normalize/html5';
+/* line 7, install.scss */
+body {
+  color: #fff;
+}
+/* line 10, install.scss */
+body div {
+  background-color: '#fff';
+  background-position: 50% 0;
+}

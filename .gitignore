@@ -1,5 +1,8 @@
+# sass cache
+.sass-cache
+
+# zend studio
 .settings
-.project
 .buildpath
-/include/Resource/css/library/grid-alpha.css.bak
-/include/Theme/default/templates/*.tpl.*.php
+.project
+
