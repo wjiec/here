@@ -359,7 +359,7 @@ class Here_Db_Adapter_MySQL extends Here_Abstracts_Adapter {
                     array_splice($this->_result, 0, count($this->_result));
                 }
 
-                while ($row = $result->fetch_assoc()) {
+                for ($row = $result->fetch_assoc(); $row;) {
                     $this->_result[] = $row;
                 }
 

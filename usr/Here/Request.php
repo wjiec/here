@@ -42,6 +42,7 @@ class Here_Request {
     public static function redirection($url) {
         ob_clean();
         self::header('Location', $url);
+        exit();
     }
 
     public static function error($errno, $error) {

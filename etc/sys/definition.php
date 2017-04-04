@@ -25,10 +25,10 @@ define('_here_path_separator_', '/');
 define('_here_url_separator', '/');
 
 # user router table
-define('_here_user_router_table_', 'etc/router');
+define('_here_user_router_table_', 'etc/router.php');
 
 # default router table
-define('_here_sys_default_router_table_', 'etc/sys/default-router');
+define('_here_sys_default_router_table_', 'etc/sys/default_route.php');
 
 # configure file, generate by install guide
 define('_here_user_configure', 'etc/configure.php');
@@ -37,7 +37,7 @@ define('_here_user_configure', 'etc/configure.php');
 define('_here_install_file_', 'var/install/install.php');
 
 # install guide url
-define('_here_install_url', '/install');
+define('_here_install_url', '/installer-guide');
 
 # error code raise with hook function validate failure 
 define('_here_hook_emit_error_', '403');

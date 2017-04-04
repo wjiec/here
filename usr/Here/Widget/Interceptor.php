@@ -26,7 +26,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
     }
 
     public function smart_router() {
-        $current_url = Here_Widget::widget('router')->current_url();
+        $current_url = Core::router_instance()->current_url();
 
         if (preg_match('/\/static\/([\w\d-_]+)\/(.*)\.([\w\d-_]+)/', $current_url, $matches)) {
             try {
@@ -42,7 +42,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
                     exit;
                 }
             } catch (Exception $e) {
-                Here_Widget::widget('router')->error('404', 'Not Found');
+               Core::router_instance()->error('404', 'Not Found');
             }
         }
     }

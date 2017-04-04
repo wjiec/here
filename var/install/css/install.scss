@@ -1,16 +1,94 @@
-@CHARSET "utf-8"
+// import Here global definition
+@import '../../default/css/here/definition';
 
-@import 'normalize/html5';
+// import Here global variables
+@import '../../default/css/here/global_vars';
 
-@import "compass/css3";
+#here-installer-header {
+    height: 8rem;
+    color: #fff;
+    margin-bottom: 2.5rem;
+    background: #23282d;
+    cursor: default;
+    text-align: center;
+    // box shdow in header bottom
+    @include box-shadow(0 0 10px 1px rgba(0, 0, 0, .85));
+    // text style
+    h1 {
+        margin: 0;
+        font: {
+            family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+            style: italic;
+        }
+        line-height: 3rem;
+        letter-spacing: 0.167rem;
+    }
+}
+@mixin here-installer-header-tablet {
+    #here-installer-header {
+        height: 10rem;
+        margin-bottom: 3rem;
 
-body {
-    background: #fff;
-
-    div {
-        background: {
-            color: '#fff';
-            position: 50% 0;
+        h1 {
+            font-size: 1.6rem;
         }
     }
+}
+@mixin here-installer-header-desktop {
+    #here-installer-header {
+        height: 10rem;
+        margin-bottom: 5rem;
+
+        h1 {
+            font-size: 2rem;
+        }
+    }
+}
+
+#here-installer-container {
+    color: $text-color;
+    padding: 1rem;
+    
+    background: {
+        color: $inside-background-color;
+    }
+    @include box-shadow(inset 0 0 5px 1px rgba(0, 0, 0, .15));
+
+    @at-root
+    #here-install-body {
+        font: {
+            family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', 微软雅黑, Arial, sans-serif;
+        }
+
+        @at-root
+        #button-container {
+            text-align: right;
+
+            @at-root
+            #here-installer-next-btn {
+                letter-spacing: 1px;
+                font: {
+                    // family: "Fira Mono", "Source Code Pro", monospace;
+                    family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+                    style: italic;
+                }
+
+                &::after {
+                    content: "»";
+                }
+            }
+        }
+    }
+}
+
+@media screen and (min-width: #{map-get($break-points, 'phone') + 1}) {
+    @include here-installer-header-tablet;
+}
+
+@media screen and (min-width: #{map-get($break-points, 'tablet') + 1}) {
+    @include here-installer-header-desktop;
+}
+
+@media screen and (min-width: #{map-get($break-points, 'desktop') + 1}) {
+    // large screen
 }

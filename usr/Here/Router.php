@@ -32,7 +32,7 @@ class Here_Router {
     private static $_request_methods = array('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'ALL');
 
     # construct function
-    public function __construct($router_file = null) {
+    public function __construct() {
         # initailze
         $this->_tree = array();
         $this->_error = array();
@@ -145,36 +145,26 @@ class Here_Router {
     }
 
     # import router table
-    public function import_router_table($path_to_router_table) {
-        if (!is_file($path_to_router_table)) {
-            throw new Exception('router_table file invalid', 1996);
-        }
-
-        $file_object = fopen($path_to_router_table, 'r');
-        while (!feof($file_object)) {
-            $rule = trim(fgets($file_object));
-
-            # comment
-            if ($rule && $rule[0] == '#') {
-                continue;
+    public function import_router_table($route_classes) {
+        $error_routes = array_filter($route_classes, function($class_name) {
+            if (strpos($class_name, 'Error') === 0) {
+                return true;
             }
-
-            # blank line
-            if (preg_match('/^\s*$/', $rule)) {
-                continue;
+        });
+        $hook_routes = array_filter($route_classes, function($class_name) {
+            if (strpos($class_name, 'Hook') === 0) {
+                return true;
             }
-
-            # parse rule
-            if (strpos($rule, 'ERROR') === 0) {
-                $this->_parse_error_rule($rule);
-            } else if (strpos($rule, 'HOOK') === 0) {
-                $this->_parse_hook_rule($rule);
-            } else if (strpos($rule, 'ROUTER') === 0) {
-                $this->_parse_router_rule($rule);
-            } else {
-                throw new Exception("unrecognized instruction for '" . substr($rule, 0, strpos($rule, ' ') - 1) . "' in " . $path_to_router_table, 1996);
+        });
+        $path_route = array_filter($route_classes, function($class_name) {
+            if (strpos($class_name, 'Route') === 0) {
+                return true;
             }
-        }
+        });
+
+        $this->_parser_error_route($error_routes);
+        $this->_parser_hook_route($hook_routes);
+        $this->_parser_path_route($path_route);
     }
 
     # router entry point
@@ -386,7 +376,6 @@ class Here_Router {
 
                 # @^pattern$@, must be full matching
                 $test_re = self::$RE_ROUTER . '^' . $test_re . '$' . self::$RE_ROUTER;
-                var_dump($test_re);
                 if (preg_match($test_re, $require_node, $matches)) {
                     if (array_key_exists('errno', $params)) {
                         unset($params['errno']);
@@ -425,7 +414,8 @@ class Here_Router {
         } else {
             $var_node = $tree[self::$VAR_ROUTER];
             foreach ($var_node as $key => $val) {
-                if ($pos = strpos($key, ':')) {
+                $pos = strpos($key, ':');
+                if ($pos) {
                     if (array_key_exists($key[$pos + 1], $this->_validate) && !call_user_func('ctype_' . $this->_validate[$key[$pos + 1]], $require_node)) {
                         $params['errno'] = '404';
                         $params['error'] = 'var-matching validate failure';
@@ -450,129 +440,33 @@ class Here_Router {
         return array(null, null);
     }
 
-    private function _parse_error_rule($rule) {
-        list($rule_name, $error_code, $error_handler) = explode(' ', $rule);
+    private function _parser_error_route($error_route_list) {
+        foreach ($error_route_list as $error_route) {
+            $route_class = new $error_route();
+            $error_code = $route_class->errno();
 
-        if (!($rule_name && $error_code && $error_handler) || $rule_name != 'ERROR') {
-            throw new Exception('ERROR routing syntax error', 1996);
-        }
-
-        list($class_name, $function_name) = explode('@', $error_handler);
-        if ($class_name == '') {
-            $this->_create_error_handler($error_code, $function_name);
-        } else {
-            $class_name = str_replace('.', '_', $class_name);
-
-            if (class_exists($class_name) && strpos($class_name, 'Here_Widget') === 0) {
-                $widget_name = explode('_', $class_name);
-
-                array_shift($widget_name); # shift HERE
-                array_shift($widget_name); # shift Widget
-
-
-                if (is_callable(array(Here_Widget::widget(join('.', $widget_name)), $function_name))) {
-                    $this->_create_error_handler($error_code, array(Here_Widget::widget(join('.', $widget_name)), $function_name));
-                } else {
-                    throw new Exception("the handler '{$function_name}' is non-callable", 1996);
-                }
-            }
+            $this->_create_error_handler($error_code, array($route_class, 'entry_point'));
         }
     }
 
-    private function _parse_hook_rule($rule) {
-        list($rule_name, $hook_name, $hook_handler) = explode(' ', $rule);
+    private function _parser_hook_route($hook_route_list) {
+        foreach ($hook_route_list as $hook_route) {
+            $route_class = new $hook_route();
+            $hook_name = $route_class->hook_name();
 
-        if (!($rule_name && $hook_name && $hook_handler) || $rule_name != 'HOOK') {
-            throw new Exception('HOOK routing syntax error', 1996);
-        }
-
-        list($class_name, $function_name) = explode('@', $hook_handler);
-        if ($class_name == '') {
-            $this->_create_error_handler($hook_handler, $function_name);
-        } else {
-            $class_name = str_replace('.', '_', $class_name);
-
-            if (class_exists($class_name) && strpos($class_name, 'Here_Widget') === 0) {
-                $widget_name = explode('_', $class_name);
-
-                array_shift($widget_name); # shift HERE
-                array_shift($widget_name); # shift Widget
-
-                if (is_callable(array(Here_Widget::widget(join('.', $widget_name)), $function_name))) {
-                    $this->_create_hook_handler($hook_name, array(Here_Widget::widget(join('.', $widget_name)), $function_name));
-                } else {
-                    throw new Exception("the handler '{$function_name}' is non-callable", 1996);
-                }
-            }
+            $this->_create_hook_handler($hook_name, array($route_class, 'entry_point'));
         }
     }
 
-    private function _parse_router_rule($rule) {
-        preg_match('/^(\w+)\s+(.*)\s+(\(.*\))\s+([\w\._@]+)\s+([\w\(\)\_]+).*$/i', $rule, $matches);
-        array_shift($matches); # shift all match item
+    private function _parser_path_route($path_route_list) {
+        foreach ($path_route_list as $path_route) {
+            $route_class = new $path_route();
+            $urls = $route_class->urls();
+            $methods = $route_class->methods();
+            $hooks = $route_class->hooks();
 
-        $matches = array_map(function ($item) {
-            return trim($item);
-        }, $matches);
-        if (count($matches) !== 5) {
-            throw new Exception('ROUTER routing syntax error', 1996);
+            $this->match($methods, $urls, array($route_class, 'entry_point'), $hooks);
         }
-
-        list($rule_name, $methods, $urls, $callback, $hooks) = $matches;
-        if (!($rule_name && $methods && $urls && $callback) || $rule_name != 'ROUTER') {
-            throw new Exception('ROUTER routing syntax error', 1996);
-        }
-
-        if ($methods[0] == '(' && $methods[strlen($methods) - 1] == ')') {
-            $methods = substr($methods, 1, strlen($methods) - 2);
-
-            $methods = explode(',', $methods);
-            foreach ($methods as &$method) {
-                $method = strtoupper(trim($method));
-            }
-        }
-
-        if ($urls[0] == '(' && $urls[strlen($urls) - 1] == ')') {
-            $urls = substr($urls, 1, strlen($urls) - 2);
-
-            $urls = explode(',', $urls);
-            foreach ($urls as &$url) {
-                $url = trim(trim($url), '\'');
-            }
-        }
-
-        list($class_name, $function_name) = explode('@', $callback);
-        if ($class_name == '') {
-            $callback = $function_name;
-        } else {
-            $class_name = str_replace('.', '_', $class_name);
-
-            if (class_exists($class_name) && strpos($class_name, 'Here_Widget') === 0) {
-                $widget_name = explode('_', $class_name);
-
-                array_shift($widget_name); # shift HERE
-                array_shift($widget_name); # shift Widget
-
-                if (is_callable(array(Here_Widget::widget(join('.', $widget_name)), $function_name))) {
-                    $callback = array(Here_Widget::widget(join('.', $widget_name)), $function_name);
-                } else {
-                    throw new Exception("the handler '{$function_name}' is non-callable", 1996);
-                }
-            }
-        }
-
-        if ($hooks == 'NULL') {
-            $hooks = array();
-        } else if ($hooks[0] == '(' && $hooks[strlen($hooks) - 1] == ')') {
-            $hooks = substr($hooks, 1, strlen($hooks) - 2);
-
-            $hooks = explode(',', $hooks);
-            foreach ($hooks as &$hook) {
-                $hook = trim($hook);
-            }
-        }
-
-        $this->match($methods, $urls, $callback, $hooks);
     }
 
     # url separator
