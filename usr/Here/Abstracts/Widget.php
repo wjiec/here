@@ -17,19 +17,19 @@ abstract class Here_Abstracts_Widget {
         $this->_widget_options = $options;
     }
 
-    public function export_options() {
+    final public function export_options() {
         return $this->_widget_options;
     }
 
-    public function widget_name() {
+    final public function widget_name() {
         return $this->_widget_name;
     }
 
-    public function __toString() {
+    final public function __toString() {
         return $this->_widget_name;
     }
 
-    public function __clone() {
+    final public function __clone() {
         throw new Exception("Widget \'{$this->__toString()}\' is single instance", 1996);
     }
 }

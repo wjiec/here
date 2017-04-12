@@ -14,10 +14,6 @@ class Core {
 
     const _minor_version = 'dev-2016-12-22';
 
-    private static $_single_theme_helper_instance = null;
-
-    private static $_single_plugin_helper_instance = null;
-
     public static function init($debug_mode = false) {
         # register autoload function
         if (function_exists('spl_autoload_register')) {
@@ -84,8 +80,8 @@ class Core {
             # redirection to install/recovery guide
             if (self::router_instance()->current_url() !== _here_install_url) {
                 # check request uri is not resource file
-                if (strpos(self::router_instance()->current_url(), '/static') !== 0) {
-                    Here_Request::redirection(_here_install_url);
+                if (strpos(self::router_instance()->current_url(), '/static') === 0) {
+                    return;
                 }
             }
         }
@@ -144,4 +140,8 @@ class Core {
     }
 
     private static $router_instance = null;
+
+    private static $_single_theme_helper_instance = null;
+
+    private static $_single_plugin_helper_instance = null;
 }

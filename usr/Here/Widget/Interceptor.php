@@ -21,44 +21,14 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
     public function __construct(array $options) {
         parent::__construct($options);
 
-        $this->_xss_reject();
-        $this->smart_router();
+        $this->_reject_rebots();
+        $this->_smart_router();
     }
 
-    public function smart_router() {
-        $current_url = Core::router_instance()->current_url();
-
-        if (preg_match('/\/static\/([\w\d-_]+)\/(.*)\.([\w\d-_]+)/', $current_url, $matches)) {
-            try {
-                $suffix = $matches[3];
-                $file_path = join('.', array($matches[2], $suffix));
-                $real_file_path = join(_here_path_separator_, array('var', $matches[1], $file_path));
-
-                Here_Request::mime($suffix);
-
-                // return resource-file contents
-                if (is_file($real_file_path)) {
-                    include $real_file_path;
-                    exit;
-                }
-            } catch (Exception $e) {
-               Core::router_instance()->error('404', 'Not Found');
-            }
-        }
-    }
-
-    public function black_router() {
-        
-    }
-
-    public function white_router() {
-        
-    }
-
-    private function _xss_reject() {
+    private function _reject_rebots() {
         if (!empty($_GET) || !empty($_POST)) {
             if (empty($_SERVER['HTTP_REFERER'])) {
-                exit;
+                Here_Request::abort(403);
             }
 
             $parts = parse_url($_SERVER['HTTP_REFERER']);
@@ -67,7 +37,29 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
             }
 
             if (empty($parts['host']) || $_SERVER['HTTP_HOST'] != $parts['host']) {
-                exit;
+                Here_Request::abort(403);
+            }
+        }
+    }
+
+    private function _smart_router() {
+        $current_url = Core::router_instance()->current_url();
+
+        if (preg_match('/\/static\/([\w\d-_]+)\/(.*)\.([\w\d-_]+)/', $current_url, $matches)) {
+            try {
+                $suffix = $matches[3];
+                $file_path = join('.', array($matches[2], $suffix));
+                $real_file_path = join(_here_path_separator_, array('var', $matches[1], $file_path));
+
+                Here_Request::set_mime($suffix);
+
+                // return resource-file contents
+                if (is_file($real_file_path)) {
+                    include $real_file_path;
+                    exit;
+                }
+            } catch (Exception $e) {
+                Core::router_instance()->error('404', 'Not Found');
             }
         }
     }

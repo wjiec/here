@@ -13,11 +13,13 @@ class Theme_Helper extends Here_Abstracts_Widget {
 
     public function __construct(array $options = array()) {
         parent::__construct($options);
-
-        
     }
 
     public static function static_url_completion($path_to_url) {
         echo Here_Request::url_completion($path_to_url);
+    }
+
+    public static function include_static_file($static_file_path) {
+        
     }
 }

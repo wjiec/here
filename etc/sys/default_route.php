@@ -35,8 +35,6 @@ class Error_Not_Found extends Here_Abstracts_Route_Error {
      * @see Here_Abstracts_Route_Error::entry_point()
      */
     public function entry_point(array $parameters) {
-        Here_Request::error('404', 'Not Found');
-
         echo '<h1>Sorry, this page is loss</h1>';
         var_dump($parameters);
     }
@@ -111,7 +109,10 @@ class Hook_Check_Install extends Here_Abstracts_Route_Hook {
      * @see Here_Abstracts_Route_Hook::entry_point()
      */
     public function entry_point(array $parameters) {
-        return !(is_file(_here_user_configure));
+        if (!(is_file(_here_user_configure))) {
+            Here_Request::redirection(_here_install_url);
+        }
+        return true;
     }
 }
 
@@ -130,7 +131,7 @@ class Route_Index extends Here_Abstracts_Route_Route {
     }
 
     public function hooks() {
-        return array();
+        return array('check_install');
     }
 
     public function entry_point(array $parameters) {
@@ -214,7 +215,7 @@ class Route_Recovery extends Here_Abstracts_Route_Route {
  */
 class Route_API extends Here_Abstracts_Route_Route {
     public function urls() {
-        return array('/api/@(v\d)/$module/$operator');
+        return array('/api/@v(\d+)@api_version/$module/$operator');
     }
 
     public function methods() {
@@ -229,3 +230,21 @@ class Route_API extends Here_Abstracts_Route_Route {
         var_dump($parameters);
     }
 }
+
+// class Route_Static extends Here_Abstracts_Route_Route {
+//     public function urls() {
+//         return array('/static/...');
+//     }
+
+//     public function methods() {
+//         return array('GET');
+//     }
+
+//     public function hooks() {
+//         return array();
+//     }
+
+//     public function entry_point(array $parameters) {
+//         var_dump($parameters);
+//     }
+// }

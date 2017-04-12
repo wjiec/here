@@ -9,9 +9,10 @@
  * @link
  */
 
-class Here_Request {
+class Here_Request implements Here_Interfaces_SingleInstance {
     /**
      * url prefix
+     * 
      * @var string
      */
     private static $_url_prefix = null;
@@ -19,10 +20,14 @@ class Here_Request {
     /**
      * server variable
      * 
-     * @var unknown
+     * @var array
      */
     private $_server = array();
 
+    /** Here_Request constructor
+     * 
+     * @throws Exception
+     */
     public function __construct() {
         if (self::$_single_request_instance != null) {
             throw new Exception('Request must be single instance', 1996);
@@ -31,8 +36,6 @@ class Here_Request {
         foreach ($_SERVER as $key => $value) {
             $this->_server[strtolower($key)] = $value;
         }
-
-//         var_dump($this->_server);
     }
 
     public static function init_request() {
@@ -40,16 +43,21 @@ class Here_Request {
     }
 
     public static function redirection($url) {
-        ob_clean();
+        @ob_clean();
+
         self::header('Location', $url);
         exit();
     }
 
-    public static function error($errno, $error) {
-        header(_here_http_protocol_ . ' ' . $errno . $error);
+    public static function abort($errno, $error) {
+        Core::router_instance()->emit_error($errno, $error);
     }
 
-    public static function mime($suffix) {
+    public static function set_http_code($code) {
+        header('Request-Status: ' . $code, null, $code);
+    }
+
+    public static function set_mime($suffix) {
         switch ($suffix) {
             case 'css': $mime = 'text/css'; break;
             case 'js': $mime = 'text/javascript'; break;
@@ -60,7 +68,7 @@ class Here_Request {
     }
 
     public static function header($key, $value) {
-        header($key . ':' . $value);
+        header($key . ': ' . $value);
     }
 
     /**
@@ -76,8 +84,21 @@ class Here_Request {
     }
 
     public function is_mobile() {
-        $ua = strtolower($_SERVER['HTTP_USER_AGENT']);
-        return (strpos($ua, 'iphone') || strpos($ua, 'ipad') || strpos($ua, 'android') || strpos($ua, 'midp') || strpos($ua, 'ucweb'));
+        $user_agent = strtolower($this->get_server_env('http_user_agent'));
+        return (strpos($user_agent, 'iphone') ||
+                strpos($user_agent, 'ipad') ||
+                strpos($user_agent, 'android') ||
+                strpos($user_agent, 'midp') ||
+                strpos($user_agent, 'ucweb'));
+    }
+
+    public function get_server_env($key) {
+        $key = strtolower($key);
+
+        if (array_key_exists($key, $this->_server)) {
+            return $this->_server[$key];
+        }
+        return null;
     }
 
     public static function url_completion($url) {
@@ -95,8 +116,8 @@ class Here_Request {
 
     private static function is_secure() {
         return (
-                (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off') ||
-                (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443')
+            (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off') ||
+            (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443')
         );
     }
 

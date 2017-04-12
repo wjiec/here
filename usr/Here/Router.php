@@ -198,7 +198,7 @@ class Here_Router {
        # check hook return value is true?
         if (!empty($hooks)) {
             foreach ($hooks as $hook) {
-                if ($this->_emit_hook($hook, $this->_callback_params) == false) {
+                if (!$this->_emit_hook($hook, $this->_callback_params)) {
                     $this->_callback_params['errno'] = _here_hook_emit_error_;
                     $this->_callback_params['error'] = 'url hook function validate error';
                     $this->emit_error($this->_callback_params['errno'], $this->_callback_params);
@@ -220,6 +220,9 @@ class Here_Router {
     }
 
     public function emit_error($error_code/* ... other args ... */) {
+        $error_code = intval($error_code);
+        Here_Request::set_http_code($error_code);
+
         if (!array_key_exists($error_code, $this->_error)) {
             throw new Exception('error handler not found', 1996);
         }
