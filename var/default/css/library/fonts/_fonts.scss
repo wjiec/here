@@ -1,0 +1,16 @@
+// import Here global definition
+@import '../../default/css/here/definition';
+
+// import Here global variables
+@import '../../default/css/here/global_vars';
+
+// register extra fonts
+$font-dirs: (
+    'fira': ('eot', 'ttf', 'woff'),
+    'Inconsolate': ('eot', 'ttf', 'woff'))
+) !default;
+
+// font-loader method
+@mixin font-loader($font-name) {
+
+}
