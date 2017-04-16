@@ -36,6 +36,9 @@ a {
     @include link-colors(#444, #222, #222, #444, #222);
     // hover-link()
     @include hover-link();
+    font: {
+      style: italic;
+    }
 }
 // common conntainer
 .container {

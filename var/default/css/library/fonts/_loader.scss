@@ -1,0 +1,37 @@
+// register extra fonts
+$all-fonts: (
+    'FiraMono': (
+        'font-weight': null,
+        'font-style': null
+    ),
+    'Inconsolata': (
+        'font-weight': null,
+        'font-style': null
+    ),
+) !default;
+
+// global font prefix
+$font-path-prefix: '/static/default/css/library/fonts' !default;
+
+
+// font-loader method
+@mixin font-loader($font-name, $directory: null) {
+    @if map-has-key($all-fonts, $font-name) {
+        $font-information: map-get($all-fonts, $font-name);
+
+        @if not($directory) {
+            $directory: $font-name;
+        }
+        
+        /*! Font Defineition */
+        @font-face {
+          font-family: $font-name;
+          src: url('#{$font-path-prefix}/#{$directory}/#{$font-name}.eot');
+          src: url('#{$font-path-prefix}/#{$directory}/#{$font-name}.woff') format('woff'),
+               url('#{$font-path-prefix}/#{$directory}/#{$font-name}.woff2') format('woff2'),
+               url('#{$font-path-prefix}/#{$directory}/#{$font-name}.eot?#iefix') format('embedded-opentype'),
+               url('#{$font-path-prefix}/#{$directory}/#{$font-name}.ttf') format('truetype');
+        }
+    }
+
+}
