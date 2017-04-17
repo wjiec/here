@@ -1,7 +1,17 @@
 @charset "UTF-8";
-/*! Here Global Definition */
-/*! Here Global Variables */
-/* line 7, install.scss */
+/*! Font Defineition */
+@font-face {
+  font-family: "FiraMono";
+  src: url("/static/default/css/library/fonts/Fira/FiraMono.eot");
+  src: url("/static/default/css/library/fonts/Fira/FiraMono.woff") format("woff"), url("/static/default/css/library/fonts/Fira/FiraMono.woff2") format("woff2"), url("/static/default/css/library/fonts/Fira/FiraMono.eot?#iefix") format("embedded-opentype"), url("/static/default/css/library/fonts/Fira/FiraMono.ttf") format("truetype");
+}
+/*! Font Defineition */
+@font-face {
+  font-family: "Inconsolata";
+  src: url("/static/default/css/library/fonts/Inconsolata/Inconsolata.eot");
+  src: url("/static/default/css/library/fonts/Inconsolata/Inconsolata.woff") format("woff"), url("/static/default/css/library/fonts/Inconsolata/Inconsolata.woff2") format("woff2"), url("/static/default/css/library/fonts/Inconsolata/Inconsolata.eot?#iefix") format("embedded-opentype"), url("/static/default/css/library/fonts/Inconsolata/Inconsolata.ttf") format("truetype");
+}
+/* line 15, install.scss */
 #here-installer-header {
   height: 8rem;
   color: #fff;
@@ -13,7 +23,7 @@
   -webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.85);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.85);
 }
-/* line 17, install.scss */
+/* line 25, install.scss */
 #here-installer-header h1 {
   margin: 0;
   font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
@@ -22,7 +32,7 @@
   letter-spacing: 0.167rem;
 }
 
-/* line 48, install.scss */
+/* line 56, install.scss */
 #here-installer-container {
   color: #333;
   padding: 1rem;
@@ -31,43 +41,47 @@
   -webkit-box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.15);
 }
-/* line 58, install.scss */
+/* line 66, install.scss */
 #here-install-body {
-  font-family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', 微软雅黑, Arial, sans-serif;
+  font-family: 'Inconsolata', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
 }
-/* line 64, install.scss */
+/* line 72, install.scss */
+h3 {
+  font-family: 'FiraMono', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
+}
+/* line 77, install.scss */
 #button-container {
   text-align: right;
 }
-/* line 68, install.scss */
+/* line 81, install.scss */
 #here-installer-next-btn {
   letter-spacing: 1px;
   font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
   font-style: italic;
 }
-/* line 76, install.scss */
+/* line 89, install.scss */
 #here-installer-next-btn::after {
   content: "»";
 }
 
 @media screen and (min-width: 321px) {
-  /* line 28, install.scss */
+  /* line 36, install.scss */
   #here-installer-header {
     height: 10rem;
     margin-bottom: 3rem;
   }
-  /* line 32, install.scss */
+  /* line 40, install.scss */
   #here-installer-header h1 {
     font-size: 1.6rem;
   }
 }
 @media screen and (min-width: 769px) {
-  /* line 38, install.scss */
+  /* line 46, install.scss */
   #here-installer-header {
     height: 10rem;
     margin-bottom: 5rem;
   }
-  /* line 42, install.scss */
+  /* line 50, install.scss */
   #here-installer-header h1 {
     font-size: 2rem;
   }

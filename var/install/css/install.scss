@@ -4,6 +4,14 @@
 // import Here global variables
 @import '../../default/css/here/global_vars';
 
+// import fonts
+@import '../../default/css/library/fonts/loader';
+
+// load FiraMono font
+@include font-loader('FiraMono', 'Fira');
+// load Inconsolate font
+@include font-loader('Inconsolata', 'Inconsolata');
+
 #here-installer-header {
     height: 8rem;
     color: #fff;
@@ -57,7 +65,12 @@
     @at-root
     #here-install-body {
         font: {
-            family: Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', 微软雅黑, Arial, sans-serif;
+            family: 'Inconsolata', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
+        }
+
+        @at-root
+        h3 {
+            font-family: 'FiraMono', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
         }
 
         @at-root
