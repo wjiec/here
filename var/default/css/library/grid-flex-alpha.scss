@@ -18,14 +18,14 @@
 // Import global variables
 @import '../here/global_vars';
 
-// include chrome reset
+// include chrome scrollbar reset
 @include reset-chrome-scrollbar;
 
-// include selection color
+// include selection color reset
 @include reset-selection;
 
+// body background color
 body {
-    // global body background color
     background: {
         color: $outside-background-color;
     }
@@ -34,11 +34,31 @@ body {
 a {
     // link-colors($normal, $hover, $active, $visited, $focus)
     @include link-colors(#444, #222, #222, #444, #222);
-    // hover-link()
-    @include hover-link();
+
+    text-decoration: none;
+
     font: {
       style: italic;
     }
+
+    border-bottom: 1px dashed rgba(0, 0, 0, .35);
+
+    transition: all .35s ease-in-out;
+
+    &:hover {
+      border-bottom: 1px dashed rgba(0, 0, 0, .65);
+      text-decoration: none;
+    }
+
+    &:active, &:focus {
+      text-decoration: none;
+    }
+}
+// paragraphs & title style
+h1, h2, h3, h4, h5, h6, p {
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
 }
 // common conntainer
 .container {
@@ -88,7 +108,7 @@ a {
 }
 // column direction: center align
 .flex-item-center {
-    @include align-self(center);
+    @include align-item(center);
 }
 // cross-axis stretch
 .flex-container-cross-stretch {

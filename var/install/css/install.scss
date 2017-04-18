@@ -9,6 +9,7 @@
 
 // load FiraMono font
 @include font-loader('FiraMono', 'Fira');
+
 // load Inconsolate font
 @include font-loader('Inconsolata', 'Inconsolata');
 
@@ -56,7 +57,7 @@
 #here-installer-container {
     color: $text-color;
     padding: 1rem;
-    
+
     background: {
         color: $inside-background-color;
     }
@@ -69,8 +70,14 @@
         }
 
         @at-root
-        h3 {
+        #here-install-body h3 {
+            margin-bottom: .2rem;
             font-family: 'FiraMono', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
+
+            @at-root
+            #here-installer-contents p {
+                margin: .25rem 0;
+            }
         }
 
         @at-root
@@ -81,8 +88,7 @@
             #here-installer-next-btn {
                 letter-spacing: 1px;
                 font: {
-                    // family: "Fira Mono", "Source Code Pro", monospace;
-                    family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+                    family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;
                     style: italic;
                 }
 
