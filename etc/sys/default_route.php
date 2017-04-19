@@ -40,6 +40,7 @@ class Error_Not_Found extends Here_Abstracts_Route_Error {
     }
 }
 
+
 /**
  * 500 Server Internal Error
  */
@@ -70,6 +71,7 @@ class Error_Internal_Error extends Here_Abstracts_Route_Error {
     }
 }
 
+
 /**
  * Hook authentication
  */
@@ -92,6 +94,7 @@ class Hook_Authentication extends Here_Abstracts_Route_Hook {
         return true;
     }
 }
+
 
 /**
  * Hook check istall
@@ -116,6 +119,7 @@ class Hook_Check_Install extends Here_Abstracts_Route_Hook {
     }
 }
 
+
 /**
  * Route /, /index, /index.$ext
  * 
@@ -139,6 +143,7 @@ class Route_Index extends Here_Abstracts_Route_Route {
         var_dump($parameters);
     }
 }
+
 
 /**
  * Route /installer-guide
@@ -167,6 +172,7 @@ class Route_Installer extends Here_Abstracts_Route_Route {
     }
 }
 
+
 /**
  * Route /license
  */
@@ -189,6 +195,7 @@ class Route_License extends Here_Abstracts_Route_Route {
     }
 }
 
+
 /**
  * Route /recovery
  */
@@ -209,6 +216,7 @@ class Route_Recovery extends Here_Abstracts_Route_Route {
     
     }
 }
+
 
 /**
  * Route /api

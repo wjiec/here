@@ -11,7 +11,7 @@
   src: url("/static/default/css/library/fonts/Inconsolata/Inconsolata.eot");
   src: url("/static/default/css/library/fonts/Inconsolata/Inconsolata.woff") format("woff"), url("/static/default/css/library/fonts/Inconsolata/Inconsolata.woff2") format("woff2"), url("/static/default/css/library/fonts/Inconsolata/Inconsolata.eot?#iefix") format("embedded-opentype"), url("/static/default/css/library/fonts/Inconsolata/Inconsolata.ttf") format("truetype");
 }
-/* line 15, install.scss */
+/* line 16, install.scss */
 #here-installer-header {
   height: 8rem;
   color: #fff;
@@ -23,7 +23,7 @@
   -webkit-box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.85);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.85);
 }
-/* line 25, install.scss */
+/* line 26, install.scss */
 #here-installer-header h1 {
   margin: 0;
   font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
@@ -32,7 +32,7 @@
   letter-spacing: 0.167rem;
 }
 
-/* line 56, install.scss */
+/* line 57, install.scss */
 #here-installer-container {
   color: #333;
   padding: 1rem;
@@ -41,52 +41,93 @@
   -webkit-box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.15);
   box-shadow: inset 0 0 5px 1px rgba(0, 0, 0, 0.15);
 }
-/* line 66, install.scss */
+/* line 67, install.scss */
 #here-install-body {
   font-family: 'Inconsolata', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
 }
-/* line 72, install.scss */
+/* line 73, install.scss */
 #here-install-body h3 {
   margin-bottom: .2rem;
   font-family: 'FiraMono', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
 }
-/* line 77, install.scss */
+/* line 78, install.scss */
 #here-installer-contents p {
   margin: .25rem 0;
 }
-/* line 83, install.scss */
+/* line 84, install.scss */
+#here-installer-server-detecting {
+  margin-top: 1rem;
+}
+/* line 88, install.scss */
+#here-installer-sd-status-bar p, #here-installer-sd-result p {
+  display: inline-block;
+  transition: color .35s ease-in-out;
+}
+/* line 92, install.scss */
+#here-installer-sd-status-bar p.detect-status-wait, #here-installer-sd-result p.detect-status-wait {
+  color: #990;
+}
+/* line 96, install.scss */
+#here-installer-sd-status-bar p.detect-status-success, #here-installer-sd-result p.detect-status-success {
+  color: #096;
+}
+/* line 100, install.scss */
+#here-installer-sd-status-bar p.detect-status-fail, #here-installer-sd-result p.detect-status-fail {
+  color: #900;
+}
+/* line 112, install.scss */
+#here-installer-sd-list li.here-installer-sd-item.here-installer-sd-item-fail {
+  color: #900;
+}
+/* line 115, install.scss */
+#here-installer-sd-list li.here-installer-sd-item.here-installer-sd-item-fail::before {
+  content: '\2718 ';
+}
+/* line 120, install.scss */
+#here-installer-sd-list li.here-installer-sd-item.here-installer-sd-item-success {
+  color: #096;
+}
+/* line 123, install.scss */
+#here-installer-sd-list li.here-installer-sd-item.here-installer-sd-item-success::before {
+  content: '\2714 ';
+}
+/* line 129, install.scss */
+#here-installer-sd-list li p {
+  margin-left: .8rem;
+}
+/* line 138, install.scss */
 #button-container {
   text-align: right;
 }
-/* line 87, install.scss */
+/* line 142, install.scss */
 #here-installer-next-btn {
   letter-spacing: 1px;
-  font-family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+  font-family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;
   font-style: italic;
 }
-/* line 95, install.scss */
+/* line 149, install.scss */
 #here-installer-next-btn::after {
   content: "»";
 }
 
 @media screen and (min-width: 321px) {
-  /* line 36, install.scss */
+  /* line 37, install.scss */
   #here-installer-header {
     height: 10rem;
     margin-bottom: 3rem;
   }
-  /* line 40, install.scss */
+  /* line 41, install.scss */
   #here-installer-header h1 {
     font-size: 1.6rem;
   }
 }
 @media screen and (min-width: 769px) {
-  /* line 46, install.scss */
+  /* line 47, install.scss */
   #here-installer-header {
     height: 10rem;
     margin-bottom: 5rem;
   }
-  /* line 50, install.scss */
+  /* line 51, install.scss */
   #here-installer-header h1 {
     font-size: 2rem;
   }

@@ -273,7 +273,7 @@ sub {
   color: #e62739;
 }
 
-/* line 27, grid-flex-alpha.scss */
+/* line 28, grid-flex-alpha.scss */
 body {
   background-color: #f1f1f1;
 }
@@ -296,7 +296,7 @@ a:focus {
 }
 /* line 24, ../../../../../../usr/ruby/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-core-1.0.3/stylesheets/compass/typography/links/_link-colors.scss */
 a:hover {
-  color: #111;
+  color: #222;
 }
 /* line 27, ../../../../../../usr/ruby/Ruby23-x64/lib/ruby/gems/2.3.0/gems/compass-core-1.0.3/stylesheets/compass/typography/links/_link-colors.scss */
 a:active {
@@ -320,6 +320,22 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 /* line 64, grid-flex-alpha.scss */
+ul, li, ol {
+  list-style: none;
+}
+
+/* line 67, grid-flex-alpha.scss */
+ul, ol {
+  padding-left: 1.5rem;
+}
+
+/* line 70, grid-flex-alpha.scss */
+li {
+  margin: .25rem 0;
+  line-height: 1.5;
+}
+
+/* line 75, grid-flex-alpha.scss */
 .container {
   margin-right: auto;
   margin-left: auto;
@@ -332,78 +348,78 @@ h1, h2, h3, h4, h5, h6, p {
 }
 
 @media (min-width: 544px) {
-  /* line 72, grid-flex-alpha.scss */
+  /* line 83, grid-flex-alpha.scss */
   .container {
     max-width: 576px;
   }
 }
 @media (min-width: 768px) {
-  /* line 77, grid-flex-alpha.scss */
+  /* line 88, grid-flex-alpha.scss */
   .container {
     max-width: 720px;
   }
 }
 @media (min-width: 992px) {
-  /* line 82, grid-flex-alpha.scss */
+  /* line 93, grid-flex-alpha.scss */
   .container {
     max-width: 940px;
   }
 }
 @media (min-width: 1200px) {
-  /* line 87, grid-flex-alpha.scss */
+  /* line 98, grid-flex-alpha.scss */
   .container {
     max-width: 1140px;
   }
 }
-/* line 92, grid-flex-alpha.scss */
+/* line 103, grid-flex-alpha.scss */
 .flex-container, .flex-container-column, .flex-container-center {
   display: -webkit-flex;
   display: flex;
 }
 
-/* line 97, grid-flex-alpha.scss */
+/* line 108, grid-flex-alpha.scss */
 .flex-container-column {
   -webkit-flex-direction: column;
   flex-direction: column;
 }
 
-/* line 102, grid-flex-alpha.scss */
+/* line 113, grid-flex-alpha.scss */
 .flex-container-center {
   -webkit-justify-content: center;
   justify-content: center;
 }
 
-/* line 110, grid-flex-alpha.scss */
+/* line 121, grid-flex-alpha.scss */
 .flex-item-center {
-  -webkit-align-self: center;
-  align-self: center;
+  -webkit-align-items: center;
+  align-items: center;
 }
 
-/* line 114, grid-flex-alpha.scss */
+/* line 125, grid-flex-alpha.scss */
 .flex-container-cross-stretch {
   -webkit-align-items: stretch;
   align-items: stretch;
 }
 
-/* line 118, grid-flex-alpha.scss */
+/* line 129, grid-flex-alpha.scss */
 .flex-container-cross-center {
   -webkit-align-items: center;
   align-items: center;
 }
 
-/* line 122, grid-flex-alpha.scss */
+/* line 133, grid-flex-alpha.scss */
 .flex-container-cross-space-between {
   -webkit-align-items: space-between;
   align-items: space-between;
 }
 
-/* line 126, grid-flex-alpha.scss */
+/* line 137, grid-flex-alpha.scss */
 .flex-container-cross-space-around {
   -webkit-align-items: space-around;
   align-items: space-around;
 }
 
-/* line 130, grid-flex-alpha.scss */
+/* line 141, grid-flex-alpha.scss */
 .widget-btn-default, .widget-btn-primary, .widget-btn-success, .widget-btn-info, .widget-btn-warning, .widget-btn-danger {
   display: inline-block;
   padding: .375rem 1rem;
@@ -424,102 +440,114 @@ h1, h2, h3, h4, h5, h6, p {
   transition-property: background, border;
   transition-duration: .35s;
 }
-/* line 149, grid-flex-alpha.scss */
+/* line 160, grid-flex-alpha.scss */
 .widget-btn-default:focus, .widget-btn-primary:focus, .widget-btn-success:focus, .widget-btn-info:focus, .widget-btn-warning:focus, .widget-btn-danger:focus, .widget-btn-default:active:focus, .widget-btn-primary:active:focus, .widget-btn-success:active:focus, .widget-btn-info:active:focus, .widget-btn-warning:active:focus, .widget-btn-danger:active:focus {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
-/* line 155, grid-flex-alpha.scss */
+/* line 166, grid-flex-alpha.scss */
 .widget-btn-default:hover, .widget-btn-primary:hover, .widget-btn-success:hover, .widget-btn-info:hover, .widget-btn-warning:hover, .widget-btn-danger:hover, .widget-btn-default:focus, .widget-btn-primary:focus, .widget-btn-success:focus, .widget-btn-info:focus, .widget-btn-warning:focus, .widget-btn-danger:focus {
   text-decoration: none;
 }
-/* line 159, grid-flex-alpha.scss */
+/* line 170, grid-flex-alpha.scss */
 .widget-btn-default:active, .widget-btn-primary:active, .widget-btn-success:active, .widget-btn-info:active, .widget-btn-warning:active, .widget-btn-danger:active {
   background-image: none;
   outline: 0;
 }
 
-/* line 164, grid-flex-alpha.scss */
+/* line 175, grid-flex-alpha.scss */
 .widget-btn-disable, button:disabled {
   cursor: not-allowed;
   opacity: .65;
 }
 
-/* line 168, grid-flex-alpha.scss */
+/* line 179, grid-flex-alpha.scss */
 .widget-btn-default {
   color: #333;
   background-color: #fff;
   border-color: #ccc;
 }
-/* line 174, grid-flex-alpha.scss */
+/* line 185, grid-flex-alpha.scss */
 .widget-btn-default:hover {
   color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
 
-/* line 180, grid-flex-alpha.scss */
+/* line 191, grid-flex-alpha.scss */
 .widget-btn-primary {
   color: #fff;
   background-color: #337ab7;
   border-color: #2e6da4;
 }
-/* line 186, grid-flex-alpha.scss */
+/* line 197, grid-flex-alpha.scss */
 .widget-btn-primary:hover {
   color: #fff;
   background-color: #286090;
   border-color: #204d74;
 }
 
-/* line 192, grid-flex-alpha.scss */
+/* line 203, grid-flex-alpha.scss */
 .widget-btn-success {
   color: #fff;
   background-color: #5cb85c;
   border-color: #4cae4c;
 }
-/* line 198, grid-flex-alpha.scss */
+/* line 209, grid-flex-alpha.scss */
 .widget-btn-success:hover {
   color: #fff;
   background-color: #449d44;
   border-color: #398439;
 }
 
-/* line 204, grid-flex-alpha.scss */
+/* line 215, grid-flex-alpha.scss */
 .widget-btn-info {
   color: #fff;
   background-color: #5bc0de;
   border-color: #46b8da;
 }
-/* line 210, grid-flex-alpha.scss */
+/* line 221, grid-flex-alpha.scss */
 .widget-btn-info:hover {
   color: #fff;
   background-color: #31b0d5;
   border-color: #269abc;
 }
 
-/* line 216, grid-flex-alpha.scss */
+/* line 227, grid-flex-alpha.scss */
 .widget-btn-warning {
   color: #fff;
   background-color: #f0ad4e;
   border-color: #eea236;
 }
-/* line 222, grid-flex-alpha.scss */
+/* line 233, grid-flex-alpha.scss */
 .widget-btn-warning:hover {
   color: #fff;
   background-color: #ec971f;
   border-color: #d58512;
 }
 
-/* line 228, grid-flex-alpha.scss */
+/* line 239, grid-flex-alpha.scss */
 .widget-btn-danger {
   color: #fff;
   background-color: #d9534f;
   border-color: #d43f3a;
 }
-/* line 234, grid-flex-alpha.scss */
+/* line 245, grid-flex-alpha.scss */
 .widget-btn-danger:hover {
   color: #fff;
   background-color: #c9302c;
   border-color: #ac2925;
+}
+
+/* line 252, grid-flex-alpha.scss */
+.widget-progress {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: .25rem;
+  box-shadow: 0 0 10px 2px rgba(102, 0, 102, 0.45);
+  transition: all .35s ease-in-out;
+  background-color: #606;
 }

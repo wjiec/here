@@ -6,3 +6,14 @@
 .buildpath
 .project
 
+# node
+node_modules
+
+# compile es6 file
+*.js
+
+# webstorm project
+.idea
+
+# exclued webpack.config.js
+!webpack.config.js

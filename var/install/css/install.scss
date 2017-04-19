@@ -20,7 +20,7 @@
     background: #23282d;
     cursor: default;
     text-align: center;
-    // box shdow in header bottom
+    // box shadow in header bottom
     @include box-shadow(0 0 10px 1px rgba(0, 0, 0, .85));
     // text style
     h1 {
@@ -77,6 +77,60 @@
             @at-root
             #here-installer-contents p {
                 margin: .25rem 0;
+            }
+        }
+
+        @at-root
+        #here-installer-server-detecting {
+            margin-top: 1rem;
+
+            @at-root
+            #here-installer-sd-status-bar p, #here-installer-sd-result p {
+                display: inline-block;
+                transition: color .35s ease-in-out;
+
+                &.detect-status-wait {
+                    color: #990;
+                }
+
+                &.detect-status-success {
+                    color: #096;
+                }
+
+                &.detect-status-fail {
+                    color: #900;
+                }
+            }
+
+            @at-root
+            #here-installer-sd-result {
+                
+                @at-root
+                #here-installer-sd-list {
+                    li {
+                        &.here-installer-sd-item {
+                            &.here-installer-sd-item-fail {
+                                color: #900;
+
+                                &::before {
+                                    content: '\2718 ';
+                                }
+                            }
+
+                            &.here-installer-sd-item-success {
+                                color: #096;
+
+                                &::before {
+                                    content: '\2714 ';
+                                }
+                            }
+                        }
+
+                        p {
+                            margin-left: .8rem;
+                        }
+                    }
+                }
             }
         }
 

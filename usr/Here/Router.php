@@ -25,7 +25,7 @@ class Here_Router {
     # callback params
     private $_callback_params = array();
 
-    # url validate, using ctype_
+    # url validate, using ctype
     private $_validate = array('A' => 'alnum', 'a' => 'alpha', 'd' => 'digit', 'l' => 'lower', 'u' => 'upper');
 
     # all http request method
@@ -33,7 +33,7 @@ class Here_Router {
 
     # construct function
     public function __construct() {
-        # initailze
+        # initialize
         $this->_tree = array();
         $this->_error = array();
         $this->_hooks = array();
