@@ -1,5 +1,7 @@
-/* Base Module */
+import {AjaxAdapter, WebSocketAdapter} from './communication.es6'
+import {History} from './history.es6'
 
+/* Base Module */
 export default class $ {
     // HereJavascriptFramework Constructor
     constructor(selector) {
@@ -18,7 +20,7 @@ export default class $ {
         // chaining-call
         return this
     }
-
+    // event bind method
     on(event_name, event_callback, use_capture = false) {
         // check event name and callback is correct
         if (!$.is_string(event_name) || !$.is_function(event_callback)) {
@@ -41,7 +43,7 @@ export default class $ {
         // chaining-call
         return this
     }
-
+    // unbind event
     unbind(event_name, event_callback) {
         // check event name and callback is correct
         if (!$.is_string(event_name) || !$.is_function(event_callback)) {
@@ -55,6 +57,18 @@ export default class $ {
         [].forEach.call(this._selector, (selector) => {
             selector.removeEventListener(event_name, event_callback)
         })
+    }
+    // ajax adapter
+    static get AjaxAdapter() {
+        return AjaxAdapter
+    }
+    // websocket adapter
+    static get WebSocketAdapter() {
+        return WebSocketAdapter
+    }
+    // history module
+    static get History() {
+        return History
     }
     // utility method
     static ready(ready_callback) {

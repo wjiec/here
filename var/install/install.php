@@ -25,7 +25,7 @@
 <body>
   <header id="here-installer-header" class="flex-container-center">
     <div id="progress" class="widget-progress"></div>
-    <h1 class="flex-item-center">Here Installer Guide</h1>
+    <h1 class="flex-self-center">Here Installer Guide</h1>
   </header>
   <div id="here-installer-container" class="container">
     <section id="here-install-body" class="flex-container-column-center flex-container-cross-center">

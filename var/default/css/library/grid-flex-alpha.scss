@@ -118,8 +118,11 @@ li {
     @extend .flex-container, %flex-main-axis-center;
 }
 // column direction: center align
-.flex-item-center {
+.flex-items-center {
     @include align-items(center);
+}
+.flex-self-center {
+  @include align-self(center);
 }
 // cross-axis stretch
 .flex-container-cross-stretch {

@@ -1,0 +1,6 @@
+/*! Font Defineition */
+@font-face {
+  font-family: "FiraMono";
+  src: url("/static/default/css/library/fonts/Fira/FiraMono.eot");
+  src: url("/static/default/css/library/fonts/Fira/FiraMono.woff") format("woff"), url("/static/default/css/library/fonts/Fira/FiraMono.woff2") format("woff2"), url("/static/default/css/library/fonts/Fira/FiraMono.eot?#iefix") format("embedded-opentype"), url("/static/default/css/library/fonts/Fira/FiraMono.ttf") format("truetype");
+}
