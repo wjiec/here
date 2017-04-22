@@ -17,8 +17,6 @@ export default class $ {
         } else {
             throw Error('Selector invalid')
         }
-        // chaining-call
-        return this
     }
     // event bind method
     on(event_name, event_callback, use_capture = false) {

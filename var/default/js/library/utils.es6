@@ -52,6 +52,10 @@ class Utility {
     static is_string(object) {
         return typeof object === 'string'
     }
+
+    static is_function(object) {
+        return typeof object === 'function'
+    }
 }
 
 // export Utility class

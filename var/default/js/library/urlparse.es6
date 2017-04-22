@@ -1,12 +1,4 @@
-/*!
- * urlparse module
- *
- * @description: urlparse javascript library, base on python urllib module
- * @author: ShadowMan
- * @license: MIT
- * @emil: shadowman@shellboot.com
- *
- */
+// urlparse module
 const scheme_chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+-.';
 const uses_params = [ 'ftp', 'hdl', 'prospero', 'http', 'imap', 'https', 'shttp', 'rtsp', 'rtspu', 'sip', 'sips', 'mms', '', 'sftp', 'tel' ];
 const uses_netloc = [ 'ftp', 'http', 'gopher', 'nntp', 'telnet', 'imap', 'wais', 'file', 'mms', 'https', 'shttp', 'snews', 'prospero', 'rtsp', 'rtspu', 'rsync', '', 'svn', 'svn+ssh', 'sftp','nfs','git', 'git+ssh' ];
@@ -146,7 +138,7 @@ function _split_netloc(url, start = 0) {
     return { 'domain': url.substr(start, delim - start), 'rest': url.substr(delim) };
 }
 
-/**!
+/**
  * Parse a URL into 5 components:
  * <scheme>://<netloc>/<path>?<query>#<fragment>
  * Return an object.
