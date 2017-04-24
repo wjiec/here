@@ -51,12 +51,6 @@ class AjaxAdapter extends AdapterInterface {
             try {
                 let _xhr = new XMLHttpRequest()
 
-                if (header && typeof header === 'object') {
-                    for (let key in header) {
-                        _xhr.setRequestHeader(key, header[key])
-                    }
-                }
-
                 if (data && typeof data === 'object') {
                     _xhr.setData(data)
                 }
@@ -75,6 +69,13 @@ class AjaxAdapter extends AdapterInterface {
                 _xhr.open(method, url)
                 _xhr.onreadystatechange = this._state_change_handler(resolve, reject, _xhr)
 
+                // The object's state must be OPENED.
+                if (header && typeof header === 'object') {
+                    for (let key in header) {
+                        _xhr.setRequestHeader(key, header[key])
+                    }
+                }
+
                 _xhr.send(null);
             } catch (e) {
                 reject(new Error(e));
@@ -91,7 +92,7 @@ class AjaxAdapter extends AdapterInterface {
                     response.text = xhr.response
                     resolve(response)
                 } else {
-                    response.text = `HTTP ${xhr.status}}`
+                    response.text = `HTTP ${xhr.status} ${xhr.statusText}`
                     reject(response)
                 }
             }
@@ -104,6 +105,10 @@ class AjaxAdapter extends AdapterInterface {
 
     static is_available() {
         return true
+    }
+
+    static toString() {
+        return 'AjaxAdapter'
     }
 }
 
@@ -128,7 +133,8 @@ class WebSocketAdapter extends AdapterInterface {
         this._is_connected = false
         this._handlers = {
             connect: null, message: null,
-            close: null, error: null
+            close: null, error: null,
+            one: null
         }
         this._message_buffer = Array()
     }
@@ -144,6 +150,17 @@ class WebSocketAdapter extends AdapterInterface {
 
         this._create_connection()
         this._empty_message_buffer(message)
+    }
+
+    one(message) {
+        return new Promise((resolve, reject) => {
+            if (this._handlers.one !== null) {
+                reject(new Error('multi one is running'))
+            }
+            this._handlers.one = resolve
+
+            this.send_message(message)
+        })
     }
 
     _create_connection() {
@@ -188,8 +205,13 @@ class WebSocketAdapter extends AdapterInterface {
     }
 
     _on_message_repeater(event) {
-        if (this._handlers.message !== null) {
+        if (this._handlers.one !== null) {
+            this._handlers.one(event)
+            this._handlers.one = null
+        } else if (this._handlers.message !== null) {
             this._handlers.message(event)
+        } else {
+            // empty
         }
     }
 
@@ -251,6 +273,10 @@ class WebSocketAdapter extends AdapterInterface {
             return false
         }
         return true
+    }
+
+    static toString() {
+        return 'AdapterInterface'
     }
 }
 

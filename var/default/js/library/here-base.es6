@@ -1,5 +1,6 @@
 import {AjaxAdapter, WebSocketAdapter} from './communication.es6'
 import {History} from './history.es6'
+import {Utility} from './utils.es6'
 
 /* Base Module */
 export default class $ {
@@ -83,6 +84,10 @@ export default class $ {
     // internal method
     static is_string(object) {
         return typeof object === 'string'
+    }
+    // factory_dom element node
+    static factory_dom(dom_string) {
+        return Utility.factory_dom(dom_string)
     }
 }
 

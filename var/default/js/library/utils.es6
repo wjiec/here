@@ -27,6 +27,7 @@ class Utility {
     }
 
     static is_plain_object(object) {
+        console.log(toString(object))
         if (!object || toString(object) !== '[object Object]') {
             return false
         }
@@ -49,12 +50,44 @@ class Utility {
         }
     }
 
+    static string_to_json(string) {
+        try {
+            return JSON.parse(string)
+        } catch (e) {
+            return Object()
+        }
+    }
+
     static is_string(object) {
         return typeof object === 'string'
     }
 
     static is_function(object) {
         return typeof object === 'function'
+    }
+
+    static generate_guid() {
+        function __rstr() {
+            return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1)
+        }
+        return (__rstr() + __rstr() + "-" + __rstr() + "-" + __rstr() + "-" + __rstr() + "-" + __rstr() + __rstr() + __rstr())
+    }
+
+    static factory_dom(dom_string) {
+        if (!Utility.is_string(dom_string)) {
+            throw new Error(`HTML string except string, got ${typeof dom_string}`)
+        }
+
+        if (!/<([\w]+)\s+[^>]*>.*<\/\1>/.test(dom_string)) {
+            throw new Error('HTML string invalid')
+        }
+
+        let tag_name = dom_string.match(/<([\w]+)/)[1]
+        let dom_contents = dom_string.match(/<([\w]+)\s+[^>]*>(.*)<\/\1>/)[2]
+        let container = document.createElement(tag_name)
+        container.innerHTML = dom_contents
+
+        return container
     }
 }
 
