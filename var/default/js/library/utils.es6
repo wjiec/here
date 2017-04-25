@@ -89,6 +89,14 @@ class Utility {
 
         return container
     }
+
+    static trim(string) {
+        return string.replace(/(^\s*)|(\s*$)/g, "");
+    }
+
+    static get_current_url() {
+        return [location.pathname, location.search, location.hash].join('')
+    }
 }
 
 // export Utility class

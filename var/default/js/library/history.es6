@@ -5,8 +5,9 @@ import {Utility} from './utils.es6'
 
 // History Node Class
 class HistoryNode {
-    constructor(url, contents, adapter, selector, extra_data = null) {
+    constructor(url, contents, adapter, selector, title, extra_data = null) {
         this._url = url
+        this._title = title
         this._guid = Utility.generate_guid()
         this._adapter = adapter
         this._contents = contents
@@ -56,6 +57,14 @@ class HistoryNode {
         this._selector = new_selector
     }
 
+    get title() {
+        return this._title
+    }
+
+    set title(new_title) {
+        this._title = new_title
+    }
+
     toString() {
         return Utility.json_to_string(this.toObject())
     }
@@ -66,8 +75,8 @@ class HistoryNode {
             contents: this._contents,
             adapter: this._adapter.toString(),
             selector: this._selector,
+            title: this._title,
             extra_data: Utility.json_to_string(this._extra_data),
-            local_storage: this._local_storage,
             local_storage_id: this._guid
         }
     }
@@ -123,13 +132,29 @@ class History {
         if (window.history.pushState === undefined || window.onpopstate === undefined) {
             throw new Error(`Your browser does't support HTML5 history API`)
         }
-
+        // bind popstate event
         window.onpopstate = History.on_pop_state
+
+        // custom events
+        History._custom_events = {
+            'History:error': [],
+            'History:success': []
+        }
+    }
+    // bind custom events
+    static on(event_name, callback) {
+        if (History._custom_events.hasOwnProperty(event_name)) {
+            if (!Utility.is_function(callback)) {
+                throw new Error(`event callback is not callable`)
+            }
+            History._custom_events[event_name].push(callback)
+        } else {
+            throw new Error('event name not found')
+        }
     }
     // pop state handler
     static on_pop_state(event) {
         let state = event.state
-        console.log(state)
         let selector = state.selector
         let container = document.querySelector(selector)
         if (container === null) {
@@ -137,6 +162,8 @@ class History {
         }
         // from sessionStorage fetch data
         History.replace_contents(container, state.contents, selector)
+        // set document title
+        document.title = state.title
     }
     // forward by Ajax
     static forward_ajax(method, url, replace_selector, params = null, data = null, header = null, host = null, port = null) {
@@ -157,15 +184,21 @@ class History {
                 throw Error(`replace select '${replace_selector}' not found`)
             }
 
-            let old_url = [location.pathname, location.search, location.hash].join('')
-            let old_contents = selector.innerHTML
-            let history_node = new HistoryNode(old_url, old_contents, AjaxAdapter, replace_selector, {}, true)
+            let new_contents = History.find_new_contents(response.text, replace_selector)
+            let new_title = History.find_title(response)
+            let history_node = new HistoryNode(url, new_contents, AjaxAdapter, replace_selector, new_title, {})
             history_node.cache_node()
-            window.history.pushState(history_node.toObject(), 'Test', url)
 
+            History.push_state(history_node.toObject(), new_title, url)
             this.replace_contents(selector, response.text, replace_selector)
         }, (response) => {
             console.log(response)
+            let callbacks = History._custom_events['History:error']
+
+            // dispatch error response
+            for (let index = 0; index < callbacks.length; ++index) {
+                callbacks[index](response)
+            }
             // display error information
         })
     }
@@ -175,9 +208,85 @@ class History {
             History._websocket_adapter = new WebSocketAdapter(url, port, is_secure, timeout)
         }
     }
+    // find new contents
+    static find_new_contents(response, selector) {
+        let container = document.createElement('div')
+
+        if (/<html/i.test(response)) {
+            let body_text = new_contents.match(/<body[^>]*>[\s\S]*<\/body>/i)[0]
+            container.innerHTML = body_text
+
+            let element = container.querySelector(selector)
+            if (element === null) {
+                throw new Error(`'${url}' is not contain ${selector}`)
+            }
+            return element.innerHTML
+        } else {
+            container.innerHTML = response
+            // It's just replace-selector child-nodes
+            if (container.querySelector(selector) === null) {
+                return container.innerHTML
+                // It's container
+            } else {
+                return response
+            }
+        }
+    }
+    // push state
+    static push_state(state, title, url) {
+        if (history.state === null) {
+            let old_url = Utility.get_current_url()
+            let element = document.querySelector(state.selector)
+            if (element === null) {
+                throw new Error(`selector( ${state.selector} ) is non exists`)
+            }
+            let old_contents = element.innerHTML
+            let current_state = new HistoryNode(old_url, old_contents, AjaxAdapter, state.selector, document.title, {})
+            // replace null state
+            window.history.replaceState(current_state.toObject(), document.title, old_url)
+        }
+        window.history.pushState(state, title, url)
+
+        if (Utility.is_string(title)) {
+            document.title = title
+        }
+    }
     // backward
     static backward(callback, index = -1) {
 
+    }
+    // find title from response
+    static find_title(response) {
+        // from response getting title
+        for (let key in response.headers) {
+            let lower_key = key.toLowerCase()
+
+            if (lower_key.indexOf('title') !== -1) {
+                return response.headers[key]
+            }
+        }
+
+        // is full-html document
+        if (/<html/i.test(response.text)) {
+            let title = response.text.match(/<title\s*[^>]*>(.*)<\/title>/)
+
+            if (title.length) {
+                return title[1]
+            }
+        }
+
+        let container = document.createElement('div')
+        container.innerHTML = response.text
+        let id_title = container.querySelector('#title')
+        let class_title = container.querySelector('.title')
+
+        if (id_title !== null) {
+            return id_title.innerText
+        }
+        if (class_title !== null) {
+            return class_title.innerText
+        }
+        return null
     }
     // replace contents
     static replace_contents(old_container, new_contents, replace_selector) {

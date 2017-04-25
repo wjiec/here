@@ -85,9 +85,21 @@ class AjaxAdapter extends AdapterInterface {
 
     _state_change_handler(resolve, reject, xhr) {
         return (event) => {
-            let response = { status: false }
+            let response = { status: false, headers: {} }
             if (xhr.readyState === 4) {
                 response.status = xhr.status
+
+                let headers = xhr.getAllResponseHeaders().split('\r\n')
+                for (let index = 0; index < headers.length; ++index) {
+                    let kvp = headers[index].split(':')
+                    let key = kvp.shift()
+                    let val = kvp.join(':')
+
+                    if (key && val) {
+                        response.headers[Utility.trim(key)] = Utility.trim(val)
+                    }
+                }
+
                 if (xhr.status === 200) {
                     response.text = xhr.response
                     resolve(response)

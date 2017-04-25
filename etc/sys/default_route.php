@@ -178,7 +178,7 @@ class Route_Installer extends Here_Abstracts_Route_Route {
  */
 class Route_License extends Here_Abstracts_Route_Route {
     public function urls() {
-        return array('/license', '/lincese.$ext');
+        return array('/license', '/license.$ext');
     }
 
     public function methods() {
@@ -190,7 +190,7 @@ class Route_License extends Here_Abstracts_Route_Route {
     }
 
     public function entry_point(array $parameters) {
-        echo '<h1>Blog License</h1>';
+        echo '<h1 id="title">Blog License</h1>';
         var_dump($parameters);
     }
 }
