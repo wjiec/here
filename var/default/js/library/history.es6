@@ -128,17 +128,25 @@ class HistoryNode {
 // History Class
 class History {
     // history api initializing
-    static init_history() {
-        if (window.history.pushState === undefined || window.onpopstate === undefined) {
-            throw new Error(`Your browser does't support HTML5 history API`)
-        }
-        // bind popstate event
-        window.onpopstate = History.on_pop_state
+    static init_history(url = null, port = null, is_secure = false, timeout = 180) {
+        // init websocket
+        if (!History._websocket_adapter) {
+            // self initializing
+            History._websocket_adapter = new WebSocketAdapter(url, port, is_secure, timeout)
 
-        // custom events
-        History._custom_events = {
-            'History:error': [],
-            'History:success': []
+            if (window.history.pushState === undefined || window.onpopstate === undefined) {
+                throw new Error(`Your browser does't support HTML5 history API`)
+            }
+            // bind popstate event
+            window.onpopstate = History.on_pop_state
+            // custom events
+            History._custom_events = {
+                'History:error': [],
+                'History:success': []
+            }
+        } else if (url || port) {
+            // user initializing
+            History._websocket_adapter = new WebSocketAdapter(url, port, is_secure, timeout)
         }
     }
     // bind custom events
@@ -176,21 +184,7 @@ class History {
         header['X-Forward-Contents'] = replace_selector
 
         adapter.open(method, url, params, data, header).then((response) => {
-            if (!Utility.is_string(replace_selector)) {
-                throw Error(`replace selector except str, got ${typeof replace_selector}`)
-            }
-            let selector = document.querySelector(replace_selector)
-            if (selector === null) {
-                throw Error(`replace select '${replace_selector}' not found`)
-            }
-
-            let new_contents = History.find_new_contents(response.text, replace_selector)
-            let new_title = History.find_title(response)
-            let history_node = new HistoryNode(url, new_contents, AjaxAdapter, replace_selector, new_title, {})
-            history_node.cache_node()
-
-            History.push_state(history_node.toObject(), new_title, url)
-            this.replace_contents(selector, response.text, replace_selector)
+            History.request_success(url, response, replace_selector)
         }, (response) => {
             console.log(response)
             let callbacks = History._custom_events['History:error']
@@ -203,10 +197,49 @@ class History {
         })
     }
     // forward by WebSocket
-    static forward_websocket(url, port = null, is_secure = false, timeout = 180) {
-        if (History._websocket_adapter === null) {
-            History._websocket_adapter = new WebSocketAdapter(url, port, is_secure, timeout)
+    static forward_websocket(method, url, replace_selector, params = null, data = null, header = null, host = null, port = null) {
+        if (header === null) {
+            header = {}
         }
+        header['X-Forward-Position'] = urlparse(url).path
+        header['X-Forward-Contents'] = replace_selector
+
+        let message = {
+            method: method,
+            url: url,
+            selector: replace_selector,
+            params: params,
+            data: data,
+            header: header
+        }
+        let string_message = Utility.json_to_string(message)
+        History._websocket_adapter.one(string_message).then((response) => {
+            let object_response = Utility.string_to_json(response)
+            History.request_success(url, object_response, replace_selector)
+        }, (event) => {
+            // error occurs
+            console.warn('WebSocketAdapter error occurs, instead of using AjaxAdapter')
+            // using Ajax request
+            History.forward_ajax(method, url, replace_selector, params, data, header, host, port)
+        })
+    }
+    // request success
+    static request_success(url, response, replace_selector) {
+        if (!Utility.is_string(replace_selector)) {
+            throw Error(`replace selector except str, got ${typeof replace_selector}`)
+        }
+        let selector = document.querySelector(replace_selector)
+        if (selector === null) {
+            throw Error(`replace select '${replace_selector}' not found`)
+        }
+
+        let new_contents = History.find_new_contents(response.text, replace_selector)
+        let new_title = History.find_title(response)
+        let history_node = new HistoryNode(url, new_contents, AjaxAdapter, replace_selector, new_title, {})
+        history_node.cache_node()
+
+        History.push_state(history_node.toObject(), new_title, url)
+        this.replace_contents(selector, response.text, replace_selector)
     }
     // find new contents
     static find_new_contents(response, selector) {
@@ -250,10 +283,6 @@ class History {
         if (Utility.is_string(title)) {
             document.title = title
         }
-    }
-    // backward
-    static backward(callback, index = -1) {
-
     }
     // find title from response
     static find_title(response) {
@@ -335,7 +364,7 @@ if (window.sessionStorage && window.localStorage) {
     HistoryNode._storage_adapter = new NonSupportStorage()
 }
 
-// initializing History env
+// self initializing History env
 History.init_history()
 // export History methods
 export {History}

@@ -27,7 +27,6 @@ class Utility {
     }
 
     static is_plain_object(object) {
-        console.log(toString(object))
         if (!object || toString(object) !== '[object Object]') {
             return false
         }

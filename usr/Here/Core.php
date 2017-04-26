@@ -30,11 +30,11 @@ class Core {
         # error & exception handler
         set_exception_handler(array('Core', '_init_exception_handler'));
 
-        # load sys.conf and definition
-        self::load_configure();
-
         # request module init
         Here_Request::init_request();
+
+        # load sys.conf and definition
+        self::load_configure();
 
         # load base widget
         self::_init_widgets($debug_mode);

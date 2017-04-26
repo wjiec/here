@@ -38,6 +38,28 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         }
     }
 
+    public function is_mobile() {
+        $user_agent = strtolower($this->get_server_env('http_user_agent'));
+        return (strpos($user_agent, 'iphone') ||
+            strpos($user_agent, 'ipad') ||
+            strpos($user_agent, 'android') ||
+            strpos($user_agent, 'midp') ||
+            strpos($user_agent, 'ucweb'));
+    }
+
+    public function get_server_env($key) {
+        $key = strtolower($key);
+
+        if (array_key_exists($key, $this->_server)) {
+            return $this->_server[$key];
+        }
+        return null;
+    }
+
+    public static function get_env($key) {
+        return self::get_instance()->get_server_env($key);
+    }
+
     public static function init_request() {
         self::$_single_request_instance = new Here_Request();
     }
@@ -83,24 +105,6 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         return self::$_single_request_instance;
     }
 
-    public function is_mobile() {
-        $user_agent = strtolower($this->get_server_env('http_user_agent'));
-        return (strpos($user_agent, 'iphone') ||
-                strpos($user_agent, 'ipad') ||
-                strpos($user_agent, 'android') ||
-                strpos($user_agent, 'midp') ||
-                strpos($user_agent, 'ucweb'));
-    }
-
-    public function get_server_env($key) {
-        $key = strtolower($key);
-
-        if (array_key_exists($key, $this->_server)) {
-            return $this->_server[$key];
-        }
-        return null;
-    }
-
     public static function url_completion($url) {
         return self::get_url_prefix() . (($url[0] == '/') ? $url : ('/' . $url));
     }
@@ -119,6 +123,35 @@ class Here_Request implements Here_Interfaces_SingleInstance {
             (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off') ||
             (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443')
         );
+    }
+
+    public static function get_request_headers() {
+        if (!function_exists('apache_request_headers')) {
+            function apache_request_headers() {
+                $headers = array();
+                $http_reg = '/\AHTTP_/';
+
+                foreach($_SERVER as $key => $val) {
+                    if(preg_match($http_reg, $key)) {
+                        $arh_key = preg_replace($http_reg, '', $key);
+                        $rx_matches = explode('_', $arh_key);
+
+                        if(count($rx_matches) > 0 and strlen($arh_key) > 2) {
+                            foreach($rx_matches as $ak_key => $ak_val) {
+                                $rx_matches[$ak_key] = ucfirst($ak_val);
+                            }
+
+                            $arh_key = implode('-', $rx_matches);
+                        }
+                        $headers[$arh_key] = $val;
+                    }
+                }
+
+                return($headers);
+            }
+        }
+
+        return apache_request_headers();
     }
 
     # single instance

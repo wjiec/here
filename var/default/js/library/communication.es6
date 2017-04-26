@@ -146,7 +146,7 @@ class WebSocketAdapter extends AdapterInterface {
         this._handlers = {
             connect: null, message: null,
             close: null, error: null,
-            one: null
+            one: null, error_one: null
         }
         this._message_buffer = Array()
     }
@@ -166,10 +166,12 @@ class WebSocketAdapter extends AdapterInterface {
 
     one(message) {
         return new Promise((resolve, reject) => {
-            if (this._handlers.one !== null) {
+            // check one handler
+            if (this._handlers.one !== null || this._handlers.error_one !== null) {
                 reject(new Error('multi one is running'))
             }
             this._handlers.one = resolve
+            this._handlers.error_one = reject
 
             this.send_message(message)
         })
@@ -190,7 +192,9 @@ class WebSocketAdapter extends AdapterInterface {
         }
         if (this._timeout > 0) {
             this._timer_obj = setTimeout(() => {
-                this._connection.close()
+                if (this._connection && this._connection.readyState === WebSocket.OPEN) {
+                    this._connection.close()
+                }
                 this._connection = null
                 this._is_connected = false
             }, this._timeout * 1000)
@@ -219,11 +223,12 @@ class WebSocketAdapter extends AdapterInterface {
     _on_message_repeater(event) {
         if (this._handlers.one !== null) {
             this._handlers.one(event)
+            // reset handler
             this._handlers.one = null
-        } else if (this._handlers.message !== null) {
+            this._handlers.error_one = null
+        }
+        if (this._handlers.message !== null) {
             this._handlers.message(event)
-        } else {
-            // empty
         }
     }
 
@@ -236,8 +241,17 @@ class WebSocketAdapter extends AdapterInterface {
     }
 
     _on_error_repeater(event) {
+        // reset connection state
         this._connection = null
         this._is_connected = false
+
+        if (this._handlers.error_one !== null) {
+            this._handlers.error_one(event)
+            // reset handler
+            this._handlers.one = null
+            this._handlers.error_one = null
+        }
+
         if (this._handlers.error !== null) {
             this._handlers.error(event)
         }

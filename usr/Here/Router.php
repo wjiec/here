@@ -39,8 +39,8 @@ class Here_Router {
         $this->_hooks = array();
 
         # server variables
-        $this->_variable['request_method'] = $_SERVER['REQUEST_METHOD'];
-        $this->_variable['current_url'] = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $this->_variable['request_method'] = Here_Request::get_env('request_method');
+        $this->_variable['current_url'] = parse_url(Here_Request::get_env('request_uri'), PHP_URL_PATH);
     }
 
     # add new router node
@@ -79,7 +79,9 @@ class Here_Router {
                 return is_string($hook) && array_key_exists($hook, $this->_hooks);
             });
 
+            // create router node
             $this->_create_router($methods, $urls, $callback, $hook);
+        // add error/hook handler or dispatch error handler
         } else if (in_array($call_name, array('ERROR', 'HOOK'))) {
             $handler_key = array_shift($args);
             $handler = array_shift($args);
@@ -91,10 +93,14 @@ class Here_Router {
                     $this->_create_hook_handler($handler_key, $handler);
                 }
             } else {
-                $this->emit_error($handler_key, $handler);
+                if ($call_name == 'ERROR') {
+                    $this->emit_error($handler_key, $handler);
+                } else {
+                    throw new Exception('can only dispatch error handler', 1996);
+                }
             }
         } else {
-            throw new Exception("fatal error: anyonmous call({$call_name}) not found");
+            throw new Exception("fatal error: anonymous call({$call_name}) not found");
         }
 
         return $this;
@@ -133,7 +139,7 @@ class Here_Router {
         $this->_create_router($methods, $urls, $callback, $hook);
     }
 
-    # ! please don't using this method, is very danger
+    # ! Please do not use this method, this method is very dangerous
     public function __import_router_tree(array $router_tree, array $router_error, array $router_hooks) {
         $this->_tree = $router_tree;
         $this->_error = $router_error;
@@ -141,7 +147,11 @@ class Here_Router {
     }
 
     public function __export_router_tree() {
-        return array($this->_tree, $this->_error, $this->_hooks);
+        return array(
+            'tree'  => $this->_tree,
+            'error' => $this->_error,
+            'hooks' =>$this->_hooks
+        );
     }
 
     # import router table
@@ -169,15 +179,16 @@ class Here_Router {
 
     # router entry point
     public function entry($request_method = null, $request_url = null) {
-        $request_method = strtoupper($request_method ? $request_method : $this->_variable['request_method']);
-        $request_url = $request_url ? $request_url : $this->_variable['current_url'];
+        // Since PHP 5.3, it is possible to leave out the middle part of the ternary operator.
+        $request_method = strtoupper($request_method ?: $this->_variable['request_method']);
+        $request_url = $request_url ?: $this->_variable['current_url'];
 
         $this->_callback_params = array(
             '__url__' => $request_url,
             '__method__' => $request_method,
         );
 
-        list($callback, $hooks) = $this->_reslove($request_method, $request_url, $this->_callback_params);
+        list($callback, $hooks) = $this->_resolve($request_method, $request_url, $this->_callback_params);
 
         # raise error
        if (($callback == null && $hooks == null) || (empty($callback) && empty($hooks))) {
@@ -299,8 +310,8 @@ class Here_Router {
         // create handler node
         if (!array_key_exists(self::$HANDLE, $tree)) {
             $tree[self::$HANDLE] = array(
-                    self::$CALLBACK => array(),
-                    self::$HOOK => array()
+                self::$CALLBACK => array(),
+                self::$HOOK => array()
             );
         }
 
@@ -319,7 +330,7 @@ class Here_Router {
         $this->_hooks[$hook_name] = $handler;
     }
 
-    private function _reslove($request_method, $request_url, &$params) {
+    private function _resolve($request_method, $request_url, &$params) {
         if (!array_key_exists($request_method, $this->_tree)) {
             $params['errno'] = '404';
             $params['error'] = 'router not found this request method';
@@ -336,7 +347,7 @@ class Here_Router {
     private function _search_router($tree, $nodes, &$params) {
         $require_node = array_shift($nodes);
 
-        # search complete
+        # search completed
         if ($require_node == null) {
             if (array_key_exists(self::$HANDLE, $tree)) {
                 return array($tree[self::$HANDLE][self::$CALLBACK], $tree[self::$HANDLE][self::$HOOK]);
@@ -348,9 +359,11 @@ class Here_Router {
             }
         }
 
-        # First, full matching router
+        # first, full matching router
         foreach ($tree as $node => $value) {
+            // if full-match
             if ($node == $require_node) {
+                // matching next node
                 return $this->_search_router($tree[$node], $nodes, $params);
             }
         }
@@ -489,4 +502,7 @@ class Here_Router {
 
     # hook node
     private static $HOOK = '__hk__';
+
+    # full-match
+    private static $FULL_MATCH = '...';
 }
