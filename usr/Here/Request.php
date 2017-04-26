@@ -56,6 +56,12 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         return null;
     }
 
+    /**
+     * from $_SERVER getting value
+     *
+     * @param $key
+     * @return string|null
+     */
     public static function get_env($key) {
         return self::get_instance()->get_server_env($key);
     }
@@ -71,7 +77,7 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         exit();
     }
 
-    public static function abort($errno, $error) {
+    public static function abort($errno, $error = null) {
         Core::router_instance()->emit_error($errno, $error);
     }
 
@@ -83,7 +89,8 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         switch ($suffix) {
             case 'css': $mime = 'text/css'; break;
             case 'js': $mime = 'text/javascript'; break;
-            default: $mime = 'text/plain'; break;
+            case 'html': $mime = 'text/html'; break;
+            default: return; /* Exit */
         }
 
         self::header('Content-Type', $mime . '; charset=' . _here_default_charset_);

@@ -34,6 +34,7 @@ define('__HERE_USR_DIRECTORY__', '/usr');
 # /var directory
 define('__HERE_VAR_DIRECTORY__', '/var');
 
+# set include path
 @set_include_path(get_include_path() . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_BIN_DIRECTORY__ . PATH_SEPARATOR.
     __HERE_ROOT_DIRECTORY__ . __HERE_ETC_DIRECTORY__ . PATH_SEPARATOR.

@@ -97,7 +97,7 @@ class Hook_Authentication extends Here_Abstracts_Route_Hook {
 
 
 /**
- * Hook check istall
+ * Hook check install
  */
 class Hook_Check_Install extends Here_Abstracts_Route_Hook {
     /**
@@ -113,7 +113,7 @@ class Hook_Check_Install extends Here_Abstracts_Route_Hook {
      */
     public function entry_point(array $parameters) {
         if (!(is_file(_here_user_configure))) {
-            Here_Request::redirection(_here_install_url);
+            Here_Request::redirection(_here_install_url_);
         }
         return true;
     }
@@ -197,7 +197,9 @@ class Route_License extends Here_Abstracts_Route_Route {
 
 
 /**
- * Route /recovery
+ * Class Route_Recovery
+ *
+ * Router: /recovery
  */
 class Route_Recovery extends Here_Abstracts_Route_Route {
     public function urls() {
@@ -219,7 +221,9 @@ class Route_Recovery extends Here_Abstracts_Route_Route {
 
 
 /**
- * Route /api
+ * Class Route_API
+ *
+ * Router: /api/@v(\d+)@api_version/$module/$operator
  */
 class Route_API extends Here_Abstracts_Route_Route {
     public function urls() {
@@ -239,20 +243,40 @@ class Route_API extends Here_Abstracts_Route_Route {
     }
 }
 
-// class Route_Static extends Here_Abstracts_Route_Route {
-//     public function urls() {
-//         return array('/static/...');
-//     }
 
-//     public function methods() {
-//         return array('GET');
-//     }
+/**
+ * Class Route_Static
+ *
+ * Router: /static/???
+ */
+class Route_Static extends Here_Abstracts_Route_Route {
+    public function urls() {
+        return array('/static/???');
+    }
 
-//     public function hooks() {
-//         return array();
-//     }
+    public function methods() {
+        return array('GET');
+    }
 
-//     public function entry_point(array $parameters) {
-//         var_dump($parameters);
-//     }
-// }
+    public function hooks() {
+        return array();
+    }
+
+    public function entry_point(array $parameters) {
+        $static_file = $parameters['full_match_url'];
+        $real_file_path = trim(join(_here_path_separator_, array(__HERE_VAR_DIRECTORY__, $static_file)), '/');
+
+        if (is_file($real_file_path)) {
+            $explode_array = explode('.', $real_file_path);
+            $extension = $explode_array[count($explode_array) - 1];
+            Here_Request::set_mime($extension);
+
+            // return resource-file contents
+            include $real_file_path;
+            // include css/jpg/png/... resource files??? actually works..
+            exit;
+        } else {
+            Here_Request::abort(404, 'Not Found');
+        }
+    }
+}

@@ -72,13 +72,13 @@ class Core {
         # sys definition variable
         require_once 'sys/definition.php';
 
-        # chech here is install or require recovery
+        # check here is install or require recovery
         if (is_file(_here_user_configure)) {
             # include user definition variable
             require_once _here_user_configure;
         } else {
             # redirection to install/recovery guide
-            if (self::router_instance()->current_url() !== _here_install_url) {
+            if (self::router_instance()->current_url() !== _here_install_url_) {
                 # check request uri is not resource file
                 if (strpos(self::router_instance()->current_url(), '/static') === 0) {
                     return;

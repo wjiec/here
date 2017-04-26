@@ -154,7 +154,11 @@ class Here_Router {
         );
     }
 
-    # import router table
+    /**
+     * import router table
+     *
+     * @param array $route_classes
+     */
     public function import_router_table($route_classes) {
         $error_routes = array_filter($route_classes, function($class_name) {
             if (strpos($class_name, 'Error') === 0) {
@@ -177,7 +181,12 @@ class Here_Router {
         $this->_parser_path_route($path_route);
     }
 
-    # router entry point
+    /**
+     * router entry point
+     *
+     * @param string $request_method
+     * @param string $request_url
+     */
     public function entry($request_method = null, $request_url = null) {
         // Since PHP 5.3, it is possible to leave out the middle part of the ternary operator.
         $request_method = strtoupper($request_method ?: $this->_variable['request_method']);
@@ -239,7 +248,7 @@ class Here_Router {
         }
 
         $args = func_get_args();
-        if (call_user_func($this->_error[$error_code], $args[1]) || _here_emit_error_after_exit_) {
+        if (call_user_func($this->_error[$error_code], $args) || _here_emit_error_after_exit_) {
             exit;
         }
     }
@@ -300,6 +309,21 @@ class Here_Router {
             return self::_create_router_node($tree[self::$RE_ROUTER][$re_router_name], $new_node, $callback, $hook);
         }
 
+        # full-match, $current_node === '...'
+        if ($current_node && $current_node === self::$FULL_MATCH) {
+            // check full-match is end-node
+            if (count($new_node) !== 0) {
+                throw new Exception("full-match must be in the end-node", 1996);
+            }
+            // create node
+            if (!array_key_exists(self::$FULL_MATCH, $tree)) {
+                $tree[self::$FULL_MATCH] = array();
+
+                return self::_create_router_node($tree[$current_node], $new_node, $callback, $hook);
+            }
+        }
+
+        // this node is created
         if ($current_node && array_key_exists($current_node, $tree)) {
             return self::_create_router_node($tree[$current_node], $new_node, $callback, $hook);
         } else if ($current_node) {
@@ -368,15 +392,15 @@ class Here_Router {
             }
         }
 
-        # no variable routing
-        if (empty($tree[self::$RE_ROUTER]) && empty($tree[self::$VAR_ROUTER])) {
+        # check variable routing exists
+        if (empty($tree[self::$RE_ROUTER]) && empty($tree[self::$VAR_ROUTER]) && empty($tree[self::$FULL_MATCH])) {
             $params['errno'] = '404';
             $params['error'] = 'no matching router';
 
             return array(null, null);
         }
 
-        # second, re matching routing
+        # second, re matching routing: @
         if (!empty($tree[self::$RE_ROUTER])) {
             $re_nodes = $tree[self::$RE_ROUTER];
 
@@ -424,10 +448,8 @@ class Here_Router {
             }
         }
 
-        if (empty($tree[self::$VAR_ROUTER])) {
-            $params['errno'] = '404';
-            $params['error'] = 'no var-matching routing';
-        } else {
+        # variable-routing: $
+        if (!empty($tree[self::$VAR_ROUTER])) {
             $var_node = $tree[self::$VAR_ROUTER];
             foreach ($var_node as $key => $val) {
                 $pos = strpos($key, ':');
@@ -453,6 +475,29 @@ class Here_Router {
             }
         }
 
+        # full-match routing
+        if (!empty($tree[self::$FULL_MATCH])) {
+            if ($node === self::$FULL_MATCH) {
+                $explode_nodes = explode(_here_url_separator_, self::current_url());
+                foreach ($explode_nodes as $index => $node) {
+                    if ($node != $require_node) {
+                        // !!! allow this operation array?
+                        array_shift($explode_nodes);
+                    } else {
+                        break;
+                    }
+                }
+                $params['full_match_url'] = join(_here_url_separator_, $explode_nodes);
+
+                return array(
+                    $tree[self::$FULL_MATCH][self::$HANDLE][self::$CALLBACK],
+                    $tree[self::$FULL_MATCH][self::$HANDLE][self::$HOOK]
+                );
+            }
+        }
+
+        $params['errno'] = '404';
+        $params['error'] = 'no matching routing';
         return array(null, null);
     }
 
@@ -504,5 +549,5 @@ class Here_Router {
     private static $HOOK = '__hk__';
 
     # full-match
-    private static $FULL_MATCH = '...';
+    private static $FULL_MATCH = '???';
 }

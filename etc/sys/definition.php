@@ -22,7 +22,7 @@ define('_here_default_charset_', 'utf-8');
 define('_here_path_separator_', '/');
 
 # url separator
-define('_here_url_separator', '/');
+define('_here_url_separator_', '/');
 
 # user router table
 define('_here_user_router_table_', 'etc/router.php');
@@ -37,7 +37,7 @@ define('_here_user_configure', 'etc/configure.php');
 define('_here_install_file_', 'var/install/install.php');
 
 # install guide url
-define('_here_install_url', '/installer-guide');
+define('_here_install_url_', '/installer-guide');
 
 # error code raise with hook function validate failure 
 define('_here_hook_emit_error_', '403');

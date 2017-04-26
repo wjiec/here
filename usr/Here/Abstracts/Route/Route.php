@@ -25,7 +25,7 @@ abstract class Here_Abstracts_Route_Route {
     abstract public function methods();
 
     /**
-     * definition complate before hooks
+     * definition template before hooks
      * 
      * @return array
      */
