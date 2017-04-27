@@ -33,7 +33,7 @@ class Here_Db_Helper {
     /**
      * adapter instance
      *
-     * @var SDB\Abstracts\Adapter
+     * @var Here_Abstracts_Adapter
      */
     private $_adapter = null;
 
@@ -76,11 +76,11 @@ class Here_Db_Helper {
             throw new \Exception('SDB: adapter or driver invalid', 1996);
         }
 
-        # if adapter avaliable, creating the instance
+        # if adapter available, creating the instance
         $adapter = "Here_Db_Adapter_{$adapter}";
         if (!call_user_func(array(($this->_adapter = new $adapter($this->_table_prefix)), 'available'))) {
             unset($this->_adapter);
-            throw new \Exception('SDB: adapter is not avaliable', 1996);
+            throw new \Exception('SDB: adapter is not available', 1996);
         }
     }
 

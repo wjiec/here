@@ -536,18 +536,18 @@ class Here_Router {
     # handler
     private static $HANDLE = '=';
 
+    # re match node
+    private static $RE_ROUTER = '@';
+
     # variable router match flag
     private static $VAR_ROUTER = '$';
 
-    # re match node
-    private static $RE_ROUTER = '@';
+    # full-match
+    private static $FULL_MATCH = '???';
 
     # callback node
     private static $CALLBACK = '__cb__';
 
     # hook node
     private static $HOOK = '__hk__';
-
-    # full-match
-    private static $FULL_MATCH = '???';
 }

@@ -110,6 +110,7 @@ class Hook_Check_Install extends Here_Abstracts_Route_Hook {
     /**
      * {@inheritDoc}
      * @see Here_Abstracts_Route_Hook::entry_point()
+     * @TODO maybe redirect to recovery-guide
      */
     public function entry_point(array $parameters) {
         if (!(is_file(_here_user_configure))) {

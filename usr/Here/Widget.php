@@ -10,10 +10,31 @@
  */
 
 class Here_Widget {
+    /**
+     * Widget instance pool
+     *
+     * @var array
+     * @access private
+     */
     private static $_widgets_pool = array();
 
+    /**
+     * widget alias mapping
+     *
+     * @var array
+     * @TODO
+     */
     private static $_widgets_mapping = array();
 
+    /**
+     * initializing/getting widget instance
+     *
+     * @param string $widget_name
+     * @param string $alias
+     * @param array $init_options
+     * @return mixed
+     * @throws Exception
+     */
     public static function widget($widget_name, $alias = null, array $init_options = array()) {
         $widget_name = strtolower($widget_name);
 

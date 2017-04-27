@@ -4,16 +4,41 @@
  * 
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
- * @copyright Copyright (C) 2016 ShadowMan
+ * @copyright Copyright (C) 2016-2017 ShadowMan
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
 
+
 class Core {
+    /**
+     * Here major version information
+     */
     const _major_version = '0.1.0';
 
+    /**
+     * Here minor version information
+     */
     const _minor_version = 'dev-2016-12-22';
 
+    /**
+     * Core module initialize method
+     *  * register __autoload
+     *  * enable ob_cache
+     *  * initialize request object
+     *  * load configure or redirect to installer-guide
+     *  * initialize base widget
+     *      * Request
+     *      * Interceptor
+     *      * Router
+     *      * Options
+     *  * initialize helper instance
+     *      * Plugins Helper
+     *      * Theme Helper
+     * * load router tables
+     *
+     * @param bool $debug_mode
+     */
     public static function init($debug_mode = false) {
         # register autoload function
         if (function_exists('spl_autoload_register')) {
@@ -47,6 +72,8 @@ class Core {
     }
 
     /**
+     * getting single Router instance
+     *
      * @return Here_Router
      */
     public static function router_instance() {
@@ -57,7 +84,12 @@ class Core {
         return self::$router_instance;
     }
 
-    // TODO exception_handler
+    /**
+     * global exception handler
+     *
+     * @param Exception $exception
+     * @TODO save to database
+     */
     public static function _init_exception_handler(Exception $exception) {
 //         @ob_end_clean();
 
@@ -68,8 +100,15 @@ class Core {
         echo '</pre>';
     }
 
+    /**
+     * load configure or redirect to recovery-guide
+     *  * database information
+     *  * ...
+     *
+     * @TODO redirect to recovery/installer guide
+     */
     public static function load_configure() {
-        # sys definition variable
+        # sys definition variables
         require_once 'sys/definition.php';
 
         # check here is install or require recovery
@@ -77,24 +116,31 @@ class Core {
             # include user definition variable
             require_once _here_user_configure;
         } else {
-            # redirection to install/recovery guide
-            if (self::router_instance()->current_url() !== _here_install_url_) {
-                # check request uri is not resource file
-                if (strpos(self::router_instance()->current_url(), '/static') === 0) {
-                    return;
-                }
-            }
+            # redirection to recovery guide
         }
     }
 
+    /**
+     * initializing base widgets
+     *
+     * @param bool $debug_mode
+     */
     private static function _init_widgets($debug_mode = false) {
         // Widget: Interceptor
         Here_Widget::widget('interceptor');
 
         // Widget: Options
         Here_Widget::widget('options');
+
+        // load debug widget
+        if ($debug_mode === true) {
+            // @TODO debug widget
+        }
     }
 
+    /**
+     * initializing Theme/Plugins helper
+     */
     private static function _init_helper() {
         # plugin
         self::$_single_plugin_helper_instance = new Plugins_Helper();
@@ -103,6 +149,11 @@ class Core {
         self::$_single_theme_helper_instance = new Theme_Helper();
     }
 
+    /**
+     * initializing router tables
+     *
+     * @throws Exception
+     */
     private static function _init_router_table() {
         try {
             # parser route classes
@@ -119,6 +170,12 @@ class Core {
         }
     }
 
+    /**
+     * from router tables getting node
+     *
+     * @param string $path_to_script
+     * @return array
+     */
     private static function _get_route_classes($path_to_script) {
         $before_classes = get_declared_classes();
         require_once $path_to_script;
@@ -135,13 +192,33 @@ class Core {
         return $route_classes;
     }
 
+    /**
+     * __autoload function
+     *
+     * @param string $class_name
+     */
     private static function __autoload($class_name) {
         require_once str_replace(array('\\', '_'), '/', $class_name) . '.php';
     }
 
+    /**
+     * Router reference
+     *
+     * @var Here_Router
+     */
     private static $router_instance = null;
 
+    /**
+     * theme helper instance
+     *
+     * @var Theme_Helper
+     */
     private static $_single_theme_helper_instance = null;
 
+    /**
+     * plugins helper instance
+     *
+     * @var Plugins_Helper
+     */
     private static $_single_plugin_helper_instance = null;
 }

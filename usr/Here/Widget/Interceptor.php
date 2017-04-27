@@ -39,7 +39,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
             }
 
             if (empty($parts['host']) || Here_Request::get_env('http_host') != $parts['host']) {
-                Here_Request::abort(403, 'your not human.');
+                Here_Request::abort(403, "you're are not human");
             }
         }
     }
@@ -48,6 +48,25 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
      * initializing ip policy
      */
     private function _ip_policy_init() {
+        // include forbidden list
+        $forbidden_list = include(_here_sys_default_ip_policy_);
+        if (!is_array($forbidden_list)) {
+            throw new Exception('Default Forbidden IP is not array.', 1996);
+        }
+        /* @var Here_Widget_IPNetwork $ip_network */
+        $ip_network = Here_Widget::widget('IPNetwork', null, $forbidden_list);
+        // check current client not in forbidden list
+        if ($ip_network->contains(Here_Request::get_remote_ip())) {
+            Here_Request::abort(403, "you've been blacklisted");
+        }
+    }
 
+    /**
+     * get Widget:IPNetwork instance
+     *
+     * @return Here_Widget_Interceptor
+     */
+    public static function get_ip_network() {
+        return Here_Widget::widget('IPNetwork');
     }
 }

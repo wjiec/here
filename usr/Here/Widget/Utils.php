@@ -9,6 +9,10 @@
  * @link      https://github.com/JShadowMan/here
  */
 
+
+/** Class Here_Widget_Utils
+ * Utility class
+ */
 class Here_Widget_Utils extends Here_Abstracts_Widget {
     public function __construct(array $options = array()) {
         parent::__construct($options);

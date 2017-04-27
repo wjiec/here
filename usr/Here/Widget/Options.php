@@ -31,7 +31,7 @@ class Here_Widget_Options extends Here_Abstracts_Widget {
         if (array_key_exists($key, $this->_widget_options)) {
             return $this->_widget_options[$key];
         }
-        return null;
+        return $default;
     }
 }
 

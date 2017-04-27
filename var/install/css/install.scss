@@ -56,12 +56,15 @@
 
 #here-installer-container {
     color: $text-color;
+    cursor: default;
     padding: 1rem;
 
     background: {
         color: $inside-background-color;
     }
+
     @include box-shadow(inset 0 0 5px 1px rgba(0, 0, 0, .15));
+
 
     @at-root
     #here-install-body {

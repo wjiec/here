@@ -16,8 +16,8 @@ class HistoryNode {
     }
 
     cache_node() {
-        if (window.localStorage === undefined) {
-            throw new Error(`localStorage does't supported`)
+        if (!window.localStorage || !window.sessionStorage) {
+            throw new Error(`WebStorage does't supported`)
             return null
         }
         HistoryNode.trim_history_list(HistoryNode.max_local_storage_length)
@@ -137,8 +137,8 @@ class History {
             if (window.history.pushState === undefined || window.onpopstate === undefined) {
                 throw new Error(`Your browser does't support HTML5 history API`)
             }
-            // bind popstate event
-            window.onpopstate = History.on_pop_state
+            // bind popstate
+            window.addEventListener('popstate', History.on_pop_state);
             // custom events
             History._custom_events = {
                 'History:error': [],

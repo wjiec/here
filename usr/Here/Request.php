@@ -59,7 +59,7 @@ class Here_Request implements Here_Interfaces_SingleInstance {
     /**
      * from $_SERVER getting value
      *
-     * @param $key
+     * @param string $key
      * @return string|null
      */
     public static function get_env($key) {
@@ -77,6 +77,10 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         exit();
     }
 
+    /**
+     * @param int $errno
+     * @param string|null $error
+     */
     public static function abort($errno, $error = null) {
         Core::router_instance()->emit_error($errno, $error);
     }
@@ -159,6 +163,15 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         }
 
         return apache_request_headers();
+    }
+
+    /**
+     * get remote/client ip address
+     *
+     * @return null|string
+     */
+    public static function get_remote_ip() {
+        return self::get_env('remote_addr');
     }
 
     # single instance

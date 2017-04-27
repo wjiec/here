@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 
+
 class Here_Db_Expression {
     private static $_symbol = array(
             'e'   => '=',

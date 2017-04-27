@@ -9,11 +9,10 @@
  * @link      https://github.com/JShadowMan/here
  */
 
-return array(
-    'white-list' => array(
-        
-    ),
-    'block-list' => array(
 
-    )
+/**
+ * forbidden ip list
+ */
+return array(
+    ''
 );

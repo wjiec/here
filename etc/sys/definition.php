@@ -30,6 +30,9 @@ define('_here_user_router_table_', 'etc/router.php');
 # default router table
 define('_here_sys_default_router_table_', 'etc/sys/default_route.php');
 
+# default forbidden list
+define('_here_sys_default_ip_policy_', 'etc/sys/default_ip_policy.php');
+
 # configure file, generate by install guide
 define('_here_user_configure', 'etc/configure.php');
 
