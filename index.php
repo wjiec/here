@@ -46,7 +46,7 @@ define('__HERE_VAR_DIRECTORY__', '/var');
 );
 
 # Here core API
-require_once 'Here/core.php';
+require_once 'Here/Core.php';
 
 # Initialize environment
 Core::init();

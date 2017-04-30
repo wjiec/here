@@ -164,16 +164,19 @@ class Here_Router {
             if (strpos($class_name, 'Error') === 0) {
                 return true;
             }
+            return false;
         });
         $hook_routes = array_filter($route_classes, function($class_name) {
             if (strpos($class_name, 'Hook') === 0) {
                 return true;
             }
+            return false;
         });
         $path_route = array_filter($route_classes, function($class_name) {
             if (strpos($class_name, 'Route') === 0) {
                 return true;
             }
+            return false;
         });
 
         $this->_parser_error_route($error_routes);
@@ -344,6 +347,8 @@ class Here_Router {
             $tree[self::$HANDLE][self::$CALLBACK] = array_merge($tree[self::$HANDLE][self::$CALLBACK], $callback);
             $tree[self::$HANDLE][self::$HOOK] = array_merge($tree[self::$HANDLE][self::$HOOK], $hook);
         }
+
+        return $this;
     }
 
     private function _create_error_handler($error, $handler) {
@@ -454,7 +459,8 @@ class Here_Router {
             foreach ($var_node as $key => $val) {
                 $pos = strpos($key, ':');
                 if ($pos) {
-                    if (array_key_exists($key[$pos + 1], $this->_validate) && !call_user_func('ctype_' . $this->_validate[$key[$pos + 1]], $require_node)) {
+                    if (array_key_exists($key[$pos + 1], $this->_validate) &&
+                        !call_user_func('ctype_' . $this->_validate[$key[$pos + 1]], $require_node)) {
                         $params['errno'] = '404';
                         $params['error'] = 'var-matching validate failure';
 
@@ -477,23 +483,21 @@ class Here_Router {
 
         # full-match routing
         if (!empty($tree[self::$FULL_MATCH])) {
-            if ($node === self::$FULL_MATCH) {
-                $explode_nodes = explode(_here_url_separator_, self::current_url());
-                foreach ($explode_nodes as $index => $node) {
-                    if ($node != $require_node) {
-                        // !!! allow this operation array?
-                        array_shift($explode_nodes);
-                    } else {
-                        break;
-                    }
+            $explode_nodes = explode(self::$URL_SEPARATOR, self::current_url());
+            foreach ($explode_nodes as $index => $node) {
+                if ($node != $require_node) {
+                    // !!! allow operation array?
+                    array_shift($explode_nodes);
+                } else {
+                    break;
                 }
-                $params['full_match_url'] = join(_here_url_separator_, $explode_nodes);
-
-                return array(
-                    $tree[self::$FULL_MATCH][self::$HANDLE][self::$CALLBACK],
-                    $tree[self::$FULL_MATCH][self::$HANDLE][self::$HOOK]
-                );
             }
+            $params['full_match_url'] = join(self::$URL_SEPARATOR, $explode_nodes);
+
+            return array(
+                $tree[self::$FULL_MATCH][self::$HANDLE][self::$CALLBACK],
+                $tree[self::$FULL_MATCH][self::$HANDLE][self::$HOOK]
+            );
         }
 
         $params['errno'] = '404';
@@ -503,6 +507,7 @@ class Here_Router {
 
     private function _parser_error_route($error_route_list) {
         foreach ($error_route_list as $error_route) {
+            /* @var Here_Abstracts_Route_Error */
             $route_class = new $error_route();
             $error_code = $route_class->errno();
 
@@ -512,6 +517,7 @@ class Here_Router {
 
     private function _parser_hook_route($hook_route_list) {
         foreach ($hook_route_list as $hook_route) {
+            /* @var Here_Abstracts_Route_Hook */
             $route_class = new $hook_route();
             $hook_name = $route_class->hook_name();
 
@@ -521,6 +527,7 @@ class Here_Router {
 
     private function _parser_path_route($path_route_list) {
         foreach ($path_route_list as $path_route) {
+            /* @var Here_Abstracts_Route_Route */
             $route_class = new $path_route();
             $urls = $route_class->urls();
             $methods = $route_class->methods();

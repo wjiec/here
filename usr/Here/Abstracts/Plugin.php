@@ -17,10 +17,10 @@ abstract class Here_Abstracts_Plugin {
     }
 
     public function export_options() {
-        return $this->_widget_options;
+        return $this->_plugin_options;
     }
 
     public function widget_name() {
-        return $this->_widget_name;
+        return $this->_plugin_name;
     }
 }

@@ -9,9 +9,10 @@
  * @link      https://github.com/JShadowMan/here
  */
 
+
 class Here_Db_Adapter_MySQL extends Here_Abstracts_Adapter {
     /**
-     * check mysql avaliable
+     * check mysql available
      *
      * @see \SDB\Abstracts\Adapter::available()
      */
