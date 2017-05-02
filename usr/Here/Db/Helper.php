@@ -16,24 +16,27 @@
  */
 class Here_Db_Helper extends Here_Abstracts_Widget {
     /**
-     * server information for current connection.
      *
-     * @var array
+     *
+     * @var string|null
      */
-    private $_current_server;
+    private $_table_prefix = null;
 
     /**
-     * @var Here_Db_Adapter_Base
+     * Here_Db_Helper constructor.
+     *
+     * @param string $table_prefix
      */
-    private $_current_adapter;
+    public function __construct($table_prefix) {
+        parent::__construct();
 
-
-    public function __construct($table_prefix, $server_adapter = null) {
-        parent::__construct(array(
-            'server_information' => $this->_current_server,
-            'adapter_name' => $this->_current_adapter
-        ));
-        $this->_widget_name = "DB Helper";
+        $this->_widget_name = 'Database Helper';
+        if ($table_prefix == null || is_string($table_prefix)) {
+            $this->_table_prefix = $table_prefix;
+        } else {
+            throw new Here_Exceptions_ParameterError('table prefix except string or null',
+                'Here:Db:Helper:__construct');
+        }
     }
 
 
@@ -42,49 +45,53 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
      *
      * $dsn Formatter: driver:host=[host];port=[post];dbname=[database_name];charset=[charset];
      *  For Example:
-     *      Mysql: mysql:host=localhost;port=3306;dbname=here_test;charset=utf8
+     *      Mysql: mysql:host=localhost;port=3306;dbname=here_blog;charset=utf8
      *
      * @param string $dsn
      * @param string|null $username
      * @param string|null $password
-     */
-    static public function add_server($dsn, $username = null, $password = null) {
-//        self::$_server_list[] = array(
-//            'server' => self::_generate_connect_information(
-//                $host, intval($port), $user, $password, $database, $charset),
-//            'adapter' => null,
-//            'available' => false
-//        );
-    }
-
-
-    /**
-     * generate available connect information, and check parameter
-     * type is correct.
-     *
-     * @param string $host
-     * @param string|int $port
-     * @param string $user
-     * @param string $password
-     * @param string $database
-     * @param string $charset
      *
      * @throws Here_Exceptions_ParameterError
-     * @return array
      */
-    static private function _generate_connect_information($host, $port, $user, $password, $database, $charset) {
-        if (!is_string($host) || !is_int($port) || $port == 0 ||
-            !is_string($user) || !is_string($password) ||
-            !is_string($database) || !is_string($charset)) {
-            //----------------------------------------------
-            throw new Here_Exceptions_ParameterError('Connection information type error','Here:Db:Helper');
+    public static function init_server($dsn, $username = null, $password = null) {
+        if (!is_string($dsn) || !is_string($username) || !is_string($password)) {
+            throw new Here_Exceptions_ParameterError('parameter except string',
+                'Here:Db:Helper:init_server');
         }
 
-        return array(
-            'host' => $host, 'port' => $port,
-            'user' => $user, 'password' => $password,
-            'database' => $database, 'charset' => $charset
-        );
+        list($driver, $database_information) = explode(':', $dsn, 2);
+        self::$_database_server['driver'] = trim(strtolower($driver));
+
+        $database_information = explode(';', $database_information);
+        foreach ($database_information as $kvp) {
+            list($key, $value) = explode('=', $kvp);
+            self::$_database_server[trim($key)] = trim($value);
+        }
+
+        if (!array_key_exists('host', self::$_database_server) ||
+            !array_key_exists('dbname', self::$_database_server)) {
+            //---------------------------------------------------------
+            throw new Here_Exceptions_ParameterError('miss host or dbname field',
+                'Fatal:Here:Db:Helper:init_server');
+        }
+
+        if ($username == null || is_string($username)) {
+            self::$_database_server['username'] = $username;
+        } else {
+            throw new Here_Exceptions_ParameterError('username except string or null',
+                'Here:Db:Helper:init_server');
+        }
+
+        if ($password == null || is_string($password)) {
+            self::$_database_server['password'] = $password;
+        } else {
+            throw new Here_Exceptions_ParameterError('password except string or null',
+                'Here:Db:Helper:init_server');
+        }
+
+        if (!array_key_exists('charset', self::$_database_server)) {
+            self::$_database_server['charset'] = _here_default_charset_;
+        }
     }
 
     /**
@@ -92,7 +99,22 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
      *
      * @var array
      */
-    static private $_server_list = array();
+    private static $_database_server;
+
+    /**
+     * MySQL Adapter
+     */
+    const ADAPTER_MYSQL = 'MySQL';
+
+    /**
+     * PostgreSQL Adapter
+     */
+    const ADAPTER_PGSQL = 'PostgreSQL';
+
+    /**
+     * SQLite Adapter
+     */
+    const ADAPTER_SQLITE = 'SQLite';
 }
 
 

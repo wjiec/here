@@ -9,7 +9,11 @@
  * @link      https://github.com/JShadowMan/here
  */
 
-# http protocol
+/**
+ * Blog Http protocol version
+ *
+ * @TODO HTTP/2.0
+ */
 define('_here_http_protocol_', 'HTTP/1.1');
 
 # http or https
@@ -54,4 +58,13 @@ define('_here_emit_error_after_exit_', true);
 # recover mode
 define('_here_enable_recovery_mode', false);
 
-
+/**
+ * if exception level bigger than that, we must notification admin
+ *
+ * Exception Level:
+ *      Fatal: 100
+ *      Error: 75
+ *      Warning: 50
+ *      Ignore: 25
+ */
+define('_here_notification_level', 100);
