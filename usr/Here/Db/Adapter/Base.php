@@ -34,16 +34,11 @@ abstract class Here_Db_Adapter_Base {
      * connect to server, and depending on the return status set the
      * appropriate connection information($this->_server_available)
      *
-     * @param string $host
-     * @param string|int $port
-     * @param string $user
-     * @param string $password
-     * @param string $database
-     * @param string $charset
-     * @return boolean connect state
-     * @throws \Exception connect error information
+     * @param string $dsn
+     * @param string|null $username
+     * @param string|null $password
      */
-    abstract public function connect($host, $port, $user, $password, $database, $charset);
+    abstract public function connect($dsn, $username = null, $password = null);
 
     /**
      * return server information, for example, Database version, Connection Descriptor, ...
@@ -114,6 +109,7 @@ abstract class Here_Db_Adapter_Base {
      * quoted identifiers
      *
      * @param string $string
+     * @return string
      */
     abstract public function quote_key($string);
 
@@ -121,6 +117,7 @@ abstract class Here_Db_Adapter_Base {
      * quoted identifiers
      *
      * @param string $string
+     * @return string
      */
     abstract public function quote_value($string);
 

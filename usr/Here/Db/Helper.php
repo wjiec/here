@@ -26,6 +26,7 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
      * Here_Db_Helper constructor.
      *
      * @param string $table_prefix
+     * @throws Here_Exceptions_ParameterError
      */
     public function __construct($table_prefix) {
         parent::__construct();
@@ -39,6 +40,78 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
         }
     }
 
+    /**
+     * select syntax
+     *
+     * @return Here_Db_Query
+     */
+    public function select() {
+        return $this->sql_generator()->select(func_get_args());
+    }
+
+    /**
+     * insert syntax
+     *
+     * @param $table
+     * @return Here_Db_Query
+     */
+    public function insert($table) {
+        return $this->sql_generator()->insert($table);
+    }
+
+    /**
+     * update syntax
+     *
+     * @param $table
+     * @return Here_Db_Query
+     */
+    public function update($table) {
+        return $this->sql_generator()->update($table);
+    }
+
+    /**
+     * delete syntax
+     *
+     * @param $table
+     * @return Here_Db_Query
+     */
+    public function delete($table) {
+        return $this->sql_generator()->delete($table);
+    }
+
+    /**
+     * alter table attributes
+     *
+     * @param $table
+     * @return Here_Db_Query
+     */
+    public function alter($table) {
+        return $this->sql_generator()->alter($table);
+    }
+
+    /**
+     * execute sql
+     *
+     * @param string|Here_Db_Query $query
+     */
+    public function query($query) {
+        if (is_string($query)) {
+            $query = trim($query);
+        } else if ($query instanceof Here_Db_Query) {
+            $query = $query->__toString();
+        }
+
+
+    }
+
+    /**
+     * base sql generator
+     *
+     * @return Here_Db_Query
+     */
+    private function sql_generator() {
+        return new Here_Db_Query(self::$_database_server['driver']);
+    }
 
     /**
      * according parameter $dsn to create server connect information
@@ -54,7 +127,9 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
      * @throws Here_Exceptions_ParameterError
      */
     public static function init_server($dsn, $username = null, $password = null) {
-        if (!is_string($dsn) || !is_string($username) || !is_string($password)) {
+        if (!is_string($dsn) || ($username != null && !is_string($username)) ||
+            ($password != null && !is_string($password))) {
+            //---------------------------------------------
             throw new Here_Exceptions_ParameterError('parameter except string',
                 'Here:Db:Helper:init_server');
         }
@@ -64,8 +139,10 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
 
         $database_information = explode(';', $database_information);
         foreach ($database_information as $kvp) {
-            list($key, $value) = explode('=', $kvp);
-            self::$_database_server[trim($key)] = trim($value);
+            if (strpos($kvp, '=')) {
+                list($key, $value) = explode('=', $kvp);
+                self::$_database_server[trim($key)] = trim($value);
+            }
         }
 
         if (!array_key_exists('host', self::$_database_server) ||
@@ -89,9 +166,32 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
                 'Here:Db:Helper:init_server');
         }
 
+        if (!array_key_exists('port', self::$_database_server)) {
+            self::$_database_server['port'] = null;
+        } else {
+            self::$_database_server['port'] = intval(self::$_database_server['port']);
+        }
+
         if (!array_key_exists('charset', self::$_database_server)) {
             self::$_database_server['charset'] = _here_default_charset_;
         }
+    }
+
+    /**
+     * get server information
+     *
+     * @return string
+     */
+    public static function get_server() {
+        var_dump(self::$_database_server);
+        $dsn = self::$_database_server['driver'] . ':';
+
+        $dsn .= 'host=' . self::$_database_server['host'] . ';';
+        $dsn .= (array_key_exists('port', self::$_database_server)) ? ('port=' . self::$_database_server['port'] . ';') : ('');
+        $dsn .= 'dbname=' . self::$_database_server['dbname'] . ';';
+        $dsn .= 'charset=' . self::$_database_server['charset'] . ';';
+
+        return $dsn;
     }
 
     /**

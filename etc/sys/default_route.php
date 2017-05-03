@@ -281,3 +281,25 @@ class Route_Static extends Here_Abstracts_Route_Route {
         }
     }
 }
+
+
+/**
+ *
+ */
+class Route_Test extends Here_Abstracts_Route_Route {
+    public function urls() {
+        return array('/test');
+    }
+
+    public function methods() {
+        return array('GET');
+    }
+
+    public function hooks() {
+        return array();
+    }
+
+    public function entry_point(array $parameters) {
+        Here_Db_Helper::init_server('mysql:host=192.168.148.128;port=3306;dbname=here;', 'root', 'root');
+    }
+}

@@ -42,6 +42,7 @@ class Here_Db_Result {
      * Result Class constructor
      *
      * @param array $result
+     * @param int $affected_rows
      */
     public function __construct(array $result, $affected_rows) {
         $this->_current_row = 0;
@@ -52,6 +53,8 @@ class Here_Db_Result {
 
     /**
      * Fetches all result rows as an associative array
+     *
+     * @return array
      */
     public function fetch_all() {
         return $this->_result;
@@ -59,6 +62,8 @@ class Here_Db_Result {
 
     /**
      * Get a result row as an associative array
+     *
+     * @return array
      */
     public function fetch() {
         $keys = func_get_args();
@@ -95,7 +100,7 @@ class Here_Db_Result {
     }
 
     /**
-     * affectedRow
+     * affected row count
      *
      * @return int
      */
