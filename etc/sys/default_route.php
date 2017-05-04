@@ -288,7 +288,7 @@ class Route_Static extends Here_Abstracts_Route_Route {
  */
 class Route_Test extends Here_Abstracts_Route_Route {
     public function urls() {
-        return array('/test');
+        return array('/test-db-helper');
     }
 
     public function methods() {
@@ -300,6 +300,15 @@ class Route_Test extends Here_Abstracts_Route_Route {
     }
 
     public function entry_point(array $parameters) {
+        // initializing database server
         Here_Db_Helper::init_server('mysql:host=192.168.148.128;port=3306;dbname=here;', 'root', 'root');
+
+        // helper instance
+        $helper = new Here_Db_Helper('here_');
+
+        // dump helper
+        var_dump($helper);
+
+        var_dump($helper->select(array('uid', 'user_id'), 'name', 'password', array('nickname', 'call'))->from('table.users'));
     }
 }

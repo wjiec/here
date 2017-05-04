@@ -15,11 +15,9 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * Here_Db_Adapter_Base constructor
      *
      * @see Here_Db_Adapter_Base::__construct()
-     *
-     * @param string$table_prefix
      */
-    public function __construct($table_prefix) {
-        parent::__construct($table_prefix);
+    public function __construct() {
+        parent::__construct();
     }
 
     /**
@@ -32,7 +30,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * @param string|null $username
      * @param string|null $password
      */
-    public function connect($dsn, $username = null, $password = null) {
+    public function connect() {
 
     }
 
@@ -70,15 +68,20 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
     }
 
     /**
-     * execute filter for table name
+     * execute escape for table name
      *
-     * @see Here_Db_Adapter_Base::table_filter()
+     * @see Here_Db_Adapter_Base::escape_table_name()
      *
      * @param string $table
      * @return string
      */
-    public function table_filter($table) {
-        return '';
+    public function escape_table_name($table) {
+        if (preg_match("/[\"';\-\+\=]+/", $table)) {
+            throw new Here_Exceptions_BadQuery('table name is invalid',
+                'Here:Db:Adapter:Mysql:escape_table_name');
+        }
+
+        return "`{$table}`";
     }
 
     /**
@@ -134,26 +137,26 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
     }
 
     /**
-     * quoted identifiers
+     * escape identifiers
      *
-     * @see Here_Db_Adapter_Base::quote_key()
+     * @see Here_Db_Adapter_Base::escape_key()
      *
      * @param string $string
      * @return string
      */
-    public function quote_key($string) {
+    public function escape_key($string) {
         return '';
     }
 
     /**
-     * quoted identifiers
+     * escape identifiers
      *
-     * @see Here_Db_Adapter_Base::quote_value()
+     * @see Here_Db_Adapter_Base::escape_value()
      *
      * @param string $string
      * @return string
      */
-    public function quote_value($string) {
+    public function escape_value($string) {
         return '';
     }
 

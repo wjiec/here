@@ -34,11 +34,8 @@ abstract class Here_Db_Adapter_Base {
      * connect to server, and depending on the return status set the
      * appropriate connection information($this->_server_available)
      *
-     * @param string $dsn
-     * @param string|null $username
-     * @param string|null $password
      */
-    abstract public function connect($dsn, $username = null, $password = null);
+    abstract public function connect();
 
     /**
      * return server information, for example, Database version, Connection Descriptor, ...
@@ -62,12 +59,12 @@ abstract class Here_Db_Adapter_Base {
     abstract public function affected_rows();
 
     /**
-     * execute filter for table name
+     * execute escape for table name
      *
      * @param string $table
      * @return string
      */
-    abstract public function table_filter($table);
+    abstract public function escape_table_name($table);
 
     /**
      * based preBuilder generate SELECT syntax
@@ -106,20 +103,20 @@ abstract class Here_Db_Adapter_Base {
     abstract public function parse_delete($pre_builder, $table);
 
     /**
-     * quoted identifiers
+     * escape identifiers
      *
      * @param string $string
      * @return string
      */
-    abstract public function quote_key($string);
+    abstract public function escape_key($string);
 
     /**
-     * quoted identifiers
+     * escape identifiers
      *
      * @param string $string
      * @return string
      */
-    abstract public function quote_value($string);
+    abstract public function escape_value($string);
 
     /**
      * execute query
@@ -180,13 +177,6 @@ abstract class Here_Db_Adapter_Base {
     }
 
     /**
-     * table prefix
-     *
-     * @var string
-     */
-    protected $_table_prefix = null;
-
-    /**
      * an object which represents the connection to a MySQL Server.
      *
      * @var mixed
@@ -194,11 +184,8 @@ abstract class Here_Db_Adapter_Base {
     protected $_connection = null;
 
     /**
-     * Here_Db_Adapter_Base constructor
-     *
-     * @param string$table_prefix
+     * Here_Db_Adapter_Base constructor.
      */
-    public function __construct($table_prefix) {
-        $this->_table_prefix = is_string($table_prefix) ?: strval($table_prefix);
+    public function __construct() {
     }
 }

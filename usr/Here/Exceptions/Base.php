@@ -74,7 +74,7 @@ class Here_Exceptions_Base extends Exception {
 
         if ($code == 0) {
             for ($index = 0; $index < strlen($string_code); ++$index) {
-                if (ctype_alnum($string_code[$index])) {
+                if (ctype_digit($string_code[$index])) {
                     $sub_str = substr($string_code, $index);
                     return intval($sub_str);
                 }

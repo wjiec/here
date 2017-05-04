@@ -1,6 +1,6 @@
 <?php
 /**
- * Here Exceptions
+ * Here Database Function
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -11,8 +11,10 @@
 
 
 /**
- * Exception: Here_Exceptions_BadQuery
+ * Abstract Class: Here_Db_Function_Base
  */
-class Here_Exceptions_BadQuery extends Here_Exceptions_Base {
+abstract class Here_Db_Function_Base {
 
 }
+
+// @TODO database function eg. NOW() ...

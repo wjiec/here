@@ -17,14 +17,5 @@
  * Parameter Value Error
  */
 class Here_Exceptions_ParameterError extends Here_Exceptions_Base {
-    /**
-     * Here_Exceptions_ParameterError constructor.
-     *
-     * @param string $message
-     * @param string $code
-     * @param null $previous
-     */
-    public function __construct($message, $code, $previous = null) {
-        parent::__construct($message, $code, $previous);
-    }
+
 }

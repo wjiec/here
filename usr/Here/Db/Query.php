@@ -17,6 +17,13 @@
  */
 class Here_Db_Query {
     /**
+     * current driver adapter for database
+     *
+     * @var Here_Db_Adapter_Base
+     */
+    private $_adapter_instance;
+
+    /**
      * base action, select/update/insert/delete
      *
      * @var null|string
@@ -24,15 +31,45 @@ class Here_Db_Query {
     private $_base_action = null;
 
     /**
+     * Store all the variables used to build the SQL
+     *
+     * @var array|null
+     */
+    private $_variable_pool;
+
+    /**
+     * prefix of table name
+     *
+     * @var string
+     */
+    private $_table_prefix;
+
+    /**
+     * Table name of the currently executing query
+     *
+     * @var string|null
+     */
+    private $_table_name;
+
+    /**
      * Here_Db_Query constructor.
      *
-     * @param string $adapter_name
+     * @param Here_Db_Adapter_Base $adapter_instance
+     * @throws Here_Exceptions_ParameterError
      */
-    public function __construct($adapter_name) {
-        if (!is_string($adapter_name)) {
-            throw new Here_Exceptions_ParameterError('adapter name except string type',
+    public function __construct(&$adapter_instance, $table_prefix) {
+        if ($adapter_instance instanceof Here_Db_Adapter_Base) {
+            $this->_adapter_instance = $adapter_instance;
+        } else {
+            throw new Here_Exceptions_ParameterError('adapter instance is not base Here_Db_Adapter_Base',
                 'Here:Db:Query:__construct');
         }
+
+        if (!is_string($table_prefix)) {
+            throw new Here_Exceptions_ParameterError('prefix of table name except string type',
+                'Here:Db:Query:__construct');
+        }
+        $this->_table_prefix = $table_prefix;
     }
 
     /**
@@ -42,7 +79,40 @@ class Here_Db_Query {
      * @return Here_Db_Query
      */
     public function select(array $fields) {
-        $this->_base_action = 'select';
+        // assign 'select' to base_action
+        $this->_assign_base_action('select');
+        // initializing query variable
+        $this->_variable_pool = array(
+            'fields' => array(),
+            'order'  => array(),
+            'where'  => array(),
+            'group'  => array(),
+            'join'   => array(),
+            'on'     => array(),
+            'having' => array(),
+            'limit'  => null,
+            'offset' => null
+        );
+
+        // initializing select field
+        if (empty($fields)) {
+            $this->_variable_pool['fields'][] = '*';
+        } else {
+            array_map(function($field) {
+                // is array, array('key', 'as_name') => select `table.table_name` as `as_name` FROM ...
+                if (is_array($field) && count($field) >= 2) {
+                    // @TODO escape key and value
+                    $this->_variable_pool['fields'][$field[0]] = $field[1];
+                } else if (is_string($field)) {
+                    // @TODO escape key
+                    $this->_variable_pool['fields'][] = $field;
+                } else {
+                    // got invalid file type
+                    throw new Here_Exceptions_BadQuery("field(`{$field}`) except string type",
+                        'Here:Db:Query:select');
+                }
+            }, $fields);
+        }
 
         return $this;
     }
@@ -50,10 +120,9 @@ class Here_Db_Query {
     /**
      * SQL Syntax: insert
      *
-     * @param string $table
      * @return Here_Db_Query
      */
-    public function insert($table) {
+    public function insert() {
         $this->_base_action = 'insert';
 
         return $this;
@@ -62,10 +131,9 @@ class Here_Db_Query {
     /**
      * SQL Syntax: update
      *
-     * @param string $table
      * @return Here_Db_Query
      */
-    public function update($table) {
+    public function update() {
         $this->_base_action = 'update';
 
         return $this;
@@ -74,10 +142,9 @@ class Here_Db_Query {
     /**
      * SQL Syntax: delete
      *
-     * @param string $table
      * @return Here_Db_Query
      */
-    public function delete($table) {
+    public function delete() {
         $this->_base_action = 'delete';
 
         return $this;
@@ -86,23 +153,37 @@ class Here_Db_Query {
     /**
      * alter table attributes
      *
-     * @param string $table
      * @return Here_Db_Query
      */
-    public function alter($table) {
+    public function alter() {
 
         return $this;
     }
 
     /**
-     * select additional description
+     * specified table, if table name is start with 'table.', than
+     * $table_prefix will replace to 'table.', eg.
+     *  $table_prefix = 'here_', 'table.users' will convert to 'here_users'
+     * if table name is not start with 'table.', than table name will remain unchanged
      *
      * @param string $table
+     * @throws Here_Exceptions_ParameterError
      * @return Here_Db_Query
      */
     public function from($table) {
+        // check base action is assigned
         $this->_check_base_action();
-
+        // is start with `table.`
+        if (strpos($table, 'table.') == 0) {
+            if (strrpos($table, 'table.') != 0) {
+                throw new Here_Exceptions_ParameterError("are you sure table name is {$table}",
+                    'Here:Db:Query:from');
+            }
+            // replace table prefix
+            $table = str_replace('table.', $this->_table_prefix, $table);
+        }
+        // escape complete table name
+        $this->_table_name = $this->_adapter_instance->escape_table_name($table);;
         return $this;
     }
 
@@ -167,17 +248,36 @@ class Here_Db_Query {
     private function _check_base_action($needle_action = null) {
         if ($needle_action == null) {
             if ($this->_base_action == null) {
-                throw new Here_Exceptions_BadQuery('bad query generate, must be specified base action first',
+                throw new Here_Exceptions_BadQuery('bad query generator, must be specified base action first',
+                    'Here:Db:Query:_check_base_action');
+            }
+        } else {
+            if ($this->_base_action != $needle_action) {
+                throw new Here_Exceptions_BadQuery('bad query generator, this operator not use for current action',
                     'Here:Db:Query:_check_base_action');
             }
         }
+    }
 
-        if ($this->_base_action != $needle_action) {
-            throw new Here_Exceptions_BadQuery('bad query generate, this operator not use for current action',
-                'Here:Db:Query:_check_base_action');
+    /**
+     * assign action
+     *
+     * @param string $action
+     * @throws Here_Exceptions_BadQuery
+     */
+    private function _assign_base_action($action) {
+        if ($this->_base_action != null) {
+            throw new Here_Exceptions_BadQuery("bad query generator, base action is specified to {$this->_base_action}",
+                'Here:Db:Query:_assign_base_action');
         }
+        $this->_base_action = $action;
+    }
+
+    private function _assign_table_name($table) {
+
     }
 }
+
 //class Here_Db_Query {
 //    /**
 //     * pre builder
