@@ -309,6 +309,13 @@ class Route_Test extends Here_Abstracts_Route_Route {
         // dump helper
         var_dump($helper);
 
-        var_dump($helper->select(array('uid', 'user_id'), 'name', 'password', array('nickname', 'call'))->from('table.users'));
+        // dump query instance
+        var_dump($helper // create Query instance
+            // select field set
+            ->select(array('uid', 'user_id'), 'name', 'password', array('nickname', 'call'))
+            // table name
+            ->from('table.users')
+            //
+        );
     }
 }

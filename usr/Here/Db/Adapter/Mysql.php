@@ -25,13 +25,37 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * appropriate connection information($this->_server_available)
      *
      * @see Here_Db_Adapter_Base::connect()
-     *
-     * @param string $dsn
-     * @param string|null $username
-     * @param string|null $password
      */
     public function connect() {
+        // if connected, than directly return
+        if ($this->_server_available && $this->_connection != null) {
+            return;
+        }
+        // getting server information
+        $server_info = Here_Db_Helper::get_server(false, true);
+        // using PDO
+        if (class_exists('PDO')) {
+            // using PDO connect to server
+            $this->_connection = new PDO(Here_Db_Helper::array_to_dsn($server_info),
+                $server_info['username'], $server_info['password']);
 
+            var_dump($this->_connection);
+            if ($this->_connection->errorCode()) {
+
+            }
+        // using mysqli
+        } else if (class_exists('mysqli')) {
+            $this->_connection = new mysqli($server_info['host'], $server_info['username'], $server_info['password'],
+                $server_info['dbname'], $server_info['port']);
+
+            var_dump($this->_connection);
+            if ($this->_connection->connect_errno) {
+
+            }
+        } else {
+            throw new Here_Exceptions_FatalError("PDO or mysqli doesn't exists, please enable mysqli or PDO extension",
+                'Fatal:Here:Db:Adapter:Mysql');
+        }
     }
 
     /**
@@ -73,6 +97,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * @see Here_Db_Adapter_Base::escape_table_name()
      *
      * @param string $table
+     * @throws Here_Exceptions_BadQuery
      * @return string
      */
     public function escape_table_name($table) {
@@ -145,7 +170,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * @return string
      */
     public function escape_key($string) {
-        return '';
+        return "`{$string}`";
     }
 
     /**
@@ -153,11 +178,11 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      *
      * @see Here_Db_Adapter_Base::escape_value()
      *
-     * @param string $string
+     * @param string $value
      * @return string
      */
-    public function escape_value($string) {
-        return '';
+    public function escape_value($value) {
+        return "'{$value}'";
     }
 
     /**

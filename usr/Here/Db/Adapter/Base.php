@@ -113,10 +113,10 @@ abstract class Here_Db_Adapter_Base {
     /**
      * escape identifiers
      *
-     * @param string $string
+     * @param string|Here_Db_Function_Base $value
      * @return string
      */
-    abstract public function escape_value($string);
+    abstract public function escape_value($value);
 
     /**
      * execute query

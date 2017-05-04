@@ -55,6 +55,7 @@ class Here_Db_Query {
      * Here_Db_Query constructor.
      *
      * @param Here_Db_Adapter_Base $adapter_instance
+     * @param string $table_prefix
      * @throws Here_Exceptions_ParameterError
      */
     public function __construct(&$adapter_instance, $table_prefix) {
@@ -96,16 +97,17 @@ class Here_Db_Query {
 
         // initializing select field
         if (empty($fields)) {
+            // empty is query all fields
             $this->_variable_pool['fields'][] = '*';
         } else {
+            // foreach all field
             array_map(function($field) {
                 // is array, array('key', 'as_name') => select `table.table_name` as `as_name` FROM ...
                 if (is_array($field) && count($field) >= 2) {
-                    // @TODO escape key and value
-                    $this->_variable_pool['fields'][$field[0]] = $field[1];
+                    $this->_variable_pool['fields'][$this->_adapter_instance->escape_key($field[0])] =
+                        $this->_adapter_instance->escape_value($field[1]);
                 } else if (is_string($field)) {
-                    // @TODO escape key
-                    $this->_variable_pool['fields'][] = $field;
+                    $this->_variable_pool['fields'][] = $this->_adapter_instance->escape_value($field);
                 } else {
                     // got invalid file type
                     throw new Here_Exceptions_BadQuery("field(`{$field}`) except string type",
@@ -123,7 +125,7 @@ class Here_Db_Query {
      * @return Here_Db_Query
      */
     public function insert() {
-        $this->_base_action = 'insert';
+        $this->_assign_base_action('insert');
 
         return $this;
     }
@@ -134,7 +136,7 @@ class Here_Db_Query {
      * @return Here_Db_Query
      */
     public function update() {
-        $this->_base_action = 'update';
+        $this->_assign_base_action('update');
 
         return $this;
     }
@@ -145,7 +147,7 @@ class Here_Db_Query {
      * @return Here_Db_Query
      */
     public function delete() {
-        $this->_base_action = 'delete';
+        $this->_assign_base_action('delete');
 
         return $this;
     }
@@ -156,6 +158,7 @@ class Here_Db_Query {
      * @return Here_Db_Query
      */
     public function alter() {
+        $this->_assign_base_action('alter');
 
         return $this;
     }
@@ -183,7 +186,7 @@ class Here_Db_Query {
             $table = str_replace('table.', $this->_table_prefix, $table);
         }
         // escape complete table name
-        $this->_table_name = $this->_adapter_instance->escape_table_name($table);;
+        $this->_table_name = $this->_adapter_instance->escape_table_name($table);
         return $this;
     }
 
@@ -191,11 +194,23 @@ class Here_Db_Query {
      * The maximum number of rows for the query limit
      *
      * @param int $limit_size
+     * @throws Here_Exceptions_ParameterError
      * @return Here_Db_Query
      */
     public function limit($limit_size) {
-        $this->_check_base_action('select');
-
+        $this->_check_base_action();
+        // check parameter type
+        if (!is_int($limit_size)) {
+            throw new Here_Exceptions_ParameterError('limit size except int type',
+                'Here:Db:Query:limit');
+        }
+        // check limit can apply to this action
+        if (array_key_exists('limit', $this->_variable_pool)) {
+            throw new Here_Exceptions_ParameterError('limit method may be not apply to this action',
+                'Here:Db:Query:limit');
+        }
+        // all is ok
+        $this->_variable_pool['limit'] = $limit_size;
         return $this;
     }
 
@@ -203,10 +218,24 @@ class Here_Db_Query {
      * From what to begin querying
      *
      * @param int $offset
+     * @throws Here_Exceptions_ParameterError
      * @return Here_Db_Query
      */
     public function offset($offset) {
-        $this->_check_base_action('select');
+        $this->_check_base_action();
+
+        // check parameter type
+        if (!is_int($offset)) {
+            throw new Here_Exceptions_ParameterError('offset except int type',
+                'Here:Db:Query:offset');
+        }
+        // check limit can apply to this action
+        if (array_key_exists('offset', $this->_variable_pool)) {
+            throw new Here_Exceptions_ParameterError('offset may be not apply to this action',
+                'Here:Db:Query:offset');
+        }
+        // all is ok
+        $this->_variable_pool['offset'] = $offset;
 
         return $this;
     }
@@ -271,10 +300,6 @@ class Here_Db_Query {
                 'Here:Db:Query:_assign_base_action');
         }
         $this->_base_action = $action;
-    }
-
-    private function _assign_table_name($table) {
-
     }
 }
 
