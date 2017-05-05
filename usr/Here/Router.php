@@ -361,8 +361,8 @@ class Here_Router {
 
     private function _resolve($request_method, $request_url, &$params) {
         if (!array_key_exists($request_method, $this->_tree)) {
-            $params['errno'] = '404';
-            $params['error'] = 'router not found this request method';
+            $params['errno'] = '405';
+            $params['error'] = 'Request failed: method not allowed';
 
             return array(null, null);
         }

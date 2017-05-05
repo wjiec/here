@@ -78,7 +78,7 @@ abstract class Here_Db_Adapter_Base {
     /**
      * based pre_builder generate UPDATE syntax
      *
-     * @param string $pre_builder
+     * @param array $pre_builder
      * @param string $table
      * @return string
      */
@@ -87,7 +87,7 @@ abstract class Here_Db_Adapter_Base {
     /**
      * based pre_builder generate INSERT syntax
      *
-     * @param string $pre_builder
+     * @param array $pre_builder
      * @param string $table
      * @return string
      */
@@ -96,7 +96,7 @@ abstract class Here_Db_Adapter_Base {
     /**
      * based pre_builder generate DELETE syntax
      *
-     * @param string $pre_builder
+     * @param array $pre_builder
      * @param string $table
      * @return string
      */

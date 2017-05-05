@@ -127,10 +127,23 @@ class Hook_Check_Install extends Here_Abstracts_Route_Hook {
  * Home page
  */
 class Route_Index extends Here_Abstracts_Route_Route {
+    /**
+     * allow three access methods
+     *  * /
+     *  * /index
+     *  * /index.$ext [/index.html, /index/php, /index.abc, ...]
+     *
+     * @return array
+     */
     public function urls() {
         return array('/', '/index', '/index.$ext');
     }
 
+    /**
+     * only allow GET request method
+     *
+     * @return array
+     */
     public function methods() {
         return array('GET');
     }
@@ -168,6 +181,7 @@ class Route_Installer extends Here_Abstracts_Route_Route {
         if (is_file(_here_install_file_)) {
             include _here_install_file_;
         } else {
+            /* magic method: __call, [no qa] */
             Core::router_instance()->error('500', array('error' => 'Missing install file'));
         }
     }
@@ -309,13 +323,16 @@ class Route_Test extends Here_Abstracts_Route_Route {
         // dump helper
         var_dump($helper);
 
-        // dump query instance
-        var_dump($helper // create Query instance
-            // select field set
-            ->select(array('uid', 'user_id'), 'name', 'password', array('nickname', 'call'))
+        // dump SELECT query instance
+        var_dump($helper->select(array('uid', 'user_id'), 'name', 'password', array('nickname', 'call'))
             // table name
             ->from('table.users')
-            //
+            // order
+            ->order('name', Here_Db_Helper::ORDER_DESC)
+            // order again
+            ->order('call', Here_Db_Helper::ORDER_ASC)
+            // where
+            ->where((new Here_Db_Expression('uid'))->bigger(5))
         );
     }
 }

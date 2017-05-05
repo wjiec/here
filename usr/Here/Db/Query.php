@@ -191,6 +191,116 @@ class Here_Db_Query {
     }
 
     /**
+     * Syntax: Order by
+     *
+     * @param string $field_name
+     * @param string $order
+     * @throws Here_Exceptions_ParameterError
+     * @return $this
+     */
+    public function order($field_name, $order = Here_Db_Helper::ORDER_ASC) {
+        if (!is_string($field_name)) {
+            throw new Here_Exceptions_ParameterError("field name except string type",
+                'Here:Db:Query:order');
+        }
+
+        if ($order != Here_Db_Helper::ORDER_ASC && $order != Here_Db_Helper::ORDER_DESC) {
+            throw new Here_Exceptions_ParameterError("order must be Here_Db_Helper::ORDER_ASC or Here_Db_Helper::ORDER_DESC",
+                'Here:Db:Query:order');
+        }
+
+        $field_name = $this->_adapter_instance->escape_key($field_name);
+        $this->_variable_pool['order'][$field_name] = $order;
+
+        return $this;
+    }
+
+    /**
+     * Syntax: where
+     *
+     * @param Here_Db_Expression $expression
+     * @param string $relation
+     * @throws Here_Exceptions_ParameterError
+     * @return $this
+     */
+    public function where($expression, $relation = Here_Db_Helper::OPERATOR_AND) {
+        if (!($expression instanceof Here_Db_Expression)) {
+            throw new Here_Exceptions_ParameterError("expression except Here_Db_Expression instance",
+                'Here:Db:Query:where');
+        }
+
+        if ($relation != Here_Db_Helper::OPERATOR_AND && $relation != Here_Db_Helper::OPERATOR_OR) {
+            throw new Here_Exceptions_ParameterError("relation except Here_Db_Helper::OPERATOR_AND or Here_Db_Helper::OPERATOR_OR",
+                'Here:Db:Query:where');
+        }
+
+        $this->_variable_pool['where'][] = array($expression, $relation);
+        return $this;
+    }
+
+    /**
+     * Syntax: Group by
+     *
+     * @param string $field_name
+     * @throws Here_Exceptions_ParameterError
+     * @return $this
+     */
+    public function group($field_name) {
+        if (!is_string($field_name)) {
+            throw new Here_Exceptions_ParameterError("field name except string type",
+                'Here:Db:Query:order');
+        }
+
+        $field_name = $this->_adapter_instance->escape_key($field_name);
+        $this->_variable_pool['group'][] = $field_name;
+
+        return $this;
+    }
+
+    /**
+     * Syntax: Join
+     *
+     * @param string $table_name
+     * @param string $join_type
+     * @return $this
+     */
+    public function join($table_name, $join_type = Here_Db_Helper::JOIN_INNER) {
+        return $this;
+    }
+
+    /**
+     * Syntax: on
+     *
+     * @return $this
+     */
+    public function on() {
+        return $this;
+    }
+
+    /**
+     * Syntax: having
+     *
+     * @return $this
+     */
+    public function having() {
+        return $this;
+    }
+
+    /**
+     *
+     */
+    public function keys(/* ... */) {
+
+    }
+
+    /**
+     *
+     */
+    public function values(/* ... */) {
+
+    }
+
+    /**
      * The maximum number of rows for the query limit
      *
      * @param int $limit_size
@@ -241,6 +351,18 @@ class Here_Db_Query {
     }
 
     /**
+     * set current query attribute
+     *
+     * @param string $attribute_name
+     * @param mixed $value
+     * @return $this
+     */
+    public function attribute($attribute_name, $value) {
+        var_dump($attribute_name, $value);
+        return $this;
+    }
+
+    /**
      * generate sql
      *
      * @return string
@@ -257,10 +379,11 @@ class Here_Db_Query {
      */
     public function __toString() {
         switch ($this->_base_action) {
-            case 'select': return 'SELECT ';
-            case 'insert': return 'INSERT ';
-            case 'update': return 'UPDATE ';
-            case 'delete': return 'DELETE ';
+            case 'select': return $this->_adapter_instance->parse_select($this->_variable_pool, $this->_table_name);
+            case 'insert': return $this->_adapter_instance->parse_insert($this->_variable_pool, $this->_table_name);
+            case 'update': return $this->_adapter_instance->parse_update($this->_variable_pool, $this->_table_name);
+            case 'delete': return $this->_adapter_instance->parse_delete($this->_variable_pool, $this->_table_name);
+            case 'alter': return 'ALTER ';
             default:
                 throw new Here_Exceptions_BadQuery('Operation is not defined or internal error',
                     'Error:Here:Db:Query:__toString');
