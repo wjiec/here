@@ -37,9 +37,20 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         if (class_exists('PDO')) {
             // using PDO connect to server
             $this->_connection = new PDO(Here_Db_Helper::array_to_dsn($server_info),
-                $server_info['username'], $server_info['password']);
+                $server_info['username'], $server_info['password'], array(
+                    // connect timeout=1s
+                    PDO::ATTR_TIMEOUT => 1,
+                    // force lower case
+                    PDO::ATTR_CASE => PDO::CASE_LOWER
+                ));
 
             var_dump($this->_connection);
+            var_dump(array(
+                'client_server' => $this->_connection->getAttribute(constant('PDO::ATTR_CLIENT_VERSION')),
+                'connection_status' => $this->_connection->getAttribute(constant('PDO::ATTR_CONNECTION_STATUS')),
+                'server_info' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_INFO')),
+                'server_version' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_VERSION')),
+            ));
             if ($this->_connection->errorCode()) {
 
             }
@@ -194,6 +205,8 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * @return bool query state
      */
     public function query($query) {
+        $this->connect();
+
         return true;
     }
 

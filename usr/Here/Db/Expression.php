@@ -98,11 +98,25 @@ class Here_Db_Expression {
     }
 
     /**
-     * Stitching string
+     * build available expression
      *
+     * @param callable|null $key_callback
+     * @param callable|null $value_callback
      * @return string
      */
-    public function __toString() {
-        return "{$this->_field_name}{$this->_operator}{$this->_value}";
+    public function build($key_callback, $value_callback) {
+        if (is_callable($key_callback)) {
+            $key = $key_callback($this->_field_name);
+        } else {
+            $key = $this->_field_name;
+        }
+
+        if (is_callable($value_callback)) {
+            $value = $value_callback($this->_value);
+        } else {
+            $value = $this->_value;
+        }
+
+        return "{$key}{$this->_operator}{$value}";
     }
 }

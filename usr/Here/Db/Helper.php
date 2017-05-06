@@ -200,7 +200,8 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
         }
 
         if (!array_key_exists('charset', self::$_database_server)) {
-            self::$_database_server['charset'] = _here_default_charset_;
+            // in database, utf-8 is alias to utf8
+            self::$_database_server['charset'] = str_replace('-', '', _here_default_charset_);
         }
     }
 

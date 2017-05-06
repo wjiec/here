@@ -326,13 +326,29 @@ class Route_Test extends Here_Abstracts_Route_Route {
         // dump SELECT query instance
         var_dump($helper->select(array('uid', 'user_id'), 'name', 'password', array('nickname', 'call'))
             // table name
-            ->from('table.users')
+            ->from('table.users', 'u')
             // order
             ->order('name', Here_Db_Helper::ORDER_DESC)
             // order again
             ->order('call', Here_Db_Helper::ORDER_ASC)
             // where
             ->where((new Here_Db_Expression('uid'))->bigger(5))
+            // group
+            ->group('user_id')
+            // group again
+            ->group('password', Here_Db_Helper::ORDER_DESC)
+            // join
+            ->join(array('table.articles', 'arts'))
+            // on
+            ->on((new Here_Db_Expression('user_id'))->equal('author_id'))
+            // having
+            ->having((new Here_Db_Expression('author_id'))->equal(5))
+            // limit
+            ->limit(5)
+            // offset
+            ->offset(10)
         );
+        // dump query result
+        var_dump($helper->query(''));
     }
 }

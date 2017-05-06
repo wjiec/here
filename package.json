@@ -4,11 +4,13 @@
   "description": "simple blog application",
   "main": "webpack.config.js",
   "dependencies": {
+    "webpack": "^2.5.0",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,5 +26,5 @@
   "bugs": {
     "url": "https://github.com/JShadowMan/here/issues"
   },
-  "homepage": "https://github.com/JShadowMan/here#readme"
+  "homepage": "https://github.com/JShadowMan/here"
 }

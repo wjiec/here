@@ -36,7 +36,7 @@ class Here_Widget {
      * @throws Exception
      */
     public static function widget($widget_name, $alias = null, array $init_options = array()) {
-        $widget_name = strtolower($widget_name);
+//        $widget_name = strtolower($widget_name);
 
         if (strpos('@', $widget_name)) {
             list($alias, $widget_name) = explode('@', $widget_name, 2);

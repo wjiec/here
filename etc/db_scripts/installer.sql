@@ -114,14 +114,23 @@ CREATE TABLE IF NOT EXISTS `here_classify` (
 --
 
 CREATE TABLE IF NOT EXISTS `here_comments` (
+-- comment id
   `cid` INT(8) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+-- article id
   `aid` SMALLINT(8) UNSIGNED NOT NULL,
+-- comment author name
   `author` VARCHAR(32) NOT NULL,
+-- comment author email
   `email` VARCHAR(64) DEFAULT NULL,
+-- comment author homepage url
   `url` VARCHAR(64) DEFAULT NULL,
+-- comment time
   `created` VARCHAR(10) NOT NULL,
+-- comment author ip address, ipv4=16, ipv6=40
   `ip` VARCHAR(64) DEFAULT NULL,
+-- comment author agent
   `agent` VARCHAR(128) DEFAULT NULL,
+-- comment contents
   `content` TEXT NOT NULL,
 -- comment state: pending, approved, deny
   `state` VARCHAR(8) NOT NULL DEFAULT 'pending',
@@ -131,3 +140,9 @@ CREATE TABLE IF NOT EXISTS `here_comments` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- --------------------------------------------------------
+
+--
+-- Insert default classify for `default`
+--
+
+INSERT INTO `here_classify` (cid, classify_name, parent) VALUE (NULL, 'default', 0);
