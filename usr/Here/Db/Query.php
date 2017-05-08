@@ -47,9 +47,9 @@ class Here_Db_Query {
     /**
      * Table name of the currently executing query
      *
-     * @var string|null
+     * @var array
      */
-    private $_table_name;
+    private $_table_name = array();
 
     /**
      * Here_Db_Query constructor.
@@ -104,10 +104,10 @@ class Here_Db_Query {
             array_map(function($field) {
                 // is array, array('key', 'as_name') => select `table.table_name` as `as_name` FROM ...
                 if (is_array($field) && count($field) >= 2) {
-                    $this->_variable_pool['fields'][$this->_adapter_instance->escape_key($field[0])] =
-                        $this->_adapter_instance->escape_value($field[1]);
+                    $this->_variable_pool['fields'][$this->_complete_filed_name_filter($field[0])] =
+                        $this->_adapter_instance->escape_key($field[1]);
                 } else if (is_string($field)) {
-                    $this->_variable_pool['fields'][] = $this->_adapter_instance->escape_value($field);
+                    $this->_variable_pool['fields'][] = $this->_complete_filed_name_filter($field);
                 } else {
                     // got invalid file type
                     throw new Here_Exceptions_BadQuery("field(`{$field}`) except string type",
@@ -178,7 +178,12 @@ class Here_Db_Query {
         // check base action is assigned
         $this->_check_base_action();
         // filter table name
-        $this->_table_name = $this->_table_name_filter($table, $alias);
+        $table = $this->_table_name_filter($table, $alias);
+        // fix prev select fields
+        if ($alias && array_key_exists('fields', $this->_variable_pool)) {
+            $this->_fix_prev_fields_named($table['table_name'], $table['alias_name']);
+        }
+        $this->_table_name[] = $table;
 
         return $this;
     }
@@ -230,6 +235,8 @@ class Here_Db_Query {
     public function join($table_name, $join_type = Here_Db_Helper::JOIN_INNER) {
         if (is_array($table_name) && count($table_name) >= 2) {
             $table_name = $this->_table_name_filter($table_name[0], $table_name[1]);
+            // fix prev complete fields name
+            $this->_fix_prev_fields_named($table_name['table_name'], $table_name['alias_name']);
         } else if (!is_string($table_name)) {
             throw new Here_Exceptions_ParameterError("table name except array(\$table_name, \$alias) or string",
                 'Here:Db:Query:join');
@@ -410,6 +417,50 @@ class Here_Db_Query {
     }
 
     /**
+     * filter complete field name, eg. table.users.last_login
+     *
+     * @param string $field_name
+     * @return string
+     * @throws Here_Exceptions_ParameterError
+     */
+    public function _complete_filed_name_filter($field_name) {
+        if (!is_string($field_name)) {
+            throw new Here_Exceptions_ParameterError("field name except string type",
+                'Here:Db:Query:_complete_filed_name_filter');
+        }
+
+        if (strpos($field_name, 'table.') === false) {
+            return $this->_adapter_instance->escape_key($field_name);
+        }
+
+        if (substr_count($field_name, '.') > 2) {
+            throw new Here_Exceptions_ParameterError("field name invalid, too more char '.'",
+                'Here:Db:Query:_complete_filed_name_filter');
+        }
+
+        list($table, $table_name, $field_name) = explode('.', $field_name);
+        $table_name = $this->_table_name_filter(join('.', array($table, $table_name)), null);
+        $field_name = $this->_adapter_instance->escape_table_name($field_name);
+
+        // search if this table name is aliased in table_name
+        foreach ($this->_table_name as $table) {
+            if (is_array($table) && $table['table_name'] === $table_name) {
+                $table_name = $table['alias_name'];
+                break;
+            }
+        }
+        // search if this table name is aliased in join_tables
+        foreach ($this->_variable_pool['join'] as $join) {
+            if (is_array($join['table_name']) && $join['table_name']['table_name'] === $table_name) {
+                $table_name = $join['table_name']['alias_name'];
+                break;
+            }
+        }
+
+        return join('.', array($table_name, $field_name));
+    }
+
+    /**
      * filter table name
      *
      * @param string $table
@@ -420,6 +471,7 @@ class Here_Db_Query {
     private function _table_name_filter($table, $alias) {
         // is start with `table.`
         if (strpos($table, 'table.') == 0) {
+            // table.users.name ?
             if (strrpos($table, 'table.') != 0) {
                 throw new Here_Exceptions_ParameterError("are you sure table name is {$table}",
                     'Here:Db:Query:_table_name_filter');
@@ -460,6 +512,10 @@ class Here_Db_Query {
                 "Here:Db:Query:{$syntax_name}");
         }
 
+        // pre bind callback
+        $expression = $expression->callback(array($this, '_complete_filed_name_filter'),
+            array($this->_adapter_instance, 'escape_value'));
+
         if ($relation != Here_Db_Helper::OPERATOR_AND && $relation != Here_Db_Helper::OPERATOR_OR) {
             throw new Here_Exceptions_ParameterError("relation except Here_Db_Helper::OPERATOR_AND or Here_Db_Helper::OPERATOR_OR",
                 "Here:Db:Query:{$syntax_name}");
@@ -494,7 +550,43 @@ class Here_Db_Query {
                 "Here:Db:Query:{$syntax_name}");
         }
 
-        $field_name = $this->_adapter_instance->escape_key($field_name);
+        $field_name = $this->_complete_filed_name_filter($field_name);
         $this->_variable_pool[$syntax_name][$field_name] = $order;
+    }
+
+    /**
+     * fix complete field name if table name is alias
+     *
+     * @param string $table_name_p
+     * @param string $alias_name_p
+     */
+    private function _fix_prev_fields_named($table_name_p, $alias_name_p) {
+        // fix alias table name
+        foreach ($this->_variable_pool['fields'] as $table_name => $alias_name) {
+            // field name is not alias
+            if (!is_string($table_name)) {
+                $e_field_name = explode('.', $alias_name);
+                // check field_name is complete name
+                if (count($e_field_name) == 2) {
+                    if ($e_field_name[0] == $table_name_p) {
+                        // replace
+                        $this->_variable_pool['fields'][$table_name] = join('.', array($alias_name_p, $e_field_name[1]));
+                    }
+                }
+                // field name is alias
+            } else {
+                $e_field_name = explode('.', $table_name);
+                // check field_name is complete name
+                if (count($e_field_name) == 2) {
+                    if ($e_field_name[0] == $table_name_p) {
+                        // replace
+                        $this->_variable_pool['fields'][join('.', array($alias_name_p, $e_field_name[1]))] =
+                            $this->_variable_pool['fields'][$table_name];
+                        // unset old
+                        unset($this->_variable_pool['fields'][$table_name]);
+                    }
+                }
+            }
+        }
     }
 }

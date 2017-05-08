@@ -36,6 +36,20 @@ class Here_Db_Expression {
     private $_operator;
 
     /**
+     * key callback
+     *
+     * @var callable
+     */
+    private $_key_callback;
+
+    /**
+     *value callback
+     *
+     * @var callable
+     */
+    private $_value_callback = null;
+
+    /**
      * Here_Db_Expression constructor.
      *
      * @param string $field_name
@@ -102,21 +116,52 @@ class Here_Db_Expression {
      *
      * @param callable|null $key_callback
      * @param callable|null $value_callback
+     * @throws Here_Exceptions_ParameterError
      * @return string
      */
-    public function build($key_callback, $value_callback) {
-        if (is_callable($key_callback)) {
-            $key = $key_callback($this->_field_name);
-        } else {
-            $key = $this->_field_name;
+    public function build($key_callback = null, $value_callback = null) {
+        if (!is_callable($key_callback)) {
+            if ($this->_key_callback == null) {
+                throw new Here_Exceptions_ParameterError("must be specify key callback",
+                    'Here:Db:Expression:build');
+            } else {
+                $key_callback = $this->_key_callback;
+            }
         }
 
-        if (is_callable($value_callback)) {
-            $value = $value_callback($this->_value);
-        } else {
-            $value = $this->_value;
+        if (!is_callable($value_callback)) {
+            if ($this->_value_callback == null) {
+                throw new Here_Exceptions_ParameterError("must be specify key callback",
+                    'Here:Db:Expression:build');
+            } else {
+                $value_callback = $this->_value_callback;
+            }
         }
 
-        return "{$key}{$this->_operator}{$value}";
+        // execute callback
+        $key = $key_callback($this->_field_name);
+        $value = $value_callback($this->_value);
+        // build
+        return "{$key} {$this->_operator} {$value}";
+    }
+
+    /**
+     * pre bind callback
+     *
+     * @param callable $key
+     * @param callable $value
+     * @return $this
+     * @throws Here_Exceptions_ParameterError
+     */
+    public function callback($key, $value) {
+        if (!is_callable($key) || !is_callable($value)) {
+            throw new Here_Exceptions_ParameterError("parameters except callback",
+                'Here:Db:Expression:callback');
+        }
+
+        $this->_key_callback = $key;
+        $this->_value_callback = $value;
+
+        return $this;
     }
 }

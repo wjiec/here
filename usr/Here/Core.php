@@ -122,10 +122,14 @@ class Core {
      */
     public static function _catch_error_handler($errno, $error, $error_file, $error_line) {
         // user error level
-        $level = array(
-            E_USER_ERROR => "Error",     // 256
-            E_USER_WARNING => "Waring", // 512
-            E_USER_NOTICE => "Notice", // 1024
+        $level = array (
+            E_WARNING => ":Warning", // 2
+            E_PARSE => ":Parse", // 4
+            E_NOTICE => ":Notice", // 8
+            E_USER_ERROR => "User:Error", // 256
+            E_USER_WARNING => "User:Waring", // 512
+            E_USER_NOTICE => "User:Notice", // 1024
+
         );
         self::_report_all_error($level[$errno], $error, $error_file, $error_line);
         // end script
@@ -141,7 +145,7 @@ class Core {
 
         if ($fatal_error && $fatal_error['type'] == $fatal_error['type'] & $E_FATAL_ERROR) {
             // clean "Fatal Error: ..." output
-            ob_clean();
+//            ob_clean();
             // key information
             $errno = 'Fatal';
             $error = $fatal_error['message'];

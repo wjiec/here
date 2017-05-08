@@ -70,37 +70,37 @@ abstract class Here_Db_Adapter_Base {
      * based preBuilder generate SELECT syntax
      *
      * @param array $pre_builder
-     * @param string $table
+     * @param array $tables
      * @return string
      */
-    abstract public function parse_select($pre_builder, $table);
+    abstract public function parse_select($pre_builder, $tables);
 
     /**
      * based pre_builder generate UPDATE syntax
      *
      * @param array $pre_builder
-     * @param string $table
+     * @param array $tables
      * @return string
      */
-    abstract public function parse_update($pre_builder, $table);
+    abstract public function parse_update($pre_builder, $tables);
 
     /**
      * based pre_builder generate INSERT syntax
      *
      * @param array $pre_builder
-     * @param string $table
+     * @param array $tables
      * @return string
      */
-    abstract public function parse_insert($pre_builder, $table);
+    abstract public function parse_insert($pre_builder, $tables);
 
     /**
      * based pre_builder generate DELETE syntax
      *
      * @param array $pre_builder
-     * @param string $table
+     * @param array $tables
      * @return string
      */
-    abstract public function parse_delete($pre_builder, $table);
+    abstract public function parse_delete($pre_builder, $tables);
 
     /**
      * escape identifiers

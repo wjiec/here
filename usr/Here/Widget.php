@@ -36,8 +36,6 @@ class Here_Widget {
      * @throws Exception
      */
     public static function widget($widget_name, $alias = null, array $init_options = array()) {
-//        $widget_name = strtolower($widget_name);
-
         if (strpos('@', $widget_name)) {
             list($alias, $widget_name) = explode('@', $widget_name, 2);
         } else {
@@ -58,6 +56,12 @@ class Here_Widget {
         }
     }
 
+    /**
+     * filter widget name
+     *
+     * @param string $widget_name
+     * @return string
+     */
     private static function widget_name_filter($widget_name) {
         return ('Here_Widget_' . ucfirst(preg_replace_callback('/\.(\w)?/', function($matches) {
             return '_' . strtoupper(trim($matches[1], '.'));
