@@ -53,7 +53,7 @@ class Core {
         ob_start();
 
         # error & exception handler
-        set_exception_handler(array('Core', '_init_exception_handler'));
+        self::_catch_all_exceptions();
 
         # request module init
         Here_Request::init_request();
@@ -85,17 +85,101 @@ class Core {
     }
 
     /**
-     * global exception handler
-     *
-     * @param Exception $exception
-     * @TODO save to database
+     * exceptions/error handler wrapper function
      */
-    public static function _init_exception_handler(Exception $exception) {
-//         @ob_end_clean();
+    private static function _catch_all_exceptions() {
+        set_exception_handler(array('Core', '_catch_exception_handler'));
+        set_error_handler(array('Core', '_catch_error_handler'));
+        register_shutdown_function(array('Core', '_at_exit_handler'));
+    }
+
+    /**
+     * global exceptions handler
+     *
+     * @Note that providing an explicit Exception type hint for the ex parameter in
+     * your callback will cause issues with the changed exception hierarchy in PHP 7.
+     *
+     * @param Exception|Throwable|Here_Exceptions_Base $exception
+     */
+    public static function _catch_exception_handler(/* Exception */ /* Throwable */ $exception) {
+        $errno = ($exception instanceof Here_Exceptions_Base) ? $exception->get_code() : $exception->getCode();
+        $error = $exception->get_message();
+        $error_file = $exception->getFile();
+        $error_line = $exception->getLine();
+        // retransmission to report handler
+        self::_report_all_error($errno, $error, $error_file, $error_line, $exception);
+    }
+
+    /**
+     * handle errors in a script, Note that it is your responsibility to die() if necessary.
+     * If the error-handler function returns, script execution will continue with
+     * the next statement after the one that caused an error.
+     *
+     * @param int $errno
+     * @param string $error
+     * @param string $error_file
+     * @param string $error_line
+     */
+    public static function _catch_error_handler($errno, $error, $error_file, $error_line) {
+        // user error level
+        $level = array(
+            E_USER_ERROR => "Error",     // 256
+            E_USER_WARNING => "Waring", // 512
+            E_USER_NOTICE => "Notice", // 1024
+        );
+        self::_report_all_error($level[$errno], $error, $error_file, $error_line);
+        // end script
+        exit;
+    }
+
+    /**
+     * method run at script exit, and catch FATAL error
+     */
+    public static function _at_exit_handler() {
+        $E_FATAL_ERROR = E_CORE_ERROR | E_COMPILE_ERROR | E_RECOVERABLE_ERROR | E_PARSE | /* Fatal Error */1;
+        $fatal_error = error_get_last();
+
+        if ($fatal_error && $fatal_error['type'] == $fatal_error['type'] & $E_FATAL_ERROR) {
+            // clean "Fatal Error: ..." output
+            ob_clean();
+            // key information
+            $errno = 'Fatal';
+            $error = $fatal_error['message'];
+            $error_file = $fatal_error['file'];
+            $error_line = $fatal_error['line'];
+            // report handler
+            self::_report_all_error($errno, $error, $error_file, $error_line);
+        }
+        // no error exit
+    }
+
+    /**
+     * display error and push to database
+     *
+     * @TODO database logging
+     *
+     * @param string|int $errno
+     * @param string $error
+     * @param string $error_file
+     * @param string $error_line
+     * @param mixed $extra_data
+     */
+    private static function _report_all_error($errno, $error, $error_file, $error_line, $extra_data = null) {
+//        @ob_clean();
+
+        echo "<h1>Error/Exception Occurs</h1>";
 
         echo '<pre>';
 
-        print_r(debug_backtrace());
+        var_dump($errno);
+
+        var_dump($error);
+
+        var_dump($error_file);
+
+        var_dump($error_line);
+
+        var_dump($extra_data);
 
         echo '</pre>';
     }
