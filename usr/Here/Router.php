@@ -507,7 +507,7 @@ class Here_Router {
 
     private function _parser_error_route($error_route_list) {
         foreach ($error_route_list as $error_route) {
-            /* @var Here_Abstracts_Route_Error */
+            /* @var Here_Abstracts_Route_Error $route_class */
             $route_class = new $error_route();
             $error_code = $route_class->errno();
 
@@ -517,7 +517,7 @@ class Here_Router {
 
     private function _parser_hook_route($hook_route_list) {
         foreach ($hook_route_list as $hook_route) {
-            /* @var Here_Abstracts_Route_Hook */
+            /* @var Here_Abstracts_Route_Hook $route_class */
             $route_class = new $hook_route();
             $hook_name = $route_class->hook_name();
 
@@ -527,7 +527,7 @@ class Here_Router {
 
     private function _parser_path_route($path_route_list) {
         foreach ($path_route_list as $path_route) {
-            /* @var Here_Abstracts_Route_Route */
+            /* @var Here_Abstracts_Route_Route $route_class */
             $route_class = new $path_route();
             $urls = $route_class->urls();
             $methods = $route_class->methods();

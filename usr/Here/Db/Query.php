@@ -125,7 +125,15 @@ class Here_Db_Query {
      * @return Here_Db_Query
      */
     public function insert() {
-        $this->_assign_base_action('insert');
+        // assign 'insert' to base_action
+        $this->_assign_base_action('select');
+        // initializing query variable
+        $this->_variable_pool = array(
+            'keys' => array(),
+            'values' => array(),
+            'sub_select' => null,
+            'on_duplicate_update' => false
+        );
 
         return $this;
     }
@@ -278,17 +286,55 @@ class Here_Db_Query {
     }
 
     /**
+     * insert & update syntax, fields name
      *
+     * @return $this
+     * @throws Here_Exceptions_ParameterError
      */
     public function keys(/* ... */) {
+        // check base action is assigned
+        $this->_check_base_action();
+        // get parameters
+        $keys = func_get_args();
 
+        if (!empty($this->_variable_pool['values'])) {
+            throw new Here_Exceptions_ParameterError("values is not empty",
+                'Here:Db:Query:keys');
+        }
+        array_map(function($v) {
+            $this->_variable_pool['keys'][] = $this->_complete_filed_name_filter($v);
+        }, $keys);
+
+        return $this;
     }
 
     /**
+     * insert & update syntax, fields value
      *
+     * @throws Here_Exceptions_BadQuery
+     * @throws Here_Exceptions_ParameterError
      */
     public function values(/* ... */) {
+        // check base action is assigned
+        $this->_check_base_action();
+        // get parameters
+        $values = func_get_args();
 
+        if (empty($this->_variable_pool['keys'])) {
+            throw new Here_Exceptions_ParameterError("keys is empty, set keys first",
+                'Here:Db:Query:values');
+        }
+
+        if (count($this->_variable_pool['keys']) !== count($values)) {
+            throw new Here_Exceptions_BadQuery("size of keys and values is difference",
+                'Here:Db:Query:values');
+        }
+
+        $index = count($this->_variable_pool['values']);
+        array_map(function($v) {
+            global $index;
+            $this->_variable_pool['values'][$index][] = $this->_adapter_instance->escape_value($v);
+        }, $values);
     }
 
     /**
@@ -339,6 +385,28 @@ class Here_Db_Query {
         $this->_variable_pool['offset'] = $offset;
 
         return $this;
+    }
+
+    /**
+     * select limit+offset wrapper function
+     *
+     * @param int $page_index
+     * @param int $page_size
+     * @return Here_Db_Query
+     * @throws Here_Exceptions_ParameterError
+     */
+    public function page($page_index, $page_size) {
+        // check base action is assigned
+        $this->_check_base_action();
+        // check index type
+        if (!is_int($page_index) || !is_int($page_size)) {
+            throw new Here_Exceptions_ParameterError("",
+                'Here:Db:Query:page');
+        }
+        // calc limit and offset
+        $offset = ($page_index - 1) * $page_size;
+        // bind parameter
+        return $this->limit($page_size)->offset($offset);
     }
 
     /**

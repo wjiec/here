@@ -182,7 +182,7 @@ class Route_Installer extends Here_Abstracts_Route_Route {
             include _here_install_file_;
         } else {
             /* magic method: __call, [no qa] */
-            Core::router_instance()->error('500', array('error' => 'Missing install file'));
+            Core::router_instance()->emit_error('500', array('error' => 'Missing install file'));
         }
     }
 }
@@ -332,7 +332,7 @@ class Route_Test extends Here_Abstracts_Route_Route {
             // order again
             ->order('call', Here_Db_Helper::ORDER_ASC)
             // where
-            ->where((new Here_Db_Expression('table.users.uid'))->bigger(5))
+            ->where((new Here_Db_Expression('table.users.uid'))->bigger(0))
             // group
             ->group('user_id')
             // group again
@@ -342,15 +342,18 @@ class Route_Test extends Here_Abstracts_Route_Route {
             // on
             ->on((new Here_Db_Expression('user_id'))->equal('author_id'))
             // having
-            ->having((new Here_Db_Expression('table.articles.author_id'))->equal(5))
+            ->having((new Here_Db_Expression('table.articles.author_id'))->equal(1))
             // limit
             ->limit(5)
             // offset
-            ->offset(10)
+            ->offset(0)
             // to_string
             ->__toString()
         );
-        // dump query result
-//        var_dump($helper->query(''));
+        // dump INSERT query instance
+        var_dump($helper->insert()
+            // table name
+            ->from('table.users')
+        );
     }
 }

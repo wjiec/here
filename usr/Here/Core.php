@@ -103,7 +103,7 @@ class Core {
      */
     public static function _catch_exception_handler(/* Exception */ /* Throwable */ $exception) {
         $errno = ($exception instanceof Here_Exceptions_Base) ? $exception->get_code() : $exception->getCode();
-        $error = $exception->get_message();
+        $error = ($exception instanceof Here_Exceptions_Base) ? $exception->get_message() : $exception->getMessage();
         $error_file = $exception->getFile();
         $error_line = $exception->getLine();
         // retransmission to report handler
