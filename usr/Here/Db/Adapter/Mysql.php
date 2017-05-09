@@ -177,14 +177,17 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         $build_sql .= $this->_build_order_expression_syntax($pre_builder, 'order');
 
         // limit
-        if (array_key_exists('limit', $pre_builder)) {
+        if (array_key_exists('limit', $pre_builder) && is_int($pre_builder['limit'])) {
             $build_sql .= " LIMIT {$pre_builder['limit']}";
         }
 
         // offset
-        if (array_key_exists('offset', $pre_builder)) {
+        if (array_key_exists('offset', $pre_builder) && is_int($pre_builder['offset'])) {
             $build_sql .= " OFFSET {$pre_builder['offset']}";
         }
+
+        // end
+        $build_sql .= ';';
 
         return $build_sql;
     }
@@ -207,12 +210,72 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      *
      * @see Here_Db_Adapter_Base::parse_insert()
      *
-     * @param string $pre_builder
+     * @param array $pre_builder
      * @param array $tables
      * @return string
+     * @throws Here_Exceptions_BadQuery
      */
     public function parse_insert($pre_builder, $tables) {
-        return '';
+        $build_sql = "INSERT INTO";
+
+        // table name
+        if (is_array($tables[0])) {
+            $build_sql .= " {$tables[0]['table_name']}";
+        } else {
+            $build_sql .= " {$tables[0]}";
+        }
+
+        // check keys is empty
+        if (empty($pre_builder['keys'])) {
+            if ($pre_builder['sub_select'] == null) {
+                throw new Here_Exceptions_BadQuery("empty keys",
+                    'Here:Db:Adapter:Mysql:parse_insert');
+            }
+        }
+
+        // keys
+        if (!empty($pre_builder['keys'])) {
+            $build_sql .= " (";
+            $build_sql .= join(', ', $pre_builder['keys']);
+            $build_sql .= ")";
+        }
+
+        if ($pre_builder['sub_select']) {
+            /* @var Here_Db_Query $select_query */
+            $select_query = $pre_builder['sub_select'];
+            $build_sql .= " {$select_query->generate_sql()}";
+            $build_sql = rtrim($build_sql, ';');
+        } else {
+            // values
+            if (empty($pre_builder['values'])) {
+                throw new Here_Exceptions_BadQuery("empty values",
+                    'Here:Db:Adapter:Mysql:parse_insert');
+            }
+            $build_sql .= " VALUES";
+            foreach ($pre_builder['values'] as $value) {
+                $build_sql .= " (";
+                $build_sql .= join(', ', $value);
+                $build_sql .= "),";
+            }
+            $build_sql = rtrim($build_sql, ',');
+        }
+
+        /**
+         * @TODO multi values update
+         */
+        if ($pre_builder['on_duplicate_update'] == true) {
+            $build_sql .= " ON DUPLICATE KEY UPDATE";
+
+            for ($i = 0, $s = count($pre_builder['keys']); $i < $s; ++$i) {
+                $build_sql .= " {$pre_builder['keys'][$i]} = {$pre_builder['values'][0][$i]},";
+            }
+            $build_sql = rtrim($build_sql, ',');
+        }
+
+        // end
+        $build_sql .= ";";
+
+        return $build_sql;
     }
 
     /**
@@ -299,14 +362,17 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
     private function _build_where_expression_syntax($pre_builder, $syntax) {
         $build_sql = " ";
 
-        if (!empty($pre_builder[$syntax])) {
-            $build_sql .= strtoupper($syntax);
-            foreach ($pre_builder[$syntax] as $where_expression) {
-                /* @var Here_Db_Expression $expression */
-                list($expression, $relation) = array($where_expression['expression'], $where_expression['relation']);
-                $build_sql .= " {$expression->build()} {$relation}";
-            }
+        if (empty($pre_builder[$syntax])) {
+            return "";
         }
+
+        $build_sql .= strtoupper($syntax);
+        foreach ($pre_builder[$syntax] as $where_expression) {
+            /* @var Here_Db_Expression $expression */
+            list($expression, $relation) = array($where_expression['expression'], $where_expression['relation']);
+            $build_sql .= " {$expression->build()} {$relation}";
+        }
+
         if ($pre_builder[$syntax][count($pre_builder[$syntax]) - 1]['relation'] == Here_Db_Helper::OPERATOR_AND) {
             $build_sql = rtrim($build_sql, Here_Db_Helper::OPERATOR_AND);
         } else {
@@ -314,9 +380,16 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         }
         $build_sql = rtrim($build_sql);
 
-        return $build_sql;
+        return trim($build_sql);
     }
 
+    /**
+     * build sql for order classify syntax [order by], [group by]
+     *
+     * @param array $pre_builder
+     * @param string $syntax
+     * @return string
+     */
     private function _build_order_expression_syntax($pre_builder, $syntax) {
         $build_sql = " ";
 
@@ -329,6 +402,6 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         }
         $build_sql = rtrim($build_sql, ',');
 
-        return $build_sql;
+        return trim($build_sql);
     }
 }

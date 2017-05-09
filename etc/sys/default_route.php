@@ -353,7 +353,47 @@ class Route_Test extends Here_Abstracts_Route_Route {
         // dump INSERT query instance
         var_dump($helper->insert()
             // table name
-            ->from('table.users')
+            ->into('table.users')
+            // keys
+            ->keys('name', 'password', 'email', 'created', 'last_login')
+            // values
+            ->values('ShadowMan', '123456', '1@qq.com', '123456789', '123456789')
+            // values again
+//            ->values('john', '123456', '1@qq.com', '123456789', '123456789')
+            // toggle on duplicate update flag
+            ->toggle_on_duplicate_update()
+            // to string
+            ->__toString()
+        );
+        // dump INSERT query instance
+        var_dump($helper->insert()
+            // table name
+            ->into('table.users')
+            // keys
+            ->keys('name', 'password', 'email', 'created', 'last_login')
+            // sub select
+            ->sub_select(
+            // select
+                $helper->select('name', 'password', 'email', 'created', 'last_login')
+                    // table name
+                    ->from('table.users')
+            )
+            // to string
+            ->__toString()
+        );
+        // simple insert a row to database
+        var_dump($helper->insert()
+            // table name
+            ->into('table.users')
+            // one row
+            ->one_row(array(
+                'name' => 'Hello',
+                'password' => 'World'
+            ))
+            // toggle
+            ->toggle_on_duplicate_update()
+            // to string
+            ->__toString()
         );
     }
 }

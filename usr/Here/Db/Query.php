@@ -126,7 +126,7 @@ class Here_Db_Query {
      */
     public function insert() {
         // assign 'insert' to base_action
-        $this->_assign_base_action('select');
+        $this->_assign_base_action('insert');
         // initializing query variable
         $this->_variable_pool = array(
             'keys' => array(),
@@ -194,6 +194,17 @@ class Here_Db_Query {
         $this->_table_name[] = $table;
 
         return $this;
+    }
+
+    /**
+     * alias of from method
+     *
+     * @param $table
+     * @param null $alias
+     * @return Here_Db_Query
+     */
+    public function into($table, $alias = null) {
+        return $this->from($table, $alias);
     }
 
     /**
@@ -290,6 +301,7 @@ class Here_Db_Query {
      *
      * @return $this
      * @throws Here_Exceptions_ParameterError
+     * @return $this
      */
     public function keys(/* ... */) {
         // check base action is assigned
@@ -313,6 +325,7 @@ class Here_Db_Query {
      *
      * @throws Here_Exceptions_BadQuery
      * @throws Here_Exceptions_ParameterError
+     * @return $this
      */
     public function values(/* ... */) {
         // check base action is assigned
@@ -330,11 +343,87 @@ class Here_Db_Query {
                 'Here:Db:Query:values');
         }
 
-        $index = count($this->_variable_pool['values']);
-        array_map(function($v) {
-            global $index;
-            $this->_variable_pool['values'][$index][] = $this->_adapter_instance->escape_value($v);
+        $this->_variable_pool['values'][count($this->_variable_pool['values'])] = array_map(function($v) {
+            return $this->_adapter_instance->escape_value($v);
         }, $values);
+
+        return $this;
+    }
+
+    /**
+     * one row data wrapper function
+     *
+     * @param array $one_row
+     * @return $this
+     */
+    public function one_row(array $one_row) {
+        $keys = array_keys($one_row);
+        $values = array_values($one_row);
+        // check keys is correct
+        array_map(function($k) {
+            if (!is_string($k)) {
+                throw new Here_Exceptions_ParameterError("Key is not a string on inserts a row of data",
+                    'Here:Db:Query:one_row');
+            }
+        }, $keys);
+
+        // push to keys/values variable pool
+        call_user_func_array(array($this, 'keys'), $keys);
+        call_user_func_array(array($this, 'values'), $values);
+        // chain-call
+        return $this;
+    }
+
+    /**
+     * insert...select syntax
+     *
+     * @param $select_query
+     * @return $this
+     * @throws Here_Exceptions_BadQuery
+     * @throws Here_Exceptions_ParameterError
+     */
+    public function sub_select($select_query) {
+        // check keys and values is empty
+        if (!empty($this->_variable_pool['values'])) {
+            throw new Here_Exceptions_BadQuery("to be using sub select, must be empty values",
+                'Here:Db:Query:sub_select');
+        }
+        // check sub_query is base Here_Db_Query
+        if (!($select_query instanceof Here_Db_Query)) {
+            throw new Here_Exceptions_ParameterError("sub query is not base Here_Db_Query",
+                'Here:Db:Query:sub_select');
+        }
+        // check base action is select
+        if ($select_query->get_action() != 'select') {
+            throw new Here_Exceptions_BadQuery("query object is not select action",
+                'Here:Db:Query:sub_select');
+        }
+        // build sub-select
+        $this->_variable_pool['sub_select'] = $select_query;
+
+        return $this;
+    }
+
+    /**
+     * toggle on_duplicate_update flag, default is false
+     *
+     * @return $this
+     * @throws Here_Exceptions_BadQuery
+     */
+    public function toggle_on_duplicate_update() {
+        // check base action is insert
+        $this->_check_base_action('insert');
+        // check one row
+        if (($this->_variable_pool['on_duplicate_update'] == false) &&
+            count($this->_variable_pool['values']) != 1) {
+            //-------------------------------------------------
+            throw new Here_Exceptions_BadQuery("if enable on_duplicate_update, values size must set 1",
+                'Here:Db:Query:toggle_on_duplicate_update');
+        }
+
+        $this->_variable_pool['on_duplicate_update'] = !$this->_variable_pool['on_duplicate_update'];
+
+        return $this;
     }
 
     /**
@@ -447,6 +536,24 @@ class Here_Db_Query {
                 throw new Here_Exceptions_BadQuery('Operation is not defined or internal error',
                     'Error:Here:Db:Query:__toString');
         }
+    }
+
+    /**
+     * getting base action name
+     *
+     * @return null|string
+     */
+    public function get_action() {
+        return $this->_base_action;
+    }
+
+    /**
+     * getting fields
+     */
+    public function select_get_fields() {
+        $this->_check_base_action('select');
+
+        return $this->_variable_pool['fields'];
     }
 
     /**
