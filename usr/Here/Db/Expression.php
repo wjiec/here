@@ -116,17 +116,24 @@ class Here_Db_Expression {
      *
      * @param callable|null $key_callback
      * @param callable|null $value_callback
+     * @param array|null $key_cb_args
+     * @param array|null $value_cb_args
      * @throws Here_Exceptions_ParameterError
      * @return string
      */
-    public function build($key_callback = null, $value_callback = null) {
+    public function build($key_callback = null, $value_callback = null, $key_cb_args = null, $value_cb_args = null) {
         if (!is_callable($key_callback)) {
             if ($this->_key_callback == null) {
                 throw new Here_Exceptions_ParameterError("must be specify key callback",
                     'Here:Db:Expression:build');
             } else {
                 $key_callback = $this->_key_callback;
+                $key_cb_args = array($this->_field_name);
             }
+        } else {
+            $key_cb_args = array_merge(
+                (is_array($key_cb_args) ? $key_cb_args : array()),
+                array($this->_field_name));
         }
 
         if (!is_callable($value_callback)) {
@@ -135,12 +142,23 @@ class Here_Db_Expression {
                     'Here:Db:Expression:build');
             } else {
                 $value_callback = $this->_value_callback;
+                $value_cb_args = array($this->_value);
             }
+        } else {
+            $value_cb_args = array_merge(
+                (is_array($value_cb_args) ? $value_cb_args : array()),
+                array($this->_value)
+            );
         }
 
         // execute callback
-        $key = $key_callback($this->_field_name);
-        $value = $value_callback($this->_value);
+        $key = call_user_func_array($key_callback, $key_cb_args);
+        $value = call_user_func_array($value_callback, $value_cb_args);
+        // using key-callback escape value
+        if ($value === self::USING_KEY_ESCAPE_CALLBACK) {
+            $value = $key_callback($this->_value);
+        }
+
         // build
         return "{$key} {$this->_operator} {$value}";
     }
@@ -164,4 +182,7 @@ class Here_Db_Expression {
 
         return $this;
     }
+
+    # value escape callback using key-callback
+    const USING_KEY_ESCAPE_CALLBACK = 0x01;
 }

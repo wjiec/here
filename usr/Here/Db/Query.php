@@ -164,7 +164,16 @@ class Here_Db_Query {
      * @return Here_Db_Query
      */
     public function delete() {
+        // assign 'update' to base action
         $this->_assign_base_action('delete');
+        // initializing query variable
+        $this->_variable_pool = array(
+            'where' => array(),
+            'order' => array(),
+            'limit' => array(),
+            'join' => array(),
+            'on' => array(),
+        );
 
         return $this;
     }

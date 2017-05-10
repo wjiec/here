@@ -155,14 +155,10 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         $build_sql = rtrim($build_sql, ',');
 
         // join
-        foreach ($pre_builder['join'] as $join) {
-            $build_sql .= " {$join['type']}";
-            if (is_array($join['table_name'])) {
-                $build_sql .= " {$join['table_name']['table_name']} AS {$join['table_name']['alias_name']}";
-            } else {
-                $build_sql .= " {$join['table_name']}";
-            }
-        }
+        $build_sql .= $this->_build_join_syntax($pre_builder);
+
+        // on
+        $build_sql .= $this->_build_where_expression_syntax($pre_builder, 'on');
 
         // where
         $build_sql .= $this->_build_where_expression_syntax($pre_builder, 'where');
@@ -323,12 +319,45 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      *
      * @see Here_Db_Adapter_Base::parse_delete()
      *
-     * @param string $pre_builder
+     * @param array $pre_builder
      * @param array $tables
      * @return string
      */
     public function parse_delete($pre_builder, $tables) {
-        return '';
+        $build_sql = "DELETE";
+
+        // table name
+        $build_sql .= " FROM";
+        foreach ($tables as $table) {
+            if (is_array($table)) {
+                $build_sql .= " {$table['table_name']} AS {$table['alias_name']},";
+            } else {
+                $build_sql .= " {$table}";
+            }
+        }
+        $build_sql = rtrim($build_sql, ',');
+
+        // join
+        $build_sql .= $this->_build_join_syntax($pre_builder);
+
+        // on
+        $build_sql .= $this->_build_where_expression_syntax($pre_builder, 'on');
+
+        // where
+        $build_sql .= $this->_build_where_expression_syntax($pre_builder, 'where');
+
+        // order
+        $build_sql .= $this->_build_order_expression_syntax($pre_builder, 'order');
+
+        // limit
+        if (array_key_exists('limit', $pre_builder) && is_int($pre_builder['limit'])) {
+            $build_sql .= " LIMIT {$pre_builder['limit']}";
+        }
+
+        // end
+        $build_sql .= ";";
+
+        return $build_sql;
     }
 
     /**
@@ -407,10 +436,12 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         }
 
         $build_sql .= strtoupper($syntax);
-        foreach ($pre_builder[$syntax] as $where_expression) {
+         foreach ($pre_builder[$syntax] as $where_expression) {
             /* @var Here_Db_Expression $expression */
             list($expression, $relation) = array($where_expression['expression'], $where_expression['relation']);
-            $build_sql .= " {$expression->build()} {$relation}";
+
+            $build_expression = $expression->build(null, array($this, '_fix_value_escape'));
+            $build_sql .= " {$build_expression} {$relation}";
         }
 
         if ($pre_builder[$syntax][count($pre_builder[$syntax]) - 1]['relation'] == Here_Db_Helper::OPERATOR_AND) {
@@ -442,6 +473,41 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         }
         $build_sql = rtrim($build_sql, ',');
 
-        return trim($build_sql);
+        return rtrim($build_sql);
+    }
+
+    /**
+     * build join syntax
+     *
+     * @param array $pre_builder
+     * @return string
+     */
+    private function _build_join_syntax($pre_builder) {
+        $build_sql = "";
+        // start
+        foreach ($pre_builder['join'] as $join) {
+            $build_sql .= " {$join['type']}";
+            if (is_array($join['table_name'])) {
+                $build_sql .= " {$join['table_name']['table_name']} AS {$join['table_name']['alias_name']}";
+            } else {
+                $build_sql .= " {$join['table_name']}";
+            }
+        }
+        // end
+        return $build_sql;
+    }
+
+    /**
+     * if value is field name, then escape that
+     *
+     * @param string $value
+     * @return string|int
+     */
+    public function _fix_value_escape($value) {
+        if (strpos($value, 'table.') === 0) {
+            return Here_Db_Expression::USING_KEY_ESCAPE_CALLBACK;
+        }
+
+        return $this->escape_value($value);
     }
 }

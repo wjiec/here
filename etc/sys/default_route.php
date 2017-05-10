@@ -340,7 +340,7 @@ class Route_Test extends Here_Abstracts_Route_Route {
             // join
             ->join(array('table.articles', 'arts'))
             // on
-            ->on((new Here_Db_Expression('user_id'))->equal('author_id'))
+            ->on((new Here_Db_Expression('table.users.uid'))->equal('table.articles.author_id'))
             // having
             ->having((new Here_Db_Expression('table.articles.author_id'))->equal(1))
             // limit
@@ -373,10 +373,10 @@ class Route_Test extends Here_Abstracts_Route_Route {
             ->keys('name', 'password', 'email', 'created', 'last_login')
             // sub select
             ->sub_select(
-            // select
+                // select
                 $helper->select('name', 'password', 'email', 'created', 'last_login')
-                    // table name
-                    ->from('table.users')
+                // table name
+                ->from('table.users')
             )
             // to string
             ->__toString()
@@ -408,6 +408,15 @@ class Route_Test extends Here_Abstracts_Route_Route {
             ->where((new Here_Db_Expression('name'))->equal('ShadowMan'))
             // limit
             ->limit(1)
+            // to string
+            ->__toString()
+        );
+        // delete
+        var_dump($helper->delete()
+            // from
+            ->from('table.users')
+            // where
+            ->where((new Here_Db_Expression('uid'))->equal(1))
             // to string
             ->__toString()
         );
