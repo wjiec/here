@@ -35,34 +35,42 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         $server_info = Here_Db_Helper::get_server(false, true);
         // using PDO
         if (class_exists('PDO')) {
-            // using PDO connect to server
-            $this->_connection = new PDO(Here_Db_Helper::array_to_dsn($server_info),
-                $server_info['username'], $server_info['password'], array(
-                    // connect timeout=1s
-                    PDO::ATTR_TIMEOUT => 1,
-                    // force lower case
-                    PDO::ATTR_CASE => PDO::CASE_LOWER
-                ));
-
-            var_dump($this->_connection);
-//            var_dump(array(
-//                'client_server' => $this->_connection->getAttribute(constant('PDO::ATTR_CLIENT_VERSION')),
-//                'connection_status' => $this->_connection->getAttribute(constant('PDO::ATTR_CONNECTION_STATUS')),
-//                'server_info' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_INFO')),
-//                'server_version' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_VERSION')),
-//            ));
-            if ($this->_connection->errorCode()) {
-
+            try {
+                // using PDO connect to server
+                $this->_connection = new PDO(Here_Db_Helper::array_to_dsn($server_info),
+                    // authenticating of user;
+                    $server_info['username'], $server_info['password'],
+                    // PDO attributes
+                    array(
+                        // connect timeout=1s
+                        PDO::ATTR_TIMEOUT => _here_database_connecting_timeout_,
+                        // force lower case
+                        PDO::ATTR_CASE => PDO::CASE_LOWER
+                    )
+                );
+                // set connected flag
+                $this->_server_available = true;
+            } catch (PDOException $e) {
+                // check connecting error
+                throw new Here_Exceptions_ConnectingError($e->getMessage(),
+                    'Here:Db:Adapter:Mysql:connect:PDO');
             }
         // using mysqli
         } else if (class_exists('mysqli')) {
-            $this->_connection = new mysqli($server_info['host'], $server_info['username'], $server_info['password'],
+            // init mysqli instance
+            $this->_connection = mysqli_init();
+            // set connect_timeout options
+            $this->_connection->options(MYSQLI_OPT_CONNECT_TIMEOUT, _here_database_connecting_timeout_);
+            // real connecting to server
+            $this->_connection->real_connect($server_info['host'], $server_info['username'], $server_info['password'],
                 $server_info['dbname'], $server_info['port']);
-
-            var_dump($this->_connection);
+            // check connecting error
             if ($this->_connection->connect_errno) {
-
+                throw new Here_Exceptions_ConnectingError($this->_connection->connect_error,
+                    'Here:Db:Adapter:Mysql:connect:mysqli');
             }
+            // set connected flag
+            $this->_server_available = true;
         } else {
             throw new Here_Exceptions_FatalError("PDO or mysqli doesn't exists, please enable mysqli or PDO extension",
                 'Fatal:Here:Db:Adapter:Mysql');
@@ -74,10 +82,26 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      *
      * @see Here_Db_Adapter_Base::server_info()
      *
-     * @return string
+     * @return array
      */
     public function server_info() {
-        return 'MySQL Server 5.6';
+        $this->connect();
+        // PDO
+        if ($this->_connection instanceof PDO) {
+            return array(
+                'client_server' => $this->_connection->getAttribute(constant('PDO::ATTR_CLIENT_VERSION')),
+                'connection_status' => $this->_connection->getAttribute(constant('PDO::ATTR_CONNECTION_STATUS')),
+                'server_info' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_INFO')),
+                'server_version' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_VERSION')),
+            );
+        }
+        // mysqli
+        return array(
+            'client_server' => $this->_connection->client_info,
+            'connection_status' => $this->_connection->host_info,
+            'server_info' => $this->_connection->stat,
+            'server_version' => $this->_connection->server_info,
+        );
     }
 
     /**
@@ -88,18 +112,19 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * @return int
      */
     public function last_insert_id() {
-        return 0;
-    }
-
-    /**
-     * return last query affected rows
-     *
-     * @see Here_Db_Adapter_Base::affected_rows()
-     *
-     * @return int
-     */
-    public function affected_rows() {
-        return 0;
+        $this->connect();
+        // PDO
+        if ($this->_connection instanceof PDO) {
+            /* @var PDO $pdo_instance */
+            $pdo_instance = $this->_connection;
+            // return last insert id
+            return $pdo_instance->lastInsertId();
+        }
+        // mysqli
+        /* @var mysqli $mysqli_instance */
+        $mysqli_instance = $this->_connection;
+        // return last insert id
+        return $mysqli_instance->insert_id;
     }
 
     /**

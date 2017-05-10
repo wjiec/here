@@ -245,6 +245,15 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
     }
 
     /**
+     * wrapper function
+     *
+     * @return array
+     */
+    public function get_adapter_info() {
+        return $this->_adapter_instance->server_info();
+    }
+
+    /**
      * all server information
      *
      * @var array

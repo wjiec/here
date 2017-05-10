@@ -420,5 +420,7 @@ class Route_Test extends Here_Abstracts_Route_Route {
             // to string
             ->__toString()
         );
+        $helper->query('');
+        var_dump($helper->get_adapter_info());
     }
 }

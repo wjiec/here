@@ -22,7 +22,7 @@ define('_here_http_protocol_', 'HTTP/1.1');
 define('_here_enable_https_', false);
 
 /**
- * blog default charset, recommenda "utf-8"
+ * blog default charset, recommend "utf-8"
  */
 define('_here_default_charset_', 'utf-8');
 
@@ -112,3 +112,7 @@ define('_here_notification_level', 100);
  */
 define('_here_cache_server_', 'memcached');
 
+/**
+ * database connecting timeout
+ */
+define('_here_database_connecting_timeout_', 1);

@@ -131,6 +131,12 @@ class Core {
             E_USER_NOTICE => "User:Notice", // 1024
 
         );
+
+        // ignore mysqli_connect error
+        if (strpos($error, 'mysqli::real_connect') >= 0) {
+            return;
+        }
+
         self::_report_all_error($level[$errno], $error, $error_file, $error_line);
         // end script
         exit;

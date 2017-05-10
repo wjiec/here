@@ -40,7 +40,7 @@ abstract class Here_Db_Adapter_Base {
     /**
      * return server information, for example, Database version, Connection Descriptor, ...
      *
-     * @return string
+     * @return array
      */
     abstract public function server_info();
 
@@ -50,13 +50,6 @@ abstract class Here_Db_Adapter_Base {
      * @return int
      */
     abstract public function last_insert_id();
-
-    /**
-     * return last query affected rows
-     *
-     * @return int
-     */
-    abstract public function affected_rows();
 
     /**
      * execute escape for table name
