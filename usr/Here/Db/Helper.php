@@ -125,7 +125,8 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
         // execute sql
         $this->_adapter_instance->query($query);
         // build Here_Db_Result instance
-        return new Here_Db_Result($this->_adapter_instance->fetch_all(), $this->_adapter_instance->affected_rows());
+//        return new Here_Db_Result($this->_adapter_instance->fetch_all(), $this->_adapter_instance->affected_rows());
+        return new Here_Db_Result(array(), 0);
     }
 
     /**
