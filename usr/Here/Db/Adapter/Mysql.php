@@ -197,12 +197,52 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      *
      * @see Here_Db_Adapter_Base::parse_update()
      *
-     * @param string $pre_builder
+     * @param array $pre_builder
      * @param array $tables
      * @return string
+     * @throws Here_Exceptions_BadQuery
      */
     public function parse_update($pre_builder, $tables) {
-        return '';
+        $build_sql = "UPDATE";
+
+        // table name
+        foreach ($tables as $table) {
+            if (is_array($table)) {
+                $build_sql .= " {$table['table_name']} AS {$table['alias_name']},";
+            } else {
+                $build_sql .= " {$table}";
+            }
+        }
+        $build_sql = rtrim($build_sql, ',');
+
+        // check key-value exists
+        if (empty($pre_builder['keys']) || empty($pre_builder['values'])) {
+            throw new Here_Exceptions_BadQuery("field name or value undefined",
+                'Here:Db:Adapter:Mysql:parse_update');
+        }
+
+        // set
+        $build_sql .= " SET";
+        for ($i = 0, $s = count($pre_builder['keys']); $i < $s; ++$i) {
+            $build_sql .= " {$pre_builder['keys'][$i]} = {$pre_builder['values'][0][$i]},";
+        }
+        $build_sql = rtrim($build_sql, ',');
+
+        // where
+        $build_sql .= $this->_build_where_expression_syntax($pre_builder, 'where');
+
+        // order
+        $build_sql .= $this->_build_order_expression_syntax($pre_builder, 'order');
+
+        // limit
+        if (array_key_exists('limit', $pre_builder) && is_int($pre_builder['limit'])) {
+            $build_sql .= " LIMIT {$pre_builder['limit']}";
+        }
+
+        // end
+        $build_sql .= ";";
+
+        return $build_sql;
     }
 
     /**
@@ -380,7 +420,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         }
         $build_sql = rtrim($build_sql);
 
-        return trim($build_sql);
+        return rtrim($build_sql);
     }
 
     /**

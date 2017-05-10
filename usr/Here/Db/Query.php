@@ -144,7 +144,16 @@ class Here_Db_Query {
      * @return Here_Db_Query
      */
     public function update() {
+        // assign 'update' to base action
         $this->_assign_base_action('update');
+        // initializing query variable
+        $this->_variable_pool = array(
+            'keys' => array(),
+            'values' => array(),
+            'where' => array(),
+            'order' => array(),
+            'limit' => array()
+        );
 
         return $this;
     }

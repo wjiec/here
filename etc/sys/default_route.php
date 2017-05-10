@@ -395,5 +395,21 @@ class Route_Test extends Here_Abstracts_Route_Route {
             // to string
             ->__toString()
         );
+        // update syntax
+        var_dump($helper->update()
+            // table name
+            ->from('table.users')
+            // key-value pairs
+            ->one_row(array(
+                'name' => 'Hello_World',
+                'password' => 'Hello_World_Password'
+            ))
+            // where
+            ->where((new Here_Db_Expression('name'))->equal('ShadowMan'))
+            // limit
+            ->limit(1)
+            // to string
+            ->__toString()
+        );
     }
 }
