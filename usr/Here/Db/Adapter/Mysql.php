@@ -34,7 +34,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         // getting server information
         $server_info = Here_Db_Helper::get_server(false, true);
         // using PDO
-        if (class_exists('PDO')) {
+        if (!class_exists('PDO')) {
             try {
                 // using PDO connect to server
                 $this->_connection = new PDO(Here_Db_Helper::array_to_dsn($server_info),
@@ -89,6 +89,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         // PDO
         if ($this->_connection instanceof PDO) {
             return array(
+                'adapter' => 'PDO',
                 'client_server' => $this->_connection->getAttribute(constant('PDO::ATTR_CLIENT_VERSION')),
                 'connection_status' => $this->_connection->getAttribute(constant('PDO::ATTR_CONNECTION_STATUS')),
                 'server_info' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_INFO')),
@@ -97,34 +98,12 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         }
         // mysqli
         return array(
+            'adapter' => 'mysqli',
             'client_server' => $this->_connection->client_info,
             'connection_status' => $this->_connection->host_info,
             'server_info' => $this->_connection->stat,
             'server_version' => $this->_connection->server_info,
         );
-    }
-
-    /**
-     * return last insert row id
-     *
-     * @see Here_Db_Adapter_Base::last_insert_id()
-     *
-     * @return int
-     */
-    public function last_insert_id() {
-        $this->connect();
-        // PDO
-        if ($this->_connection instanceof PDO) {
-            /* @var PDO $pdo_instance */
-            $pdo_instance = $this->_connection;
-            // return last insert id
-            return $pdo_instance->lastInsertId();
-        }
-        // mysqli
-        /* @var mysqli $mysqli_instance */
-        $mysqli_instance = $this->_connection;
-        // return last insert id
-        return $mysqli_instance->insert_id;
     }
 
     /**
@@ -415,24 +394,77 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * @see Here_Db_Adapter_Base::query()
      *
      * @param string $query
+     * @param string $action
      * @return bool query state
+     * @throws Here_Exceptions_ParameterError|Here_Exceptions_QueryError
      */
-    public function query($query) {
+    public function query($query, $action) {
         $this->connect();
+        // check sql type is string
+        if (!is_string($query)) {
+            throw new Here_Exceptions_ParameterError("sql except string, got other type",
+                'Here:Db:Adapter:Mysql:query');
+        }
+
+        // query string
+        $this->_query_string = $query;
+
+        // PDO
+        if ($this->_connection instanceof PDO) {
+            /* @var PDO $pdo_instance */
+            $pdo_instance = $this->_connection;
+            try {
+                // execute query
+                if ($action === 'select') {
+                    // Executes an SQL statement, returning a result set as a PDOStatement object
+                    $statement = $pdo_instance->query($query);
+                    // fetch query data
+                    $this->_result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                    $this->_affected_rows = $statement->rowCount();
+                } else {
+                    // Execute an SQL statement and return the number of affected rows
+                    $this->_result = array();
+                    $this->_affected_rows = $pdo_instance->exec($query);
+                    // fetch last insert row id
+                    $this->_last_insert_id = $pdo_instance->lastInsertId();
+                }
+            } catch (Exception $e) {
+                throw new Here_Exceptions_QueryError($e->getMessage(),
+                    'Here:Db:Adapter:Mysql:query:pdo');
+            }
+
+            // end query
+            return true;
+        }
+        // mysqli
+        /* @var mysqli $mysqli_instance */
+        $mysqli_instance = $this->_connection;
+        // execute sql
+        $result = $mysqli_instance->query($query);
+        // check result type
+        if (is_bool($result)) {
+            if ($result === false) {
+                // execute failure
+                throw new Here_Exceptions_QueryError($mysqli_instance->error,
+                    'Here:Db:Adapter:Mysql:query:mysqli');
+            } else {
+                // For other successful queries(INSERT, UPDATE, DELETE) mysqli_query() will return TRUE.
+                $this->_affected_rows = $mysqli_instance->affected_rows;
+                $this->_result = array();
+            }
+        } else if ($result instanceof mysqli_result) {
+            // select statement
+            /* @var mysqli_result $result */
+            $this->_result = $result->fetch_all(MYSQLI_ASSOC);
+            $this->_affected_rows = $mysqli_instance->affected_rows;
+        } else {
+            throw new Here_Exceptions_QueryError($mysqli_instance->error,
+                'Here:Db:Adapter:Mysql:query:mysqli');
+        }
+        // fetch last insert row id
+        $this->_last_insert_id = $mysqli_instance->insert_id;
 
         return true;
-    }
-
-    /**
-     * getting all/specified row($this->_result_current_index)
-     *
-     * @see Here_Db_Adapter_Base::fetch_assoc()
-     *
-     * @param array $keys
-     * @return array
-     */
-    public function fetch_assoc($keys = null) {
-        return array();
     }
 
     /**
@@ -443,7 +475,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * @return array
      */
     public function fetch_all() {
-        return array();
+        return $this->_result;
     }
 
     /**

@@ -45,11 +45,20 @@ abstract class Here_Db_Adapter_Base {
     abstract public function server_info();
 
     /**
+     * last insert row id
+     *
+     * @var null|int
+     */
+    protected $_last_insert_id = null;
+
+    /**
      * return last insert row id
      *
      * @return int
      */
-    abstract public function last_insert_id();
+    final public function last_insert_id() {
+        return $this->_last_insert_id;
+    }
 
     /**
      * execute escape for table name
@@ -115,9 +124,10 @@ abstract class Here_Db_Adapter_Base {
      * execute query
      *
      * @param string $query
+     * @param string $action
      * @return bool query state
      */
-    abstract public function query($query);
+    abstract public function query($query, $action);
 
     /**
      * query result on success
@@ -127,21 +137,6 @@ abstract class Here_Db_Adapter_Base {
     protected $_result = null;
 
     /**
-     * result data internal pointer
-     *
-     * @var int
-     */
-    protected $_result_current_index = 0;
-
-    /**
-     * getting all/specified row($this->_result_current_index)
-     *
-     * @param array $keys
-     * @return array
-     */
-    abstract public function fetch_assoc($keys = null);
-
-    /**
      * fetch last query data
      *
      * @return array
@@ -149,24 +144,43 @@ abstract class Here_Db_Adapter_Base {
     abstract public function fetch_all();
 
     /**
-     * reposition rows position indicator
+     * last affected_rows
+     *
+     * @var int
      */
-    final public function reset() {
-        $this->_result_current_index = 0;
+    protected $_affected_rows;
+
+    /**
+     * get last query affected rows count
+     *
+     * @return int
+     */
+    final public function affected_rows() {
+        return $this->_affected_rows;
     }
 
     /**
-     * sets the position indicator associated with the rows to a new position.
-     *
-     * @param int $index
-     * @throws Here_Exceptions_OutOfRange
+     * clear query result state
      */
-    final public function seek($index) {
-        if ($this->_result && is_array($this->_result) && count($this->_result) > $index && $index > 0) {
-            $this->_result_current_index = $index;
-        } else {
-            throw new Here_Exceptions_OutOfRange('index out of range', 'Here:Db:Adapter:Base');
-        }
+    final public function clear_result() {
+        $this->_result = null;
+        $this->_affected_rows = 0;
+    }
+
+    /**
+     * current query string
+     *
+     * @var string
+     */
+    protected $_query_string;
+
+    /**
+     * get current query string
+     *
+     * @return string
+     */
+    final public function query_string() {
+        return $this->_query_string;
     }
 
     /**

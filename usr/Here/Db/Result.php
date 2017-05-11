@@ -11,11 +11,11 @@
 
 class Here_Db_Result {
     /**
-     * result pointer to an arbitrary row in the result
+     * result data internal pointer
      *
      * @var int
      */
-    private $_current_row = 0;
+    protected $_result_current_index = 0;
 
     /**
      * total of rows
@@ -32,23 +32,32 @@ class Here_Db_Result {
     private $_affected_rows = 0;
 
     /**
-     * result
+     * query result
      * 
      * @var array
      */
     private $_result = null;
 
     /**
+     * query string, using for debug/check error
+     *
+     * @var string
+     */
+    private $_query_string;
+
+    /**
      * Result Class constructor
      *
      * @param array $result
      * @param int $affected_rows
+     * @param int $last_insert_id
+     * @param string $query_string
      */
-    public function __construct(array $result, $affected_rows) {
-        $this->_current_row = 0;
+    public function __construct(array $result, $affected_rows, $last_insert_id, $query_string) {
         $this->_affected_rows = is_int($affected_rows) ? $affected_rows : -1;
         $this->_rows_count = count($result);
         $this->_result = $result;
+        $this->_query_string = $query_string;
     }
 
     /**
@@ -65,38 +74,48 @@ class Here_Db_Result {
      *
      * @return array
      */
-    public function fetch() {
+    public function get_values(/* ... */) {
         $keys = func_get_args();
 
+        if ($this->_result_current_index >= $this->_rows_count) {
+            throw new Here_Exceptions_OutOfRange("internal index is out of range, please reset index",
+                'Here:Db:Result:get_values');
+        }
+
         // fetch all fields
-        if (empty($key)) {
-            return $this->_result[$this->_current_row++];
+        if (empty($keys)) {
+            return $this->_result[$this->_result_current_index++];
         }
 
         // fetch some field
         $result = array();
         foreach ($keys as $key) {
-            $result[$key] = isset($this->_result[$this->_current_row][$key]) ? $this->_result[$this->_current_row][$key] : null;
+            $result[$key] = isset($this->_result[$this->_result_current_index][$key]) ? $this->_result[$this->_result_current_index][$key] : null;
 
-            $this->_current_row += 1;
+            $this->_result_current_index += 1;
         }
         return $result;
     }
 
     /**
-     * Adjusts the result pointer to an arbitrary row in the result
+     * sets the position indicator associated with the rows to a new position.
      *
-     * @param int $offset
+     * @param int $index
+     * @throws Here_Exceptions_OutOfRange
      */
-    public function seek($offset) {
-        $this->_current_row = ($offset >= 0 && $offset <= $this->_rows_count) ? $offset : $this->_current_row;
+    final public function seek($index) {
+        if ($this->_result && is_array($this->_result) && count($this->_result) > $index && $index > 0) {
+            $this->_result_current_index = $index;
+        } else {
+            throw new Here_Exceptions_OutOfRange('index out of range', 'Here:Db:Result:seek');
+        }
     }
 
     /**
-     * Reset the result pointer
+     * reposition rows position indicator
      */
-    public function reset() {
-        $this->_current_row = 0;
+    final public function reset() {
+        $this->_result_current_index = 0;
     }
 
     /**
@@ -106,5 +125,14 @@ class Here_Db_Result {
      */
     public function affected_row() {
         return $this->_affected_rows;
+    }
+
+    /**
+     * getting current result query string
+     *
+     * @return string
+     */
+    public function query_string() {
+        return $this->query_string();
     }
 }

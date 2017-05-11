@@ -320,11 +320,11 @@ class Route_Test extends Here_Abstracts_Route_Route {
         // helper instance
         $helper = new Here_Db_Helper('here_');
 
-        // dump helper
-        var_dump($helper);
+        // server information
+        var_dump($helper->get_adapter_info());
 
-        // dump SELECT query instance
-        var_dump($helper->select(array('uid', 'user_id'), 'name', array('table.users.password', 'u_pwd'), 'table.articles.author_id', array('nickname', 'call'))
+        // select query
+        var_dump($helper->query($helper->select(array('uid', 'user_id'), 'name', array('table.users.password', 'u_pwd'), 'table.articles.author_id', array('nickname', 'call'))
             // table name
             ->from('table.users', 'u')
             // order
@@ -347,56 +347,22 @@ class Route_Test extends Here_Abstracts_Route_Route {
             ->limit(5)
             // offset
             ->offset(0)
-            // to_string
-            ->__toString()
-        );
-        // dump INSERT query instance
-        var_dump($helper->insert()
+        ));
+        // insert query
+        var_dump($helper->query($helper->insert()
             // table name
             ->into('table.users')
             // keys
             ->keys('name', 'password', 'email', 'created', 'last_login')
             // values
-            ->values('ShadowMan', '123456', '1@qq.com', '123456789', '123456789')
+            ->values('ShadowMan_7', '123456', '1@qq.com', '123456789', '123456789')
             // values again
-//            ->values('john', '123456', '1@qq.com', '123456789', '123456789')
+            ->values('john_7', '123456', '1@qq.com', '123456789', '123456789')
             // toggle on duplicate update flag
-            ->toggle_on_duplicate_update()
-            // to string
-            ->__toString()
-        );
-        // dump INSERT query instance
-        var_dump($helper->insert()
-            // table name
-            ->into('table.users')
-            // keys
-            ->keys('name', 'password', 'email', 'created', 'last_login')
-            // sub select
-            ->sub_select(
-                // select
-                $helper->select('name', 'password', 'email', 'created', 'last_login')
-                // table name
-                ->from('table.users')
-            )
-            // to string
-            ->__toString()
-        );
-        // simple insert a row to database
-        var_dump($helper->insert()
-            // table name
-            ->into('table.users')
-            // one row
-            ->one_row(array(
-                'name' => 'Hello',
-                'password' => 'World'
-            ))
-            // toggle
-            ->toggle_on_duplicate_update()
-            // to string
-            ->__toString()
-        );
+//            ->toggle_on_duplicate_update()
+        ));
         // update syntax
-        var_dump($helper->update()
+        var_dump($helper->query($helper->update()
             // table name
             ->from('table.users')
             // key-value pairs
@@ -405,22 +371,16 @@ class Route_Test extends Here_Abstracts_Route_Route {
                 'password' => 'Hello_World_Password'
             ))
             // where
-            ->where((new Here_Db_Expression('name'))->equal('ShadowMan'))
-            // limit
-            ->limit(1)
-            // to string
-            ->__toString()
-        );
+            ->where((new Here_Db_Expression('name'))->equal('ShadowMan_7'))
+        ));
         // delete
-        var_dump($helper->delete()
+        var_dump($helper->query($helper->delete()
             // from
             ->from('table.users')
             // where
-            ->where((new Here_Db_Expression('uid'))->equal(1))
-            // to string
-            ->__toString()
-        );
-        $helper->query('');
-        var_dump($helper->get_adapter_info());
+            ->where((new Here_Db_Expression('name'))->equal('Hello_World'), Here_Db_Helper::OPERATOR_OR)
+            // delete john
+            ->where((new Here_Db_Expression('name'))->equal('john_7'))
+        ));
     }
 }

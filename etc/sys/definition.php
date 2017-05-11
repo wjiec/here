@@ -44,7 +44,7 @@ define('_here_user_router_table_', 'etc/router.php');
 /**
  * system router tables path
  */
-define('_here_sys_default_router_table_', 'etc/sys/default_route.php');
+define('_here_sys_default_router_table_', 'etc/sys/default_router.php');
 
 /**
  * default forbidden list
