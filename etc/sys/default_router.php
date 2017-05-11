@@ -10,6 +10,16 @@
  * @link      https://github.com/JShadowMan/here
  */
 
+
+/**
+ * default error handler
+ */
+Core::router_instance()->default_error(function(array $parameters) {
+    echo "<h1>Default Error</h1>";
+    var_dump($parameters);
+});
+
+
 /**
  * 404 Not Found
  */
@@ -293,94 +303,5 @@ class Route_Static extends Here_Abstracts_Route_Route {
         } else {
             Here_Request::abort(404, 'Not Found');
         }
-    }
-}
-
-
-/**
- *
- */
-class Route_Test extends Here_Abstracts_Route_Route {
-    public function urls() {
-        return array('/test-db-helper');
-    }
-
-    public function methods() {
-        return array('GET');
-    }
-
-    public function hooks() {
-        return array();
-    }
-
-    public function entry_point(array $parameters) {
-        // initializing database server
-        Here_Db_Helper::init_server('mysql:host=192.168.148.128;port=3306;dbname=here;', 'root', 'root');
-
-        // helper instance
-        $helper = new Here_Db_Helper('here_');
-
-        // server information
-        var_dump($helper->get_adapter_info());
-
-        // select query
-        var_dump($helper->query($helper->select(array('uid', 'user_id'), 'name', array('table.users.password', 'u_pwd'), 'table.articles.author_id', array('nickname', 'call'))
-            // table name
-            ->from('table.users', 'u')
-            // order
-            ->order('name', Here_Db_Helper::ORDER_DESC)
-            // order again
-            ->order('call', Here_Db_Helper::ORDER_ASC)
-            // where
-            ->where((new Here_Db_Expression('table.users.uid'))->bigger(0))
-            // group
-            ->group('user_id')
-            // group again
-            ->group('table.users.password', Here_Db_Helper::ORDER_DESC)
-            // join
-            ->join(array('table.articles', 'arts'))
-            // on
-            ->on((new Here_Db_Expression('table.users.uid'))->equal('table.articles.author_id'))
-            // having
-            ->having((new Here_Db_Expression('table.articles.author_id'))->equal(1))
-            // limit
-            ->limit(5)
-            // offset
-            ->offset(0)
-        ));
-        // insert query
-        var_dump($helper->query($helper->insert()
-            // table name
-            ->into('table.users')
-            // keys
-            ->keys('name', 'password', 'email', 'created', 'last_login')
-            // values
-            ->values('ShadowMan_7', '123456', '1@qq.com', '123456789', '123456789')
-            // values again
-            ->values('john_7', '123456', '1@qq.com', '123456789', '123456789')
-            // toggle on duplicate update flag
-//            ->toggle_on_duplicate_update()
-        ));
-        // update syntax
-        var_dump($helper->query($helper->update()
-            // table name
-            ->from('table.users')
-            // key-value pairs
-            ->one_row(array(
-                'name' => 'Hello_World',
-                'password' => 'Hello_World_Password'
-            ))
-            // where
-            ->where((new Here_Db_Expression('name'))->equal('ShadowMan_7'))
-        ));
-        // delete
-        var_dump($helper->query($helper->delete()
-            // from
-            ->from('table.users')
-            // where
-            ->where((new Here_Db_Expression('name'))->equal('Hello_World'), Here_Db_Helper::OPERATOR_OR)
-            // delete john
-            ->where((new Here_Db_Expression('name'))->equal('john_7'))
-        ));
     }
 }

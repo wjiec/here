@@ -61,14 +61,14 @@ class Core {
         # load sys.conf and definition
         self::load_configure();
 
+        # init router table
+        self::_init_router_table();
+
         # load base widget
         self::_init_widgets($debug_mode);
 
         # load helper
         self::_init_helper();
-
-        # init router table
-        self::_init_router_table();
     }
 
     /**
@@ -151,7 +151,7 @@ class Core {
 
         if ($fatal_error && $fatal_error['type'] == $fatal_error['type'] & $E_FATAL_ERROR) {
             // clean "Fatal Error: ..." output
-//            ob_clean();
+            ob_clean();
             // key information
             $errno = 'Fatal';
             $error = $fatal_error['message'];

@@ -69,6 +69,33 @@ abstract class Here_Abstracts_Widget {
     }
 
     /**
+     * from self widget options getting value
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    final protected function _options_get($key, $default = null) {
+        return array_key_exists($key, $this->_widget_options) ? $this->_widget_options[$key] : $default;
+    }
+
+    /**
+     * set key-value pairs to widgets options
+     *
+     * @param string $key
+     * @param mixed $value
+     * @param bool $overwrite
+     */
+    final protected function _options_set($key, $value, $overwrite = false) {
+        if (array_key_exists($key, $this->_widget_options)) {
+            if ($overwrite == false) {
+                return ;
+            }
+        }
+        $this->_widget_options[$key] = $value;
+    }
+
+    /**
      * not allow clone widget, like SingleInstance
      *
      * @throws Exception
