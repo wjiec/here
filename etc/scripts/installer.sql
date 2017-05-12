@@ -31,6 +31,13 @@ CREATE TABLE IF NOT EXISTS `here_users` (
   UNIQUE KEY (`nickname`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+--
+-- Add Index
+--
+
+ALTER TABLE `here_users` ADD KEY `uid` (`uid`);
+
+
 -- --------------------------------------------------------
 
 --
@@ -90,6 +97,13 @@ CREATE TABLE IF NOT EXISTS `here_articles` (
   `next_article_id` SMALLINT(8) UNSIGNED DEFAULT NULL,
   UNIQUE KEY (`title`, `url`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Add Index
+--
+
+ALTER TABLE `here_articles` ADD KEY `author_id` (`author_id`);
+
 
 -- --------------------------------------------------------
 
