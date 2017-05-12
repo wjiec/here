@@ -17,10 +17,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="format-detection" content="telephone=no"/>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
-  <link rel="stylesheet" href="<?php Theme_Helper::static_url_completion('/static/default/css/library/grid-flex-alpha.css'); ?>" media="all" />
-  <link rel="stylesheet" href="<?php Theme_Helper::static_url_completion('/static/install/css/install.css'); ?>" media="all" />
-  <script src="<?php Theme_Helper::static_url_completion('/static/default/js/library/here-base.js'); ?>"></script>
-  <script src="<?php Theme_Helper::static_url_completion('/static/install/js/installer.js'); ?>"></script>
+  <link rel="stylesheet" href="<?php Theme_Helper::static_completion('default', 'css/library/grid-flex-alpha.css'); ?>" media="all" />
+  <link rel="stylesheet" href="<?php Theme_Helper::static_completion('install', 'css/install.css'); ?>" media="all" />
+  <script src="<?php Theme_Helper::static_completion('default', 'js/library/here-base.js'); ?>"></script>
+  <script src="<?php Theme_Helper::static_completion('install', 'js/installer.js'); ?>"></script>
 </head>
 <body>
   <header id="here-installer-header" class="flex-container-center">
@@ -31,8 +31,9 @@
     <section id="here-install-body" class="flex-container-column-center flex-container-cross-center">
         <div id="here-installer-contents">
           <h3>Welcome to Here.</h3>
-          <p>Here is distributed under the <a href="/license" target="_blank">MIT License</a>.</p>
-          <p>This installer guide will automatically detect server environment is in line with the minimum configuration requirements. If not meet, please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
+          <p>Here is distributed under the <a href="<?php Theme_Helper::url_completion('/license'); ?>" target="_blank">MIT License</a>.</p>
+          <p>This installer guide will automatically detect server environment is in line with the minimum configuration requirements.
+              If not meet, please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
         </div>
         <div id="here-installer-server-detecting">
           <div id="here-installer-sd-status-bar">

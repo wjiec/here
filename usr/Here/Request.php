@@ -38,22 +38,37 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         }
     }
 
-    public function is_mobile() {
-        $user_agent = strtolower($this->get_server_env('http_user_agent'));
+    /**
+     * from server variables getting item
+     *
+     * @param string|null $key
+     * @return array|mixed|null
+     */
+    public function get_server_env($key = null) {
+        // return all server variable
+        if ($key === null) {
+            return $this->_server;
+        }
+        // get single item
+        $key = strtolower($key);
+        if (array_key_exists($key, $this->_server)) {
+            return $this->_server[$key];
+        }
+        return null;
+    }
+
+    /**
+     * check client is mobile
+     *
+     * @return bool
+     */
+    public static function is_mobile() {
+        $user_agent = strtolower(self::get_server_env('http_user_agent'));
         return (strpos($user_agent, 'iphone') ||
             strpos($user_agent, 'ipad') ||
             strpos($user_agent, 'android') ||
             strpos($user_agent, 'midp') ||
             strpos($user_agent, 'ucweb'));
-    }
-
-    public function get_server_env($key) {
-        $key = strtolower($key);
-
-        if (array_key_exists($key, $this->_server)) {
-            return $this->_server[$key];
-        }
-        return null;
     }
 
     /**
@@ -66,10 +81,20 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         return self::get_instance()->get_server_env($key);
     }
 
-    public static function init_request() {
-        self::$_single_request_instance = new Here_Request();
+    /**
+     * return server variables
+     *
+     * @return array
+     */
+    public static function get_server_variables() {
+        return self::get_instance()->get_server_env();
     }
 
+    /**
+     * redirection to new url
+     *
+     * @param string $url
+     */
     public static function redirection($url) {
         @ob_clean();
 
@@ -78,6 +103,8 @@ class Here_Request implements Here_Interfaces_SingleInstance {
     }
 
     /**
+     * abort current request
+     *
      * @param int $errno
      * @param string|null $error
      */
@@ -85,41 +112,57 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         Core::router_instance()->emit_error($errno, $error);
     }
 
+    /**
+     * set http error code
+     *
+     * @param int $code
+     */
     public static function set_http_code($code) {
         header('Request-Status: ' . $code, null, $code);
     }
 
+    /**
+     * set http-field for mime type
+     *
+     * @param $suffix
+     */
     public static function set_mime($suffix) {
         switch ($suffix) {
             case 'css': $mime = 'text/css'; break;
             case 'js': $mime = 'text/javascript'; break;
             case 'html': $mime = 'text/html'; break;
+            case 'json': $mime = 'text/json'; break;
             default: return; /* Exit */
         }
 
         self::header('Content-Type', $mime . '; charset=' . _here_default_charset_);
     }
 
+    /**
+     * set http header
+     *
+     * @param string $key
+     * @param string $value
+     */
     public static function header($key, $value) {
         header($key . ': ' . $value);
     }
 
     /**
-     * get request instance
-     * 
-     * @return Here_Request
+     * getting complete url
+     *
+     * @param string $url
+     * @return string
      */
-    public static function get_instance() {
-        if (self::$_single_request_instance == null) {
-            self::$_single_request_instance = new Here_Request();
-        }
-        return self::$_single_request_instance;
-    }
-
     public static function url_completion($url) {
         return self::get_url_prefix() . (($url[0] == '/') ? $url : ('/' . $url));
     }
 
+    /**
+     * HTTP protocol, http:// or https://
+     *
+     * @return string
+     */
     public static function get_url_prefix() {
         if (self::$_url_prefix == null) {
             self::$_url_prefix = (self::is_secure() ? 'https' : 'http') . '://'
@@ -129,6 +172,11 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         return self::$_url_prefix;
     }
 
+    /**
+     * check current connection is safe
+     *
+     * @return bool
+     */
     private static function is_secure() {
         return (
             (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off') ||
@@ -136,6 +184,11 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         );
     }
 
+    /**
+     * get request headers
+     *
+     * @return array|false
+     */
     public static function get_request_headers() {
         if (!function_exists('apache_request_headers')) {
             function apache_request_headers() {
@@ -176,4 +229,23 @@ class Here_Request implements Here_Interfaces_SingleInstance {
 
     # single instance
     private static $_single_request_instance = null;
+
+    /**
+     * create Here_Request instance
+     */
+    public static function init_request() {
+        self::$_single_request_instance = new Here_Request();
+    }
+
+    /**
+     * get request instance
+     *
+     * @return Here_Request
+     */
+    public static function get_instance() {
+        if (self::$_single_request_instance == null) {
+            self::$_single_request_instance = new Here_Request();
+        }
+        return self::$_single_request_instance;
+    }
 }

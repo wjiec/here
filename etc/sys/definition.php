@@ -116,3 +116,8 @@ define('_here_cache_server_', 'memcached');
  * database connecting timeout
  */
 define('_here_database_connecting_timeout_', 1);
+
+/**
+ * static/resource url prefix
+ */
+define('_here_static_url_prefix_', '/static/');

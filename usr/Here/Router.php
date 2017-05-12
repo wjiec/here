@@ -177,6 +177,11 @@ class Here_Router {
             $method = strtoupper($method);
             return in_array($method, self::$_request_methods);
         });
+        if (in_array('ALL', $methods)) {
+            $methods = self::$_request_methods;
+            // pop 'ALL'
+            array_pop($methods);
+        }
 
         if (!is_array($urls) && is_string($urls)) {
             $urls = array($urls);

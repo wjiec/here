@@ -158,10 +158,20 @@ class Route_Index extends Here_Abstracts_Route_Route {
         return array('GET');
     }
 
+    /**
+     * check blog is installed
+     *
+     * @return array
+     */
     public function hooks() {
         return array('check_install');
     }
 
+    /**
+     * entry pointer
+     *
+     * @param array $parameters
+     */
     public function entry_point(array $parameters) {
         echo '<h1>Index Homepage</h1>';
         var_dump($parameters);
@@ -175,18 +185,38 @@ class Route_Index extends Here_Abstracts_Route_Route {
  * Installer guide page
  */
 class Route_Installer extends Here_Abstracts_Route_Route {
+    /**
+     * installer url
+     *
+     * @return array
+     */
     public function urls() {
         return array('/installer-guide');
     }
 
+    /**
+     * allow 'GET' only
+     *
+     * @return array
+     */
     public function methods() {
         return array('GET');
     }
 
+    /**
+     * empty hooks
+     *
+     * @return array
+     */
     public function hooks() {
         return array();
     }
 
+    /**
+     * entry pointer
+     *
+     * @param array $parameters
+     */
     public function entry_point(array $parameters) {
         if (is_file(_here_install_file_)) {
             include _here_install_file_;
@@ -202,18 +232,38 @@ class Route_Installer extends Here_Abstracts_Route_Route {
  * Route /license
  */
 class Route_License extends Here_Abstracts_Route_Route {
+    /**
+     * license page url
+     *
+     * @return array
+     */
     public function urls() {
         return array('/license', '/license.$ext');
     }
 
+    /**
+     * allow 'GET' only
+     *
+     * @return array
+     */
     public function methods() {
         return array('GET');
     }
 
+    /**
+     * empty hooks
+     *
+     * @return array
+     */
     public function hooks() {
         return array();
     }
 
+    /**
+     * entry pointer
+     *
+     * @param array $parameters
+     */
     public function entry_point(array $parameters) {
         echo '<h1 id="title">Blog License</h1>';
         var_dump($parameters);
@@ -231,14 +281,29 @@ class Route_Recovery extends Here_Abstracts_Route_Route {
         return array('/recovery');
     }
 
+    /**
+     * allow 'GET' only
+     *
+     * @return array
+     */
     public function methods() {
         return array('GET');
     }
 
+    /**
+     * empty hooks
+     *
+     * @return array
+     */
     public function hooks() {
         return array();
     }
 
+    /**
+     * entry pointer
+     *
+     * @param array $parameters
+     */
     public function entry_point(array $parameters) {
     
     }
@@ -252,19 +317,53 @@ class Route_Recovery extends Here_Abstracts_Route_Route {
  */
 class Route_API extends Here_Abstracts_Route_Route {
     public function urls() {
-        return array('/api/@v(\d+)@api_version/$module/$operator');
+        return array('/api/@v(\d+)@api_version/$module/$action');
     }
 
+    /**
+     * all method allow
+     *
+     * @return array
+     */
     public function methods() {
-        return array('GET');
+        return array('ALL');
     }
 
+    /**
+     * empty hooks
+     *
+     * @return array
+     */
     public function hooks() {
         return array();
     }
 
+    /**
+     * entry pointer
+     *
+     * @param array $parameters
+     * @throws Here_Exceptions_ApiError
+     */
     public function entry_point(array $parameters) {
-        var_dump($parameters);
+        // from url parameters getting variable
+        $module_name = ucfirst($parameters['module']);
+        $action_name = $parameters['action'];
+        // build api class name
+        $api_class_name = "Here_Api_{$module_name}";
+        // check class exists
+        if (!class_exists($api_class_name)) {
+            throw new Here_Exceptions_ApiError("api handler class non exists",
+                'Here:Router:api:entry_point');
+        }
+        // create instance
+        $api_instance = new $api_class_name($parameters['re']['api_version']);
+        // check action exists
+        if (!method_exists($api_class_name, $action_name)) {
+            throw new Here_Exceptions_ApiError("action method non exists",
+                'Here:Router:api:entry_point');
+        }
+        // call
+        call_user_func(array($api_instance, $action_name), $parameters);
     }
 }
 
@@ -279,14 +378,29 @@ class Route_Static extends Here_Abstracts_Route_Route {
         return array('/static/???');
     }
 
+    /**
+     * allow 'GET' only
+     *
+     * @return array
+     */
     public function methods() {
         return array('GET');
     }
 
+    /**
+     * empty hooks
+     *
+     * @return array
+     */
     public function hooks() {
         return array();
     }
 
+    /**
+     * entry pointer
+     *
+     * @param array $parameters
+     */
     public function entry_point(array $parameters) {
         $static_file = $parameters['full_match_url'];
         $real_file_path = trim(join(_here_path_separator_, array(__HERE_VAR_DIRECTORY__, $static_file)), '/');
