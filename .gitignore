@@ -18,5 +18,9 @@ node_modules
 # exclued webpack.config.js
 !webpack.config.js
 
+# exckude glup file
+!gulpfile.js
+
 # style sheet
 *.css
+

@@ -1,3 +1,5 @@
+// import `webpack` module
+var webpack = require('webpack');
 // import `path` module
 var path = require('path');
 // webpack configure
@@ -15,13 +17,7 @@ module.exports = {
             './var/default/js/library/history.es6',
             // here base framework script
             './var/default/js/library/here-base.es6'
-        ],
-
-        // here index page script
-        './var/default/js/index': './var/default/js/index.es6',
-
-        // here installer guide script
-        './var/install/js/installer': './var/install/js/installer.es6',
+        ]
     },
     output: {
         filename: '[name].js'
@@ -34,5 +30,13 @@ module.exports = {
                 loader: 'babel-loader?presets[]=es2015'
             }
         ]
-    }
+    },
+    plugins: [
+        /* uglify by gulp-uglify */
+        // new webpack.optimize.UglifyJsPlugin({
+        //     compress: {
+        //         warnings: false
+        //     }
+        // })
+    ]
 }

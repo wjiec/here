@@ -1,5 +1,11 @@
+/**
+ * Installer Guide Scripts
+ *
+ * @pack Here
+ * @author ShadowMan
+ */
 $.ready(function() {
     let _document = new $(document)
-    _document.on('contextmenu', function() { return false }, true)
-    _document.on('selectstart', function() { return false }, true)
+    _document.on('contextmenu', () => false, false)
+    _document.on('selectstart', () => false, false)
 })

@@ -66,6 +66,8 @@ class Here_Api_Installer extends Here_Abstracts_Api {
     }
 
     /**
+     * /api/v1/installer/check_python_support
+     *
      * @param array $parameters
      */
     public function check_python_support(array $parameters) {
@@ -74,11 +76,28 @@ class Here_Api_Installer extends Here_Abstracts_Api {
 
     }
 
+    /**
+     * /api/v1/installer/check_write_permissions
+     *
+     * @param array $parameters
+     */
+    public function check_write_permissions(array $parameters) {
+
+    }
+
+    /**
+     * /api/v1/installer/check_database_adapter
+     *
+     * @param array $parameters
+     */
     public function check_database_adapter(array $parameters) {
         // check installed
         $this->_check_installed();
     }
 
+    /**
+     * check blog installed
+     */
     private function _check_installed() {
         if (is_file(_here_user_configure)) {
             Here_Request::abort(403);
