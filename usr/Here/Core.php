@@ -175,7 +175,8 @@ class Core {
      * @param mixed $extra_data
      */
     private static function _report_all_error($errno, $error, $error_file, $error_line, $extra_data = null) {
-//        @ob_clean();
+        // clean ob cache
+        @ob_clean();
 
         echo "<h1>Error/Exception Occurs</h1>";
 
@@ -205,7 +206,7 @@ class Core {
         # sys definition variables
         require_once 'sys/definition.php';
 
-        # check here is install or require recovery
+        # check here is installer or require recovery
         if (is_file(_here_user_configure)) {
             # include user definition variable
             require_once _here_user_configure;

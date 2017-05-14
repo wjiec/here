@@ -15,6 +15,9 @@
  * default error handler
  */
 Core::router_instance()->default_error(function(array $parameters) {
+    // clear ob cache
+    ob_clean();
+    // report
     echo "<h1>Default Error</h1>";
     var_dump($parameters);
 });
@@ -98,7 +101,7 @@ class Hook_Authentication extends Here_Abstracts_Route_Hook {
      * @see Here_Abstracts_Route_Hook::entry_point()
      */
     public function entry_point(array $parameters) {
-        echo '<h1>Check Authentiation</h1>';
+        echo '<h1>Check Authentication</h1>';
         var_dump($parameters);
 
         return true;
@@ -107,7 +110,7 @@ class Hook_Authentication extends Here_Abstracts_Route_Hook {
 
 
 /**
- * Hook check install
+ * Hook check installer
  */
 class Hook_Check_Install extends Here_Abstracts_Route_Hook {
     /**
@@ -218,11 +221,11 @@ class Route_Installer extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        if (is_file(_here_install_file_)) {
-            include _here_install_file_;
+        if (is_file(_here_installer_file_)) {
+            include _here_installer_file_;
         } else {
             /* magic method: __call, [no qa] */
-            Core::router_instance()->emit_error('500', array('error' => 'Missing install file'));
+            Core::router_instance()->emit_error('500', array('error' => 'Missing installer file'));
         }
     }
 }
@@ -238,7 +241,7 @@ class Route_License extends Here_Abstracts_Route_Route {
      * @return array
      */
     public function urls() {
-        return array('/license', '/license.$ext');
+        return array('/license');
     }
 
     /**
@@ -278,7 +281,7 @@ class Route_License extends Here_Abstracts_Route_Route {
  */
 class Route_Recovery extends Here_Abstracts_Route_Route {
     public function urls() {
-        return array('/recovery');
+        return array(_here_recovery_url_);
     }
 
     /**
@@ -315,7 +318,7 @@ class Route_Recovery extends Here_Abstracts_Route_Route {
  *
  * Router: /api/@v(\d+)@api_version/$module/$operator
  */
-class Route_API extends Here_Abstracts_Route_Route {
+class Route_Api extends Here_Abstracts_Route_Route {
     public function urls() {
         return array('/api/@v(\d+)@api_version/$module/$action');
     }
@@ -417,5 +420,39 @@ class Route_Static extends Here_Abstracts_Route_Route {
         } else {
             Here_Request::abort(404, 'Not Found');
         }
+    }
+}
+
+
+class Route_Cache extends Here_Abstracts_Route_Route {
+    public function urls() {
+        return array('/test-cache');
+    }
+
+    /**
+     * allow 'GET' only
+     *
+     * @return array
+     */
+    public function methods() {
+        return array('GET');
+    }
+
+    /**
+     * empty hooks
+     *
+     * @return array
+     */
+    public function hooks() {
+        return array();
+    }
+
+    /**
+     * entry pointer
+     *
+     * @param array $parameters
+     */
+    public function entry_point(array $parameters) {
+        phpinfo();
     }
 }

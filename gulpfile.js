@@ -8,19 +8,19 @@ var clean_css = require('gulp-clean-css');
 
 var gulp_script_files = [
     // installer guide script
-    './var/install/js/installer.es6',
+    './var/installer/js/installer.es6',
     // home page script
     './var/default/js/index.es6'
 ];
 
 // script:
 gulp.task('scripts', function() {
-    gulp.src("./var/install/js/installer.es6")
+    gulp.src("./var/installer/js/installer.es6")
         .pipe(babel())
-        .pipe(gulp.dest("./var/install/js"))
+        .pipe(gulp.dest("./var/installer/js"))
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
-        .pipe(gulp.dest("./var/install/js"));
+        .pipe(gulp.dest("./var/installer/js"));
 })
 
 // styles uglify

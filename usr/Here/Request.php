@@ -24,6 +24,27 @@ class Here_Request implements Here_Interfaces_SingleInstance {
      */
     private $_server = array();
 
+    /**
+     * GET parameters
+     *
+     * @var array
+     */
+    private $_get_parameters = array();
+
+    /**
+     * POST parameters
+     *
+     * @var array
+     */
+    private $_post_parameters = array();
+
+    /**
+     * request body contents
+     *
+     * @var string
+     */
+    private $_request_contents;
+
     /** Here_Request constructor
      * 
      * @throws Exception
@@ -32,10 +53,15 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         if (self::$_single_request_instance != null) {
             throw new Exception('Request must be single instance', 1996);
         }
-
+        // server variables
         foreach ($_SERVER as $key => $value) {
             $this->_server[strtolower($key)] = $value;
         }
+        // request params
+        $this->_get_parameters = $_GET;
+        $this->_post_parameters = $_POST;
+        // request body contents
+        $this->_request_contents = file_get_contents('php://input');
     }
 
     /**

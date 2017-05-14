@@ -26,14 +26,6 @@ class Here_Widget_CacheManager extends Here_Abstracts_Widget {
         $this->_options_set('adapter', _here_cache_server_);
     }
 
-    public function get($key) {
-
-    }
-
-    public function set($key, $value) {
-
-    }
-
     private function _create_cache_instance() {
         // get server name from definitions
         $server_name = $this->_options_get('adapter');

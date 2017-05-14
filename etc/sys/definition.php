@@ -61,7 +61,7 @@ define('_here_user_configure', 'etc/configure.php');
 /**
  * installer guide file path
  */
-define('_here_install_file_', 'var/install/install.php');
+define('_here_installer_file_', 'var/installer/installer.php');
 
 /**
  * installer guide url
@@ -89,6 +89,11 @@ define('_here_emit_error_after_exit_', true);
 define('_here_enable_recovery_mode', false);
 
 /**
+ * recovery guide address
+ */
+define('_here_recovery_url_', '/recovery-guide');
+
+/**
  * if exception level bigger than that, we must notification admin
  *
  * Exception Level:
@@ -103,9 +108,8 @@ define('_here_notification_level', 100);
  * blog page cache server.
  * 
  * Server:
- *      memcache
- *      redis
  *      memcached
+ *      redis
  *      null
  *
  * @TODO cache controller
