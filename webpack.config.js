@@ -34,9 +34,15 @@ module.exports = {
     plugins: [
         /* uglify by gulp-uglify */
         // new webpack.optimize.UglifyJsPlugin({
+        //     // Eliminate comments
+        //     comments: false,
+        //     // Compression specific options
         //     compress: {
-        //         warnings: false
-        //     }
+        //         // remove warnings
+        //         warnings: false,
+        //         // Drop console statements
+        //         drop_console: true
+        //     },
         // })
     ]
 }
