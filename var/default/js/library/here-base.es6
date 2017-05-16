@@ -57,6 +57,13 @@ export default class $ {
             selector.removeEventListener(event_name, event_callback)
         })
     }
+    // getting dom object
+    get element() {
+        if (this._selector.length === 1) {
+            return this._selector[0];
+        }
+        return this._selector;
+    }
     // ajax adapter
     static get AjaxAdapter() {
         return AjaxAdapter
@@ -88,6 +95,22 @@ export default class $ {
     // factory_dom element node
     static factory_dom(dom_string) {
         return Utility.factory_dom(dom_string)
+    }
+    // from JSON String convert to Object
+    static json_decode(json_string) {
+        try {
+            return JSON.parse(json_string)
+        } catch (e) {
+            throw e;
+        }
+    }
+    // from Object convert to JSON String
+    static json_encode(object) {
+        try {
+            return JSON.stringify(object)
+        } catch (e) {
+            throw e
+        }
     }
 }
 

@@ -49,6 +49,11 @@ class Here_Api_Installer extends Here_Abstracts_Api {
             'url_prefix' => Here_Request::get_url_prefix(),
             'steps' => array(
                 array(
+                    'name' => 'Web Server',
+                    'address' => '/api/v1/installer/check_web_server',
+                    'fail_level' => 'Warning'
+                ),
+                array(
                     'name' => 'Rewrite Support',
                     'address' => '/api/v1/installer/check_rewrite',
                     'fail_level' => 'Error'
@@ -62,7 +67,7 @@ class Here_Api_Installer extends Here_Abstracts_Api {
                     'address' => '/api/v1/installer/check_write_permissions',
                     'fail_level' => 'Warning'
                 ), array(
-                    'name' => 'Database Adapter Available',
+                    'name' => 'Database Adapter',
                     'address' => '/api/v1/installer/check_database_adapter',
                     'fail_level' => 'Error'
                 )
@@ -71,21 +76,37 @@ class Here_Api_Installer extends Here_Abstracts_Api {
         ));
     }
 
+    /**
+     * from server variables getting web server name
+     *
+     * @param array $parameters
+     */
+    public function check_web_server(array $parameters) {
+        $this->_make_detect_response(true, Here_Request::get_env('server_software'));
+    }
+
+    /**
+     * check url rewrite is enable. (will always be true)
+     *
+     * @param array $parameters
+     */
     public function check_rewrite(array $parameters) {
         // check installed
         $this->_check_installed();
         // if current method called, then rewrite is enabled
-        $this->_make_detect_response(true);
+        $this->_make_detect_response(true, 'Enabled');
     }
 
     /**
-     * /api/v1/installer/check_python_support
+     * check server python support
      *
      * @param array $parameters
      */
     public function check_python_support(array $parameters) {
         // check installed
         $this->_check_installed();
+        // make response
+        $this->_make_detect_response(false, 'Python Environment Not Found');
     }
 
     /**
@@ -94,7 +115,10 @@ class Here_Api_Installer extends Here_Abstracts_Api {
      * @param array $parameters
      */
     public function check_write_permissions(array $parameters) {
-
+        // check installed
+        $this->_check_installed();
+        // make response
+        $this->_make_detect_response(true, 'Permission: 755');
     }
 
     /**
@@ -105,6 +129,14 @@ class Here_Api_Installer extends Here_Abstracts_Api {
     public function check_database_adapter(array $parameters) {
         // check installed
         $this->_check_installed();
+        // make response
+        if (class_exists('PDO')) {
+            $this->_make_detect_response(true, 'PDO');
+        } else if (class_exists('mysqli')) {
+            $this->_make_detect_response(true, 'mysqli');
+        } else {
+            $this->_make_detect_response(false, 'Adapter Not Found');
+        }
     }
 
     /**

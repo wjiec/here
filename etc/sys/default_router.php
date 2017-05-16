@@ -426,7 +426,7 @@ class Route_Static extends Here_Abstracts_Route_Route {
 
 class Route_Cache extends Here_Abstracts_Route_Route {
     public function urls() {
-        return array('/test-cache');
+        return array('/test');
     }
 
     /**
@@ -453,6 +453,6 @@ class Route_Cache extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        phpinfo();
+        var_dump(Here_Request::get_server_variables());
     }
 }

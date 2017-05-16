@@ -177,6 +177,8 @@ class Core {
     private static function _report_all_error($errno, $error, $error_file, $error_line, $extra_data = null) {
         // clean ob cache
         @ob_clean();
+        // set http code 500
+        Here_Request::set_http_code(500);
 
         echo "<h1>Error/Exception Occurs</h1>";
 

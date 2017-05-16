@@ -35,19 +35,14 @@
         <p>This installer guide will automatically detect server environment is in line with the minimum configuration requirements.
             If not meet, please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
         <div id="here-installer-server-detecting">
-          <div id="here-installer-sd-status-bar">
-             <p class="detect-status-wait">Detecting Server... <span id="detect-current-step">1</span>/<span id="detect-all-step">5</span></p>
+          <div id="here-installer-detect-status-bar">
+            <p class="detect-status-wait">Getting Detect-items List</p>
           </div>
-            <div id="here-installer-sd-result">
-              <ul id="here-installer-sd-list">
-                <li class="here-installer-sd-item here-installer-sd-item-fail"><p>Python Support</p></li>
-                <li class="here-installer-sd-item here-installer-sd-item-success"><p>Apache URL rewrite</p></li>
-              </ul>
-            </div>
-          </div>
+          <div id="here-installer-detect-result" class="flex-container-column"></div>
+        </div>
       </div>
       <div id="button-container">
-        <button id="here-installer-next-btn" class="widget-btn-default" disabled>Next</button>
+        <button id="here-installer-next-btn" class="widget-btn-default" disabled>Start</button>
       </div>
     </section>
   </div>

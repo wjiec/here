@@ -81,3 +81,8 @@ gulp.task('default', ['clean'], function () {
     gulp.start('styles', 'webpack', 'scripts')
 });
 
+// watch static file changed
+gulp.task('watch', function() {
+    gulp.watch('./var/**/*.scss', ['styles'])
+    gulp.watch('./var/**/*.es6', ['scripts'])
+})

@@ -14,156 +14,175 @@
 @include font-loader('Inconsolata', 'Inconsolata');
 
 #here-installer-header {
-    height: 8rem;
-    color: #fff;
-    margin-bottom: 2.5rem;
-    background: #23282d;
-    cursor: default;
-    text-align: center;
-    // box shadow in header bottom
-    @include box-shadow(0 0 10px 1px rgba(0, 0, 0, .85));
-    // text style
-    h1 {
-        margin: 0;
-        font: {
-            family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
-            style: italic;
-        }
-        line-height: 3rem;
-        letter-spacing: 0.167rem;
+  height: 8rem;
+  color: #fff;
+  margin-bottom: 2.5rem;
+  background: #23282d;
+  cursor: default;
+  text-align: center;
+  // box shadow in header bottom
+  @include box-shadow(0 0 10px 1px rgba(0, 0, 0, .85));
+  // text style
+  h1 {
+    margin: 0;
+    font: {
+      family: "Droid Serif", Georgia, "Times New Roman", STHeiti, serif;
+      style: italic;
     }
+    line-height: 3rem;
+    letter-spacing: 0.167rem;
+  }
 }
 @mixin here-installer-header-tablet {
-    #here-installer-header {
-        height: 10rem;
-        margin-bottom: 3rem;
+  #here-installer-header {
+    height: 10rem;
+    margin-bottom: 3rem;
 
-        h1 {
-            font-size: 1.6rem;
-        }
+    h1 {
+      font-size: 1.6rem;
     }
+  }
 }
 @mixin here-installer-header-desktop {
-    #here-installer-header {
-        height: 10rem;
-        margin-bottom: 5rem;
+  #here-installer-header {
+    height: 10rem;
+    margin-bottom: 5rem;
 
-        h1 {
-            font-size: 2rem;
-        }
+    h1 {
+      font-size: 2rem;
     }
+  }
 }
 
 #here-installer-container {
-    color: $text-color;
-    cursor: default;
-    padding: 1rem;
+  color: $text-color;
+  cursor: default;
+  padding: 1rem;
 
-    background: {
-        color: $inside-background-color;
+  background: {
+    color: $inside-background-color;
+  }
+
+  @include box-shadow(inset 0 0 5px 1px rgba(0, 0, 0, .15));
+
+  @at-root
+  #here-install-body {
+    font: {
+      family: 'Inconsolata', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
     }
-
-    @include box-shadow(inset 0 0 5px 1px rgba(0, 0, 0, .15));
 
     @at-root
-    #here-install-body {
-        font: {
-            family: 'Inconsolata', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
-        }
+    #here-install-body h3 {
+      margin-bottom: .2rem;
+      font-family: 'FiraMono', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
 
-        @at-root
-        #here-install-body h3 {
-            margin-bottom: .2rem;
-            font-family: 'FiraMono', Helvetica, 'Hiragino Sans GB', Arial, sans-serif;
-
-            @at-root
-            #here-installer-contents p {
-                margin: .25rem 0;
-            }
-        }
-
-        @at-root
-        #here-installer-server-detecting {
-            margin-top: 1rem;
-
-            @at-root
-            #here-installer-sd-status-bar p, #here-installer-sd-result p {
-                display: inline-block;
-                transition: color .35s ease-in-out;
-
-                &.detect-status-wait {
-                    color: #990;
-                }
-
-                &.detect-status-success {
-                    color: #096;
-                }
-
-                &.detect-status-fail {
-                    color: #900;
-                }
-            }
-
-            @at-root
-            #here-installer-sd-result {
-                
-                @at-root
-                #here-installer-sd-list {
-                    li {
-                        &.here-installer-sd-item {
-                            &.here-installer-sd-item-fail {
-                                color: #900;
-
-                                &::before {
-                                    content: '\2718 ';
-                                }
-                            }
-
-                            &.here-installer-sd-item-success {
-                                color: #096;
-
-                                &::before {
-                                    content: '\2714 ';
-                                }
-                            }
-                        }
-
-                        p {
-                            margin-left: .8rem;
-                        }
-                    }
-                }
-            }
-        }
-
-        @at-root
-        #button-container {
-            text-align: right;
-
-            @at-root
-            #here-installer-next-btn {
-                letter-spacing: 1px;
-                font: {
-                    family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;
-                    style: italic;
-                }
-
-                &::after {
-                    content: "»";
-                }
-            }
-        }
+      @at-root
+      #here-installer-contents p {
+        margin: .25rem 0;
+      }
     }
+
+    @at-root
+    #here-installer-server-detecting {
+      margin-top: 1rem;
+
+      @at-root
+      #here-installer-detect-status-bar p {
+        display: inline-block;
+        transition: color .35s ease-in-out;
+
+        &.detect-status-wait {
+          color: #990;
+        }
+
+        &::after {
+          content: " ...";
+        }
+      }
+
+      @at-root
+      #here-installer-detect-result {
+        div[id|='detect'] {
+          display: flex;
+
+          &::before {
+            line-height: 2;
+            margin-right: .375rem;
+          }
+
+          // success
+          &.detect-item-status-success {
+            color: #096;
+
+            &::before {
+              content: '\2714 ';
+            }
+          }
+          // fail
+          &.detect-item-status-fail {
+            color: #900;
+
+            &::before {
+              content: '\2718 ';
+            }
+          }
+          //warning
+          &.detect-item-status-warning {
+            color: #990;
+
+            &::before {
+              content: '\2718 ';
+            }
+          }
+
+          p {
+            &:first-child {
+              &::after {
+                content: ': ';
+              }
+            }
+
+            &:last-child {
+              color: #bbb;
+              margin-left: 1rem;
+
+              .detect-message-error {
+                color: #900;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @at-root
+    #button-container {
+      text-align: right;
+
+      @at-root
+      #here-installer-next-btn {
+        letter-spacing: 1px;
+        font: {
+          family: 'Droid Serif', Georgia, 'Times New Roman', STHeiti, serif;
+          style: italic;
+        }
+
+        &::after {
+          content: "»";
+        }
+      }
+    }
+  }
 }
 
 @media screen and (min-width: #{map-get($break-points, 'phone') + 1}) {
-    @include here-installer-header-tablet;
+  @include here-installer-header-tablet;
 }
 
 @media screen and (min-width: #{map-get($break-points, 'tablet') + 1}) {
-    @include here-installer-header-desktop;
+  @include here-installer-header-desktop;
 }
 
 @media screen and (min-width: #{map-get($break-points, 'desktop') + 1}) {
-    // large screen
+  // large screen
 }

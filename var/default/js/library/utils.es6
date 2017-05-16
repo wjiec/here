@@ -77,12 +77,13 @@ class Utility {
             throw new Error(`HTML string except string, got ${typeof dom_string}`)
         }
 
-        if (!/<([\w]+)\s+[^>]*>.*<\/\1>/.test(dom_string)) {
+        if (!(/<([\w]+)\s*[^>]*>.*<\/\1>/.test(dom_string))) {
             throw new Error('HTML string invalid')
         }
 
         let tag_name = dom_string.match(/<([\w]+)/)[1]
-        let dom_contents = dom_string.match(/<([\w]+)\s+[^>]*>(.*)<\/\1>/)[2]
+        let match_result = dom_string.match(/<([\w]+)\s+[^>]*>(.*)<\/\1>/)
+        let dom_contents = match_result &&  match_result.length >= 2 ? match_result[2] : null
         let container = document.createElement(tag_name)
         container.innerHTML = dom_contents
 
