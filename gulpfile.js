@@ -6,7 +6,7 @@ var clean = require('gulp-clean')
 var uglify = require('gulp-uglify')
 var rename = require('gulp-rename')
 var compass = require('gulp-compass')
-var webpack = require('gulp-webpack')
+var webpack = require('webpack-stream')
 var clean_css = require('gulp-clean-css');
 
 var gulp_script_files = [
@@ -37,8 +37,9 @@ gulp.task('styles', ['compass'], function() {
         .pipe(gulp.dest('./var/'));
 })
 
-// webpack: build here base framework
+// webpack: build `here base framework`
 gulp.task('webpack', function() {
+    // read webpack.config.js configure, not definition in gulp
     return gulp.src('')
         .pipe(webpack(require('./webpack.config.js')))
         .pipe(gulp.dest(''))
@@ -47,8 +48,11 @@ gulp.task('webpack', function() {
 
 // babel convert ES6 to ES5
 gulp.task('babel', function() {
-    gulp_script_files.forEach(function(file_name, index) {
+    // for each all scripts
+    gulp_script_files.forEach(function(file_name) {
+        // check script exists
         if (fs.existsSync(file_name)) {
+            // babel convert ES6 to ES5
             gulp.src(file_name)
                 .pipe(babel())
                 .pipe(gulp.dest(path.dirname(file_name)))
