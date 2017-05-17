@@ -1,7 +1,7 @@
 // import urlparse module
 import { urlparse, urlunparse } from './urlparse.es6'
 // import utils
-import { Utility } from './utils.es6'
+import { Utility } from '../utils/utils.es6'
 
 // NotImplemented Exception
 class NotImplemented extends Error {

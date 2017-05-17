@@ -1,6 +1,6 @@
-import {AjaxAdapter, WebSocketAdapter} from './communication.es6'
-import {History} from './history.es6'
-import {Utility} from './utils.es6'
+import {AjaxAdapter, WebSocketAdapter} from './history/communication.es6'
+import {History} from './history/history.es6'
+import {Utility} from './utils/utils.es6'
 
 /* Base Module */
 export default class $ {

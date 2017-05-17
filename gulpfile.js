@@ -6,6 +6,7 @@ var clean = require('gulp-clean')
 var uglify = require('gulp-uglify')
 var rename = require('gulp-rename')
 var compass = require('gulp-compass')
+var plumber = require('gulp-plumber')
 var webpack = require('webpack-stream')
 var clean_css = require('gulp-clean-css');
 
@@ -20,6 +21,7 @@ var gulp_script_files = [
 // compass compile
 gulp.task('compass', function() {
     return gulp.src('')
+        .pipe(plumber())
         .pipe(compass({
             config_file: './config.rb',
             css: './var/',
@@ -32,6 +34,7 @@ gulp.task('compass', function() {
 // styles uglify
 gulp.task('styles', ['compass'], function() {
     return gulp.src(['./var/**/*.css', '!./var/**/*.min.css'])
+        .pipe(plumber())
         .pipe(clean_css())
         .pipe(rename({ extname: '.min.css' }))
         .pipe(gulp.dest('./var/'));
@@ -41,6 +44,7 @@ gulp.task('styles', ['compass'], function() {
 gulp.task('webpack', function() {
     // read webpack.config.js configure, not definition in gulp
     return gulp.src('')
+        .pipe(plumber())
         .pipe(webpack(require('./webpack.config.js')))
         .pipe(gulp.dest(''))
         /* Uglify by task[scripts] */
@@ -54,6 +58,7 @@ gulp.task('babel', function() {
         if (fs.existsSync(file_name)) {
             // babel convert ES6 to ES5
             gulp.src(file_name)
+                .pipe(plumber())
                 .pipe(babel())
                 .pipe(gulp.dest(path.dirname(file_name)))
         } else {
@@ -65,6 +70,7 @@ gulp.task('babel', function() {
 // uglify *.js script
 gulp.task('scripts', ['babel', 'webpack'], function() {
     gulp.src(['./var/**/*.js', '!./var/**/*.min.js'])
+        .pipe(plumber())
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest('./var'))
@@ -83,6 +89,10 @@ gulp.task('default', ['clean'], function () {
 
 // watch static file changed
 gulp.task('watch', function() {
+    // start once first
+    gulp.start('styles', 'webpack', 'scripts')
+    // watch scss file
     gulp.watch('./var/**/*.scss', ['styles'])
+    // watch script file
     gulp.watch('./var/**/*.es6', ['scripts'])
 })

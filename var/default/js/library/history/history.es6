@@ -1,7 +1,7 @@
 // import communication module
 import {AjaxAdapter, WebSocketAdapter} from './communication.es6'
 import {urlparse} from './urlparse.es6'
-import {Utility} from './utils.es6'
+import {Utility} from '../utils/utils.es6'
 
 // History Node Class
 class HistoryNode {
