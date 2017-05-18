@@ -8,13 +8,15 @@ module.exports = {
         // here base javascript framework
         './var/default/js/library/here-base': [
             // utility module script
-            './var/default/js/library/utils.es6',
+            './var/default/js/library/utils/utils.es6',
             // urlparse module script
-            './var/default/js/library/urlparse.es6',
+            './var/default/js/library/history/urlparse.es6',
             // communication module script
-            './var/default/js/library/communication.es6',
+            './var/default/js/library/history/communication.es6',
             // history module
-            './var/default/js/library/history.es6',
+            './var/default/js/library/history/history.es6',
+            // event bus module script
+            './var/default/js/library/event/event_bus.es6',
             // here base framework script
             './var/default/js/library/here-base.es6'
         ]

@@ -1,6 +1,7 @@
 import {AjaxAdapter, WebSocketAdapter} from './history/communication.es6'
 import {History} from './history/history.es6'
 import {Utility} from './utils/utils.es6'
+import {EventBus} from './event/event_bus.es6'
 
 /* Base Module */
 export default class $ {
@@ -75,6 +76,10 @@ export default class $ {
     // history module
     static get History() {
         return History
+    }
+    // event bus module
+    static get EventBus() {
+        return EventBus
     }
     // utility method
     static ready(ready_callback) {
