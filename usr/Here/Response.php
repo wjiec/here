@@ -13,6 +13,8 @@
 class Here_Response {
     /**
      * return plain text response
+     *
+     * @param string $text
      */
     public static function plain_response($text) {
         if (!is_string($text)) {
@@ -28,6 +30,9 @@ class Here_Response {
 
     /**
      * json response return
+     *
+     * @param array $response
+     * @throws Here_Exceptions_ResponseError
      */
     public static function json_response(array $response) {
         try {

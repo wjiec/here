@@ -33,7 +33,8 @@ abstract class Here_Abstracts_Route_Error {
 
     /**
      * current request url path
-     * 
+     *
+     * @param array $parameters
      * @return string
      */
     public static function get_current_url(array $parameters) {
@@ -42,7 +43,8 @@ abstract class Here_Abstracts_Route_Error {
 
     /**
      * current request method
-     * 
+     *
+     * @param array $parameters
      * @return string
      */
     public function get_current_method(array $parameters) {

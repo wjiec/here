@@ -16,6 +16,9 @@
 abstract class Here_Abstracts_Api {
     /**
      * Here_Abstracts_Api constructor.
+     *
+     * @param string $api_version
+     * @throws Here_Exceptions_ApiError
      */
     public function __construct($api_version) {
         if ($api_version !== $this->_api_version) {

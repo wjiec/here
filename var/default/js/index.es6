@@ -2,4 +2,4 @@
 
 $.ready(function() {
 
-})
+});

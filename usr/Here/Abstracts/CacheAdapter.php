@@ -35,6 +35,7 @@ abstract class Here_Abstracts_CacheAdapter {
      * @param string|int $port
      * @param string|null $username
      * @param string|null $password
+     * @throws Here_Exceptions_CacheError
      */
     public function __construct($host, $port, $username = null, $password = null) {
         // store connect information

@@ -73,6 +73,7 @@ class Here_Db_Result {
      * Get a result row as an associative array
      *
      * @return array
+     * @throws Here_Exceptions_OutOfRange
      */
     public function get_values(/* ... */) {
         $keys = func_get_args();

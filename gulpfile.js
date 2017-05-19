@@ -1,13 +1,13 @@
-var fs = require('fs')
-var gulp = require('gulp')
-var path = require('path')
-var babel = require('gulp-babel')
-var clean = require('gulp-clean')
-var uglify = require('gulp-uglify')
-var rename = require('gulp-rename')
-var compass = require('gulp-compass')
-var plumber = require('gulp-plumber')
-var webpack = require('webpack-stream')
+var fs = require('fs');
+var gulp = require('gulp');
+var path = require('path');
+var babel = require('gulp-babel');
+var clean = require('gulp-clean');
+var uglify = require('gulp-uglify');
+var rename = require('gulp-rename');
+var compass = require('gulp-compass');
+var plumber = require('gulp-plumber');
+var webpack = require('webpack-stream');
 var clean_css = require('gulp-clean-css');
 
 var gulp_script_files = [
@@ -29,7 +29,7 @@ gulp.task('compass', function() {
             style: 'expanded',
             logging: false
         }))
-})
+});
 
 // styles uglify
 gulp.task('styles', ['compass'], function() {
@@ -38,7 +38,7 @@ gulp.task('styles', ['compass'], function() {
         .pipe(clean_css())
         .pipe(rename({ extname: '.min.css' }))
         .pipe(gulp.dest('./var/'));
-})
+});
 
 // webpack: build `here base framework`
 gulp.task('webpack', function() {
@@ -48,7 +48,7 @@ gulp.task('webpack', function() {
         .pipe(webpack(require('./webpack.config.js')))
         .pipe(gulp.dest(''))
         /* Uglify by task[scripts] */
-})
+});
 
 // babel convert ES6 to ES5
 gulp.task('babel', function() {
@@ -65,7 +65,7 @@ gulp.task('babel', function() {
             console.warn(file_name + ' not found')
         }
     })
-})
+});
 
 // uglify *.js script
 gulp.task('scripts', ['babel', 'webpack'], function() {
@@ -74,13 +74,13 @@ gulp.task('scripts', ['babel', 'webpack'], function() {
         .pipe(uglify())
         .pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest('./var'))
-})
+});
 
 // clean environment
 gulp.task('clean', function() {
     return gulp.src(['./var/**/*.css','./var/**/*.js'], { read: false })
         .pipe(clean({force: true}));
-})
+});
 
 // start all task
 gulp.task('default', ['clean'], function () {
@@ -90,9 +90,9 @@ gulp.task('default', ['clean'], function () {
 // watch static file changed
 gulp.task('watch', function() {
     // start once first
-    gulp.start('styles', 'webpack', 'scripts')
+    gulp.start('styles', 'webpack', 'scripts');
     // watch scss file
-    gulp.watch('./var/**/*.scss', ['styles'])
+    gulp.watch('./var/**/*.scss', ['styles']);
     // watch script file
     gulp.watch('./var/**/*.es6', ['scripts'])
-})
+});

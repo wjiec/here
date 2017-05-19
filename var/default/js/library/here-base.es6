@@ -11,7 +11,7 @@ export default class $ {
         if (selector === document) {
             this._selector = selector
         } else if ($.is_string(selector)) {
-            this._selector = document.querySelectorAll(selector)
+            this._selector = document.querySelectorAll(selector);
 
             if (this._selector === null) {
                 throw new Error(`selector ('${selector}') not found`)
@@ -120,4 +120,4 @@ export default class $ {
 }
 
 // export to global
-window.$ = $
+window.$ = $;

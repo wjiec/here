@@ -33,6 +33,7 @@ class Theme_Helper extends Here_Abstracts_Widget {
      *
      * @param string $theme
      * @param string $path
+     * @throws Here_Exceptions_ParameterError
      */
     public static function static_completion($theme, $path) {
         // check theme name is correct

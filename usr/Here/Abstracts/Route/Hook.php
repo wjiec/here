@@ -26,7 +26,8 @@ abstract class Here_Abstracts_Route_Hook {
 
     /**
      * current request url path
-     * 
+     *
+     * @param array $parameters
      * @return string
      */
     public static function get_current_url(array $parameters) {
@@ -35,7 +36,8 @@ abstract class Here_Abstracts_Route_Hook {
 
     /**
      * current request method
-     * 
+     *
+     * @param array $parameters
      * @return string
      */
     public function get_current_method(array $parameters) {
@@ -44,6 +46,8 @@ abstract class Here_Abstracts_Route_Hook {
 
     /**
      * main entry pointer
+     *
+     * @param array $parameters
      */
     abstract function entry_point(array $parameters);
 }

@@ -6,53 +6,53 @@ import { Utility } from '../utils/utils.es6'
 // NotImplemented Exception
 class NotImplemented extends Error {
     constructor(message, eid) {
-        super(message, eid)
+        super(message, eid);
     }
 }
 
 // Adapter Interface
 class AdapterInterface {
     constructor(host = null, port = null) {
-        this._host = host === null ? location.host : host
-        this._port = port === null ? location.port : port
+        this._host = host === null ? location.host : host;
+        this._port = port === null ? location.port : port;
     }
 
     static is_available() {
-        throw new NotImplemented('Derived class not implemented')
+        throw new NotImplemented('Derived class not implemented');
     }
 }
 
 // Ajax Adapter
 class AjaxAdapter extends AdapterInterface {
     constructor(host = null, port = null) {
-        super(host, port)
+        super(host, port);
     }
 
     open(method, url, params = null, data = null, header = null) {
         return new Promise((resolve, reject) => {
             if (typeof(method) === 'string') {
-                method = method.toUpperCase()
+                method = method.toUpperCase();
                 if (this.http_methods.indexOf(method) === -1) {
-                    reject(new Error(`the method '${method}' is not defined`))
+                    reject(new Error(`the method '${method}' is not defined`));
                 }
             } else {
-                reject(new Error(`the method '${method}' is not string`))
+                reject(new Error(`the method '${method}' is not string`));
             }
 
             if (typeof(url) !== 'string') {
-                reject(new Error(`the url '${url}' is not string`))
+                reject(new Error(`the url '${url}' is not string`));
             }
 
             // create XMLHttpRequest instance
             if (window.XMLHttpRequest === undefined) {
-                reject(new Error('your browser is too old. please using Google Chrome or Firefox.'))
+                reject(new Error('your browser is too old. please using Google Chrome or Firefox.'));
             }
 
             try {
-                let _xhr = new XMLHttpRequest()
+                let _xhr = new XMLHttpRequest();
 
                 if (data && typeof data === 'object') {
-                    _xhr.setData(data)
+                    _xhr.setData(data);
                 }
 
                 if (params && typeof params === 'object') {
@@ -61,13 +61,13 @@ class AjaxAdapter extends AdapterInterface {
                     }
 
                     for (let key in params) {
-                        url += `${key}=${params[key]}&`
+                        url += `${key}=${params[key]}&`;
                     }
-                    url = url.substr(0, url.length - 1)
+                    url = url.substr(0, url.length - 1);
                 }
 
-                _xhr.open(method, url)
-                _xhr.onreadystatechange = this._state_change_handler(resolve, reject, _xhr)
+                _xhr.open(method, url);
+                _xhr.onreadystatechange = this._state_change_handler(resolve, reject, _xhr);
 
                 // The object's state must be OPENED.
                 if (header && typeof header === 'object') {
@@ -85,15 +85,15 @@ class AjaxAdapter extends AdapterInterface {
 
     _state_change_handler(resolve, reject, xhr) {
         return (event) => {
-            let response = { status: false, headers: {} }
+            let response = { status: false, headers: {} };
             if (xhr.readyState === 4) {
-                response.status = xhr.status
+                response.status = xhr.status;
 
-                let headers = xhr.getAllResponseHeaders().split('\r\n')
+                let headers = xhr.getAllResponseHeaders().split('\r\n');
                 for (let index = 0; index < headers.length; ++index) {
-                    let kvp = headers[index].split(':')
-                    let key = kvp.shift()
-                    let val = kvp.join(':')
+                    let kvp = headers[index].split(':');
+                    let key = kvp.shift();
+                    let val = kvp.join(':');
 
                     if (key && val) {
                         response.headers[Utility.trim(key)] = Utility.trim(val)
@@ -101,17 +101,17 @@ class AjaxAdapter extends AdapterInterface {
                 }
 
                 if (xhr.status === 200) {
-                    response.text = xhr.response
+                    response.text = xhr.response;
                     resolve(response)
                 } else {
-                    response.text = `HTTP ${xhr.status} ${xhr.statusText}`
+                    response.text = `HTTP ${xhr.status} ${xhr.statusText}`;
                     reject(response)
                 }
             }
         }
     }
 
-    get http_methods() {
+    static get http_methods() {
         return [ 'GET', 'POST', 'PUT', 'DELETE', 'UPDATE' ]
     }
 
@@ -127,10 +127,10 @@ class AjaxAdapter extends AdapterInterface {
 // WebSocket Adapter
 class WebSocketAdapter extends AdapterInterface {
     constructor(url = null, port = null, wss_server = false, timeout = 180) {
-        super(url, port)
+        super(url, port);
 
-        this._is_wss_server = wss_server
-        this._timeout = timeout
+        this._is_wss_server = wss_server;
+        this._timeout = timeout;
 
         if (port === 80) {
             this._url = `ws://${this._host}`
@@ -140,14 +140,14 @@ class WebSocketAdapter extends AdapterInterface {
             this._url = (wss_server === true ? 'wss://' : 'ws://') + this._host + (this._port === null ? '' : (':' + this._port))
         }
 
-        this._timer_obj = null
-        this._connection = null
-        this._is_connected = false
+        this._timer_obj = null;
+        this._connection = null;
+        this._is_connected = false;
         this._handlers = {
             connect: null, message: null,
             close: null, error: null,
             one: null, error_one: null
-        }
+        };
         this._message_buffer = Array()
     }
 
@@ -160,7 +160,7 @@ class WebSocketAdapter extends AdapterInterface {
             throw Error(`message except object or string, got ${typeof message}`)
         }
 
-        this._create_connection()
+        this._create_connection();
         this._empty_message_buffer(message)
     }
 
@@ -170,85 +170,85 @@ class WebSocketAdapter extends AdapterInterface {
             if (this._handlers.one !== null || this._handlers.error_one !== null) {
                 reject(new Error('multi one is running'))
             }
-            this._handlers.one = resolve
-            this._handlers.error_one = reject
+            this._handlers.one = resolve;
+            this._handlers.error_one = reject;
 
             this.send_message(message)
         })
     }
 
     _create_connection() {
-        if (this._connection === null || this._is_connected == null) {
-            this._connection = new WebSocket(this._url)
+        if (this._connection === null || this._is_connected === null) {
+            this._connection = new WebSocket(this._url);
 
-            this._connection.addEventListener('open', this._on_connect_repeater.bind(this))
-            this._connection.addEventListener('message', this._on_message_repeater.bind(this))
-            this._connection.addEventListener('close', this._on_close_repeater.bind(this))
-            this._connection.addEventListener('error', this._on_error_repeater.bind(this))
+            this._connection.addEventListener('open', this._on_connect_repeater.bind(this));
+            this._connection.addEventListener('message', this._on_message_repeater.bind(this));
+            this._connection.addEventListener('close', this._on_close_repeater.bind(this));
+            this._connection.addEventListener('error', this._on_error_repeater.bind(this));
         }
 
         if (this._timer_obj !== null) {
-            clearTimeout(this._timer_obj)
+            clearTimeout(this._timer_obj);
         }
         if (this._timeout > 0) {
             this._timer_obj = setTimeout(() => {
                 if (this._connection && this._connection.readyState === WebSocket.OPEN) {
-                    this._connection.close()
+                    this._connection.close();
                 }
-                this._connection = null
-                this._is_connected = false
+                this._connection = null;
+                this._is_connected = false;
             }, this._timeout * 1000)
         }
     }
 
     _empty_message_buffer(new_message) {
         if (Utility.is_string(new_message)) {
-            this._message_buffer.push(new_message)
+            this._message_buffer.push(new_message);
         }
         if (this._connection.readyState === WebSocket.OPEN) {
             while (this._message_buffer.length) {
-                this._connection.send(this._message_buffer.shift())
+                this._connection.send(this._message_buffer.shift());
             }
         }
     }
 
     _on_connect_repeater(event) {
-        this._is_connected = true
+        this._is_connected = true;
         if (this._handlers.connect !== null) {
-            this._handlers.connect(event)
+            this._handlers.connect(event);
         }
-        this._empty_message_buffer(null)
+        this._empty_message_buffer(null);
     }
 
     _on_message_repeater(event) {
         if (this._handlers.one !== null) {
-            this._handlers.one(event)
+            this._handlers.one(event);
             // reset handler
-            this._handlers.one = null
-            this._handlers.error_one = null
+            this._handlers.one = null;
+            this._handlers.error_one = null;
         }
         if (this._handlers.message !== null) {
-            this._handlers.message(event)
+            this._handlers.message(event);
         }
     }
 
     _on_close_repeater(event) {
-        this._connection = null
-        this._is_connected = false
+        this._connection = null;
+        this._is_connected = false;
         if (this._handlers.close !== null) {
-            this._handlers.close(event)
+            this._handlers.close(event);
         }
     }
 
     _on_error_repeater(event) {
         // reset connection state
-        this._connection = null
-        this._is_connected = false
+        this._connection = null;
+        this._is_connected = false;
 
         if (this._handlers.error_one !== null) {
-            this._handlers.error_one(event)
+            this._handlers.error_one(event);
             // reset handler
-            this._handlers.one = null
+            this._handlers.one = null;
             this._handlers.error_one = null
         }
 
@@ -259,50 +259,50 @@ class WebSocketAdapter extends AdapterInterface {
 
     set on_connect(callback) {
         if (typeof callback !== 'function') {
-            throw new Error('connect callback is not callable object')
+            throw new Error('connect callback is not callable object');
         }
-        this._handlers.connect = callback
+        this._handlers.connect = callback;
     }
 
     set on_message(callback) {
         if (typeof callback !== 'function') {
-            throw new Error('message callback is not callable object')
+            throw new Error('message callback is not callable object');
         }
-        this._handlers.message = callback
+        this._handlers.message = callback;
         if (this._connection !== null) {
-            this._connection.addEventListener('message', this._handlers.message)
+            this._connection.addEventListener('message', this._handlers.message);
         }
     }
 
     set on_close(callback) {
         if (typeof callback !== 'function') {
-            throw new Error('close callback is not callable object')
+            throw new Error('close callback is not callable object');
         }
-        this._handlers.close = callback
+        this._handlers.close = callback;
         if (this._connection !== null) {
-            this._connection.addEventListener('close', this._handlers.close)
+            this._connection.addEventListener('close', this._handlers.close);
         }
     }
 
     set on_error(callback) {
         if (typeof callback !== 'function') {
-            throw new Error('error callback is not callable object')
+            throw new Error('error callback is not callable object');
         }
-        this._handlers.error = callback
+        this._handlers.error = callback;
     }
 
     static is_available(cookie_name = 'wsp') {
-        let websocket_port = Utility.get_cookie(cookie_name)
+        let websocket_port = Utility.get_cookie(cookie_name);
         if (websocket_port === null) {
-            return false
+            return false;
         } else if (Utility.to_int(websocket_port) === null) {
-            return false
+            return false;
         }
-        return true
+        return true;
     }
 
     static toString() {
-        return 'AdapterInterface'
+        return 'AdapterInterface';
     }
 }
 

@@ -103,5 +103,14 @@ abstract class Here_Abstracts_Widget {
     final public function __clone() {
         throw new Exception("Widget '{$this->__toString()}' is single instance", 1996);
     }
+
+    /**
+     * setting current widget name
+     *
+     * @param string $widget_name
+     */
+    final protected function set_widget_name($widget_name) {
+        $this->_widget_name = $widget_name;
+    }
 }
 
