@@ -39,7 +39,7 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
         // parent-class constructor
         parent::__construct();
         // current widget name
-        $this->_widget_name = 'Database Helper';
+        $this->set_widget_name('Database Helper');
         // check server is initial
         if (!self::$_database_server || empty(self::$_database_server)) {
             throw new Here_Exceptions_FatalError('must be initializing server first',

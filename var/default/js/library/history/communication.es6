@@ -32,7 +32,7 @@ class AjaxAdapter extends AdapterInterface {
         return new Promise((resolve, reject) => {
             if (typeof(method) === 'string') {
                 method = method.toUpperCase();
-                if (this.http_methods.indexOf(method) === -1) {
+                if (AjaxAdapter.http_methods.indexOf(method) === -1) {
                     reject(new Error(`the method '${method}' is not defined`));
                 }
             } else {

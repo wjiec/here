@@ -29,7 +29,7 @@ $.ready(function() {
         // listening detect/check event
         $.EventBus.on('installer:detecting', (success) => {
             // check is complete
-            if (success == true) {
+            if (success === true) {
                 check_status.success += 1;
             } else {
                 check_status.fail += 1;

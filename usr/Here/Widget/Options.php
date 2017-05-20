@@ -19,19 +19,5 @@ class Here_Widget_Options extends Here_Abstracts_Widget {
 
         # TODO. from database fetch options
     }
-
-    public function get_options() {
-        if (!is_file(_here_user_configure)) {
-            return array();
-        }
-        return $this->_widget_options;
-    }
-
-    public function get($key, $default = null) {
-        if (array_key_exists($key, $this->_widget_options)) {
-            return $this->_widget_options[$key];
-        }
-        return $default;
-    }
 }
 

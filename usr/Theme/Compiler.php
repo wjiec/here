@@ -18,5 +18,6 @@ class Theme_Compiler extends Here_Abstracts_Widget {
      */
     public function __construct(array $options = array()) {
         parent::__construct($options);
+        $this->set_widget_name('Theme Compiler');
     }
 }

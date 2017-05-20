@@ -18,6 +18,7 @@ class Here_Widget_Jwt extends Here_Abstracts_Widget {
      */
     public function __construct(array $options = array()) {
         parent::__construct($options);
+        $this->set_widget_name('Jwt Generator/Validator');
     }
 
     public function generate_token() {

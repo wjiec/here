@@ -26,6 +26,7 @@ class Theme_Helper extends Here_Abstracts_Widget {
      */
     public function __construct(array $options = array()) {
         parent::__construct($options);
+        $this->set_widget_name('Theme Helper');
     }
 
     /**
@@ -74,10 +75,6 @@ class Theme_Helper extends Here_Abstracts_Widget {
      * @TODO
      */
     public static function include_template_file($template_file) {
-        if (!is_file($template_file)) {
-
-        }
-        $template_contents = file_get_contents($template_file);
     }
 
     /**

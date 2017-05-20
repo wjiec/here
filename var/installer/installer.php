@@ -19,8 +19,8 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0" />
   <link rel="stylesheet" href="<?php Theme_Helper::static_completion('default', 'css/library/grid-flex-alpha.min.css'); ?>" media="all" />
   <link rel="stylesheet" href="<?php Theme_Helper::static_completion('installer', 'css/installer.min.css'); ?>" media="all" />
-  <script src="<?php Theme_Helper::static_completion('default', 'js/library/here-base.min.js'); ?>"></script>
-  <script src="<?php Theme_Helper::static_completion('installer', 'js/installer.min.js'); ?>"></script>
+  <script src="<?php Theme_Helper::static_completion('default', 'js/library/here-base.js'); ?>"></script>
+  <script src="<?php Theme_Helper::static_completion('installer', 'js/installer.js'); ?>"></script>
 </head>
 <body>
   <header id="here-installer-header" class="flex-container-center">

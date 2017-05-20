@@ -19,17 +19,17 @@ abstract class Here_Abstracts_Widget {
      * Current widget name
      *
      * @var string
-     * @access protected
+     * @access private
      */
-    protected $_widget_name = null;
+    private $_widget_name = null;
 
     /**
      * widget options, default is empty
      *
      * @var array
-     * @access protected
+     * @access private
      */
-    protected $_widget_options = array();
+    private $_widget_options = array();
 
     /**
      * Here_Abstracts_Widget constructor.
@@ -41,12 +41,12 @@ abstract class Here_Abstracts_Widget {
     }
 
     /**
-     * using for export current widget options
+     * setting current widget name
      *
-     * @return array
+     * @param string $widget_name
      */
-    final public function export_options() {
-        return $this->_widget_options;
+    final protected function set_widget_name($widget_name) {
+        $this->_widget_name = $widget_name;
     }
 
     /**
@@ -54,29 +54,8 @@ abstract class Here_Abstracts_Widget {
      *
      * @return string
      */
-    final public function widget_name() {
+    final public function get_widget_name() {
         return $this->_widget_name;
-    }
-
-    /**
-     * toString method, wait for batter
-     *
-     * @return string
-     * @TODO
-     */
-    final public function __toString() {
-        return $this->_widget_name;
-    }
-
-    /**
-     * from self widget options getting value
-     *
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    final protected function _options_get($key, $default = null) {
-        return array_key_exists($key, $this->_widget_options) ? $this->_widget_options[$key] : $default;
     }
 
     /**
@@ -86,13 +65,33 @@ abstract class Here_Abstracts_Widget {
      * @param mixed $value
      * @param bool $overwrite
      */
-    final protected function _options_set($key, $value, $overwrite = false) {
+    final protected function set_option($key, $value, $overwrite = false) {
         if (array_key_exists($key, $this->_widget_options)) {
             if ($overwrite == false) {
                 return ;
             }
         }
         $this->_widget_options[$key] = $value;
+    }
+
+    /**
+     * from self widget options getting value
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    final public function get_option($key, $default = null) {
+        return array_key_exists($key, $this->_widget_options) ? $this->_widget_options[$key] : $default;
+    }
+
+    /**
+     * using for export current widget options
+     *
+     * @return array
+     */
+    final public function get_widget_options() {
+        return $this->_widget_options;
     }
 
     /**
@@ -105,12 +104,13 @@ abstract class Here_Abstracts_Widget {
     }
 
     /**
-     * setting current widget name
+     * toString method, wait for batter
      *
-     * @param string $widget_name
+     * @return string
+     * @TODO
      */
-    final protected function set_widget_name($widget_name) {
-        $this->_widget_name = $widget_name;
+    final public function __toString() {
+        return $this->_widget_name;
     }
 }
 

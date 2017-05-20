@@ -28,8 +28,7 @@ class Here_Widget_IPNetwork extends Here_Abstracts_Widget {
      */
     public function __construct(array $options = array()) {
         parent::__construct($options);
-
-        $this->_widget_name = 'IP Network';
+        $this->set_widget_name('IP Network');
         // add to forbidden list
         foreach ($options as $ip_address) {
             $this->_add_to_forbidden_list($ip_address);

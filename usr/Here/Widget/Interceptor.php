@@ -19,6 +19,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
      */
     public function __construct(array $options) {
         parent::__construct($options);
+        $this->set_widget_name('Interceptor');
 
         $this->_reject_robots();
         $this->_ip_policy_init();

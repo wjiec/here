@@ -22,26 +22,7 @@ class Here_Widget_CacheManager extends Here_Abstracts_Widget {
     public function __construct(array $options = array()) {
         parent::__construct($options);
 
-        $this->_widget_name = 'Cache Manager';
-        $this->_options_set('adapter', _here_cache_server_);
-    }
-
-    private function _create_cache_instance() {
-        // get server name from definitions
-        $server_name = $this->_options_get('adapter');
-        // check server is available
-        $server_state = $this->_check_server_available($server_name);
-        if ($server_state === false) {
-            $this->_options_set('get', null);
-            $this->_options_set('set', null);
-        } else if ($server_state == false) {
-
-        }
-    }
-
-    private function _check_server_available($server_name) {
-        if ($server_name == null) {
-            return null;
-        }
+        $this->set_widget_name('Cache Manager');
+        $this->set_option('adapter', _here_cache_server_);
     }
 }

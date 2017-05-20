@@ -23,7 +23,7 @@ class Plugins_Helper extends Here_Abstracts_Widget {
     public function __construct(array $options = array()) {
         parent::__construct($options);
 
-        $this->_widget_name = 'Plugins Helper';
+        $this->set_widget_name('Plugins Helper');
     }
 
     /**
