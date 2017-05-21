@@ -11,14 +11,14 @@ class EventBus {
      */
     static emit(event_name, args) {
         // create event bus storage area
-        if (window._event_bus_storage === undefined) {
-            window._event_bus_storage = {}
+        if (!window._event_bus_storage) {
+            window._event_bus_storage = {};
         }
         // check event_name exists
         if (event_name in window._event_bus_storage) {
             window._event_bus_storage[event_name].forEach((callback) => {
-                callback(...args)
-            })
+                callback(...args);
+            });
         }
     }
 
@@ -30,16 +30,16 @@ class EventBus {
      */
     static on(event_name, callback) {
         // create event bus storage area
-        if (window._event_bus_storage === undefined) {
-            window._event_bus_storage = {}
+        if (!window._event_bus_storage) {
+            window._event_bus_storage = {};
         }
         // push to storage area
         if (!(event_name in window._event_bus_storage)) {
-            window._event_bus_storage[event_name] = []
+            window._event_bus_storage[event_name] = [];
         }
         // push to callback stack
-        window._event_bus_storage[event_name].push(callback)
+        window._event_bus_storage[event_name].push(callback);
     }
 }
 
-export { EventBus }
+export { EventBus };

@@ -1,7 +1,7 @@
 // import urlparse module
-import { urlparse, urlunparse } from './urlparse.es6'
+// import { urlparse, urlunparse } from './urlparse.es6'
 // import utils
-import { Utility } from '../utils/utils.es6'
+import { Utility } from '../utils/utils.es6';
 
 // NotImplemented Exception
 class NotImplemented extends Error {
@@ -44,7 +44,7 @@ class AjaxAdapter extends AdapterInterface {
             }
 
             // create XMLHttpRequest instance
-            if (window.XMLHttpRequest === undefined) {
+            if (!window.XMLHttpRequest) {
                 reject(new Error('your browser is too old. please using Google Chrome or Firefox.'));
             }
 
@@ -57,11 +57,13 @@ class AjaxAdapter extends AdapterInterface {
 
                 if (params && typeof params === 'object') {
                     if (url.indexOf('?') === -1) {
-                        url += '?'
+                        url += '?';
                     }
 
                     for (let key in params) {
-                        url += `${key}=${params[key]}&`;
+                        if (params.hasOwnProperty(key)) {
+                            url += `${key}=${params[key]}&`;
+                        }
                     }
                     url = url.substr(0, url.length - 1);
                 }
@@ -72,7 +74,9 @@ class AjaxAdapter extends AdapterInterface {
                 // The object's state must be OPENED.
                 if (header && typeof header === 'object') {
                     for (let key in header) {
-                        _xhr.setRequestHeader(key, header[key])
+                        if (header.hasOwnProperty(key)) {
+                            _xhr.setRequestHeader(key, header[key]);
+                        }
                     }
                 }
 
@@ -80,11 +84,11 @@ class AjaxAdapter extends AdapterInterface {
             } catch (e) {
                 reject(new Error(e));
             }
-        })
+        });
     }
 
     _state_change_handler(resolve, reject, xhr) {
-        return (event) => {
+        return () => {
             let response = { status: false, headers: {} };
             if (xhr.readyState === 4) {
                 response.status = xhr.status;
@@ -96,31 +100,31 @@ class AjaxAdapter extends AdapterInterface {
                     let val = kvp.join(':');
 
                     if (key && val) {
-                        response.headers[Utility.trim(key)] = Utility.trim(val)
+                        response.headers[Utility.trim(key)] = Utility.trim(val);
                     }
                 }
 
                 if (xhr.status === 200) {
                     response.text = xhr.response;
-                    resolve(response)
+                    resolve(response);
                 } else {
                     response.text = `HTTP ${xhr.status} ${xhr.statusText}`;
-                    reject(response)
+                    reject(response);
                 }
             }
-        }
+        };
     }
 
     static get http_methods() {
-        return [ 'GET', 'POST', 'PUT', 'DELETE', 'UPDATE' ]
+        return ['GET', 'POST', 'PUT', 'DELETE', 'UPDATE'];
     }
 
     static is_available() {
-        return true
+        return true;
     }
 
     static toString() {
-        return 'AjaxAdapter'
+        return 'AjaxAdapter';
     }
 }
 
@@ -129,15 +133,13 @@ class WebSocketAdapter extends AdapterInterface {
     constructor(url = null, port = null, wss_server = false, timeout = 180) {
         super(url, port);
 
-        this._is_wss_server = wss_server;
         this._timeout = timeout;
-
         if (port === 80) {
-            this._url = `ws://${this._host}`
+            this._url = `ws://${this._host}`;
         } else if (port === 443) {
-            this._url = `wss://${this._host}`
+            this._url = `wss://${this._host}`;
         } else {
-            this._url = (wss_server === true ? 'wss://' : 'ws://') + this._host + (this._port === null ? '' : (':' + this._port))
+            this._url = (wss_server === true ? 'wss://' : 'ws://') + this._host + (this._port === null ? '' : (':' + this._port));
         }
 
         this._timer_obj = null;
@@ -148,33 +150,33 @@ class WebSocketAdapter extends AdapterInterface {
             close: null, error: null,
             one: null, error_one: null
         };
-        this._message_buffer = Array()
+        this._message_buffer = [];
     }
 
     send_message(message) {
         if (Utility.is_plain_object(message)) {
-            message = Utility.json_to_string(message)
+            message = Utility.json_to_string(message);
         }
 
         if (!Utility.is_string(message)) {
-            throw Error(`message except object or string, got ${typeof message}`)
+            throw Error(`message except object or string, got ${typeof message}`);
         }
 
         this._create_connection();
-        this._empty_message_buffer(message)
+        this._empty_message_buffer(message);
     }
 
     one(message) {
         return new Promise((resolve, reject) => {
             // check one handler
             if (this._handlers.one !== null || this._handlers.error_one !== null) {
-                reject(new Error('multi one is running'))
+                reject(new Error('multi one is running'));
             }
             this._handlers.one = resolve;
             this._handlers.error_one = reject;
 
-            this.send_message(message)
-        })
+            this.send_message(message);
+        });
     }
 
     _create_connection() {
@@ -197,7 +199,7 @@ class WebSocketAdapter extends AdapterInterface {
                 }
                 this._connection = null;
                 this._is_connected = false;
-            }, this._timeout * 1000)
+            }, this._timeout * 1000);
         }
     }
 
@@ -249,11 +251,11 @@ class WebSocketAdapter extends AdapterInterface {
             this._handlers.error_one(event);
             // reset handler
             this._handlers.one = null;
-            this._handlers.error_one = null
+            this._handlers.error_one = null;
         }
 
         if (this._handlers.error !== null) {
-            this._handlers.error(event)
+            this._handlers.error(event);
         }
     }
 
@@ -307,4 +309,4 @@ class WebSocketAdapter extends AdapterInterface {
 }
 
 // export adapter
-export {AjaxAdapter, WebSocketAdapter}
+export {AjaxAdapter, WebSocketAdapter};

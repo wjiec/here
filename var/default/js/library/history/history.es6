@@ -113,7 +113,7 @@ class HistoryNode {
     }
 
     static set local_history_list(object) {
-        HistoryNode._storage_adapter.setItem('history_list', Utility.json_to_string(object))
+        HistoryNode._storage_adapter.setItem('history_list', Utility.json_to_string(object));
     }
 
     static history_list_append(guid) {
@@ -133,7 +133,7 @@ class History {
             // self initializing
             History._websocket_adapter = new WebSocketAdapter(url, port, is_secure, timeout);
 
-            if (window.history.pushState === undefined || window.onpopstate === undefined) {
+            if (!window.history.pushState && !window.onpopstate) {
                 throw new Error(`Your browser does't support HTML5 history API`);
             }
             // bind popstate
@@ -170,7 +170,7 @@ class History {
         // from sessionStorage fetch data
         History.replace_contents(container, state.contents, selector);
         // set document title
-        document.title = state.title
+        document.title = state.title;
     }
     // forward by Ajax
     static forward_ajax(method, url, replace_selector, params = null, data = null, header = null, host = null, port = null) {
@@ -183,7 +183,7 @@ class History {
         header['X-Forward-Contents'] = replace_selector;
 
         adapter.open(method, url, params, data, header).then((response) => {
-            History.request_success(url, response, replace_selector)
+            History.request_success(url, response, replace_selector);
         }, (response) => {
             console.log(response);
             let callbacks = History._custom_events['History:error'];
@@ -193,12 +193,12 @@ class History {
                 callbacks[index](response);
             }
             // display error information
-        })
+        });
     }
     // forward by WebSocket
     static forward_websocket(method, url, replace_selector, params = null, data = null, header = null, host = null, port = null) {
         if (header === null) {
-            header = {}
+            header = {};
         }
         header['X-Forward-Position'] = urlparse(url).path;
         header['X-Forward-Contents'] = replace_selector;
@@ -214,13 +214,13 @@ class History {
         let string_message = Utility.json_to_string(message);
         History._websocket_adapter.one(string_message).then((response) => {
             let object_response = Utility.string_to_json(response);
-            History.request_success(url, object_response, replace_selector)
-        }, (event) => {
+            History.request_success(url, object_response, replace_selector);
+        }, () => {
             // error occurs
             console.warn('WebSocketAdapter error occurs, instead of using AjaxAdapter');
             // using Ajax request
             History.forward_ajax(method, url, replace_selector, params, data, header, host, port);
-        })
+        });
     }
     // request success
     static request_success(url, response, replace_selector) {
@@ -245,11 +245,11 @@ class History {
         let container = document.createElement('div');
 
         if (/<html/i.test(response)) {
-            container.innerHTML = new_contents.match(/<body[^>]*>[\s\S]*<\/body>/i)[0];
+            container.innerHTML = response.match(/<body[^>]*>[\s\S]*<\/body>/i)[0];
 
             let element = container.querySelector(selector);
             if (element === null) {
-                throw new Error(`'${url}' is not contain ${selector}`);
+                throw new Error(`'${response}' is not contain ${selector}`);
             }
             return element.innerHTML;
         } else {
@@ -298,7 +298,7 @@ class History {
             let title = response.text.match(/<title\s*[^>]*>(.*)<\/title>/);
 
             if (title.length) {
-                return title[1]
+                return title[1];
             }
         }
 
@@ -308,12 +308,12 @@ class History {
         let class_title = container.querySelector('.title');
 
         if (id_title !== null) {
-            return id_title.innerText
+            return id_title.innerText;
         }
         if (class_title !== null) {
-            return class_title.innerText
+            return class_title.innerText;
         }
-        return null
+        return null;
     }
     // replace contents
     static replace_contents(old_container, new_contents, replace_selector) {
@@ -324,7 +324,7 @@ class History {
 
             let new_selector = container.querySelector(replace_selector);
             if (new_selector === null) {
-                throw new Error(`'${url}' is not contain ${replace_selector}`);
+                throw new Error(`'${new_contents}' is not contain ${replace_selector}`);
             }
             /**
              * @TODO easing animation
@@ -350,18 +350,26 @@ class History {
 }
 // default Storage adapter
 if (window.sessionStorage && window.localStorage) {
-    HistoryNode._storage_adapter = window.sessionStorage
+    HistoryNode._storage_adapter = window.sessionStorage;
 } else {
     class NonSupportStorage {
-        setItem() {}
-        getItem() {}
-        removeItem() {}
-        static get length() {return 0}
+        setItem() {
+            /* empty function */
+        }
+        getItem() {
+            /* empty function */
+        }
+        removeItem() {
+            /* empty function */
+        }
+        static get length() {
+            return 0;
+        }
     }
-    HistoryNode._storage_adapter = new NonSupportStorage()
+    HistoryNode._storage_adapter = new NonSupportStorage();
 }
 
 // self initializing History env
 History.init_history();
 // export History methods
-export {History}
+export {History};
