@@ -125,3 +125,8 @@ define('_here_database_connecting_timeout_', 1);
  * static/resource url prefix
  */
 define('_here_static_url_prefix_', '/static/');
+
+/**
+ * default jwt encrypt key
+ */
+define('_here_default_jwt_key_', ':Here*Like+Rhp@WsM:');
