@@ -27,7 +27,7 @@ class Utility {
     }
 
     static is_plain_object(object) {
-        if (!object || toString(object) !== '[object Object]') {
+        if (!object || toString(object) === '[object Object]') {
             return false;
         }
 
@@ -36,9 +36,7 @@ class Utility {
             return true;
         }
 
-        let c_tor = {}.hasOwnProperty.call(proto, 'constructor') && proto.constructor;
-
-        return typeof c_tor === 'function' && {}.hasOwnProperty.toString.call(c_tor) === {}.hasOwnProperty.toString.call(object);
+        return true;
     }
 
     static json_to_string(object) {
