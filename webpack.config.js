@@ -17,6 +17,8 @@ module.exports = {
             './var/default/js/library/history/history.es6',
             // event bus module script
             './var/default/js/library/event/event_bus.es6',
+            // form validator module script
+            './var/default/js/library/validator/form_validator.es6',
             // here base framework script
             './var/default/js/library/here-base.es6'
         ]

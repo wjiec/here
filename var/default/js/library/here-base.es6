@@ -2,6 +2,7 @@ import {AjaxAdapter, WebSocketAdapter} from './history/communication.es6';
 import {History} from './history/history.es6';
 import {Utility} from './utils/utils.es6';
 import {EventBus} from './event/event_bus.es6';
+import {FormValidator} from './validator/form_validator.es6';
 
 /* Base Module */
 export default class $ {
@@ -80,6 +81,10 @@ export default class $ {
     // event bus module
     static get EventBus() {
         return EventBus;
+    }
+    // form validator module
+    static get FormValidator() {
+        return FormValidator;
     }
     // utility method
     static ready(ready_callback) {

@@ -97,6 +97,15 @@ class Utility {
     static get_current_url() {
         return [location.pathname, location.search, location.hash].join('');
     }
+
+    static is_dom_object(object) {
+        if (typeof HTMLElement === 'object') {
+            /* In Chrome, Firefox */
+            return object instanceof HTMLElement;
+        }
+        /* Other browser */
+        return object && typeof object === 'object' && object.nodeType === 1 && typeof object.nodeName === 'string';
+    }
 }
 
 // export Utility class
