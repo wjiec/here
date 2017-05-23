@@ -13,13 +13,11 @@ $.ready(function() {
     // if this script is running in client, that server must enable url rewrite
     (new $.AjaxAdapter()).open('get', '/api/v1/installer/get_detect_list').then((response) => {
         // getting detect list success
-        let title = new $('#here-installer-sd-status-bar > p');
+        let title = new $('#here-installer-detect-status-bar > p');
         // change title text
-        title.element.innerHTML = 'Detecting Server';
+        title.text('Detecting Server');
         // from response convert to Object
-        let response_object = $.json_decode(response.text);
-        // item container
-        let container = new $('#here-installer-detect-result').element;
+        let response_object = $.Utility.json_decode(response.text);
         // steps count: using detect is completed
         let steps_count = response_object.steps.length;
         // check status:
@@ -49,17 +47,19 @@ $.ready(function() {
         next_btn.on('click', (event) => {
             console.log(event);
         }, false);
+        // item container
+        let container = new $('#here-installer-detect-result');
         // foreach all step and display
         response_object.steps.forEach((step, index) => {
             // make item id
             let item_id = `detect-item-${index}`;
             // push to dom tree
-            container.innerHTML += `<div id="${item_id}"><p id="${item_id}-name">${step.name}</p><p id="${item_id}-message"></p></div>`;
+            container.inner_concat(`<div id="${item_id}"><p id="${item_id}-name">${step.name}</p><p id="${item_id}-message"></p></div>`);
             // async to check server
             new Promise((resolve, reject) => {
                 (new $.AjaxAdapter()).open('get', step.address).then((response) => {
                     // check resp
-                    let check_response = $.json_decode(response.text);
+                    let check_response = $.Utility.json_decode(response.text);
                     // add selector key
                     check_response.selector = `#${item_id}`;
                     // level

@@ -130,3 +130,8 @@ define('_here_static_url_prefix_', '/static/');
  * default jwt encrypt key
  */
 define('_here_default_jwt_key_', ':Here*Like+Rhp@WsM:');
+
+/**
+ * default jwt encode algorithm
+ */
+define('_here_default_jwt_alg_', 'HS256');

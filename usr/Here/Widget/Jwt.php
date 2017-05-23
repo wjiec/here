@@ -32,7 +32,7 @@ class Here_Widget_Jwt extends Here_Abstracts_Widget {
      * @param string $alg
      * @return string
      */
-    public function generate_token(array $payload, $key, $alg = 'HS256') {
+    public function generate_token(array $payload, $key, $alg = _here_default_jwt_alg_) {
         // convert to upper case
         $alg = strtoupper($alg);
         // build JWT header
@@ -40,8 +40,9 @@ class Here_Widget_Jwt extends Here_Abstracts_Widget {
             'typ' => 'JWT',
             'alg' => $alg
         );
-        // encode header and payload
+        // encode header
         $encode_header = self::urlsafe_base64_encode(json_encode($header));
+        // encode payload
         $encode_payload = self::urlsafe_base64_encode(json_encode($payload));
         // signature input
         $signature_source = join('.', array($encode_header, $encode_payload));
@@ -49,6 +50,7 @@ class Here_Widget_Jwt extends Here_Abstracts_Widget {
         $signature = self::calc_signature($signature_source, $key, $alg);
         // encode signature
         $encode_signature = self::urlsafe_base64_encode($signature);
+        // header, payload, signature assembled together using '.'
         return join('.', array($encode_header, $encode_payload, $encode_signature));
     }
 
@@ -99,7 +101,7 @@ class Here_Widget_Jwt extends Here_Abstracts_Widget {
                 join('.', array($encode_header, $encode_payload)), $key, $header->alg,
                 // verify signature
                 $signature)) {
-                //-----------------------------------
+                //-----------------------------------------------------------------
                 throw new Here_Exceptions_WidgetError("Signature Validation failed",
                     'Here:Widget:Jwt:token_decode');
             }
@@ -189,6 +191,8 @@ class Here_Widget_Jwt extends Here_Abstracts_Widget {
     }
 
     /**
+     * validate signature is correct
+     *
      * @param string $source
      * @param string $key
      * @param string $alg

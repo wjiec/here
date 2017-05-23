@@ -11,7 +11,7 @@ export default class $ {
         // initializing selector
         if (selector === document) {
             this._selector = selector;
-        } else if ($.is_string(selector)) {
+        } else if (Utility.is_string(selector)) {
             this._selector = document.querySelectorAll(selector);
 
             if (this._selector === null) {
@@ -24,7 +24,7 @@ export default class $ {
     // event bind method
     on(event_name, event_callback, use_capture = false) {
         // check event name and callback is correct
-        if (!$.is_string(event_name) || !$.is_function(event_callback)) {
+        if (!Utility.is_string(event_name) || !Utility.is_function(event_callback)) {
             throw Error('event name or callback invalid');
         }
         // trim 'on'
@@ -47,7 +47,7 @@ export default class $ {
     // unbind event
     unbind(event_name, event_callback) {
         // check event name and callback is correct
-        if (!$.is_string(event_name) || !$.is_function(event_callback)) {
+        if (!Utility.is_string(event_name) || !Utility.is_function(event_callback)) {
             throw Error('event name or callback invalid');
         }
         // trim 'on'
@@ -59,12 +59,42 @@ export default class $ {
             selector.removeEventListener(event_name, event_callback);
         });
     }
-    // getting dom object
+    // getting/setting innerHTML
+    text(new_content = null) {
+        // getting
+        if (new_content === null) {
+            return (this._selector.length === 0) ? null : this._selector[0].innerHTML;
+        } else {
+            // setting
+            if (this._selector.length !== 0) {
+                this._selector[0].innerHTML = new_content;
+            }
+        }
+    }
+    // concat new content
+    inner_concat(content) {
+        if (this._selector.length !== 0) {
+            this._selector[0].innerHTML += content;
+        }
+    }
+    // getting dom object @TODO deserted
     get element() {
         if (this._selector.length === 1) {
             return this._selector[0];
         }
         return this._selector;
+    }
+    // utility method
+    static ready(ready_callback) {
+        if (Utility.is_function(ready_callback)) {
+            document.addEventListener('DOMContentLoaded', ready_callback, true);
+        } else {
+            throw Error('ready_callback is not function');
+        }
+    }
+    // factory_dom element node
+    static factory_dom(dom_string) {
+        return Utility.factory_dom(dom_string);
     }
     // ajax adapter
     static get AjaxAdapter() {
@@ -86,41 +116,9 @@ export default class $ {
     static get FormValidator() {
         return FormValidator;
     }
-    // utility method
-    static ready(ready_callback) {
-        if ($.is_function(ready_callback)) {
-            document.addEventListener('DOMContentLoaded', ready_callback, true);
-        } else {
-            throw Error('ready_callback is not function');
-        }
-    }
-    // internal method
-    static is_function(object) {
-        return typeof object === 'function';
-    }
-    // internal method
-    static is_string(object) {
-        return typeof object === 'string';
-    }
-    // factory_dom element node
-    static factory_dom(dom_string) {
-        return Utility.factory_dom(dom_string);
-    }
-    // from JSON String convert to Object
-    static json_decode(json_string) {
-        try {
-            return JSON.parse(json_string);
-        } catch (e) {
-            throw e;
-        }
-    }
-    // from Object convert to JSON String
-    static json_encode(object) {
-        try {
-            return JSON.stringify(object);
-        } catch (e) {
-            throw e;
-        }
+    // Utility Module
+    static get Utility() {
+        return Utility;
     }
 }
 

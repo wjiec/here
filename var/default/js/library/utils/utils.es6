@@ -104,6 +104,22 @@ class Utility {
         /* Other browser */
         return object && typeof object === 'object' && object.nodeType === 1 && typeof object.nodeName === 'string';
     }
+    // from JSON String convert to Object
+    static json_decode(json_string) {
+        try {
+            return JSON.parse(json_string);
+        } catch (e) {
+            throw e;
+        }
+    }
+    // from Object convert to JSON String
+    static json_encode(object) {
+        try {
+            return JSON.stringify(object);
+        } catch (e) {
+            throw e;
+        }
+    }
 }
 
 // export Utility class

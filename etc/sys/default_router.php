@@ -453,13 +453,5 @@ class Route_Cache extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        /* @var Here_Widget_Jwt $jwt */
-        $jwt = Here_Widget::widget('Jwt');
-        $key = _here_default_jwt_key_;
-
-        $result = $jwt->generate_token(array('id' => 'ShadowMan', 'session' => 'asdqwjihedqwuioedhouiashjahdqwkywuiey'), $key);
-        var_dump($result);
-
-        var_dump($jwt->token_decode($result, $key));
     }
 }
