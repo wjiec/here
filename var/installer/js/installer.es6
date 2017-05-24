@@ -37,10 +37,10 @@ $.ready(function() {
                 // completed
                 if (check_status.fail === 0) {
                     // all success
-                    next_btn.element.disabled = false;
-                } else {
-                    // error occurs
+                    next_btn.attribute('disabled', false, true);
+                    // next_btn.element.disabled = false;
                 }
+                // error displayed [red detecting item]
             }
         });
         // bind button click event
@@ -93,17 +93,20 @@ $.ready(function() {
                 let _message = new $(`${response.selector}-message`);
                 // add fail class
                 if (response.level !== 'Error' && response.text === undefined) {
+                    // emit installer:detecting:[success] event
                     $.EventBus.emit('installer:detecting', [true]);
-                    _selector.element.classList.add('detect-item-status-warning');
+                    _selector.add_class('detect-item-status-warning');
                 } else {
+                    // emit installer:detecting:[fail] event
                     $.EventBus.emit('installer:detecting', [false]);
-                    _selector.element.classList.add('detect-item-status-fail');
+                    _selector.add_class('detect-item-status-fail');
                 }
                 // change message text
-                _message.element.innerHTML = response.message || response.text;
+                _message.text(response.message || response.text);
             })
         })
     }, (error_response) => {
+        // get detect-list error occurs in HTTP request
         console.warn(error_response)
     })
 });

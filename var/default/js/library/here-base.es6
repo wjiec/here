@@ -77,6 +77,39 @@ export default class $ {
             this._selector[0].innerHTML += content;
         }
     }
+    // add style class
+    add_class(class_name) {
+        if (this._selector.length !== 0) {
+            this._selector[0].classList.add(class_name);
+        }
+    }
+    // remove style class
+    remove_class(class_name) {
+        if (this._selector.length !== 0) {
+            let class_list = this._selector[0].classList;
+            let select_index = class_list.indexOf(class_name);
+            // class not found
+            if (select_index !== -1) {
+                this._selector[0].classList.splice(select_index, 1);
+            }
+        }
+    }
+    // set attribute
+    attribute(key, value = null, use_real = false) {
+        // getting attribute
+        if (value === null) {
+            if (this._selector.length !== 0) {
+                this._selector[0].getAttribute(key);
+            }
+        } else {
+            // setting attribute
+            if (use_real === true) {
+                this._selector[0][key] = value;
+            } else {
+                this._selector[0].setAttribute(key, value);
+            }
+        }
+    }
     // getting dom object @TODO deserted
     get element() {
         if (this._selector.length === 1) {
