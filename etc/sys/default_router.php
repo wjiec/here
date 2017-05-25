@@ -453,5 +453,10 @@ class Route_Cache extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
+        Here_Db_Helper::init_server('mysql:host=192.168.148.128;dbname=here;', 'root', 'root');
+
+        $helper = new Here_Db_Helper('here_');
+
+        var_dump($helper->select()->from('table.users')->where((new Here_Db_Expression('uid'))->equal("''1111; -- SELECT 1 = 1;"))->__toString());
     }
 }

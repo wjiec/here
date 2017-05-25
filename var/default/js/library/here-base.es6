@@ -4,6 +4,9 @@ import {Utility} from './utils/utils.es6';
 import {EventBus} from './event/event_bus.es6';
 import {FormValidator} from './validator/form_validator.es6';
 
+// `Here` Version
+const HERE_VERSION = '0.1.0';
+
 /* Base Module */
 export default class $ {
     // HereJavascriptFramework Constructor
@@ -157,3 +160,33 @@ export default class $ {
 
 // export to global
 window.$ = $;
+
+// ["\n %c %c %c Pixi.js " + i.VERSION + " - ✰ " + e + " ✰  %c  %c  http://www.pixijs.com/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
+const _console_common_style = `line-height: 2.333; color: #fff; padding: 5px 0;`;
+// display Here Information in Chrome Console
+console.log(`%c %c %c %c Here Blogger ➼ ${HERE_VERSION} %c %c %c %c https://github.com/JShadowMan/here.git %c %c %c %c %c☀%c☀%c☀`,
+    // Package Name [Start]
+    `${_console_common_style};background: #096;`,
+    `${_console_common_style};background: #099;`,
+    `${_console_common_style};background: #09c;`,
+    // // Package Name [Text]
+    `${_console_common_style};background: #369;`,
+    // Package Name [End], Repo Address [Start]
+    `${_console_common_style};background: #09c;`,
+    `${_console_common_style};background: #099;`,
+    `${_console_common_style};background: #096;`,
+    // Repo Address [Text]
+    `${_console_common_style};background: #369;`,
+    // Repo Address [End], Three-Sun [Start]
+    `${_console_common_style};background: #096;`,
+    `${_console_common_style};background: #099;`,
+    `${_console_common_style};background: #09c;`,
+    // blank text
+    `${_console_common_style};background: #fff;`,
+    // Three-Sun 0
+    `${_console_common_style};color: #f06;`,
+    // Three-Sun 1
+    `${_console_common_style};color: #f03;`,
+    // Three-Sun 2
+    `${_console_common_style};color: #f00;`,
+)

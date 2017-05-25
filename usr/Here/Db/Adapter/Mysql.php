@@ -385,6 +385,20 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
      * @return string
      */
     public function escape_value($value) {
+        // create connection instance
+        $this->connect();
+        // diff adapter
+        if ($this->_connection instanceof PDO) {
+            /* @var PDO $pdo_instance */
+            $pdo_instance = $this->_connection;
+            // escape value
+            $value = $pdo_instance->quote($value);
+        } else {
+            /* @var mysqli $mysqli_instance */
+            $mysqli_instance = $this->_connection;
+            // escape value
+            $value = $mysqli_instance->escape_string($value);
+        }
         return "'{$value}'";
     }
 
