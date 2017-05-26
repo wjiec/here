@@ -148,6 +148,13 @@ class Here_Api_Installer extends Here_Abstracts_Api {
         }
     }
 
+    /**
+     * make response to client
+     *
+     * @param bool $success
+     * @param string|null $message
+     * @param mixed|null $data
+     */
     private function _make_detect_response($success, $message = null, $data = null) {
         if ($message === null) {
             $message = 'success';

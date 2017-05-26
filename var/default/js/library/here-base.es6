@@ -20,6 +20,8 @@ export default class $ {
             if (this._selector === null) {
                 throw new Error(`selector ('${selector}') not found`);
             }
+        } else if (Utility.is_dom_object(selector)) {
+            this._selector = [selector];
         } else {
             throw Error('Selector invalid');
         }
@@ -102,7 +104,10 @@ export default class $ {
         // getting attribute
         if (value === null) {
             if (this._selector.length !== 0) {
-                this._selector[0].getAttribute(key);
+                if (this._selector[0].getAttribute(key) === undefined) {
+                    return this._selector[0][key];
+                }
+                return this._selector[0].getAttribute(key);
             }
         } else {
             // setting attribute
@@ -113,12 +118,9 @@ export default class $ {
             }
         }
     }
-    // getting dom object @TODO deserted
-    get element() {
-        if (this._selector.length === 1) {
-            return this._selector[0];
-        }
-        return this._selector;
+    // element count
+    get length() {
+        return this._selector.length;
     }
     // utility method
     static ready(ready_callback) {
@@ -158,8 +160,13 @@ export default class $ {
     }
 }
 
-// export to global
+// export Class to window
 window.$ = $;
+
+// create instance method
+window.$$ = function(selector) {
+    return new $(selector);
+};
 
 // ["\n %c %c %c Pixi.js " + i.VERSION + " - ✰ " + e + " ✰  %c  %c  http://www.pixijs.com/  %c %c ♥%c♥%c♥ \n\n", "background: #ff66a5; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff66a5; background: #030307; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "background: #ffc3dc; padding:5px 0;", "background: #ff66a5; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;", "color: #ff2424; background: #fff; padding:5px 0;"];
 const _console_common_style = `line-height: 2.333; color: #fff; padding: 5px 0;`;
@@ -189,4 +196,4 @@ console.log(`%c %c %c %c Here Blogger ➼ ${HERE_VERSION} %c %c %c %c https://gi
     `${_console_common_style};color: #f03;`,
     // Three-Sun 2
     `${_console_common_style};color: #f00;`,
-)
+);
