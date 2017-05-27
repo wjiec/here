@@ -1,7 +1,12 @@
 <?php
 /**
  * Here Router Module
- * 
+ *
+ * dependencies:
+ *  * Here_Request: getting request method/uri
+ *  * Here_Exceptions_ParameterError
+ *  * Here_Exceptions_RouterError
+ *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
  * @copyright Copyright (C) 2016 ShadowMan

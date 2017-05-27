@@ -33,12 +33,12 @@
         <h3>Welcome to Here</h3>
         <p>Here is distributed under the <a href="<?php Theme_Helper::url_completion('/license'); ?>" target="_blank">MIT License</a>.</p>
         <p>This installer guide will automatically detect server environment is in line with the minimum configuration requirements.
-            If not meet, please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
+          If not meet, please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
         <div id="here-installer-server-detecting">
           <div id="here-installer-detect-status-bar">
             <p class="detect-status-wait">Getting Detect-items List</p>
           </div>
-          <div id="here-installer-detect-result" class="flex-container-column"></div>
+        <div id="here-installer-detect-result" class="flex-container-column"></div>
         </div>
       </div>
       <div id="button-container">

@@ -45,6 +45,11 @@ class Here_Response {
         }
     }
 
+    /**
+     * output response and exit script
+     *
+     * @param $text_response
+     */
     private static function response_end($text_response) {
         echo $text_response;
         exit;

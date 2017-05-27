@@ -1,7 +1,10 @@
 <?php
 /**
  * Here Request Module
- * 
+ *
+ * Dependencies:
+ *  *
+ *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
  * @copyright Copyright (C) 2016 ShadowMan
@@ -9,7 +12,7 @@
  * @link
  */
 
-class Here_Request implements Here_Interfaces_SingleInstance {
+class Here_Request {
     /**
      * url prefix
      * 
@@ -22,65 +25,43 @@ class Here_Request implements Here_Interfaces_SingleInstance {
      * 
      * @var array
      */
-    private $_server = array();
+    private static $_server = array();
 
     /**
      * GET parameters
      *
      * @var array
      */
-    private $_get_parameters = array();
+    private static $_get_parameters = array();
 
     /**
      * POST parameters
      *
      * @var array
      */
-    private $_post_parameters = array();
+    private static $_post_parameters = array();
 
     /**
      * request body contents
      *
      * @var string
      */
-    private $_request_contents;
+    private static $_request_contents;
 
     /** Here_Request constructor
      * 
      * @throws Exception
      */
     public function __construct() {
-        if (self::$_single_request_instance != null) {
-            throw new Exception('Request must be single instance', 1996);
-        }
         // server variables
         foreach ($_SERVER as $key => $value) {
-            $this->_server[strtolower($key)] = $value;
+            self::$_server[strtolower($key)] = $value;
         }
         // request params
-        $this->_get_parameters = $_GET;
-        $this->_post_parameters = $_POST;
+        self::$_get_parameters = $_GET;
+        self::$_post_parameters = $_POST;
         // request body contents
-        $this->_request_contents = file_get_contents('php://input');
-    }
-
-    /**
-     * from server variables getting item
-     *
-     * @param string|null $key
-     * @return array|mixed|null
-     */
-    public function get_server_env($key = null) {
-        // return all server variable
-        if ($key === null) {
-            return $this->_server;
-        }
-        // get single item
-        $key = strtolower($key);
-        if (array_key_exists($key, $this->_server)) {
-            return $this->_server[$key];
-        }
-        return null;
+        self::$_request_contents = file_get_contents('php://input');
     }
 
     /**
@@ -89,7 +70,7 @@ class Here_Request implements Here_Interfaces_SingleInstance {
      * @return bool
      */
     public static function is_mobile() {
-        $user_agent = strtolower(self::get_server_env('http_user_agent'));
+        $user_agent = strtolower(self::get_env('http_user_agent'));
         return (strpos($user_agent, 'iphone') ||
             strpos($user_agent, 'ipad') ||
             strpos($user_agent, 'android') ||
@@ -101,19 +82,33 @@ class Here_Request implements Here_Interfaces_SingleInstance {
      * from $_SERVER getting value
      *
      * @param string $key
-     * @return string|null
+     * @return string|null|array
      */
-    public static function get_env($key) {
-        return self::get_instance()->get_server_env($key);
+    public static function get_env($key = null) {
+        // return all server variable
+        if ($key === null) {
+            return self::$_server;
+        }
+        // get single item
+        $key = strtolower($key);
+        if (array_key_exists($key, self::$_server)) {
+            return self::$_server[$key];
+        }
+        return null;
     }
 
     /**
-     * return server variables
+     * POST request body, if $json set true, than will decode contents to Json format
      *
-     * @return array
+     * @param bool $json
+     * @param bool $assoc
+     * @return string
      */
-    public static function get_server_variables() {
-        return self::get_instance()->get_server_env();
+    public static function get_request_contents($json = false, $assoc = true) {
+        if ($json == true) {
+            return json_decode(self::$_request_contents, $assoc);
+        }
+        return self::$_request_contents;
     }
 
     /**
@@ -122,9 +117,11 @@ class Here_Request implements Here_Interfaces_SingleInstance {
      * @param string $url
      */
     public static function redirection($url) {
-        @ob_clean();
-
+        // clean output buffer
+        ob_clean();
+        // redirection to new address
         self::header('Location', $url);
+        // no output
         exit();
     }
 
@@ -135,6 +132,7 @@ class Here_Request implements Here_Interfaces_SingleInstance {
      * @param string|null $error
      */
     public static function abort($errno, $error = null) {
+        // using Router emit error handler
         Core::router_instance()->emit_error($errno, $error);
     }
 
@@ -144,7 +142,7 @@ class Here_Request implements Here_Interfaces_SingleInstance {
      * @param int $code
      */
     public static function set_http_code($code) {
-        header('Request-Status: ' . $code, null, $code);
+        header('X-Response-Status: ' . $code, null, $code);
     }
 
     /**
@@ -160,7 +158,7 @@ class Here_Request implements Here_Interfaces_SingleInstance {
             case 'json': $mime = 'text/json'; break;
             default: return; /* Exit */
         }
-
+        // content type header
         self::header('Content-Type', $mime . '; charset=' . _here_default_charset_);
     }
 
@@ -171,7 +169,42 @@ class Here_Request implements Here_Interfaces_SingleInstance {
      * @param string $value
      */
     public static function header($key, $value) {
-        header($key . ': ' . $value);
+        header(join(': ', array($key, $value)));
+    }
+
+    /**
+     * check current connection is safe
+     *
+     * @return bool
+     */
+    public static function is_secure() {
+        return (
+            (self::get_env('https') && strtolower(self::get_env('https')) != 'off') ||
+            (self::get_env('server_port') == '443')
+        );
+    }
+
+    /**
+     * get current web server prefix
+     *
+     * @return string
+     */
+    public static function get_url_prefix() {
+        if (self::$_url_prefix == null) {
+            self::$_url_prefix = join('', array(
+                // http protocol
+                self::is_secure() ? 'https' : 'http',
+                // domain separator
+                '://',
+                // domain
+                self::get_env('http_host') ?: self::get_env('server_name'),
+                // if using non default port
+                !in_array(self::get_env('server_port'), array(80, 443)) ? ':' : '',
+                // server port
+                !in_array(self::get_env('server_port'), array(80, 443)) ? self::get_env('server_port') : '',
+            ));
+        }
+        return self::$_url_prefix;
     }
 
     /**
@@ -185,29 +218,16 @@ class Here_Request implements Here_Interfaces_SingleInstance {
     }
 
     /**
-     * HTTP protocol, http:// or https://
+     * url join
      *
+     * @param string $base_path
+     * @param array $concat_paths
      * @return string
      */
-    public static function get_url_prefix() {
-        if (self::$_url_prefix == null) {
-            self::$_url_prefix = (self::is_secure() ? 'https' : 'http') . '://'
-                    . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ($_SERVER['SERVER_NAME'])
-                            . (isset($_SERVER['HTTP_HOST']) && in_array($_SERVER['SERVER_PORT'], [80, 443]) ? '' : $_SERVER['SERVER_PORT']));
-        }
-        return self::$_url_prefix;
-    }
-
-    /**
-     * check current connection is safe
-     *
-     * @return bool
-     */
-    private static function is_secure() {
-        return (
-            (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) != 'off') ||
-            (!empty($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443')
-        );
+    public static function path_join($base_path, array $concat_paths) {
+        return join(_here_url_separator_, array_merge(array(rtrim($base_path, _here_url_separator_)), array_map(function($path) {
+            return trim($path, _here_url_separator_);
+        }, $concat_paths)));
     }
 
     /**
@@ -253,25 +273,12 @@ class Here_Request implements Here_Interfaces_SingleInstance {
         return self::get_env('remote_addr');
     }
 
-    # single instance
-    private static $_single_request_instance = null;
-
     /**
-     * create Here_Request instance
-     */
-    public static function init_request() {
-        self::$_single_request_instance = new Here_Request();
-    }
-
-    /**
-     * get request instance
+     * initializing all server parameters and environment
      *
      * @return Here_Request
      */
-    public static function get_instance() {
-        if (self::$_single_request_instance == null) {
-            self::$_single_request_instance = new Here_Request();
-        }
-        return self::$_single_request_instance;
+    public static function init_request() {
+        return new Here_Request();
     }
 }

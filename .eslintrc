@@ -4,8 +4,8 @@
     "es6": true
   },
   "parserOptions": {
-    "ecmaVersion":6, // ECMA Version: ES6
-    "sourceType":"module",
+    "ecmaVersion": 6, // ECMA Version: ES6
+    "sourceType": "script",
     "ecmaFeatures": {
       "globalReturn": true,
       "impliedStrict": true
@@ -73,7 +73,7 @@
     "no-shadow-restricted-names": "error",
     "no-undef": "error",
     "no-undef-init": "error",
-    "no-undefined": "error",
+    "no-undefined": "off",
     "no-use-before-define": "error",
 
     "array-bracket-spacing": [ "error", "never" ],
@@ -133,6 +133,6 @@
     "rest-spread-spacing": "off",
     "sort-imports": "off",
     "template-curly-spacing": "warn",
-    "yield-star-spacing": "error"
+    "yield-star-spacing": "error",
   }
 }

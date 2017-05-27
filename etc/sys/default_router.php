@@ -20,6 +20,8 @@ Core::router_instance()->default_error(function(array $parameters) {
     // report
     echo "<h1>Default Error</h1>";
     var_dump($parameters);
+    // back trace
+    var_dump(debug_backtrace());
 });
 
 
@@ -194,7 +196,7 @@ class Route_Installer extends Here_Abstracts_Route_Route {
      * @return array
      */
     public function urls() {
-        return array('/installer-guide');
+        return array(_here_install_url_);
     }
 
     /**
@@ -225,7 +227,7 @@ class Route_Installer extends Here_Abstracts_Route_Route {
             include _here_installer_file_;
         } else {
             /* magic method: __call, [no qa] */
-            Core::router_instance()->emit_error('500', array('error' => 'Missing installer file'));
+            Core::router_instance()->emit_error(500, array('error' => 'Missing installer file'));
         }
     }
 }
@@ -424,7 +426,7 @@ class Route_Static extends Here_Abstracts_Route_Route {
 }
 
 
-class Route_Cache extends Here_Abstracts_Route_Route {
+class Route_Test extends Here_Abstracts_Route_Route {
     public function urls() {
         return array('/test');
     }
@@ -435,7 +437,7 @@ class Route_Cache extends Here_Abstracts_Route_Route {
      * @return array
      */
     public function methods() {
-        return array('GET');
+        return array('ALL');
     }
 
     /**
@@ -453,10 +455,6 @@ class Route_Cache extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        Here_Db_Helper::init_server('mysql:host=192.168.148.128;dbname=here;', 'root', 'root');
-
-        $helper = new Here_Db_Helper('here_');
-
-        var_dump($helper->select()->from('table.users')->where((new Here_Db_Expression('uid'))->equal("''1111; -- SELECT 1 = 1;"))->__toString());
+        var_dump(Here_Request::path_join(Here_Request::get_url_prefix(), array('abcd', '/abcd', '/abcd/')));
     }
 }

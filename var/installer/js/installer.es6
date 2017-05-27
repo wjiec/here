@@ -4,32 +4,11 @@
  * @pack Here
  * @author ShadowMan
  */
+
+/* global $, $$ */
 $.ready(function() {
-    let _document = new $(document);
-    // disable right-button
-    _document.on('contextmenu', () => false, false);
-    // disable text-selection
-    _document.on('selectstart', () => false, false);
     // operator result
-    let result = undefined;
-    // check server environment
-    detecting_server_env();
-    // receive detecting result
-    $.EventBus.on('installer:detecting:complete', (detect_result) => {
-        result = detect_result;
-    });
-    // bind button click event
-    $$('#here-installer-next-btn').on('click', (event) => {
-        // wrapper on $
-        let target_el = $$(event.target);
-        // check state
-        if (!result || !!target_el.attribute('disabled') || !$$('div[id|="detect"]').length || $$('.detect-item-status-fail').length) {
-            // bad man changed HTML or hack blog
-            alert('(。・`ω´・)');
-        }
-        // configure database
-        database_configure();
-    }, false);
+    let result = null;
 
     /**
      * detecting server environment
@@ -97,7 +76,7 @@ $.ready(function() {
                         // http error
                         response.selector = `#${item_id}`;
                         reject(response);
-                    })
+                    });
                 })/* check result handler */.then((response) => {
                     // check success
                     let _selector = $$(response.selector);
@@ -126,11 +105,11 @@ $.ready(function() {
                     }
                     // change message text
                     _message.text(response.message || response.text);
-                })
-            })
+                });
+            });
         }, (error_response) => {
             // get detect-list error occurs in HTTP request
-            console.warn(error_response)
+            console.warn(error_response);
         });
     }
 
@@ -140,4 +119,28 @@ $.ready(function() {
     function database_configure() {
         $.History.forward_ajax('get', result.next_url, '#here-installer-contents');
     }
+
+    let _document = new $(document);
+    // disable right-button
+    _document.on('contextmenu', () => false, false);
+    // disable text-selection
+    _document.on('selectstart', () => false, false);
+    // check server environment
+    detecting_server_env();
+    // receive detecting result
+    $.EventBus.on('installer:detecting:complete', (detect_result) => {
+        result = detect_result;
+    });
+    // bind button click event
+    $$('#here-installer-next-btn').on('click', (event) => {
+        // wrapper on $
+        let target_el = $$(event.target);
+        // check state
+        if (!result || !!target_el.attribute('disabled') || !$$('div[id|="detect"]').length || $$('.detect-item-status-fail').length) {
+            /* eslint-disable no-alert */
+            window.alert('(。・`ω´・)'); // bad man
+        }
+        // configure database
+        database_configure();
+    }, false);
 });
