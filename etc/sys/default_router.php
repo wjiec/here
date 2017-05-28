@@ -455,6 +455,6 @@ class Route_Test extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        var_dump(Here_Request::path_join(Here_Request::get_url_prefix(), array('abcd', '/abcd', '/abcd/')));
+        var_dump($parameters);
     }
 }

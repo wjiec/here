@@ -48,6 +48,13 @@ class Here_Request {
      */
     private static $_request_contents;
 
+    /**
+     * request url part
+     *
+     * @var array
+     */
+    private static $_request_components;
+
     /** Here_Request constructor
      * 
      * @throws Exception
@@ -57,8 +64,9 @@ class Here_Request {
         foreach ($_SERVER as $key => $value) {
             self::$_server[strtolower($key)] = $value;
         }
-        // request params
+        // url parameters
         self::$_get_parameters = $_GET;
+        // post parameters
         self::$_post_parameters = $_POST;
         // request body contents
         self::$_request_contents = file_get_contents('php://input');
@@ -78,13 +86,57 @@ class Here_Request {
             strpos($user_agent, 'ucweb'));
     }
 
+    /*
+     * current request method, [lower case]
+     */
+    public static function request_method() {
+        return strtolower(self::get_env('request_method'));
+    }
+
+    /**
+     * current request path
+     *
+     * @return array|null|string
+     */
+    public static function request_url() {
+        return self::get_env('request_uri');
+    }
+
+    /**
+     * request path
+     *
+     * @return string
+     */
+    public static function request_path() {
+        return self::_do_parse_url('path');
+    }
+
+    /**
+     * request query component
+     *
+     * @param bool $assoc
+     * @return string|array
+     */
+    public static function request_query($assoc = true) {
+        $query = self::_do_parse_url('query');
+        if ($assoc == false) {
+            // origin query string
+            return $query;
+        }
+
+        // convert to assoc array
+        parse_str($query, $assoc_array);
+        return $assoc_array;
+    }
+
     /**
      * from $_SERVER getting value
      *
      * @param string $key
+     * @param mixed $default
      * @return string|null|array
      */
-    public static function get_env($key = null) {
+    public static function get_env($key = null, $default = null) {
         // return all server variable
         if ($key === null) {
             return self::$_server;
@@ -94,7 +146,71 @@ class Here_Request {
         if (array_key_exists($key, self::$_server)) {
             return self::$_server[$key];
         }
-        return null;
+        return $default;
+    }
+
+    /**
+     * from GET method getting parameter
+     *
+     * @param string|null $key
+     * @param mixed $default
+     * @return array|mixed|null
+     */
+    public static function get_parameter($key = null, $default = null) {
+        if ($key == null) {
+            return self::$_get_parameters;
+        } else if (array_key_exists($key, self::$_get_parameters)) {
+            return self::$_get_parameters[$key];
+        }
+        return $default;
+    }
+
+    /**
+     * wrapper function of `get_parameter`
+     *
+     * @param string|null $key
+     * @param mixed $default
+     * @return array|mixed|null
+     */
+    public static function url_parameter($key = null, $default = null) {
+        return self::get_parameter($key, $default);
+    }
+
+    /**
+     * POST method request form data or parameters
+     *
+     * @param string|null $key
+     * @param mixed $default
+     * @return array|mixed|null
+     */
+    public static function post_parameter($key = null, $default = null) {
+        if ($key == null) {
+            return self::$_post_parameters;
+        } else if (array_key_exists($key, self::$_post_parameters)) {
+            return self::$_post_parameters[$key];
+        }
+        return $default;
+    }
+
+    /**
+     * both GET and POST parameters
+     *
+     * @param string|null $key
+     * @param mixed $default
+     * @return array|mixed|null
+     */
+    public static function request_parameter($key = null, $default = null) {
+        $get_parameter = self::get_parameter($key, $default);
+        $post_parameter = self::post_parameter($key, $default);
+        // check post parameters first
+        if ($key != null && $post_parameter !== $default) {
+            return $post_parameter;
+        } else if ($key != null && $get_parameter !== $default) {
+            return $get_parameter;
+        }
+        // both GET parameters and post parameters
+        $request_parameters = array_merge(self::$_get_parameters, self::$_post_parameters);
+        return $request_parameters;
     }
 
     /**
@@ -280,5 +396,23 @@ class Here_Request {
      */
     public static function init_request() {
         return new Here_Request();
+    }
+
+    /**
+     * parse url components
+     *
+     * @param string $key
+     * @throws Here_Exceptions_FatalError
+     * @return string
+     */
+    private static function _do_parse_url($key) {
+        if (self::$_request_components == null) {
+            self::$_request_components = parse_url(self::get_env('request_uri'));
+        }
+        if (!array_key_exists($key, self::$_request_components)) {
+            throw new Here_Exceptions_FatalError("parse url components, key('{$key}') not found in components",
+                'Here:Request:_do_parse_url');
+        }
+        return self::$_request_components[$key];
     }
 }

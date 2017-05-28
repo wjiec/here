@@ -21,15 +21,28 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
         parent::__construct($options);
         $this->set_widget_name('Interceptor');
 
+        $this->_exceptions_case_redirection();
         $this->_reject_robots();
         $this->_ip_policy_init();
+    }
+
+    /**
+     * if request in exceptions case, than redirection to correct address
+     */
+    private function _exceptions_case_redirection() {
+        if (!empty(Here_Request::request_parameter())) {
+            // if user access installer guide page, does't care $_GET or $_POST, redirection to first page
+            if (Here_Request::request_path() === _here_install_url_) {
+                Here_Request::redirection(_here_install_url_);
+            }
+        }
     }
 
     /**
      * reject robot request
      */
     private function _reject_robots() {
-        if (!empty($_GET) || !empty($_POST)) {
+        if (!empty(Here_Request::request_parameter())) {
             if (empty(Here_Request::get_env('http_referer'))) {
                 Here_Request::abort(403, 'are you human?');
             }
@@ -40,7 +53,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
             }
 
             if (empty($parts['host']) || Here_Request::get_env('http_host') != $parts['host']) {
-                Here_Request::abort(403, "you're are not human");
+                Here_Request::abort(403, "you're not human");
             }
         }
     }
