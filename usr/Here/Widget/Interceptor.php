@@ -30,7 +30,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
      * if request in exceptions case, than redirection to correct address
      */
     private function _exceptions_case_redirection() {
-        if (!empty(Here_Request::request_parameter())) {
+        if (!empty(Here_Request::request_parameter()) && empty(Here_Request::get_env('http_referer'))) {
             // if user access installer guide page, does't care $_GET or $_POST, redirection to first page
             if (Here_Request::request_path() === _here_install_url_) {
                 Here_Request::redirection(_here_install_url_);

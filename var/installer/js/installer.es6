@@ -7,8 +7,21 @@
 
 /* global $, $$ */
 $.ready(function() {
-    // operator result
-    let result = null;
+    let _document = new $(document);
+    // disable right-button
+    _document.on('contextmenu', () => false, false);
+    // disable text-selection
+    _document.on('selectstart', () => false, false);
+    // installer guide all step info
+    let step_urls = [];
+    // current step index
+    let current_step_index = 0;
+    // get step information from server
+    (new $.AjaxAdapter()).open('get', '/api/v1/installer/get_step_info').then((response) => {
+        step_urls = $.Utility.json_decode(response.text);
+    }, (error_response) => {
+        console.log(error_response);
+    });
 
     /**
      * detecting server environment
@@ -38,13 +51,7 @@ $.ready(function() {
                 if (check_status.success + check_status.fail === steps_count) {
                     // completed
                     if (check_status.fail === 0) {
-                        $$('#here-installer-next-btn').attribute('disabled', false, true);
-                        // send detecting server result
-                        $.EventBus.emit('installer:detecting:complete', [{
-                            count: steps_count,
-                            status: check_status,
-                            next_url: response_object.next_step_url
-                        }]);
+                        $.EventBus.emit('installer:step:complete');
                     }
                     // error displayed [red detecting item]
                 }
@@ -114,33 +121,74 @@ $.ready(function() {
     }
 
     /**
-     * database configuration
+     * setting database
      */
     function database_configure() {
-        $.History.forward_ajax('get', result.next_url, '#here-installer-contents');
     }
 
-    let _document = new $(document);
-    // disable right-button
-    _document.on('contextmenu', () => false, false);
-    // disable text-selection
-    _document.on('selectstart', () => false, false);
-    // check server environment
-    detecting_server_env();
-    // receive detecting result
-    $.EventBus.on('installer:detecting:complete', (detect_result) => {
-        result = detect_result;
+    /**
+     * admin username/password configure
+     */
+    function admin_configure() {
+    }
+
+    /**
+     * blogger title and other information
+     */
+    function site_configure() {
+    }
+
+    /**
+     * complete install and redirection to index page
+     */
+    function complete_install() {
+    }
+
+    // callbacks
+    let step_callback = [
+        detecting_server_env,
+        database_configure,
+        admin_configure,
+        site_configure,
+        complete_install
+    ];
+    // callback result state [default is true]
+    let callback_state = true;
+    $.EventBus.on('installer:step:complete', () => {
+        // set callback state
+        callback_state = true;
+        // enable button
+        $$('#here-installer-next-btn').attribute('disabled', false, true);
     });
     // bind button click event
     $$('#here-installer-next-btn').on('click', (event) => {
-        // wrapper on $
+        // button element instance
         let target_el = $$(event.target);
+        // execute callback
+        let callback = step_callback[current_step_index];
+        // button disabled state
+        let disabled_state = target_el.attribute('disabled');
         // check state
-        if (!result || !!target_el.attribute('disabled') || !$$('div[id|="detect"]').length || $$('.detect-item-status-fail').length) {
-            /* eslint-disable no-alert */
-            window.alert('(。・`ω´・)'); // bad man
+        if ((disabled_state === null || disabled_state === false)) {
+            // execute callback
+            callback();
+            // check callback state
+            if (callback_state === true) {
+                // reset button state
+                target_el.attribute('disabled', true, true);
+                // reset callback result
+                callback_state = false;
+                console.log(current_step_index);
+                // detecting-server have't own page, both first page.
+                if (current_step_index === 0) {
+                    current_step_index += 1;
+                } else {
+                    // request next step page
+                    $.History.forward_ajax('get', step_urls[current_step_index++], '#here-installer-contents');
+                }
+                // change to `Next`
+                target_el.text('Next');
+            }
         }
-        // configure database
-        database_configure();
     }, false);
 });

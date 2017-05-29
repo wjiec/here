@@ -31,9 +31,15 @@ class Here_Api_Installer extends Here_Abstracts_Api {
      *
      * @param array $parameters
      */
-    public function next_step(array $parameters) {
-        // save all user configure
-        var_dump($this, $parameters, Here_Request::get_request_headers(), Here_Request::get_remote_ip());
+    public function get_step_info(array $parameters) {
+        // build step information by json format
+        Here_Response::json_response(array(
+            '?sep=detecting-server',
+            '?sep=database-configure',
+            '?sep=admin-configure',
+            '?sep=site-configure',
+            '?sep=complete-install'
+        ));
     }
 
     /**

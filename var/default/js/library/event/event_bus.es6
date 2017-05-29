@@ -9,7 +9,7 @@ class EventBus {
      * @param event_name
      * @param args
      */
-    static emit(event_name, args) {
+    static emit(event_name, args = []) {
         // create event bus storage area
         if (!window._event_bus_storage) {
             window._event_bus_storage = {};
