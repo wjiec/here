@@ -65,7 +65,7 @@ class Here_Api_Installer extends Here_Abstracts_Api {
                     'fail_level' => 'Error'
                 ),
                 array(
-                    'name' => 'Python Support',
+                    'name' => 'Python',
                     'address' => '/api/v1/installer/check_python_support',
                     'fail_level' => 'Warning'
                 ), array(
@@ -112,7 +112,7 @@ class Here_Api_Installer extends Here_Abstracts_Api {
         // check installed
         $this->_check_installed();
         // make response
-        $this->_make_detect_response(false, 'Python Environment Not Found');
+        $this->_make_detect_response(false, 'Python Not Found');
     }
 
     /**
@@ -124,7 +124,7 @@ class Here_Api_Installer extends Here_Abstracts_Api {
         // check installed
         $this->_check_installed();
         // make response
-        $this->_make_detect_response(true, 'Permission: 755');
+        $this->_make_detect_response(true, '755');
     }
 
     /**
