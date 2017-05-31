@@ -71,6 +71,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
         $ip_network = Here_Widget::widget('IPNetwork', null, $forbidden_list);
         // check current client not in forbidden list
         if ($ip_network->contains(Here_Request::get_remote_ip())) {
+            // forbidden request
             Here_Request::abort(403, "you've been blacklisted");
         }
     }

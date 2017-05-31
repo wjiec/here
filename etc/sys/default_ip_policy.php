@@ -11,8 +11,8 @@
 
 
 /**
- * forbidden ip list
+ * forbidden list
  */
 return array(
-    ''
+    /* empty list */
 );

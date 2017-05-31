@@ -135,3 +135,8 @@ define('_here_default_jwt_key_', ':Here*Like+Rhp@WsM:');
  * default jwt encode algorithm
  */
 define('_here_default_jwt_alg_', 'HS256');
+
+/**
+ * default expired time
+ */
+define('_here_forbidden_default_expired_', 3600);
