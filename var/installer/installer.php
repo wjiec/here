@@ -45,7 +45,7 @@
         <?php elseif ($step_name == 'database-configure'): ?>
           <h3>Database configuration</h3>
           <section id="here-installer-database-configure">
-            <form action="" method="POST">
+            <form action="/api/v1/installer/database_configure" method="POST">
               <div class="widget-form-group">
                 <!-- Database Host -->
                 <div class="widget-input-group-with-desc">
@@ -97,6 +97,11 @@
                 </div>
               </div>
             </form>
+            <div id="here-installer-database-info">
+                <h3 id="here-installer-database-info-title" class="widget-hidden">Database server information</h3>
+                <p id="here-installer-database-client-info"></p>
+                <p id="here-installer-database-server-info"></p>
+            </div>
           </section>
         <?php elseif ($step_name == 'admin-configure'): ?>
         <h3>Administrator configuration</h3>

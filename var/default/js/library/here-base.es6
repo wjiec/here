@@ -104,7 +104,7 @@ export default class $ {
         // getting attribute
         if (value === null) {
             if (this._selector.length !== 0) {
-                if (this._selector[0].getAttribute(key) === undefined) {
+                if (!this._selector[0].getAttribute(key)) {
                     return this._selector[0][key];
                 }
                 return this._selector[0].getAttribute(key);
@@ -115,6 +115,28 @@ export default class $ {
                 this._selector[0][key] = value;
             } else {
                 this._selector[0].setAttribute(key, value);
+            }
+        }
+    }
+    // foreach all element
+    foreach(callback) {
+        if (!Utility.is_function(callback)) {
+            throw new Error('foreach callback is not function');
+        }
+        // foreach
+        if (this._selector !== document) {
+            this._selector.forEach((el, index) => {
+                callback(new $(el), index);
+            });
+        }
+    }
+    // getting/setting value
+    value(val = null) {
+        if (this._selector.length !== 0) {
+            if (val === null) {
+                return this._selector[0].value;
+            } else {
+                this._selector[0].value = val;
             }
         }
     }

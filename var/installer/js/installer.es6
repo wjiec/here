@@ -154,12 +154,34 @@ $.ready(function() {
     ];
     // callback result state [default is true]
     let callback_state = true;
+    // change state
     $.EventBus.on('installer:step:complete', () => {
         // set callback state
         callback_state = true;
         // enable button
         $$('#here-installer-next-btn').attribute('disabled', false, true);
     });
+    // listening changed event
+    $$('#here-install-body').on('change', (event) => {
+        // event origin
+        let target_el = $$(event.target);
+        // origin tag name
+        let tag_name = target_el.attribute('tagName');
+        // check result
+        let complete_num = 0;
+        // check is input widget
+        if (tag_name.toLowerCase() === 'input') {
+            $$('input').foreach((el, index) => {
+                if (el.value().length) {
+                    complete_num += 1;
+                }
+            })
+        }
+        // emit installer:step:complete event?
+        if (complete_num === $$('input').length) {
+            $.EventBus.emit('installer:step:complete');
+        }
+    }, true);
     // bind button click event
     $$('#here-installer-next-btn').on('click', (event) => {
         // button element instance
@@ -178,7 +200,6 @@ $.ready(function() {
                 target_el.attribute('disabled', true, true);
                 // reset callback result
                 callback_state = false;
-                console.log(current_step_index);
                 // detecting-server have't own page, both first page.
                 if (current_step_index === 0) {
                     current_step_index += 1;
