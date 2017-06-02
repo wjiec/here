@@ -194,6 +194,8 @@ class Core {
 
         var_dump($extra_data);
 
+        var_dump(debug_backtrace());
+
         echo '</pre>';
     }
 

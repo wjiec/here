@@ -146,6 +146,15 @@ class Here_Api_Installer extends Here_Abstracts_Api {
     }
 
     /**
+     * database configure entry pointer
+     *
+     * @param array $parameters
+     */
+    public function database_configure(array $parameters) {
+        var_dump($parameters, Here_Request::get_request_contents(true));
+    }
+
+    /**
      * check blog installed
      */
     private function _check_installed() {

@@ -124,29 +124,55 @@ $.ready(function() {
      * setting database
      */
     function database_configure() {
+        // getting form data
+        let host = $$('#here-installer-db-host');
+        let port = $$('#here-installer-db-port');
+        let username = $$('#here-installer-db-username');
+        let password = $$('#here-installer-db-password');
+        let database = $$('#here-installer-db-name');
+        let table_prefix = $$('#here-installer-db-prefix');
+        // PHP 5.6+ does't support text/json POST request, only support application/x-www.form-urlencoded
+        (new $.AjaxAdapter()).open('PUT', '/api/v1/installer/database_configure', null, {
+            host: host.value(),
+            port: port.value(),
+            username: username.value(),
+            password: password.value(),
+            database: database.value(),
+            table_prefix: table_prefix.value()
+        }, null, 'json').then((response) => {
+            console.log(response);
+        }, (error_response) => {
+            console.log(error_response);
+        })
     }
 
     /**
      * admin username/password configure
      */
     function admin_configure() {
+        console.log('admin_configure');
     }
 
     /**
      * blogger title and other information
      */
     function site_configure() {
+        console.log('site_configure');
     }
 
     /**
      * complete install and redirection to index page
      */
     function complete_install() {
+        console.log('complete_configure');
     }
 
     // callbacks
     let step_callback = [
         detecting_server_env,
+        function() {
+            $.History.forward_ajax('get', step_urls[current_step_index++], '#here-installer-contents');
+        },
         database_configure,
         admin_configure,
         site_configure,
@@ -180,6 +206,7 @@ $.ready(function() {
         // emit installer:step:complete event?
         if (complete_num === $$('input').length) {
             $.EventBus.emit('installer:step:complete');
+            // step_callback[current_step_index - 1]();
         }
     }, true);
     // bind button click event
@@ -205,7 +232,7 @@ $.ready(function() {
                     current_step_index += 1;
                 } else {
                     // request next step page
-                    $.History.forward_ajax('get', step_urls[current_step_index++], '#here-installer-contents');
+                    // $.History.forward_ajax('get', step_urls[current_step_index++], '#here-installer-contents');
                 }
                 // change to `Next`
                 target_el.text('Next');

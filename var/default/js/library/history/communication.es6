@@ -28,33 +28,34 @@ class AjaxAdapter extends AdapterInterface {
         super(host, port);
     }
 
-    open(method, url, params = null, data = null, header = null) {
+    open(method, url, params = null, data = null, header = null, data_type = null) {
         return new Promise((resolve, reject) => {
+            // request method
             if (typeof(method) === 'string') {
+                // upper case
                 method = method.toUpperCase();
+                // validate method
                 if (AjaxAdapter.http_methods.indexOf(method) === -1) {
+                    // invalid method
                     reject(new Error(`the method '${method}' is not defined`));
                 }
             } else {
+                // method parameter type error
                 reject(new Error(`the method '${method}' is not string`));
             }
-
+            // validate url type
             if (typeof(url) !== 'string') {
                 reject(new Error(`the url '${url}' is not string`));
             }
-
-            // create XMLHttpRequest instance
+            // check XMLHttpRequest exists
             if (!window.XMLHttpRequest) {
                 reject(new Error('your browser is too old. please using Google Chrome or Firefox.'));
             }
-
+            // create XMLHttpRequest instance
             try {
+                // XMLHttpRequest instance
                 let _xhr = new XMLHttpRequest();
-
-                if (data && typeof data === 'object') {
-                    _xhr.setData(data);
-                }
-
+                // params
                 if (params && typeof params === 'object') {
                     if (url.indexOf('?') === -1) {
                         url += '?';
@@ -67,7 +68,7 @@ class AjaxAdapter extends AdapterInterface {
                     }
                     url = url.substr(0, url.length - 1);
                 }
-
+                // open url
                 _xhr.open(method, url);
                 _xhr.onreadystatechange = this._state_change_handler(resolve, reject, _xhr);
 
@@ -79,8 +80,17 @@ class AjaxAdapter extends AdapterInterface {
                         }
                     }
                 }
-
-                _xhr.send(null);
+                // mime type
+                if (data_type !== null) {
+                    let mime_type = 'text/' + data_type + '; charset=utf-8';
+                    _xhr.setRequestHeader('Content-Type', mime_type);
+                }
+                // POST data
+                if (data && typeof data === 'object') {
+                    _xhr.send(JSON.stringify(data));
+                } else {
+                    _xhr.send(null);
+                }
             } catch (e) {
                 reject(new Error(e));
             }
