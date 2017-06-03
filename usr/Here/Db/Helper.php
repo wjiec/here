@@ -240,18 +240,30 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
     }
 
     /**
-     * from server_information(array) convert to dsn string
+     * from server information(array) convert to dsn string
      *
-     * @param array $server_information
+     * @param array $information
      * @return string
      */
-    public static function array_to_dsn($server_information) {
-        $dsn = $server_information['driver'] . ':';
+    public static function array_to_dsn($information) {
+        // check driver exists
+        if (!array_key_exists('driver', $information)) {
+            throw new Here_Exceptions_FatalError("server information driver not found",
+                'Here:Db:Helper:array_to_dsn');
+        }
+        $dsn = $information['driver'] . ':';
 
-        $dsn .= 'host=' . $server_information['host'] . ';';
-        $dsn .= (array_key_exists('port', $server_information)) ? ('port=' . $server_information['port'] . ';') : ('');
-        $dsn .= 'dbname=' . $server_information['dbname'] . ';';
-        $dsn .= 'charset=' . $server_information['charset'] . ';';
+        // check host|dbname|charset exists
+        if (!array_key_exists('host', $information) || !array_key_exists('dbname', $information)
+            || !array_key_exists('charset', $information)) {
+            //--------------------------------------------------------------------------
+            throw new Here_Exceptions_FatalError("server information lack some field(s)",
+                'Here:Db:Helper:array_to_dsn');
+        }
+        $dsn .= "host={$information['host']};";
+        $dsn .= (array_key_exists('port', $information)) ? ("port={$information['port']};") : ('');
+        $dsn .= "dbname={$information['dbname']};";
+        $dsn .= "charset={$information['charset']};";
 
         return $dsn;
     }

@@ -156,6 +156,17 @@
     }
 
     @at-root
+    .here-installer-db-driver-option {
+      &::after {
+        content: ' --';
+      }
+
+      &::before {
+        content: '-- ';
+      }
+    }
+
+    @at-root
     #button-container {
       text-align: right;
 

@@ -81,8 +81,11 @@ class Error_Internal_Error extends Here_Abstracts_Route_Error {
      * @see Here_Abstracts_Route_Error::entry_point()
      */
     public function entry_point(array $parameters) {
-        echo '<h1>500 Server Internal Error</h1>';
-        var_dump($parameters);
+        // report to client
+        Here_Response::json_response(array(
+            'errno' => $parameters[0],
+            'error' => $parameters[1]
+        ));
     }
 }
 

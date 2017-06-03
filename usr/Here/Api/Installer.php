@@ -151,7 +151,20 @@ class Here_Api_Installer extends Here_Abstracts_Api {
      * @param array $parameters
      */
     public function database_configure(array $parameters) {
-        var_dump($parameters, Here_Request::get_request_contents(true));
+        try {
+            // database server connect info
+            $database_info = Here_Request::get_request_contents(true);
+            // init database helper
+            Here_Db_Helper::init_server(Here_Db_Helper::array_to_dsn($database_info),
+                $database_info['username'], $database_info['password']);
+            // create helper instance
+            $helper = new Here_Db_Helper($database_info['table_prefix']);
+            // connecting to server and get server|client information
+            Here_Response::json_response($helper->get_adapter_info());
+        } catch (Here_Exceptions_ConnectingError $e) {
+            // connecting error occurs, connecting error may be encoding error
+            Here_Request::abort(500, Here_Response::_Text($e->get_message()));
+        }
     }
 
     /**

@@ -118,7 +118,10 @@ class AjaxAdapter extends AdapterInterface {
                     response.text = xhr.response;
                     resolve(response);
                 } else {
-                    response.text = `HTTP ${xhr.status} ${xhr.statusText}`;
+                    response.text = xhr.response;
+                    if (response.text.length === 0) {
+                        response.text = `HTTP ${xhr.status} ${xhr.statusText}`;
+                    }
                     reject(response);
                 }
             }

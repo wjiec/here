@@ -125,25 +125,29 @@ $.ready(function() {
      */
     function database_configure() {
         // getting form data
+        let driver = $$('#here-installer-db-driver');
         let host = $$('#here-installer-db-host');
         let port = $$('#here-installer-db-port');
         let username = $$('#here-installer-db-username');
         let password = $$('#here-installer-db-password');
         let database = $$('#here-installer-db-name');
         let table_prefix = $$('#here-installer-db-prefix');
+        let charset = $$('#here-installer-db-charset');
         // PHP 5.6+ does't support text/json POST request, only support application/x-www.form-urlencoded
         (new $.AjaxAdapter()).open('PUT', '/api/v1/installer/database_configure', null, {
+            driver: driver.value(),
             host: host.value(),
             port: port.value(),
             username: username.value(),
             password: password.value(),
-            database: database.value(),
-            table_prefix: table_prefix.value()
+            dbname: database.value(),
+            table_prefix: table_prefix.value(),
+            charset: charset.value()
         }, null, 'json').then((response) => {
             console.log(response);
         }, (error_response) => {
             console.log(error_response);
-        })
+        });
     }
 
     /**
@@ -167,12 +171,17 @@ $.ready(function() {
         console.log('complete_configure');
     }
 
+    /**
+     * request next step contents
+     */
+    function load_next_step() {
+        $.History.forward_ajax('get', step_urls[current_step_index++], '#here-installer-contents');
+    }
+
     // callbacks
     let step_callback = [
         detecting_server_env,
-        function() {
-            $.History.forward_ajax('get', step_urls[current_step_index++], '#here-installer-contents');
-        },
+        load_next_step,
         database_configure,
         admin_configure,
         site_configure,
@@ -197,11 +206,11 @@ $.ready(function() {
         let complete_num = 0;
         // check is input widget
         if (tag_name.toLowerCase() === 'input') {
-            $$('input').foreach((el, index) => {
+            $$('input').foreach((el) => {
                 if (el.value().length) {
                     complete_num += 1;
                 }
-            })
+            });
         }
         // emit installer:step:complete event?
         if (complete_num === $$('input').length) {

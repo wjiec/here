@@ -47,6 +47,8 @@
           <section id="here-installer-database-configure">
             <form action="/api/v1/installer/database_configure" method="POST">
               <div class="widget-form-group">
+                <!-- Database Driver -->
+                <input type="hidden" name="driver" value="mysql" id="here-installer-db-driver">
                 <!-- Database Host -->
                 <div class="widget-input-group-with-desc">
                   <div class="widget-input-group">
@@ -96,6 +98,7 @@
                   <p class="input-description">If you want to run multiple Here installations in a single database, change this.</p>
                 </div>
               </div>
+              <input type="hidden" name="charset" value="utf8" id="here-installer-db-charset">
             </form>
             <div id="here-installer-database-info">
                 <h3 id="here-installer-database-info-title" class="widget-hidden">Database server information</h3>

@@ -218,7 +218,7 @@ class Here_Request {
      *
      * @param bool $json
      * @param bool $assoc
-     * @return string
+     * @return string|array
      */
     public static function get_request_contents($json = false, $assoc = true) {
         if ($json == true) {
