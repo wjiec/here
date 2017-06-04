@@ -40,7 +40,7 @@ class Core {
      * @param bool $debug_mode
      */
     public static function init($debug_mode = false) {
-        # register autoload function
+        // register autoload function
         if (function_exists('spl_autoload_register')) {
             spl_autoload_register(array('Core', '__autoload'));
         } else {
@@ -49,25 +49,21 @@ class Core {
             }
         }
 
-        # enable ob cache
+        // enable ob cache
         ob_start();
-
-        # error & exception handler
+        // error & exception handler
         self::_catch_all_exceptions();
-
-        # request module init
+        // request module init
         Here_Request::init_request();
-
-        # load sys.conf and definition
+        // cache manager module init
+        Here_CacheManager::init_cache_manager();
+        // load sys.conf and definition
         self::load_configure();
-
-        # init router table
+        // init router table
         self::_init_router_table();
-
-        # load base widget
+        // load base widget
         self::_init_widgets($debug_mode);
-
-        # load helper
+        // load helper
         self::_init_helper();
     }
 
