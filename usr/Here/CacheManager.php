@@ -70,10 +70,8 @@ class Here_CacheManager {
             $domain = self::$_cookie_domain;
         }
         // check key-value type
-        if (!is_string($key)) {
-            throw new Here_Exceptions_ParameterError("key except string type",
-                'Here:CacheManager:set_cookie');
-        }
+        Here_Utils::check_type('key', $key, 'string',
+            'Here:CacheManager:set_cookie');
         // check value is string ot string-like(has __toString method)
         if (!is_string($value)) {
             if (method_exists($value, '__toString')) {
@@ -125,10 +123,8 @@ class Here_CacheManager {
         // start session
         self::_start_session();
         // check key parameter type
-        if (!is_string($key)) {
-            throw new Here_Exceptions_ParameterError("key except string type",
-                'Here:CacheManager:set_session');
-        }
+        Here_Utils::check_type('key', $key, 'string',
+            'Here:CacheManager:set_session');
         // storage session key-value pair
         self::$_sessions[$key] = $value;
         // sync to $_SESSION

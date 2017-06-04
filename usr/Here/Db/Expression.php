@@ -56,11 +56,9 @@ class Here_Db_Expression {
      * @throws Here_Exceptions_ParameterError
      */
     public function __construct($field_name) {
-        if (!is_string($field_name)) {
-            throw new Here_Exceptions_ParameterError("field name except string type",
-                'Here:Db:Expression:__construct');
-        }
-        // escape ?
+        // check field name type is correct
+        Here_Utils::check_type('field name', $field_name, 'string',
+            'Here:Db:Expression:__construct');
         $this->_field_name = $field_name;
     }
 
@@ -173,7 +171,7 @@ class Here_Db_Expression {
      */
     public function callback($key, $value) {
         if (!is_callable($key) || !is_callable($value)) {
-            throw new Here_Exceptions_ParameterError("parameters except callback",
+            throw new Here_Exceptions_ParameterError("parameters except callable key/value callback",
                 'Here:Db:Expression:callback');
         }
 

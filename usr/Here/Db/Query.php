@@ -66,10 +66,9 @@ class Here_Db_Query {
                 'Here:Db:Query:__construct');
         }
 
-        if (!is_string($table_prefix)) {
-            throw new Here_Exceptions_ParameterError('prefix of table name except string type',
-                'Here:Db:Query:__construct');
-        }
+        // check prefix of table name type
+        Here_Utils::check_type('prefix of table name', $table_prefix, 'string',
+            'Here:Db:Query:__construct');
         $this->_table_prefix = $table_prefix;
     }
 
@@ -379,10 +378,8 @@ class Here_Db_Query {
         $values = array_values($one_row);
         // check keys is correct
         array_map(function($k) {
-            if (!is_string($k)) {
-                throw new Here_Exceptions_ParameterError("Key is not a string on inserts a row of data",
-                    'Here:Db:Query:one_row');
-            }
+            Here_Utils::check_type('key of row data', $k, 'string',
+                'Here:Db:Query:one_row');
         }, $keys);
 
         // push to keys/values variable pool
@@ -454,10 +451,8 @@ class Here_Db_Query {
     public function limit($limit_size) {
         $this->_check_base_action();
         // check parameter type
-        if (!is_int($limit_size)) {
-            throw new Here_Exceptions_ParameterError('limit size except int type',
-                'Here:Db:Query:limit');
-        }
+        Here_Utils::check_type('limit size', $limit_size, 'int',
+            'Here:Db:Query:limit');
         // check limit can apply to this action
         if (!array_key_exists('limit', $this->_variable_pool)) {
             throw new Here_Exceptions_ParameterError('limit method may be not apply to this action',
@@ -479,10 +474,8 @@ class Here_Db_Query {
         $this->_check_base_action();
 
         // check parameter type
-        if (!is_int($offset)) {
-            throw new Here_Exceptions_ParameterError('offset except int type',
-                'Here:Db:Query:offset');
-        }
+        Here_Utils::check_type('offset', $offset, 'int',
+            'Here:Db:Query:offset');
         // check limit can apply to this action
         if (!array_key_exists('offset', $this->_variable_pool)) {
             throw new Here_Exceptions_ParameterError('offset may be not apply to this action',
@@ -507,7 +500,7 @@ class Here_Db_Query {
         $this->_check_base_action();
         // check index type
         if (!is_int($page_index) || !is_int($page_size)) {
-            throw new Here_Exceptions_ParameterError("",
+            throw new Here_Exceptions_ParameterError("page index/size except int type",
                 'Here:Db:Query:page');
         }
         // calc limit and offset
@@ -617,11 +610,10 @@ class Here_Db_Query {
      * @throws Here_Exceptions_ParameterError
      */
     public function _complete_filed_name_filter($field_name) {
-        if (!is_string($field_name)) {
-            throw new Here_Exceptions_ParameterError("field name except string type",
-                'Here:Db:Query:_complete_filed_name_filter');
-        }
-
+        // check field name type
+        Here_Utils::check_type('field name', $field_name, 'string',
+            'Here:Db:Query:_complete_filed_name_filter');
+        // if start-with `table.`
         if (strpos($field_name, 'table.') === false) {
             return $this->_adapter_instance->escape_key($field_name);
         }
@@ -678,10 +670,8 @@ class Here_Db_Query {
         if ($alias == null) {
             return $table_name;
         } else {
-            if (!is_string($alias)) {
-                throw new Here_Exceptions_ParameterError("table alias name except string type",
-                    'Here:Db:Query:_table_name_filter');
-            }
+            Here_Utils::check_type('alias name of table', $alias, 'string',
+                'Here:Db:Query:_table_name_filter');
             // alias is correct type
             return array(
                 'table_name' => $table_name,
@@ -733,10 +723,8 @@ class Here_Db_Query {
      * @throws Here_Exceptions_ParameterError
      */
     private function _order_syntax($syntax_name, $field_name, $order = Here_Db_Helper::ORDER_ASC) {
-        if (!is_string($field_name)) {
-            throw new Here_Exceptions_ParameterError("field name except string type",
-                "Here:Db:Query:{$syntax_name}");
-        }
+        Here_Utils::check_type('field name', $field_name, 'string',
+            "Here:Db:Query:{$syntax_name}");
 
         if ($order != Here_Db_Helper::ORDER_ASC && $order != Here_Db_Helper::ORDER_DESC) {
             throw new Here_Exceptions_ParameterError("order must be Here_Db_Helper::ORDER_ASC or Here_Db_Helper::ORDER_DESC",

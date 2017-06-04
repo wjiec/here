@@ -415,11 +415,8 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
     public function query($query, $action) {
         $this->connect();
         // check sql type is string
-        if (!is_string($query)) {
-            throw new Here_Exceptions_ParameterError("sql except string, got other type",
-                'Here:Db:Adapter:Mysql:query');
-        }
-
+        Here_Utils::check_type('query', $query, 'string',
+            'Here:Db:Adapter:Mysql:query');
         // query string
         $this->_query_string = $query;
 

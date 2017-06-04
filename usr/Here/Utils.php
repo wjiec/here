@@ -31,6 +31,9 @@ class Here_Utils {
                 throw new Here_Exceptions_ParameterError("{$name} except {$except_type} type, got " . gettype($object),
                     $source);
             }
+        } else {
+            throw new Here_Exceptions_ParameterError("except type invalid",
+                'Here:Here_Utils:check_type');
         }
     }
 }

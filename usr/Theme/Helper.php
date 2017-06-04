@@ -51,10 +51,8 @@ class Theme_Helper extends Here_Abstracts_Widget {
         }
 
         // check path is correct
-        if (!is_string($path)) {
-            throw new Here_Exceptions_ParameterError("resource path invalid",
-                'Here:Theme:Helper:static_completion');
-        }
+        Here_Utils::check_type('resource path', $path, 'string',
+            'Here:Theme:Helper:static_completion');
         $path = trim($path, ' /');
         // check resource file exists
         $file_path = join('/', array($theme_path, $path));
@@ -62,7 +60,6 @@ class Theme_Helper extends Here_Abstracts_Widget {
             throw new Here_Exceptions_ParameterError("resource not exists",
                 'Here:Theme:Helper:static_completion');
         }
-
         // build static url address
         $static_url = join('/', array(rtrim(_here_static_url_prefix_, '/'), $theme, $path));
         echo self::url_completion($static_url);

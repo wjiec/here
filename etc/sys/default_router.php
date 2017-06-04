@@ -458,6 +458,7 @@ class Route_Test extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        var_dump($parameters);
+        $a = new Here_Utils();
+        Here_Utils::check_type('key', $a, 'string', 'Here:test_router');
     }
 }
