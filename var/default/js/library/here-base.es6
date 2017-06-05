@@ -92,11 +92,19 @@ export default class $ {
     remove_class(class_name) {
         if (this._selector.length !== 0) {
             let class_list = this._selector[0].classList;
-            let select_index = class_list.indexOf(class_name);
             // class not found
-            if (select_index !== -1) {
-                this._selector[0].classList.splice(select_index, 1);
+            if (class_list.contains(class_name) === true) {
+                // remove class
+                class_list.remove(class_name);
             }
+        }
+    }
+    // check class exists
+    has_class(class_name) {
+        if (this._selector.length !== 0) {
+            let class_list = this._selector[0].classList;
+            // class not found
+            return class_list.contains(class_name);
         }
     }
     // set attribute

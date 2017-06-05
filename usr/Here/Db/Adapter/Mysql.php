@@ -90,7 +90,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         if ($this->_connection instanceof PDO) {
             return array(
                 'adapter' => 'PDO',
-                'client_server' => $this->_connection->getAttribute(constant('PDO::ATTR_CLIENT_VERSION')),
+                'client_info' => $this->_connection->getAttribute(constant('PDO::ATTR_CLIENT_VERSION')),
                 'connection_status' => $this->_connection->getAttribute(constant('PDO::ATTR_CONNECTION_STATUS')),
                 'server_info' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_INFO')),
                 'server_version' => $this->_connection->getAttribute(constant('PDO::ATTR_SERVER_VERSION')),
@@ -99,7 +99,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         // mysqli
         return array(
             'adapter' => 'mysqli',
-            'client_server' => $this->_connection->client_info,
+            'client_info' => $this->_connection->client_info,
             'connection_status' => $this->_connection->host_info,
             'server_info' => $this->_connection->stat,
             'server_version' => $this->_connection->server_info,

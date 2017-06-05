@@ -16,6 +16,8 @@ $.ready(function() {
     let step_urls = [];
     // current step index
     let current_step_index = 0;
+    // step url index
+    let step_url_index = 0;
     // get step information from server
     (new $.AjaxAdapter()).open('get', '/api/v1/installer/get_step_info').then((response) => {
         step_urls = $.Utility.json_decode(response.text);
@@ -133,6 +135,14 @@ $.ready(function() {
         let database = $$('#here-installer-db-name');
         let table_prefix = $$('#here-installer-db-prefix');
         let charset = $$('#here-installer-db-charset');
+        // bind focus event
+        $$('input').on('focus', () => {
+            // hidden message
+            $$('#here-installer-db-success').add_class('widget-hidden');
+            $$('#here-installer-db-fail').add_class('widget-hidden');
+            // change state
+            $.EventBus.emit('installer:step:fail', [current_step_index === 3]);
+        });
         // PHP 5.6+ does't support text/json POST request, only support application/x-www.form-urlencoded
         (new $.AjaxAdapter()).open('PUT', '/api/v1/installer/database_configure', null, {
             driver: driver.value(),
@@ -144,9 +154,28 @@ $.ready(function() {
             table_prefix: table_prefix.value(),
             charset: charset.value()
         }, null, 'json').then((response) => {
-            console.log(response);
+            // response text
+            let response_object = $.Utility.json_decode(response.text || '{}');
+            // remove hidden widget
+            $$('#here-installer-db-success').remove_class('widget-hidden');
+            // change client_information
+            $$('#here-installer-database-client-info').text(response_object.client_info);
+            // change server_information
+            $$('#here-installer-database-server-info').text(response_object.server_info);
+            // display success info and check btn disabled attribute
+            if ($$('#here-installer-db-success').has_class('widget-hidden') === false) {
+                // current step complete
+                $.EventBus.emit('installer:step:complete');
+            }
         }, (error_response) => {
-            console.log(error_response);
+            // response text
+            let response_object = $.Utility.json_decode(error_response.text || '{}');
+            // remove hidden widget
+            $$('#here-installer-db-fail').remove_class('widget-hidden');
+            // display error message
+            $$('#here-installer-database-fail-message').text(response_object.error);
+            // change state
+            $.EventBus.emit('installer:step:fail', [current_step_index === 3]);
         });
     }
 
@@ -175,26 +204,51 @@ $.ready(function() {
      * request next step contents
      */
     function load_next_step() {
-        $.History.forward_ajax('get', step_urls[current_step_index++], '#here-installer-contents');
+        // load next step page
+        $.History.forward_ajax('get', step_urls[++step_url_index], '#here-installer-contents');
+        // emit installer:step:complete
+        $.EventBus.emit('installer:step:complete');
     }
 
     // callbacks
     let step_callback = [
         detecting_server_env,
+        // database configure
         load_next_step,
         database_configure,
+        // admin account configure
+        load_next_step,
         admin_configure,
+        // blogger information configure
+        load_next_step,
         site_configure,
+        // complete install display
+        load_next_step,
         complete_install
     ];
     // callback result state [default is true]
     let callback_state = true;
     // change state
-    $.EventBus.on('installer:step:complete', () => {
+    $.EventBus.on('installer:step:complete', (increase = true) => {
+        console.log('emit complete');
         // set callback state
         callback_state = true;
         // enable button
         $$('#here-installer-next-btn').attribute('disabled', false, true);
+        // increase current step index
+        current_step_index += (increase ? 1 : 0);
+    });
+    // change state to fail
+    $.EventBus.on('installer:step:fail', (decrease = true) => {
+        // set callback state
+        callback_state = false;
+        // enable button
+        $$('#here-installer-next-btn').attribute('disabled', true, true);
+        if (decrease === true) {
+            console.log('decrease');
+        }
+        // decrease current step index
+        current_step_index -= (decrease ? 1 : 0);
     });
     // listening changed event
     $$('#here-install-body').on('change', (event) => {
@@ -214,8 +268,9 @@ $.ready(function() {
         }
         // emit installer:step:complete event?
         if (complete_num === $$('input').length) {
-            $.EventBus.emit('installer:step:complete');
-            // step_callback[current_step_index - 1]();
+            // $.EventBus.emit('installer:step:complete');
+            // enable `next` button
+            $$('#here-installer-next-btn').attribute('disabled', false, true);
         }
     }, true);
     // bind button click event
@@ -225,27 +280,20 @@ $.ready(function() {
         // execute callback
         let callback = step_callback[current_step_index];
         // button disabled state
-        let disabled_state = target_el.attribute('disabled');
+        let disabled_state = target_el.attribute('disabled', null, true);
         // check state
         if ((disabled_state === null || disabled_state === false)) {
             // execute callback
             callback();
-            // check callback state
-            if (callback_state === true) {
-                // reset button state
-                target_el.attribute('disabled', true, true);
-                // reset callback result
-                callback_state = false;
-                // detecting-server have't own page, both first page.
-                if (current_step_index === 0) {
-                    current_step_index += 1;
-                } else {
-                    // request next step page
-                    // $.History.forward_ajax('get', step_urls[current_step_index++], '#here-installer-contents');
-                }
-                // change to `Next`
-                target_el.text('Next');
-            }
+        }
+        // check callback state
+        if (callback_state === true) {
+            // reset button state
+            target_el.attribute('disabled', true, true);
+            // reset callback result
+            callback_state = false;
+            // change to `Next`
+            target_el.text('Next');
         }
     }, false);
 });

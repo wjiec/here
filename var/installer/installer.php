@@ -101,9 +101,15 @@
               <input type="hidden" name="charset" value="utf8" id="here-installer-db-charset">
             </form>
             <div id="here-installer-database-info">
-                <h3 id="here-installer-database-info-title" class="widget-hidden">Database server information</h3>
+              <div id="here-installer-db-success" class="widget-hidden">
+                <h3 id="here-installer-database-info-title">Database server information</h3>
                 <p id="here-installer-database-client-info"></p>
                 <p id="here-installer-database-server-info"></p>
+              </div>
+              <div id="here-installer-db-fail" class="widget-hidden">
+                <h3 id="here-installer-database-info-title">Database configure invalid</h3>
+                <p id="here-installer-database-fail-message"></p>
+              </div>
             </div>
           </section>
         <?php elseif ($step_name == 'admin-configure'): ?>
