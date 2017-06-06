@@ -8,8 +8,8 @@ import {Utility} from '../utils/utils.es6'
 
 class FormValidator {
     /**
-     * @param HTMLElement input
-     * @param Object rules
+     * @param input HTMLElement
+     * @param rules Object
      */
     constructor(input, rules) {
         if (!Utility.is_dom_object(input)) {
@@ -24,8 +24,32 @@ class FormValidator {
         // check pre parse
         this._parse_input_pre();
         this._parse_rules_pre();
-        // start check
-        this._check();
+        try {
+            // start check
+            this._check();
+            // setting status and message
+            this._status = true;
+            // message
+            this._message = null;
+        } catch (except) {
+            // error status
+            this._status = false;
+            // message is Exception message
+            this._message = except.message;
+        }
+
+    }
+
+    /**
+     * check result handler
+     *
+     * @param callback
+     */
+    then(callback) {
+        if (!Utility.is_function(callback)) {
+            throw Error('callback except callable object');
+        }
+        callback(new $(this._input), this._status, this._message);
     }
 
     _parse_input_pre() {
@@ -33,7 +57,7 @@ class FormValidator {
         if (this._input.tagName.toLowerCase() !== 'input') {
             throw Error('input parameter is not input element')
         }
-        this._input_name = this._input.name
+        this._input_name = this._input.name;
         this._input_value = this._input.value.trim()
     }
 
@@ -77,7 +101,7 @@ class FormValidator {
                     throw Error('FormValidator:Error:regex validate error');
                 }
             } else if (Utility.is_string(this._flag_regex)) {
-                let pattern = FormValidator.common_regex(this._flag_regex)
+                let pattern = FormValidator.common_regex(this._flag_regex);
                 if (pattern === null) {
                     throw Error('FormValidator:Error:pattern non exists');
                 } else {

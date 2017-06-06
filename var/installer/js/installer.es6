@@ -22,6 +22,7 @@ $.ready(function() {
     (new $.AjaxAdapter()).open('get', '/api/v1/installer/get_step_info').then((response) => {
         step_urls = $.Utility.json_decode(response.text);
     }, (error_response) => {
+        // display error message
         console.log(error_response);
     });
 
@@ -183,7 +184,43 @@ $.ready(function() {
      * admin username/password configure
      */
     function admin_configure() {
-        console.log('admin_configure');
+        // getting form data
+        let username = $$('#here-installer-account-username');
+        let password = $$('#here-installer-account-password');
+        // bind focus event
+        $$('input').on('focus', (event) => {
+            // get current input
+            let input = $$(event.target);
+            // remove border-color
+            input.set_style('borderColor', '');
+        });
+        // username validator
+        (new $.FormValidator($$('#here-installer-account-username').real_dom_object(), {
+            min_length: 6,
+            max_length: 16
+        })).then((el, status, message) => {
+            el.set_style('borderColor', status ? '#0F0' : '#F00');
+        });
+        // password validator
+        (new $.FormValidator($$('#here-installer-account-password').real_dom_object(), {
+            min_length: 8,
+            max_length: 24
+        })).then((el, status, message) => {
+            el.set_style('borderColor', status ? '#0F0' : '#F00');
+        });
+        // PHP 5.6+ does't support text/json POST request, only support application/x-www.form-urlencoded
+        (new $.AjaxAdapter()).open('PUT', '/api/v1/installer/account_configure', null, {
+            username: username.value(),
+            password: password.value(),
+        }, null, 'json').then((response) => {
+            // response text
+            let response_object = $.Utility.json_decode(response.text || '{}');
+            console.log(response_object);
+        }, (error_response) => {
+            // response text
+            let response_object = $.Utility.json_decode(error_response.text || '{}');
+            console.log(response_object);
+        });
     }
 
     /**
@@ -226,11 +263,11 @@ $.ready(function() {
         load_next_step,
         complete_install
     ];
+
     // callback result state [default is true]
     let callback_state = true;
     // change state
     $.EventBus.on('installer:step:complete', (increase = true) => {
-        console.log('emit complete');
         // set callback state
         callback_state = true;
         // enable button

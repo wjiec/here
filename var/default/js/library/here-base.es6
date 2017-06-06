@@ -148,6 +148,18 @@ export default class $ {
             }
         }
     }
+    // get real dom object
+    real_dom_object() {
+        if (this._selector.length !== 0) {
+            return this._selector[0];
+        }
+    }
+    // change style
+    set_style(key, value) {
+        if (this._selector.length !== 0) {
+            return this._selector[0].style[key] = value;
+        }
+    }
     // element count
     get length() {
         return this._selector.length;

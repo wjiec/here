@@ -53,7 +53,7 @@
                 <div class="widget-input-group-with-desc">
                   <div class="widget-input-group">
                     <label class="widget-input-label" for="here-installer-db-host">DB Host</label>
-                    <input type="text" id="here-installer-db-host" class="widget-form-control" name="host" value="localhost" placeholder="Database server host"  required="required"/>
+                    <input type="text" id="here-installer-db-host" class="widget-form-control" name="host" value="localhost" placeholder="Database server host" required="required"/>
                   </div>
                   <p class="input-description">Your should be able to get this info from your web host, if localhost does not work.</p>
                 </div>
@@ -113,7 +113,29 @@
             </div>
           </section>
         <?php elseif ($step_name == 'admin-configure'): ?>
-        <h3>Administrator configuration</h3>
+          <h3>Administrator configuration</h3>
+          <section id="here-installer-admin-configure">
+            <form action="/api/v1/installer/account_configure" method="POST">
+              <div class="widget-form-group">
+                <!-- Admin account username -->
+                <div class="widget-input-group-with-desc">
+                  <div class="widget-input-group">
+                    <label class="widget-input-label" for="here-installer-account-username">USERNAME</label>
+                    <input type="text" id="here-installer-account-username" class="widget-form-control" name="username" placeholder="Admin username" required="required"/>
+                  </div>
+                  <p class="input-description">Username for your account.</p>
+                </div>
+                <!-- Admin account password -->
+                <div class="widget-input-group-with-desc">
+                  <div class="widget-input-group">
+                    <label class="widget-input-label" for="here-installer-account-password">PASSWORD</label>
+                    <input type="text" id="here-installer-account-password" class="widget-form-control" name="password" placeholder="Admin password" required="required"/>
+                  </div>
+                  <p class="input-description">Password for your account.</p>
+                </div>
+              </div>
+            </form>
+          </section>
         <?php elseif ($step_name == 'site-configure'): ?>
         <h3>Blogger configuration</h3>
         <?php elseif ($step_name == 'complete-install'): ?>

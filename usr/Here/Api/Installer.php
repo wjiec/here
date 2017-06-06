@@ -168,6 +168,21 @@ class Here_Api_Installer extends Here_Abstracts_Api {
     }
 
     /**
+     * administrator account configure
+     *
+     * @param array $parameters
+     */
+    public function account_configure(array $parameters) {
+        // get username/password from request contents
+        $account_info = Here_Request::get_request_contents(true);
+        // make response
+        Here_Response::json_response(array(
+            'status' => 0,
+            'message' => 'success'
+        ));
+    }
+
+    /**
      * check blog installed
      */
     private function _check_installed() {
