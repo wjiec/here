@@ -18,6 +18,8 @@ $.ready(function() {
     let current_step_index = 0;
     // step url index
     let step_url_index = 0;
+    // storage all token
+    let step_token = {};
     // get step information from server
     (new $.AjaxAdapter()).open('get', '/api/v1/installer/get_step_info').then((response) => {
         step_urls = $.Utility.json_decode(response.text);
@@ -167,6 +169,8 @@ $.ready(function() {
             if ($$('#here-installer-db-success').has_class('widget-hidden') === false) {
                 // current step complete
                 $.EventBus.emit('installer:step:complete');
+                // save token
+                step_token.database_token = response_object.token;
             }
         }, (error_response) => {
             // response text
@@ -187,12 +191,16 @@ $.ready(function() {
         // getting form data
         let username = $$('#here-installer-account-username');
         let password = $$('#here-installer-account-password');
+        // validator status
+        let validator_status = true;
         // bind focus event
         $$('input').on('focus', (event) => {
             // get current input
             let input = $$(event.target);
             // remove border-color
             input.set_style('borderColor', '');
+            // hidden widget
+            $$('#here-installer-account-info').add_class('widget-hidden');
         });
         // username validator
         (new $.FormValidator($$('#here-installer-account-username').real_dom_object(), {
@@ -200,6 +208,15 @@ $.ready(function() {
             max_length: 16
         })).then((el, status, message) => {
             el.set_style('borderColor', status ? '#0F0' : '#F00');
+            // display error message
+            if (status === false) {
+                // change state
+                validator_status = false;
+                // show widget
+                $$('#here-installer-account-info').remove_class('widget-hidden');
+                // error message
+                $$('#here-installer-account-message').text('Username: ' + message);
+            }
         });
         // password validator
         (new $.FormValidator($$('#here-installer-account-password').real_dom_object(), {
@@ -207,7 +224,20 @@ $.ready(function() {
             max_length: 24
         })).then((el, status, message) => {
             el.set_style('borderColor', status ? '#0F0' : '#F00');
+            // display error message
+            if (status === false) {
+                // change state
+                validator_status = false;
+                // show widget
+                $$('#here-installer-account-info').remove_class('widget-hidden');
+                // error message
+                $$('#here-installer-account-message').text('Password: ' + message);
+            }
         });
+        // if validator fail, than quit
+        if (validator_status === false) {
+            return;
+        }
         // PHP 5.6+ does't support text/json POST request, only support application/x-www.form-urlencoded
         (new $.AjaxAdapter()).open('PUT', '/api/v1/installer/account_configure', null, {
             username: username.value(),
@@ -215,11 +245,22 @@ $.ready(function() {
         }, null, 'json').then((response) => {
             // response text
             let response_object = $.Utility.json_decode(response.text || '{}');
-            console.log(response_object);
+            // save token
+            step_token.account_token = response_object.token;
+            // next step
+            $.EventBus.emit('installer:step:complete');
+            // display success
+            $$('#here-installer-account-message').text('account create completed');
+            // disable input widget
+            $$('#here-installer-account-username').attribute('disabled', true, true);
+            $$('#here-installer-account-password').attribute('disabled', true, true);
         }, (error_response) => {
             // response text
             let response_object = $.Utility.json_decode(error_response.text || '{}');
-            console.log(response_object);
+            // remove hidden widget
+            $$('#here-installer-account-info').remove_class('widget-hidden');
+            // display error message
+            $$('#here-installer-account-message').text(response_object.error);
         });
     }
 

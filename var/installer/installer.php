@@ -135,6 +135,10 @@
                 </div>
               </div>
             </form>
+            <div id="here-installer-account-info">
+                <h3 id="here-installer-account-info-title">Administrator account configure message</h3>
+                <p id="here-installer-account-message"></p>
+            </div>
           </section>
         <?php elseif ($step_name == 'site-configure'): ?>
         <h3>Blogger configuration</h3>

@@ -159,8 +159,12 @@ class Here_Api_Installer extends Here_Abstracts_Api {
                 $database_info['username'], $database_info['password']);
             // create helper instance
             $helper = new Here_Db_Helper($database_info['table_prefix']);
+            /* @var Here_Widget_Jwt $jwt */
+            $jwt = Here_Widget::widget('Jwt');
             // connecting to server and get server|client information
-            Here_Response::json_response($helper->get_adapter_info());
+            Here_Response::json_response(array_merge($helper->get_adapter_info(), array(
+                'token' => $jwt->generate_token($database_info, _here_default_jwt_key_)
+            )));
         } catch (Here_Exceptions_ConnectingError $e) {
             // connecting error occurs, connecting error may be encoding error
             Here_Request::abort(500, Here_Response::_Text($e->get_message()));
@@ -175,10 +179,13 @@ class Here_Api_Installer extends Here_Abstracts_Api {
     public function account_configure(array $parameters) {
         // get username/password from request contents
         $account_info = Here_Request::get_request_contents(true);
+        /* @var Here_Widget_Jwt $jwt */
+        $jwt = Here_Widget::widget('Jwt');
         // make response
         Here_Response::json_response(array(
             'status' => 0,
-            'message' => 'success'
+            'message' => 'success',
+            'token' => $jwt->generate_token($account_info, _here_default_jwt_key_)
         ));
     }
 
