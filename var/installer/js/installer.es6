@@ -249,6 +249,8 @@ $.ready(function() {
             step_token.account_token = response_object.token;
             // next step
             $.EventBus.emit('installer:step:complete');
+            // display widget
+            $$('#here-installer-account-info').remove_class('widget-hidden');
             // display success
             $$('#here-installer-account-message').text('account create completed');
             // disable input widget
