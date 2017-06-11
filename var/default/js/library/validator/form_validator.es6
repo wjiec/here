@@ -62,17 +62,18 @@ class FormValidator {
     }
 
     _parse_rules_pre() {
-        this._flag_empty = this._from_rules_get('empty', null);
+        this._flag_empty = this._from_rules_get('empty', true);
         this._flag_min_length = this._from_rules_get('min_length', this._from_rules_get('length'));
         this._flag_max_length = this._from_rules_get('max_length');
-        this._flag_regex = this._from_rules_get('regex')
+        this._flag_blank_character = this._from_rules_get('blank_char', true);
+        this._flag_regex = this._from_rules_get('regex', null)
     }
 
     _check() {
         // check value is empty
         if (this._flag_empty !== false) {
             if (this._input_value.length === 0) {
-                throw Error('FormValidator:Error:value is empty');
+                throw Error('value is empty');
             }
         }
         // check value length
@@ -80,33 +81,39 @@ class FormValidator {
             // check min length
             if (this._flag_min_length) {
                 if (this._input_value.length < this._flag_min_length) {
-                    throw Error('FormValidator:Error:value too short');
+                    throw Error('value too short');
                 }
             }
             // check max_length is correct
             if (this._flag_max_length && this._flag_max_length <= this._flag_min_length) {
-                throw Error('FormValidator:Error:max_length invalid');
+                throw Error('max_length invalid');
             }
             // check max length
             if (this._flag_max_length) {
                 if (this._input_value.length > this._flag_max_length) {
-                    throw Error('FormValidator:Error:value too long');
+                    throw Error('Error:value too long');
                 }
+            }
+        }
+        // blank character
+        if (this._flag_blank_character) {
+            if (/\s/.test(this._input_value)) {
+                throw Error('value has blank character');
             }
         }
         // regex
         if (this._flag_regex) {
             if (typeof this._flag_regex === 'object' && ('test' in this._flag_regex)) {
                 if (this._flag_regex.test(this._input_value) !== true) {
-                    throw Error('FormValidator:Error:regex validate error');
+                    throw Error('regex validate error');
                 }
             } else if (Utility.is_string(this._flag_regex)) {
                 let pattern = FormValidator.common_regex(this._flag_regex);
                 if (pattern === null) {
-                    throw Error('FormValidator:Error:pattern non exists');
+                    throw Error('pattern non exists');
                 } else {
                     if (pattern.test(this._input_value) !== true) {
-                        throw Error('FormValidator:Error:regex validate error');
+                        throw Error('regex validate error');
                     }
                 }
             }
