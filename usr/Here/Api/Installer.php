@@ -190,6 +190,24 @@ class Here_Api_Installer extends Here_Abstracts_Api {
     }
 
     /**
+     * blogger information configure
+     *
+     * @param array $parameters
+     */
+    public function blogger_configure(array $parameters) {
+        // get title/... from request contents
+        $blogger_info = Here_Request::get_request_contents(true);
+        /* @var Here_Widget_Jwt $jwt */
+        $jwt = Here_Widget::widget('Jwt');
+        // make response
+        Here_Response::json_response(array(
+            'status' => 0,
+            'message' => 'success',
+            'token' => $jwt->generate_token($blogger_info, _here_default_jwt_key_)
+        ));
+    }
+
+    /**
      * check blog installed
      */
     private function _check_installed() {

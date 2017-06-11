@@ -191,10 +191,13 @@ $.ready(function() {
         // getting form data
         let username = $$('#here-installer-account-username');
         let password = $$('#here-installer-account-password');
+        let email = $$('#here-installer-account-email');
         // validator status
         let validator_status = true;
         // bind focus event
         $$('input').on('focus', (event) => {
+            // reset validator status
+            validator_status = false;
             // get current input
             let input = $$(event.target);
             // remove border-color
@@ -203,7 +206,7 @@ $.ready(function() {
             $$('#here-installer-account-info').add_class('widget-hidden');
         });
         // username validator
-        (new $.FormValidator($$('#here-installer-account-username').real_dom_object(), {
+        (new $.FormValidator(username.real_dom_object(), {
             min_length: 6,
             max_length: 16
         })).then((el, status, message) => {
@@ -219,9 +222,25 @@ $.ready(function() {
             }
         });
         // password validator
-        (new $.FormValidator($$('#here-installer-account-password').real_dom_object(), {
+        (new $.FormValidator(password.real_dom_object(), {
             min_length: 8,
             max_length: 24
+        })).then((el, status, message) => {
+            el.set_style('borderColor', status ? '#0F0' : '#F00');
+            // display error message
+            if (status === false) {
+                // change state
+                validator_status = false;
+                // show widget
+                $$('#here-installer-account-info').remove_class('widget-hidden');
+                // error message
+                $$('#here-installer-account-message').text('Password: ' + message);
+            }
+        });
+        // email validator
+        (new $.FormValidator(email.real_dom_object(), {
+            empty: true,
+            regex: 'email'
         })).then((el, status, message) => {
             el.set_style('borderColor', status ? '#0F0' : '#F00');
             // display error message
@@ -242,6 +261,7 @@ $.ready(function() {
         (new $.AjaxAdapter()).open('PUT', '/api/v1/installer/account_configure', null, {
             username: username.value(),
             password: password.value(),
+            email: email.value()
         }, null, 'json').then((response) => {
             // response text
             let response_object = $.Utility.json_decode(response.text || '{}');
@@ -254,8 +274,9 @@ $.ready(function() {
             // display success
             $$('#here-installer-account-message').text('account create completed');
             // disable input widget
-            $$('#here-installer-account-username').attribute('disabled', true, true);
-            $$('#here-installer-account-password').attribute('disabled', true, true);
+            username.attribute('disabled', true, true);
+            password.attribute('disabled', true, true);
+            email.attribute('disabled', true, true);
         }, (error_response) => {
             // response text
             let response_object = $.Utility.json_decode(error_response.text || '{}');
@@ -270,14 +291,52 @@ $.ready(function() {
      * blogger title and other information
      */
     function site_configure() {
-        console.log('site_configure');
+        // getting element
+        let title = $$('#here-installer-blogger-title');
+        // focus event
+        $$('input').on('focus', (event) => {
+            // get current input
+            let input = $$(event.target);
+            // remove border-color
+            input.set_style('borderColor', '');
+            // hidden widget
+            $$('#here-installer-account-info').add_class('widget-hidden');
+        });
+        // ajax request
+        (new $.AjaxAdapter()).open('PUT', '/api/v1/installer/blogger_configure', null, {
+            title: title.value()
+        }, null, 'json').then((response) => {
+            // response text
+            let response_object = $.Utility.json_decode(response.text || '{}');
+            // save token
+            step_token.blogger_token = response_object.token;
+            // next step
+            $.EventBus.emit('installer:step:complete');
+            // change border color
+            title.set_style('borderColor', '#0F0');
+            // display widget
+            $$('#here-installer-blogger-info').remove_class('widget-hidden');
+            // display success
+            $$('#here-installer-blogger-message').text('blogger information configured');
+            // disable input widget
+            title.attribute('disabled', true, true);
+        }, (error_response) => {
+            // response text
+            let response_object = $.Utility.json_decode(error_response.text || '{}');
+            // remove hidden widget
+            $$('#here-installer-blogger-info').remove_class('widget-hidden');
+            // display error message
+            $$('#here-installer-blogger-message').text(response_object.error);
+        });
     }
 
     /**
      * complete install and redirection to index page
      */
     function complete_install() {
-        console.log('complete_configure');
+        // initializing database
+        // save config.php
+        // user home dir
     }
 
     /**
@@ -286,6 +345,18 @@ $.ready(function() {
     function load_next_step() {
         // load next step page
         $.History.forward_ajax('get', step_urls[++step_url_index], '#here-installer-contents');
+        // emit installer:step:complete
+        $.EventBus.emit('installer:step:complete');
+    }
+
+    /**
+     * load next step contents and change button text
+     */
+    function load_installer_complete() {
+        // load next step page
+        $.History.forward_ajax('get', step_urls[++step_url_index], '#here-installer-contents');
+        // change button text
+        $$('#here-installer-next-btn').text('Install');
         // emit installer:step:complete
         $.EventBus.emit('installer:step:complete');
     }
@@ -303,7 +374,7 @@ $.ready(function() {
         load_next_step,
         site_configure,
         // complete install display
-        load_next_step,
+        load_installer_complete,
         complete_install
     ];
 
@@ -372,8 +443,10 @@ $.ready(function() {
             target_el.attribute('disabled', true, true);
             // reset callback result
             callback_state = false;
-            // change to `Next`
-            target_el.text('Next');
+            if (target_el.text() === 'Start') {
+                // change to `Next`
+                target_el.text('Next');
+            }
         }
     }, false);
 });

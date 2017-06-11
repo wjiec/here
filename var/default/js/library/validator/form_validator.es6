@@ -42,8 +42,6 @@ class FormValidator {
 
     /**
      * check result handler
-     *
-     * @param callback
      */
     then(callback) {
         if (!Utility.is_function(callback)) {
@@ -77,7 +75,7 @@ class FormValidator {
             }
         }
         // check value length
-        if (this._flag_min_length || this._flag_max_length) {
+        if (this._input_value && (this._flag_min_length || this._flag_max_length)) {
             // check min length
             if (this._flag_min_length) {
                 if (this._input_value.length < this._flag_min_length) {
@@ -96,13 +94,13 @@ class FormValidator {
             }
         }
         // blank character
-        if (this._flag_blank_character) {
+        if (this._input_value && this._flag_blank_character) {
             if (/\s/.test(this._input_value)) {
                 throw Error('value has blank character');
             }
         }
         // regex
-        if (this._flag_regex) {
+        if (this._input_value && this._flag_regex) {
             if (typeof this._flag_regex === 'object' && ('test' in this._flag_regex)) {
                 if (this._flag_regex.test(this._input_value) !== true) {
                     throw Error('regex validate error');

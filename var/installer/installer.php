@@ -133,6 +133,14 @@
                   </div>
                   <p class="input-description">Password for your account.</p>
                 </div>
+                <!-- Admin account email -->
+                <div class="widget-input-group-with-desc">
+                  <div class="widget-input-group">
+                    <label class="widget-input-label" for="here-installer-account-email">&nbsp;E-MAIL&nbsp;</label>
+                    <input type="text" id="here-installer-account-email" class="widget-form-control" name="password" placeholder="Admin e-mail" required="required"/>
+                  </div>
+                  <p class="input-description">E-mail for your account.</p>
+                </div>
               </div>
             </form>
             <div id="here-installer-account-info" class="widget-hidden">
@@ -141,12 +149,29 @@
             </div>
           </section>
         <?php elseif ($step_name == 'site-configure'): ?>
-        <h3>Blogger configuration</h3>
+          <h3>Blogger configuration</h3>
+          <section id="here-installer-blogger-configure">
+            <form action="/api/v1/installer/blogger_configure" method="POST">
+              <div class="widget-form-group">
+                <!-- Blogger title -->
+                <div class="widget-input-group-with-desc">
+                  <div class="widget-input-group">
+                    <label class="widget-input-label" for="here-installer-blogger-title">TITLE</label>
+                    <input type="text" id="here-installer-blogger-title" class="widget-form-control" name="title" placeholder="Blogger title" required="required"/>
+                  </div>
+                  <p class="input-description">Title for your blogger.</p>
+                </div>
+            </form>
+            <div id="here-installer-blogger-info" class="widget-hidden">
+              <h3 id="here-installer-blogger-info-title">Administrator account configure message</h3>
+              <p id="here-installer-blogger-message"></p>
+            </div>
+          </section>
         <?php elseif ($step_name == 'complete-install'): ?>
-        <h3>Install completed</h3>
+          <h3>Install completed</h3>
         <?php else: ?>
-        <?php Core::router_instance()->emit_error(403); ?>
-        <?php endif;?>
+          <?php Core::router_instance()->emit_error(403); ?>
+        <?php endif; ?>
       </div>
       <div id="button-container">
         <button id="here-installer-next-btn" class="widget-btn-default">Start</button>
