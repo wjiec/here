@@ -137,7 +137,7 @@
                 <div class="widget-input-group-with-desc">
                   <div class="widget-input-group">
                     <label class="widget-input-label" for="here-installer-account-email">&nbsp;E-MAIL&nbsp;</label>
-                    <input type="text" id="here-installer-account-email" class="widget-form-control" name="password" placeholder="Admin e-mail" required="required"/>
+                    <input type="text" id="here-installer-account-email" class="widget-form-control" name="password" placeholder="Admin E-Mail" required="required"/>
                   </div>
                   <p class="input-description">E-mail for your account.</p>
                 </div>
@@ -168,7 +168,22 @@
             </div>
           </section>
         <?php elseif ($step_name == 'complete-install'): ?>
-          <h3>Install completed</h3>
+          <h3>Complete Installer Guide</h3>
+          <section id="here-installer-complete-contents">
+            <section id="here-installer-complete-description">
+              <p>Current step will create configure file and initializing database.</p>
+              <p>All steps of the installation as shown below.</p>
+            </section>
+            <div>
+              <ul id="here-installer-complete-list">
+                <li><p class="here-installer-complete-item">Create Configure File</p><p class="here-installer-complete-status"></p></li>
+                <li><p class="here-installer-complete-item">Create Tables</p><p class="here-installer-complete-status"></p></li>
+                <li><p class="here-installer-complete-item">Create Administrator User</p><p class="here-installer-complete-status"></p></li>
+                <li><p class="here-installer-complete-item">Insert Simple Article And Comments</p><p class="here-installer-complete-status"></p></li>
+                <li><p class="here-installer-complete-item">Open the champagne and celebrate installation is completed</p><p class="here-installer-complete-status"></p></li>
+              </ul>
+            </div>
+          </section>
         <?php else: ?>
           <?php Core::router_instance()->emit_error(403); ?>
         <?php endif; ?>

@@ -156,13 +156,19 @@
     }
 
     @at-root
-    .here-installer-db-driver-option {
-      &::after {
-        content: ' --';
+    #here-installer-complete-contents {
+      @at-root
+      #here-installer-complete-description {
+
       }
 
-      &::before {
-        content: '-- ';
+      @at-root
+      #here-installer-complete-list {
+        .here-installer-complete-item {
+          &::before {
+            content: "";
+          }
+        }
       }
     }
 

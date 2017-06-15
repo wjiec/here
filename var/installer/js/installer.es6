@@ -359,6 +359,7 @@ $.ready(function() {
         $$('#here-installer-next-btn').text('Install');
         // emit installer:step:complete
         $.EventBus.emit('installer:step:complete');
+        $$('#here-installer-next-btn').attribute('disabled', false, true);
     }
 
     // callbacks
