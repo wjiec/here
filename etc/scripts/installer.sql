@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `here_users` (
 -- user name
   `name` VARCHAR(32) NOT NULL,
 -- user password
-  `password` VARCHAR(64) NOT NULL,
+  `password` VARCHAR(255) NOT NULL,
 -- user email
   `email` VARCHAR(64) NOT NULL,
 -- display name
