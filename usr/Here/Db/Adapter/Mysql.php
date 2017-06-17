@@ -34,7 +34,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
         // getting server information
         $server_info = Here_Db_Helper::get_server(false, true);
         // using PDO
-        if (!class_exists('PDO')) {
+        if (class_exists('PDO')) {
             try {
                 // using PDO connect to server
                 $this->_connection = new PDO(Here_Db_Helper::array_to_dsn($server_info),
@@ -392,7 +392,7 @@ class Here_Db_Adapter_Mysql extends Here_Db_Adapter_Base {
             /* @var PDO $pdo_instance */
             $pdo_instance = $this->_connection;
             // escape value
-            $value = $pdo_instance->quote($value);
+            return $pdo_instance->quote($value);
         } else {
             /* @var mysqli $mysqli_instance */
             $mysqli_instance = $this->_connection;

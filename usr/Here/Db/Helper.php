@@ -143,11 +143,13 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
     /**
      * base sql generator
      *
+     * @throws Here_Exceptions_FatalError
      * @return Here_Db_Query
      */
     private function sql_generator() {
         if (!($this->_adapter_instance instanceof Here_Db_Adapter_Base)) {
-
+            throw new Here_Exceptions_FatalError("adapter invalid",
+                'Here:Db:Helper:sql_generator');
         }
         return new Here_Db_Query($this->_adapter_instance, $this->_table_prefix);
     }
@@ -243,6 +245,7 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
      * from server information(array) convert to dsn string
      *
      * @param array $information
+     * @throws Here_Exceptions_FatalError
      * @return string
      */
     public static function array_to_dsn($information) {

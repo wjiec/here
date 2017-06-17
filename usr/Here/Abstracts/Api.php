@@ -58,4 +58,21 @@ abstract class Here_Abstracts_Api {
     final public function get_api_version() {
         return $this->_api_version;
     }
+
+    /**
+     * automation generate api url
+     *
+     * @param string $api_name
+     */
+    final protected function api_url_for($api_name) {
+        // check parameter type
+        Here_Utils::check_type('api name', $api_name, 'string', 'Here:Abstracts:Api:api_url_for');
+        // generate api url
+        return Here_Request::path_join('', array(
+            'api',
+            $this->_api_version,
+            strtolower($this->_api_name),
+            $api_name
+        ));
+    }
 }
