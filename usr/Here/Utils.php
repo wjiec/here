@@ -36,4 +36,34 @@ class Here_Utils {
                 'Here:Here_Utils:check_type');
         }
     }
+
+    /**
+     * entry account password
+     *
+     * @param string $password
+     * @throws Here_Exceptions_FatalError
+     * @return string
+     */
+    public static function account_password_encrypt($password) {
+        // using password_hash(default: bcrypt)
+        $encrypt_password = password_hash($password, PASSWORD_DEFAULT);
+        // check encrypt state
+        if ($encrypt_password === false) {
+            throw new Here_Exceptions_FatalError('password_hash fail',
+                'Here:Utils:account_password_encrypt');
+        }
+        // return encrypt password
+        return $encrypt_password;
+    }
+
+    /**
+     * verify password is correct
+     *
+     * @param string $password
+     * @param string $encrypt_password
+     * @return bool
+     */
+    public static function account_password_verify($password, $encrypt_password) {
+        return password_verify($password, $encrypt_password);
+    }
 }

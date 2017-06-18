@@ -44,7 +44,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
     private function _reject_robots() {
         if (!empty(Here_Request::request_parameter())) {
             if (empty(Here_Request::get_env('http_referer'))) {
-                Here_Request::abort(403, 'are you human?');
+                Here_Request::abort(403, 'are you human? (｡・`ω´･)');
             }
 
             $parts = parse_url(Here_Request::get_env('http_referer'));
@@ -53,7 +53,7 @@ class Here_Widget_Interceptor extends Here_Abstracts_Widget {
             }
 
             if (empty($parts['host']) || Here_Request::get_env('http_host') != $parts['host']) {
-                Here_Request::abort(403, "you're not human");
+                Here_Request::abort(403, "you're not human. (╬￣皿￣)凸");
             }
         }
     }

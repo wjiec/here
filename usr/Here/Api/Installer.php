@@ -56,29 +56,28 @@ class Here_Api_Installer extends Here_Abstracts_Api {
             'steps' => array(
                 array(
                     'name' => 'Web Server',
-                    'address' => '/api/v1/installer/check_web_server',
+                    'address' => $this->api_url_for('check_web_server'),
                     'fail_level' => 'Warning'
                 ),
                 array(
                     'name' => 'Rewrite Support',
-                    'address' => '/api/v1/installer/check_rewrite',
+                    'address' => $this->api_url_for('check_rewrite'),
                     'fail_level' => 'Error'
                 ),
                 array(
                     'name' => 'Python',
-                    'address' => '/api/v1/installer/check_python_support',
+                    'address' => $this->api_url_for('check_python_support'),
                     'fail_level' => 'Warning'
                 ), array(
                     'name' => 'Write Permissions',
-                    'address' => '/api/v1/installer/check_write_permissions',
+                    'address' => $this->api_url_for('check_write_permissions'),
                     'fail_level' => 'Warning'
                 ), array(
                     'name' => 'Database Adapter',
-                    'address' => '/api/v1/installer/check_database_adapter',
+                    'address' => $this->api_url_for('check_database_adapter'),
                     'fail_level' => 'Error'
                 )
-            ),
-            'next_step_url' => '/api/v1/installer/next_step'
+            )
         ));
     }
 
@@ -123,8 +122,10 @@ class Here_Api_Installer extends Here_Abstracts_Api {
     public function check_write_permissions(array $parameters) {
         // check installed
         $this->_check_installed();
+        // file_put_contents exists
+        $write_function = function_exists('file_put_contents');
         // make response
-        $this->_make_detect_response(true, '755');
+        $this->_make_detect_response($write_function, $write_function ? 'Enable' : 'Disable');
     }
 
     /**
@@ -205,6 +206,154 @@ class Here_Api_Installer extends Here_Abstracts_Api {
             'message' => 'success',
             'token' => $jwt->generate_token($blogger_info, _here_default_jwt_key_)
         ));
+    }
+
+    /**
+     * complete installer guide
+     *
+     * @param array $parameters
+     */
+    pubLic function complete_install(array $parameters) {
+        try {
+            // get configure for database, account, blogger
+            $configures = Here_Request::get_request_contents(true);
+            /* @var Here_Widget_Jwt $jwt */
+            $jwt = Here_Widget::widget('Jwt');
+            // jwt decode
+            foreach ($configures as $key => &$configure) {
+                $configure = $jwt->token_decode($configure, _here_default_jwt_key_);
+            }
+            // create database
+            $this->_init_database($configures['database']);
+            // create database helper
+            $helper = new Here_Db_Helper($configures['database']['table_prefix']);
+            // create account
+            $this->_init_account($configures['account'], $helper);
+            // blogger info
+            $this->_init_blogger($configures['blogger'], $helper);
+            // create configure file
+            $this->_create_configure_file($configures);
+            // make response
+            Here_Response::json_response(array(
+                'status' => 0,
+                'message' => 'Here Install Complete'
+            ));
+        } catch (Here_Exceptions_Base $e) {
+            Here_Response::json_response(array(
+                'status' => 1,
+                'error_step' => $e->get_code(),
+                'message' => $e->get_message()
+            ));
+        }
+    }
+
+    /**
+     * initializing database
+     *
+     * @param $configure
+     * @throws Here_Exceptions_FatalError
+     */
+    private function _init_database(array $configure) {
+        try {
+            // init database helper
+            Here_Db_Helper::init_server(Here_Db_Helper::array_to_dsn($configure),
+                $configure['username'], $configure['password']);
+            // create helper instance
+            $helper = new Here_Db_Helper($configure['table_prefix']);
+            // reading scripts
+            $scripts = file_get_contents('scripts/installer.sql', true);
+            // check read complete
+            if (!$scripts || !is_string($scripts)) {
+                throw new Here_Exceptions_FatalError('cannot reading sql scripts',
+                    'Here:Api:Installer:_init_database:reading_scripts');
+            }
+            // explode segments
+            $tables = explode(';', $scripts);
+            // create tables
+            foreach ($tables as $table_script) {
+                $helper->query($table_script . ';');
+            }
+        } catch (Here_Exceptions_ConnectingError $e) {
+            // connecting error occurs, connecting error may be encoding error
+            throw new Here_Exceptions_FatalError(Here_Response::_Text($e->get_message()),
+                'Here:Api:Installer:_init_database:connecting');
+        } catch (Here_Exceptions_QueryError $e) {
+            $message = Here_Response::_Text($e->get_message());
+            if (strpos($message, 'Duplicate key name') === false) {
+                throw new Here_Exceptions_FatalError($message,
+                    'Here:Api:Installer:_init_database:query_scripts');
+            }
+        }
+    }
+
+    /**
+     * insert admin account to databases
+     *
+     * @param array $configure
+     * @param Here_Db_Helper $helper
+     * @throws Here_Exceptions_FatalError
+     */
+    private function _init_account(array $configure, $helper) {
+        try {
+            $helper->query($helper->insert()->into('table.users')->one_row(array(
+                'name' => $configure['username'],
+                'password' => Here_Utils::account_password_encrypt($configure['password']),
+                'email' => $configure['email'],
+                'created' => time(),
+                'last_login' => time()
+            )));
+        } catch (Here_Exceptions_QueryError $e) {
+            throw new Here_Exceptions_FatalError(Here_Response::_Text($e->get_message()),
+                'Here:Api:Installer:_init_account:create_account');
+        }
+    }
+
+    /**
+     * insert default data to database
+     *
+     * @param array $configure
+     * @param Here_Db_Helper $helper
+     * @throws Here_Exceptions_FatalError
+     */
+    private function _init_blogger(array $configure, $helper) {
+        try {
+            // default options
+            $helper->query($helper->insert()->into('table.options')
+                ->keys('name', 'value')
+                ->values('theme', 'default')
+                ->values('title', $configure['title'])
+                ->values('page_size', 16)
+            );
+            // example article
+            $helper->query($helper->insert()->into('table.articles')->one_row(array(
+                'title' => 'Welcome to Here blogger',
+                'url' => 'welcome-to-here-blogger',
+                'author_id' => 1,
+                'created' => time(),
+                'last_modify' => time(),
+                'contents' => 'This blogger is open in xx/xx/xxxx, hello, everyone~',
+                'comments_cnt' => 3,
+            )));
+            // article comments
+            $helper->query($helper->insert()->into('table.comments')
+                ->keys('aid', 'author', 'created', 'content')
+                ->values(1, 'Som body', time(), 'Hello, everyone')
+                ->values(1, 'Anonymous', time(), 'Hum, I\'m going to be hacked this blogger')
+                ->values(1, 'Police', time(), 'I got it')
+            );
+        } catch (Here_Exceptions_QueryError $e) {
+            throw new Here_Exceptions_FatalError(Here_Response::_Text($e->get_message()),
+                'Here:Api:Installer:_init_account:create_account');
+        }
+    }
+
+    /**
+     *
+     *
+     * @param array $configure
+     */
+    private function _create_configure_file(array $configure) {
+
     }
 
     /**

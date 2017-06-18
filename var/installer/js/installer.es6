@@ -334,9 +334,16 @@ $.ready(function() {
      * complete install and redirection to index page
      */
     function complete_install() {
-        // initializing database
-        // save config.php
-        // user home dir
+        console.log("123123");
+        (new $.AjaxAdapter()).open('put', '/api/v1/installer/complete_install', null, {
+            database: step_token.database_token,
+            account: step_token.account_token,
+            blogger: step_token.blogger_token
+        }).then((response) => {
+            console.log(response);
+        }, (error_response) => {
+            console.log(error_response);
+        });
     }
 
     /**
@@ -359,7 +366,9 @@ $.ready(function() {
         $$('#here-installer-next-btn').text('Install');
         // emit installer:step:complete
         $.EventBus.emit('installer:step:complete');
-        $$('#here-installer-next-btn').attribute('disabled', false, true);
+        // change callback state
+        /* eslint-disable no-use-before-define */
+        callback_state = false;
     }
 
     // callbacks
@@ -378,7 +387,6 @@ $.ready(function() {
         load_installer_complete,
         complete_install
     ];
-
     // callback result state [default is true]
     let callback_state = true;
     // change state

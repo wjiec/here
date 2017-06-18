@@ -176,16 +176,16 @@
             </section>
             <div>
               <ul id="here-installer-complete-list">
-                <li><p class="here-installer-complete-item">Create Configure File</p><p class="here-installer-complete-status"></p></li>
                 <li><p class="here-installer-complete-item">Create Tables</p><p class="here-installer-complete-status"></p></li>
                 <li><p class="here-installer-complete-item">Create Administrator User</p><p class="here-installer-complete-status"></p></li>
-                <li><p class="here-installer-complete-item">Insert Simple Article And Comments</p><p class="here-installer-complete-status"></p></li>
-                <li><p class="here-installer-complete-item">Open the champagne and celebrate installation is completed</p><p class="here-installer-complete-status"></p></li>
+                <li><p class="here-installer-complete-item">Insert Other Default Data</p><p class="here-installer-complete-status"></p></li>
+                <li><p class="here-installer-complete-item">Create Configure File</p><p class="here-installer-complete-status"></p></li>
+                <!-- Open the champagne and celebrate installation is completed -->
               </ul>
             </div>
           </section>
         <?php else: ?>
-          <?php Core::router_instance()->emit_error(403); ?>
+          <?php Core::router_instance()->emit_error(403, '(╯°Д°)╯︵ ┻━┻'); ?>
         <?php endif; ?>
       </div>
       <div id="button-container">
