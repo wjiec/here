@@ -112,6 +112,7 @@
               </div>
             </div>
           </section>
+        <?php /* @TODO check enable recovery mode */ ?>
         <?php elseif ($step_name == 'admin-configure'): ?>
           <h3>Administrator configuration</h3>
           <section id="here-installer-admin-configure">

@@ -24,3 +24,5 @@ node_modules
 # style sheet
 *.css
 
+# blogger configure file
+configure.php

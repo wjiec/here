@@ -13,7 +13,7 @@ class Here_Widget_Options extends Here_Abstracts_Widget {
     public function __construct(array $options) {
         parent::__construct($options);
 
-        if (!is_file(_here_user_configure)) {
+        if (!is_file(_here_user_configure_)) {
             return;
         }
 

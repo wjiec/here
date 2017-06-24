@@ -207,9 +207,9 @@ class Core {
         require_once 'sys/definition.php';
 
         # check here is installer or require recovery
-        if (is_file(_here_user_configure)) {
+        if (is_file(_here_user_configure_)) {
             # include user definition variable
-            require_once _here_user_configure;
+            require_once _here_user_configure_;
         } else {
             # redirection to recovery guide
         }

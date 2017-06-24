@@ -56,7 +56,12 @@ define('_here_sys_default_ip_policy_', 'etc/sys/default_ip_policy.php');
 /**
  * configure file path, generate by installer/recovery guide
  */
-define('_here_user_configure', 'etc/configure.php');
+define('_here_user_configure_', 'etc/configure.php');
+
+/**
+ * template of configure file path, generate by installer/recovery guide
+ */
+define('_here_user_configure_template_', 'etc/template/configure.template');
 
 /**
  * installer guide file path

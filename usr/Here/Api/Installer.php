@@ -353,14 +353,31 @@ class Here_Api_Installer extends Here_Abstracts_Api {
      * @param array $configure
      */
     private function _create_configure_file(array $configure) {
-
+        if (!function_exists('file_put_contents')) {
+            throw new Here_Exceptions_FatalError('function `file_put_contents` not found',
+                'Here:Api:Installer:_create_configure_file');
+        }
+        // configure template contents
+        $template = file_get_contents(_here_user_configure_template_, true);
+        // replace database configure
+        $template = str_replace('$database_host$', $configure['database']['host'], $template);
+        $template = str_replace('$database_port$', $configure['database']['port'], $template);
+        $template = str_replace('$database_username$', $configure['database']['username'], $template);
+        $template = str_replace('$database_password$', $configure['database']['password'], $template);
+        $template = str_replace('$database_database$', $configure['database']['dbname'], $template);
+        // cache server configure
+        /* @TODO cache configure */
+        if (file_put_contents(_here_user_configure_, $template) === false) {
+            throw new Here_Exceptions_FatalError('create configure error occurs',
+                'Here:Api:Installer:_create_configure_file');
+        }
     }
 
     /**
      * check blog installed
      */
     private function _check_installed() {
-        if (is_file(_here_user_configure)) {
+        if (is_file(_here_user_configure_)) {
             Here_Request::abort(403);
         }
     }

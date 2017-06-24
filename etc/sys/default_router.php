@@ -131,7 +131,7 @@ class Hook_Check_Install extends Here_Abstracts_Route_Hook {
      * @TODO maybe redirect to recovery-guide
      */
     public function entry_point(array $parameters) {
-        if (!(is_file(_here_user_configure))) {
+        if (!(is_file(_here_user_configure_))) {
             Here_Request::redirection(_here_install_url_);
         }
         return true;

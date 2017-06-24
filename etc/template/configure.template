@@ -1,0 +1,34 @@
+<?php
+/**
+ * Here User Configure
+ *
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
+ */
+
+// Database Configure
+$database_configure = array(
+    'driver'    =>  'mysqli',
+    'host'      =>  '$database_host$',
+    'port'      =>  $database_port$,
+    'username'  =>  '$database_username$',
+    'password'  =>  '$database_password$',
+    'dbname'    =>  '$database_database$',
+    'charset'   =>  'utf8'
+);
+
+// Cache Server Configure
+$cache_configure = array();
+
+
+/******************************************************************************/
+/*                Note: PLEASE DON't MODIFY THE FOLLOWING CODE                */
+/******************************************************************************/
+
+// Initializing database helper
+Here_Db_Helper::init_server(Here_Db_Helper::array_to_dsn($database_configure),
+    $database_configure['username'], $database_configure['password']);
