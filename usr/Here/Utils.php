@@ -38,6 +38,36 @@ class Here_Utils {
     }
 
     /**
+     * convert any object to string
+     *
+     * @param mixed $object
+     * @return string|null
+     */
+    public static function to_string($object) {
+        if (is_string($object)) {
+            return $object;
+        } else if ($object === null) {
+            return null;
+        }
+        return strval($object);
+    }
+
+    /**
+     * convert object to int type
+     *
+     * @param mixed $object
+     * @return int
+     */
+    public static function to_int($object, $default = 0) {
+        if (is_int($object)) {
+            return $object;
+        }
+        // convert to int type
+        $value = intval($object);
+        return $value === 0 ? $default : $value;
+    }
+
+    /**
      * entry account password
      *
      * @param string $password

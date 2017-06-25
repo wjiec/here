@@ -9,18 +9,30 @@
  * @link      https://github.com/JShadowMan/here
  */
 
+
+/**
+ * Class Here_Abstracts_Plugin
+ */
 abstract class Here_Abstracts_Plugin {
-    protected $_plugin_name = null;
-    protected $_plugin_options = array();
+    /**
+     * plugin name
+     *
+     * @var string
+     */
+    protected $_plugin_name;
 
-    public function __construct(array $options = array()) {
-    }
+    /**
+     * plugin owned options
+     *
+     * @var array
+     */
+    protected $_plugin_options;
 
-    public function export_options() {
-        return $this->_plugin_options;
-    }
-
-    public function widget_name() {
-        return $this->_plugin_name;
+    /**
+     * Here_Abstracts_Plugin constructor.
+     *
+     * @param array $options
+     */
+    final public function __construct(array $options = array()) {
     }
 }

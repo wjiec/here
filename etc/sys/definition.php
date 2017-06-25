@@ -119,7 +119,7 @@ define('_here_notification_level', 100);
  *
  * @TODO cache controller
  */
-define('_here_cache_server_', 'memcached');
+define('_here_cache_server_', 'redis');
 
 /**
  * database connecting timeout
