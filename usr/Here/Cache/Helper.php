@@ -52,10 +52,9 @@ class Here_Cache_Helper {
     /**
      * @param string $key
      * @param mixed $value
-     * @param int $expired
      */
-    public function set_array($key, $value, $expired = 0) {
-        $this->_cache_adapter->set_array($key, $value, $expired);
+    public function set_array($key, $value) {
+        $this->_cache_adapter->set_array($key, $value);
     }
 
     /**
@@ -81,6 +80,15 @@ class Here_Cache_Helper {
             'username' => Here_Utils::to_string($username),
             'password' => Here_Utils::to_string($password)
         );
+    }
+
+    /**
+     * getting server information
+     *
+     * @return array
+     */
+    final static public function get_server() {
+        return self::$_server;
     }
 
     /**

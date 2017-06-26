@@ -22,13 +22,6 @@ abstract class Here_Cache_Adapter_Base {
     protected $_connection;
 
     /**
-     * server address, port, username and password
-     *
-     * @var array
-     */
-    protected $_server_information;
-
-    /**
      * Here_Abstracts_CacheAdapter constructor.
      */
     final public function __construct() {
@@ -113,13 +106,12 @@ abstract class Here_Cache_Adapter_Base {
      *
      * @param string $key
      * @param array $array
-     * @param int $expired
      */
-    final public function set_array($key, array $array, $expired = 0) {
+    final public function set_array($key, array $array) {
         // connecting to cache server
         $this->_connect();
         // getting value
-        return $this->_set_array($key, $array, $expired);
+        $this->_set_array($key, $array);
     }
 
     /**
@@ -127,9 +119,8 @@ abstract class Here_Cache_Adapter_Base {
      *
      * @param string $key
      * @param array $array
-     * @param int $expired
      */
-    abstract protected function _set_array($key, array $array, $expired = 0);
+    abstract protected function _set_array($key, array $array);
 
     /**
      * serialize value

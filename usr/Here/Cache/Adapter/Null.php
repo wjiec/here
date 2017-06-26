@@ -51,9 +51,8 @@ class Here_Cache_Adapter_Null extends Here_Cache_Adapter_Base {
     /**
      * @param string $key
      * @param array $array
-     * @param int $expired
      */
-    protected function _set_array($key, array $array, $expired = 0) {
+    protected function _set_array($key, array $array) {
         // cannot do anything
     }
 }
