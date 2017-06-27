@@ -12,7 +12,7 @@
 
 // Database Configure
 $database_configure = array(
-    'driver'    =>  'mysqli',
+    'driver'    =>  'mysql',
     'host'      =>  '$database_host$',
     'port'      =>  $database_port$,
     'username'  =>  '$database_username$',
@@ -20,9 +20,16 @@ $database_configure = array(
     'dbname'    =>  '$database_database$',
     'charset'   =>  'utf8'
 );
+// default table prefix
+define('_here_default_table_prefix_', '$table_prefix$');
 
 // Cache Server Configure
-$cache_configure = array();
+$cache_configure = array(
+    'host'      =>  '',
+    'port'      =>  '',
+    'username'  =>  null,
+    'password'  =>  null
+);
 
 
 /******************************************************************************/

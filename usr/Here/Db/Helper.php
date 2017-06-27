@@ -35,7 +35,7 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
      * @param string $table_prefix
      * @throws Here_Exceptions_ParameterError|Here_Exceptions_FatalError|Here_Exceptions_BadQuery
      */
-    public function __construct($table_prefix) {
+    public function __construct($table_prefix = null) {
         // parent-class constructor
         parent::__construct();
         // current widget name
@@ -47,6 +47,14 @@ class Here_Db_Helper extends Here_Abstracts_Widget {
         }
         // check parameter legal
         if ($table_prefix == null || is_string($table_prefix)) {
+            if ($table_prefix == null) {
+                if (defined('_here_default_table_prefix_')) {
+                    $table_prefix = _here_default_table_prefix_;
+                } else {
+                    throw new Here_Exceptions_FatalError('cannot found default table prefix',
+                        'Here:Db:Helper:__construct');
+                }
+            }
             $this->_table_prefix = $table_prefix;
         } else {
             throw new Here_Exceptions_ParameterError('table prefix except string or null',

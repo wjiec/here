@@ -348,7 +348,7 @@ class Here_Api_Installer extends Here_Abstracts_Api {
     }
 
     /**
-     *
+     * create configure file from template file
      *
      * @param array $configure
      */
@@ -365,6 +365,7 @@ class Here_Api_Installer extends Here_Abstracts_Api {
         $template = str_replace('$database_username$', $configure['database']['username'], $template);
         $template = str_replace('$database_password$', $configure['database']['password'], $template);
         $template = str_replace('$database_database$', $configure['database']['dbname'], $template);
+        $template = str_replace('$table_prefix$', $configure['database']['table_prefix'], $template);
         // cache server configure
         /* @TODO cache configure */
         if (file_put_contents(_here_user_configure_, $template) === false) {
