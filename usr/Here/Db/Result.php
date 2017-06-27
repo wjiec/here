@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 
-class Here_Db_Result {
+class Here_Db_Result implements IteratorAggregate {
     /**
      * result data internal pointer
      *
@@ -135,5 +135,12 @@ class Here_Db_Result {
      */
     public function query_string() {
         return $this->query_string();
+    }
+
+    /**
+     * iterator method
+     */
+    public function getIterator() {
+        return new ArrayIterator($this->_result);
     }
 }
