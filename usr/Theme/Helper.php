@@ -17,7 +17,6 @@
  * Mainly used to load a template file, execute utility methods
  */
 class Theme_Helper extends Here_Abstracts_Widget {
-
     /**
      * Theme_Helper constructor.
      *
@@ -69,9 +68,12 @@ class Theme_Helper extends Here_Abstracts_Widget {
      * include the template file, compiled at the same time
      *
      * @param string $template_file
+     * @param array $parameters
      * @TODO
      */
-    public static function include_template_file($template_file) {
+    public static function display($template_file, $parameters = null, $force_cache = false) {
+        // create template engine
+        $engine = new Theme_TemplateEngine_Engine();
     }
 
     /**

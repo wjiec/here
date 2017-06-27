@@ -181,8 +181,10 @@ class Route_Index extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        echo '<h1>Index Homepage</h1>';
-        var_dump($parameters);
+        // test option
+        echo "<h1>" . Here_Widget::widget('options')->get_option('title') . "</h1>";
+        // display template
+        Theme_Helper::display('index.tpl', $parameters);
     }
 }
 

@@ -212,6 +212,7 @@ class Core {
             require_once _here_user_configure_;
         } else {
             # redirection to recovery guide
+            /* @TODO recovery guide */
         }
     }
 

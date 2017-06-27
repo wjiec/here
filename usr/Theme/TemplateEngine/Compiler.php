@@ -1,6 +1,6 @@
 <?php
 /**
- * Here Theme Compiler
+ * Here Template Compiler
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -10,14 +10,14 @@
  */
 
 
-class Theme_Compiler extends Here_Abstracts_Widget {
+/**
+ * Class Theme_TemplateEngine_Compiler
+ */
+class Theme_TemplateEngine_Compiler {
     /**
-     * Theme_Compiler constructor.
-     *
-     * @param array $options
+     * Theme_TemplateEngine_Compiler constructor.
      */
-    public function __construct(array $options = array()) {
-        parent::__construct($options);
-        $this->set_widget_name('Theme Compiler');
+    public function __construct() {
+        // @TODO
     }
 }
