@@ -334,16 +334,35 @@ $.ready(function() {
      * complete install and redirection to index page
      */
     function complete_install() {
-        console.log("123123");
         (new $.AjaxAdapter()).open('put', '/api/v1/installer/complete_install', null, {
             database: step_token.database_token,
             account: step_token.account_token,
             blogger: step_token.blogger_token
         }).then((response) => {
-            console.log(response);
+            // response text
+            let response_object = $.Utility.json_decode(response.text || '{}');
+            // check installer status
+            if (response_object.status === 0) {
+                $$('#here-installer-complete-list').set_style('color', '#090');
+                $$('#here-installer-next-btn').text('Go Home');
+                // emit installer:step:complete
+                $.EventBus.emit('installer:step:complete');
+                // change callback state
+                /* eslint-disable no-use-before-define */
+                callback_state = false;
+            }
         }, (error_response) => {
-            console.log(error_response);
+            // response text
+            let response_object = $.Utility.json_decode(error_response.text || '{}');
+            console.log(response_object);
         });
+    }
+
+    /**
+     * go home
+     */
+    function go_home() {
+        window.location.href = '/';
     }
 
     /**
@@ -385,7 +404,9 @@ $.ready(function() {
         site_configure,
         // complete install display
         load_installer_complete,
-        complete_install
+        complete_install,
+        // location to homepage
+        go_home
     ];
     // callback result state [default is true]
     let callback_state = true;
