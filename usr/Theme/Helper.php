@@ -84,4 +84,22 @@ class Theme_Helper extends Here_Abstracts_Widget {
     public static function url_completion($path_to_url) {
         echo Here_Request::url_completion($path_to_url);
     }
+
+    /**
+     * get current theme name
+     *
+     * @return string
+     */
+    public static function get_theme_name() {
+        return Here_Widget::widget('Options')->get_option('theme');
+    }
+
+    /**
+     * getting blogger title
+     *
+     * @return string
+     */
+    public static function get_blogger_title() {
+        return Here_Widget::widget('options')->get_option('title');
+    }
 }

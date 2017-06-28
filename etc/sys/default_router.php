@@ -182,7 +182,7 @@ class Route_Index extends Here_Abstracts_Route_Route {
      */
     public function entry_point(array $parameters) {
         // test option
-        echo "<h1>" . Here_Widget::widget('options')->get_option('title') . "</h1>";
+        echo "<h1>" . Theme_Helper::get_blogger_title() . "</h1>";
         // display template
         Theme_Helper::display('index.tpl', $parameters);
     }
