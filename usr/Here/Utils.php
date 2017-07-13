@@ -96,4 +96,13 @@ class Here_Utils {
     public static function account_password_verify($password, $encrypt_password) {
         return password_verify($password, $encrypt_password);
     }
+
+    /**
+     * patch path to standard format
+     *
+     * @param string $path
+     */
+    public static function path_patch($path) {
+        return trim(str_replace('/\\', '/', $path), '/');
+    }
 }

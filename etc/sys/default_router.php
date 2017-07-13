@@ -181,10 +181,10 @@ class Route_Index extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        // test option
-        echo "<h1>" . Theme_Helper::get_blogger_title() . "</h1>";
+        // create theme helper
+        $helper = new Theme_Helper();
         // display template
-        Theme_Helper::display('index.tpl', $parameters);
+        $helper->display('index.tpl', $parameters);
     }
 }
 
@@ -460,7 +460,8 @@ class Route_Test extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        $a = new Here_Utils();
-        Here_Utils::check_type('key', $a, 'string', 'Here:test_router');
+        /* @var Here_Widget_Options $options */
+        $options = Here_Widget::widget('Options');
+        var_dump($options->get_option('theme'));
     }
 }

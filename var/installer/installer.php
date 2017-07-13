@@ -33,7 +33,7 @@
       <div id="here-installer-contents">
         <?php if ($step_name == null || $step_name == 'detecting-server'): ?>
           <h3>Welcome to Here</h3>
-          <p>Here is distributed under the <a href="<?php Theme_Helper::url_completion('/license'); ?>" target="_blank">MIT License</a>.</p>
+          <p>Here is distributed under the <a href="<?php Here_Request::url_completion('/license'); ?>" target="_blank">MIT License</a>.</p>
           <p>This installer guide will automatically detect server environment is in line with the minimum configuration requirements.
             If not meet, please follow the instructions in your host configuration information to check if the server environment to meet the requirements</p>
           <div id="here-installer-server-detecting">

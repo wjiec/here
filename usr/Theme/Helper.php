@@ -16,16 +16,77 @@
  *
  * Mainly used to load a template file, execute utility methods
  */
-class Theme_Helper extends Here_Abstracts_Widget {
+class Theme_Helper {
+    /**
+     * @var string
+     */
+    private $_theme_name;
+
+    /**
+     * @var string
+     */
+    private $_theme_root;
+
     /**
      * Theme_Helper constructor.
      *
      * @see Here_Abstracts_Widget::__construct()
-     * @param array $options
      */
-    public function __construct(array $options = array()) {
-        parent::__construct($options);
-        $this->set_widget_name('Theme Helper');
+    final public function __construct() {
+        /* @var Here_Widget_Options $options */
+        $options = Here_Widget::widget('Options');
+        // initializing theme name
+        $this->_theme_name = $options->get_option('theme', 'default');
+        // initializing theme root directory
+        $theme_path = trim(join('/', array(__HERE_VAR_DIRECTORY__, $this->_theme_name)), '/\\');
+        if (strpos($this->_theme_name, '/') !== false || !is_dir($theme_path)) {
+            throw new Here_Exceptions_ParameterError("theme directory not exists",
+                'Here:Theme:Helper:__construct');
+        }
+        $this->_theme_root = $theme_path;
+    }
+
+    /**
+     * include the template file, compiled at the same time
+     *
+     * @param string $template_file
+     * @param array $parameters
+     * @param bool $force_cache
+     * @throws Here_Exceptions_FatalError
+     * @TODO
+     */
+    public function display($template_file, $parameters = null, $force_cache = false) {
+        // fix path
+        $template_file = Here_Utils::path_patch($template_file);
+        // build template path
+        $template_path = $this->_absolute_path($template_file);
+        // check file exists
+        if (!is_file($template_path)) {
+            throw new Here_Exceptions_FatalError('template file not found',
+                'Here:Theme:Helper:display');
+        }
+        // create template engine
+        $engine = new Theme_TemplateEngine_Engine($parameters, array(
+            'force_cache' => $force_cache
+        ));
+        // compiler template
+        $engine->compile($template_path);
+        // display page
+        $engine->display();
+    }
+
+    /**
+     * getting absolute path
+     *
+     * @param string $file_name
+     * @return string
+     */
+    private function _absolute_path($file_name) {
+        return join('/', array(
+            __HERE_ROOT_DIRECTORY__,
+            $this->_theme_root,
+            $file_name
+        ));
     }
 
     /**
@@ -61,28 +122,7 @@ class Theme_Helper extends Here_Abstracts_Widget {
         }
         // build static url address
         $static_url = join('/', array(rtrim(_here_static_url_prefix_, '/'), $theme, $path));
-        echo self::url_completion($static_url);
-    }
-
-    /**
-     * include the template file, compiled at the same time
-     *
-     * @param string $template_file
-     * @param array $parameters
-     * @TODO
-     */
-    public static function display($template_file, $parameters = null, $force_cache = false) {
-        // create template engine
-        $engine = new Theme_TemplateEngine_Engine();
-    }
-
-    /**
-     * url automatic completion
-     *
-     * @param string $path_to_url
-     */
-    public static function url_completion($path_to_url) {
-        echo Here_Request::url_completion($path_to_url);
+        echo Here_Request::url_completion($static_url);
     }
 
     /**
@@ -90,8 +130,8 @@ class Theme_Helper extends Here_Abstracts_Widget {
      *
      * @return string
      */
-    public static function get_theme_name() {
-        return Here_Widget::widget('Options')->get_option('theme');
+    public function get_theme_name() {
+        return $this->_theme_name;
     }
 
     /**

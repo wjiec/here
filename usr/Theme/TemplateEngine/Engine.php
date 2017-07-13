@@ -17,6 +17,22 @@ class Theme_TemplateEngine_Engine {
     /**
      * Theme_TemplateEngine_Engine constructor.
      */
-    public function __construct() {
+    public function __construct($parameters, $options) {
+    }
+
+    /**
+     * compile template
+     *
+     * @param string $template_file
+     */
+    public function compile($template_file) {
+
+    }
+
+    /**
+     * display page
+     */
+    public function display() {
+
     }
 }
