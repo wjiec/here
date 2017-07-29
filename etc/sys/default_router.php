@@ -460,8 +460,42 @@ class Route_Test extends Here_Abstracts_Route_Route {
      * @param array $parameters
      */
     public function entry_point(array $parameters) {
-        /* @var Here_Widget_Options $options */
-        $options = Here_Widget::widget('Options');
-        var_dump($options->get_option('theme'));
+        /* @var Here_Widget_Rsa $rsa */
+        $rsa = Here_Widget::widget('Rsa');
+
+        $rsa->set_private_key(<<<EOF
+-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQC3UAPqn9tXL64FV0wSZWV/vCekDGTLpp+dtbL9Bj/hZBh+5AO3
+/VvtcQUFck9MD/mU3V2A9IK9gZCMxdLp1tL+wR27OO+bCUuje6QX7tLyyge3x16e
+5uKw6TcLU+pj1bJ8Enu4QlDWAtzwR0yZe8C6NnseSHvk+xwVFF4aLvmNAQIDAQAB
+AoGAHMYLh1WGSV4rk50LTMvrrawsELz9SVYjMc8mhD7p4ggjLC/AQa4cMt4Nqrgx
+qD/Nrkc8+RPoPbTLqr0WiSv2PFA/EMXQz6l6Beg4x7ncQH5ccRD2iEVN+RtB4t6i
+btlt53mHUaa5twZf81wmfA9Cr8cbFnJ1UzGpuxav4fNPPEECQQDzOgdusgdqqWoi
+N4wBwc+oAlou9o+SXpGAsaN2WvStn7erpqp+d6cWCIEkZxK51ikdW/6i9jCEW793
+vZev+8RpAkEAwPB+PR+m7IJV9jyxSd3WvkFng8LjHLdTz983IEvh1Wis37UlTk3B
+JtbUaz5QSfLA1Y9enm99l03EN/1XvM2Q2QJBAKcsynD+MnTQbt+H2FZY1RbATyYa
+WAIdt9qBvj2aNLSlo8N6cZMtQI23WLQhmFBc77N7SKDPn/dJbGery3etD4kCQH5n
+EM2Kxxl76kWATcZPCDltMBwquhA+KzKs0rjd/f6KrXeCfgZm+nwvkssP8BoCaEOB
+wkOaV3WhBUSJPcn8A0ECQQCq+YG3H3LnCs4SHGZU9qfr5W+V3II+8mnFXLXWZvEL
+M8Sm2zGIKhY/t3yv9EwKxm30AuBVdAKgdzbbvI7M5tfL
+-----END RSA PRIVATE KEY-----
+EOF
+        );
+
+        echo '<pre>';
+
+        $encrypt_pri = $rsa->private_encrypt("你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.asd大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好.asd.qwe.zxc", 'base64');
+        $encrypt_pub = $rsa->public_encrypt("你好.我好.大家好.asdas.大家好你好.assdasasd我好.大家好你好.我好.大as好.大家好你qwe.我好.大家好asd你好.我好.大家asda好你好.我好.大家好你好.我好.大家好你好.我好.大家asdqwe好你好.我好.大dkjskjd爱上较大及辣椒款生动化的阿是哦啊哈的你阿什顿 dasjdha s sadh adha sdasdqwe好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大asdsdh山农大好.大家好你好.我好.大家好你好.qwe我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大家好你好.我好.大和圣诞节哈桑肯asd定句asd.qwe.zxc", 'hex');
+
+        $decrypt_public = $rsa->public_decrypt($encrypt_pri);
+        $decrypt_private = $rsa->private_decrypt($encrypt_pub, 'hex');
+
+        echo 'Encrypt-Private:' . '<br>' . $encrypt_pri . '<br>';
+        echo 'Decrypt-Public:' . '<br>' . $decrypt_public . '<br>';
+
+        echo '<br>';
+
+        echo 'Encrypt-Public:' . '<br>' . $encrypt_pub . '<br>';
+        echo 'Decrypt-Private:' . '<br>' . $decrypt_private . '<br>';
     }
 }
