@@ -444,7 +444,7 @@ class Here_Router {
             return self::_create_router_node($tree[self::$RE_ROUTER][$re_router_name], $new_node, $callback, $hook);
         }
 
-        # full-match, $current_node === '...'
+        # full-match, $current_node === '???'
         if ($current_node && $current_node === self::$FULL_MATCH) {
             // check full-match is end-node
             if (count($new_node) !== 0) {
