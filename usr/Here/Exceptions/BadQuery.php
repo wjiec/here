@@ -11,7 +11,7 @@
 
 
 /**
- * Exception: Here_Exceptions_BadQuery
+ * ExceptionBase: Here_Exceptions_BadQuery
  */
 class Here_Exceptions_BadQuery extends Here_Exceptions_Base {
 

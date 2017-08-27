@@ -1,6 +1,6 @@
 <?php
 /**
- * ExceptionBase: OutOfRange
+ * AssertError.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,11 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
+namespace Here\Lib\Exception;
+use Here\Lib\Abstracts\ExceptionBase;
 
 
 /**
- * ExceptionBase: Here_Exceptions_OutOfRange
+ * Class AssertError
+ * @package Here\Lib\Exception
  */
-class Here_Exceptions_OutOfRange extends Here_Exceptions_Base {
-
-}
+final class AssertError extends ExceptionBase {}

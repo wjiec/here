@@ -92,12 +92,12 @@ class Core {
     /**
      * global exceptions handler
      *
-     * @Note that providing an explicit Exception type hint for the ex parameter in
+     * @Note that providing an explicit ExceptionBase type hint for the ex parameter in
      * your callback will cause issues with the changed exception hierarchy in PHP 7.
      *
      * @param Exception|Throwable|Here_Exceptions_Base $exception
      */
-    public static function _catch_exception_handler(/* Exception */ /* Throwable */ $exception) {
+    public static function _catch_exception_handler(/* ExceptionBase */ /* Throwable */ $exception) {
         $errno = ($exception instanceof Here_Exceptions_Base) ? $exception->get_code() : $exception->getCode();
         $error = ($exception instanceof Here_Exceptions_Base) ? $exception->get_message() : $exception->getMessage();
         $error_file = $exception->getFile();
@@ -176,7 +176,7 @@ class Core {
         // set http code 500
         Here_Request::set_http_code(500);
 
-        echo "<h1>Error/Exception Occurs</h1>";
+        echo "<h1>Error/ExceptionBase Occurs</h1>";
 
         echo '<pre>';
 

@@ -3,7 +3,7 @@
 // import utils
 import { Utility } from '../utils/utils.es6';
 
-// NotImplemented Exception
+// NotImplemented ExceptionBase
 class NotImplemented extends Error {
     constructor(message, eid) {
         super(message, eid);

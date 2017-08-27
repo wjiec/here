@@ -11,7 +11,7 @@
 
 
 /**
- * Exception: Here_Exceptions_ResponseError
+ * ExceptionBase: Here_Exceptions_ResponseError
  */
 class Here_Exceptions_ResponseError extends Here_Exceptions_Base {
 

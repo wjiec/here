@@ -10,6 +10,8 @@
  * @link      https://github.com/JShadowMan/here
  */
 
+namespace Here;
+
 # root directory
 define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
 

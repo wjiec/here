@@ -1,6 +1,6 @@
 <?php
 /**
- * Exception: AssertError
+ * ExceptionBase: AssertError
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

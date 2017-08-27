@@ -34,7 +34,7 @@ class FormValidator {
         } catch (except) {
             // error status
             this._status = false;
-            // message is Exception message
+            // message is ExceptionBase message
             this._message = except.message;
         }
 

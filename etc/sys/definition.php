@@ -101,7 +101,7 @@ define('_here_recovery_url_', '/recovery-guide');
 /**
  * if exception level bigger than that, we must notification admin
  *
- * Exception Level:
+ * ExceptionBase Level:
  *      Fatal: 100
  *      Error: 75
  *      Warning: 50
