@@ -16,7 +16,7 @@ use Here\Lib\Assert;
  * Class ExceptionLevel
  * @package Here\Lib\Abstracts
  */
-abstract class ExceptionLevel {
+abstract class ExceptionLevelBase {
     /**
      * @var int
      */

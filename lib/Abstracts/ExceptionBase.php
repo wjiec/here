@@ -9,10 +9,9 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Abstracts;
-use Here\Lib\Assert;
-use Here\Lib\Autoloader;
-use Here\Lib\Exception\ExceptionLevelError;
 use Throwable;
+use Here\Lib\Assert;
+use Here\Lib\Exception\Level\Error;
 
 
 /**
@@ -35,23 +34,31 @@ abstract class ExceptionBase extends \Exception {
     protected $_message;
 
     /**
-     * @var
+     * @var ExceptionLevelBase
      */
     protected $_level;
 
     /**
      * ExceptionBase constructor.
      * @param string $message
-     * @param string $code
+     * @param ExceptionLevelBase $level
      * @param Throwable|null $previous
      */
-    public function __construct($message, $code, Throwable $previous = null) {
+    public function __construct($message, ExceptionLevelBase $level = null, Throwable $previous = null) {
+        // exception message
         Assert::String($message);
-        Assert::String($code);
-
-        $this->_parse_level($code);
         $this->_message = $message;
 
+        // exception level
+        if ($level === null) {
+            $level = new Error();
+        }
+        $this->_level = $level;
+
+        // resolve exception code
+        $this->_resolve_exception_code();
+
+        // make sure using get_message override method
         parent::__construct('Please using ExceptionBase::get_message method',
             self::DEFAULT_ERROR_CODE, $previous);
     }
@@ -71,33 +78,10 @@ abstract class ExceptionBase extends \Exception {
     }
 
     /**
-     * @param string $error_code
-     * @throws ExceptionLevelError
+     * resolve exception code
      */
-    final private function _parse_level($error_code) {
-        if (strpos($error_code, ':') !== false) {
-            $segments = explode(':', $error_code);
-            $level = strtolower($segments[0]);
-
-            array_shift($segments);
-            $error_code = join(':', $segments);
-        } else {
-            $level = self::DEFAULT_ERROR_LEVEL;
-        }
-        $level_class = join('\\', array('', 'Here', 'Lib', 'Exception', 'Level', ucfirst($level)));
-        if (!Autoloader::class_exists($level_class)) {
-            throw new ExceptionLevelError('cannot resolve exception level',
-                'Here:Lib:Exception:ExceptionBase');
-        }
-
-        $this->_code = $error_code;
-        $this->_level = new $level_class();
+    final private function _resolve_exception_code() {
     }
-
-    /**
-     * default error level
-     */
-    const DEFAULT_ERROR_LEVEL = 'error';
 
     /**
      * default error code

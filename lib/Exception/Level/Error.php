@@ -1,6 +1,6 @@
 <?php
 /**
- * Fatal.php
+ * Error.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -12,22 +12,20 @@ namespace Here\Lib\Exception\Level;
 use Here\Lib\Abstracts\ExceptionLevelBase;
 
 
-/**
- * Class Fatal
- * @package Here\Lib\Exception\Level
- */
-final class Fatal extends ExceptionLevelBase {
+class Error extends ExceptionLevelBase {
     /**
      * @see ExceptionLevelBase::_level()
+     * @return int
      */
-    final protected function _level() {
-        return 100;
+    protected function _level() {
+        return 80;
     }
 
     /**
      * @see ExceptionLevelBase::_name()
+     * @return string
      */
-    final protected function _name() {
-        return __CLASS__;
+    protected function _name() {
+        return 'Error';
     }
 }

@@ -19,7 +19,12 @@ final class Autoloader {
     /**
      * @var self
      */
-    static private $_loader;
+    private static $_loader;
+
+    /**
+     * @var string
+     */
+    private $_root_path;
 
     /**
      * @var array<string, string>
@@ -30,13 +35,13 @@ final class Autoloader {
      * Autoloader constructor.
      */
     final public function __construct() {
+        $this->_namespace_pool = array();
     }
 
     /**
      * @param string $class_name
      */
     final private function _loader($class_name) {
-
     }
 
     /**
@@ -56,6 +61,16 @@ final class Autoloader {
             self::$_loader = new self();
         }
         self::$_loader->_loader($class_name);
+    }
+
+    /**
+     * @param string $root
+     */
+    final static public function set_root($root) {
+        if (self::$_loader === null) {
+            self::$_loader = new self();
+        }
+        self::$_loader->_root_path = $root;
     }
 
     /**

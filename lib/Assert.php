@@ -9,8 +9,8 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib;
-use Here\Lib\Abstracts\ExceptionBase;
 use Here\Lib\Exception\AssertError;
+use Here\Lib\Abstracts\ExceptionBase;
 
 
 /**
@@ -34,6 +34,12 @@ final class Assert {
      */
     final public static function Integer($object, ExceptionBase $exception = null) {
         if (!is_integer($object)) {
+            self::_throw($exception);
+        }
+    }
+
+    final public static function Boolean($object, ExceptionBase $exception = null) {
+        if (!is_bool($object)) {
             self::_throw($exception);
         }
     }
