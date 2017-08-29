@@ -11,6 +11,7 @@
  */
 namespace Here;
 use Here\Lib\Autoloader;
+use Here\Lib\Exception\AutoloaderError;
 
 
 /* root absolute path with `Here` */
@@ -19,11 +20,14 @@ define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
 /* the only explicit `require_once` to include `Autoloader` */
 require_once 'lib/Autoloader.php';
 
-/* register root directory */
-Autoloader::set_root(__HERE_ROOT_DIRECTORY__);
+/* register root directory (must be call first) */
+Autoloader::set_root('Here', __HERE_ROOT_DIRECTORY__);
 
 /* register `Here\Lib` namespace */
 Autoloader::register('Here\\Lib', '/lib');
+
+/* `Autoloader` test case */
+throw new AutoloaderError("test autoloader");
 //# root directory
 //define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
 //
