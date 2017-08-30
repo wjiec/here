@@ -63,12 +63,34 @@ final class Assert {
     }
 
     /**
+     * @param string $path
+     * @param ExceptionBase|null $exception
+     */
+    final public static function Directory($path, ExceptionBase $exception = null) {
+        self::String($path);
+        if (!is_dir($path)) {
+            self::_throw($exception);
+        }
+    }
+
+    /**
+     * @param string $path
+     * @param ExceptionBase|null $exception
+     */
+    final public static function File($path, ExceptionBase $exception = null) {
+        self::String($path);
+        if (!is_file($path)) {
+            self::_throw($exception);
+        }
+    }
+
+    /**
      * @param ExceptionBase $exception
-     * @throws AssertError
+     * @throws AssertError|ExceptionBase
      */
     final private static function _throw(ExceptionBase $exception) {
         if ($exception === null) {
-            $exception = new AssertError('Assert error', '');
+            $exception = new AssertError("Assert error");
         }
         throw $exception;
     }

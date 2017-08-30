@@ -12,6 +12,7 @@
 namespace Here;
 use Here\Lib\Autoloader;
 use Here\Lib\Exception\AutoloaderError;
+use Here\Lib\Toolkit;
 
 
 /* root absolute path with `Here` */
@@ -27,6 +28,7 @@ Autoloader::set_root('Here', __HERE_ROOT_DIRECTORY__);
 Autoloader::register('Here\\Lib', '/lib');
 
 /* `Autoloader` test case */
+new Toolkit();
 throw new AutoloaderError("test autoloader");
 //# root directory
 //define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
