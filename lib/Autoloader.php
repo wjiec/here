@@ -9,8 +9,8 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib;
-use Here\Lib\Exception\AssertError;
-use Here\Lib\Exception\AutoloaderError;
+use Here\Lib\Exceptions\AssertError;
+use Here\Lib\Exceptions\AutoloaderError;
 
 
 /**

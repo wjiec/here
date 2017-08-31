@@ -8,24 +8,30 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Exception\Level;
+namespace Here\Lib\Exceptions\Level;
 use Here\Lib\Abstracts\ExceptionLevelBase;
 
 
-class Error extends ExceptionLevelBase {
+/**
+ * Trait Error
+ * @package Here\Lib\Exception\Level
+ */
+trait Error {
+    use ExceptionLevelBase;
+
     /**
-     * @see ExceptionLevelBase::_level()
+     * @see ExceptionLevelBase::get_level()
      * @return int
      */
-    protected function _level() {
+    public function get_level() {
         return 80;
     }
 
     /**
-     * @see ExceptionLevelBase::_name()
+     * @see ExceptionLevelBase::get_level_name()
      * @return string
      */
-    protected function _name() {
+    public function get_level_name() {
         return 'Error';
     }
 }

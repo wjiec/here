@@ -8,7 +8,8 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Exception;
+namespace Here\Lib\Exceptions;
+use Here\Lib\Exceptions\Level\Fatal;
 use Here\Lib\Abstracts\ExceptionBase;
 
 
@@ -16,4 +17,6 @@ use Here\Lib\Abstracts\ExceptionBase;
  * Class AutoloaderError
  * @package Here\Lib\Exception
  */
-class AutoloaderError extends ExceptionBase {}
+class AutoloaderError extends ExceptionBase {
+    use Fatal;
+}

@@ -56,6 +56,7 @@ class Toolkit {
         // shift useless top backtrace
         while ($top != 1) {
             array_shift($backtrace);
+            $top += 1;
         }
         return $backtrace;
     }

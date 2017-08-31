@@ -8,7 +8,8 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Exception;
+namespace Here\Lib\Exceptions;
+use Here\Lib\Exceptions\Level\Error;
 use Here\Lib\Abstracts\ExceptionBase;
 
 
@@ -16,4 +17,6 @@ use Here\Lib\Abstracts\ExceptionBase;
  * Class AssertError
  * @package Here\Lib\Exception
  */
-final class AssertError extends ExceptionBase {}
+final class AssertError extends ExceptionBase {
+    use Error;
+}

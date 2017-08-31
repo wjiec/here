@@ -11,7 +11,7 @@
 namespace Here\Lib\Abstracts;
 use Throwable;
 use Here\Lib\Assert;
-use Here\Lib\Exception\Level\Error;
+use Here\Lib\Toolkit;
 
 
 /**
@@ -20,11 +20,9 @@ use Here\Lib\Exception\Level\Error;
  */
 abstract class ExceptionBase extends \Exception {
     /**
-     * error code
-     *
-     * @var string
+     * exception level trait
      */
-    protected $_code;
+    use ExceptionLevelBase;
 
     /**
      * error message
@@ -34,9 +32,9 @@ abstract class ExceptionBase extends \Exception {
     protected $_message;
 
     /**
-     * @var ExceptionLevelBase
+     * @var array
      */
-    protected $_level;
+    protected $_backtrace;
 
     /**
      * ExceptionBase constructor.
@@ -49,25 +47,12 @@ abstract class ExceptionBase extends \Exception {
         Assert::String($message);
         $this->_message = $message;
 
-        // exception level
-        if ($level === null) {
-            $level = new Error();
-        }
-        $this->_level = $level;
-
         // resolve exception code
-        $this->_resolve_exception_code();
+        $this->_resolve_backtrace();
 
         // make sure using get_message override method
         parent::__construct('Please using ExceptionBase::get_message method',
             self::DEFAULT_ERROR_CODE, $previous);
-    }
-
-    /**
-     * @return string
-     */
-    final public function get_code() {
-        return $this->_code;
     }
 
     /**
@@ -80,7 +65,18 @@ abstract class ExceptionBase extends \Exception {
     /**
      * resolve exception code
      */
-    final private function _resolve_exception_code() {
+    final private function _resolve_backtrace() {
+        $backtrace = Toolkit::get_backtrace();
+        foreach ($backtrace as $item) {
+            $this->_backtrace[] = array(
+                'file' => $item['file'],
+                'line' => $item['line'],
+                'self' => get_class($item['object']),
+                'class' => $item['class'],
+                'function' => $item['function'],
+                'call_type' => $item['type']
+            );
+        }
     }
 
     /**

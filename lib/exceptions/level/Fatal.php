@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Exception\Level;
+namespace Here\Lib\Exceptions\Level;
 use Here\Lib\Abstracts\ExceptionLevelBase;
 
 
@@ -16,18 +16,22 @@ use Here\Lib\Abstracts\ExceptionLevelBase;
  * Class Fatal
  * @package Here\Lib\Exception\Level
  */
-final class Fatal extends ExceptionLevelBase {
+trait Fatal {
+    use ExceptionLevelBase;
+
     /**
-     * @see ExceptionLevelBase::_level()
+     * @see ExceptionLevelBase::get_level()
+     * @return int
      */
-    final protected function _level() {
+    public function get_level() {
         return 100;
     }
 
     /**
-     * @see ExceptionLevelBase::_name()
+     * @see ExceptionLevelBase::get_level_name()
+     * @return string
      */
-    final protected function _name() {
-        return __CLASS__;
+    public function get_level_name() {
+        return 'Fatal';
     }
 }
