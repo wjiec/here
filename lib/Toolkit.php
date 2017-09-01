@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib;
+use Here\Lib\Exceptions\AssertError;
 
 
 /**
@@ -20,7 +21,7 @@ class Toolkit {
      * @param $length
      * @return bool|string
      */
-    public static function random_string($length) {
+    final public static function random_string($length) {
         Assert::Integer($length);
 
         if ($length < strlen(self::$_characters)) {
@@ -42,7 +43,7 @@ class Toolkit {
      * @param bool $ignore_args
      * @return array
      */
-    public static function get_backtrace($top = -1, $ignore_args = true) {
+    final public static function get_backtrace($top = -1, $ignore_args = true) {
         Assert::Integer($top);
         Assert::Boolean($ignore_args);
 
@@ -59,6 +60,32 @@ class Toolkit {
             $top += 1;
         }
         return $backtrace;
+    }
+
+    /**
+     * @param mixed $object
+     * @return string
+     */
+    final public static function to_string($object) {
+        try {
+            Assert::String($object);
+            return $object;
+        } catch (AssertError $e) {
+            return strval($object);
+        }
+    }
+
+    /**
+     * @param mixed $object
+     * @return int
+     */
+    final public static function to_integer($object) {
+        try {
+            Assert::Integer($object);
+            return $object;
+        } catch (AssertError $e) {
+            return intval($object);
+        }
     }
 
     /**

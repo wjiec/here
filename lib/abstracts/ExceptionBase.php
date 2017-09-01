@@ -63,6 +63,13 @@ abstract class ExceptionBase extends \Exception {
     }
 
     /**
+     * @return array
+     */
+    final public function get_backtrace() {
+        return $this->_backtrace;
+    }
+
+    /**
      * resolve exception code
      */
     final private function _resolve_backtrace() {

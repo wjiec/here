@@ -23,7 +23,7 @@ trait Fatal {
      * @see ExceptionLevelBase::get_level()
      * @return int
      */
-    public function get_level() {
+    final public function get_level() {
         return 100;
     }
 
@@ -31,7 +31,7 @@ trait Fatal {
      * @see ExceptionLevelBase::get_level_name()
      * @return string
      */
-    public function get_level_name() {
+    final public function get_level_name() {
         return 'Fatal';
     }
 }

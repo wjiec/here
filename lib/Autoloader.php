@@ -52,7 +52,7 @@ final class Autoloader {
      * @param string $namespace
      * @param string $root
      */
-    final static public function set_root($namespace, $root) {
+    final public static function set_root($namespace, $root) {
         if (self::$_loader === null) {
             self::$_loader = new self();
 
@@ -70,7 +70,7 @@ final class Autoloader {
      * @param string $class_name
      * @return bool
      */
-    final static public function loader($class_name) {
+    final public static function loader($class_name) {
         if (self::$_loader !== null) {
             return self::$_loader->_loader($class_name);
         }
@@ -83,7 +83,7 @@ final class Autoloader {
      * @param string $namespace
      * @param string $path
      */
-    final static public function register($namespace, $path) {
+    final public static function register($namespace, $path) {
         if (self::$_loader !== null) {
             self::$_loader->_register($namespace, $path);
         }
@@ -95,7 +95,7 @@ final class Autoloader {
      * @param string $class_name
      * @return bool
      */
-    final static public function class_exists($class_name) {
+    final public static function class_exists($class_name) {
         Assert::String($class_name);
         try {
             Assert::File(self::$_loader->_resolve_class_name($class_name));
