@@ -73,7 +73,7 @@ class Here_Api_Installer extends Here_Abstracts_Api {
                     'address' => $this->api_url_for('check_write_permissions'),
                     'fail_level' => 'Warning'
                 ), array(
-                    'name' => 'Database Adapter',
+                    'name' => 'DatabaseConfig Adapter',
                     'address' => $this->api_url_for('check_database_adapter'),
                     'fail_level' => 'Error'
                 )
