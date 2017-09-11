@@ -11,7 +11,7 @@
  */
 namespace Here;
 use Here\Lib\Autoloader;
-use Here\Lib\Config\ConfigManager;
+use Here\Lib\Config\Yaml\YamlConfig;
 
 
 /* root absolute path with `Here` */
@@ -30,6 +30,5 @@ Autoloader::register('Here\\Lib', '/lib');
 Autoloader::register('Here\\Config', '/etc');
 
 /* `Here` test case */
-echo ConfigManager::get_conf('database')->host;
-echo ':';
-echo ConfigManager::get_conf('database')->port;
+$object = YamlConfig::load_file('./etc/configure.yml');
+var_dump($object);

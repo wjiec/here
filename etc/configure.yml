@@ -1,5 +1,16 @@
 %YAML: 1.2
 
+---
+#
+# Here Blogger Configure File
+#
+
+mysql_provider: &mysql_provider
+  provider: mysql
+
+pgsql_provider: &pgsql_provider
+  provider: pgsql
+
 # databases configures
 databases:
   -
@@ -9,7 +20,7 @@ databases:
     password: root
     database: here
     charset: utf8
-    provider: mysql
+    <<: *mysql_provider
 
 
 # caches server configures

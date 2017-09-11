@@ -88,7 +88,7 @@ final class Assert {
      * @param ExceptionBase $exception
      * @throws AssertError|ExceptionBase|null
      */
-    final private static function _throw(ExceptionBase $exception) {
+    final private static function _throw(ExceptionBase $exception = null) {
         if ($exception === null) {
             $exception = new AssertError("Assert error");
         }

@@ -78,7 +78,6 @@ abstract class ExceptionBase extends \Exception {
             $this->_backtrace[] = array(
                 'file' => $item['file'],
                 'line' => $item['line'],
-                'self' => get_class($item['object']),
                 'class' => $item['class'],
                 'function' => $item['function'],
                 'call_type' => $item['type']
