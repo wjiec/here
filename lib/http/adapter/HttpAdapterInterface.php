@@ -5,7 +5,7 @@
  * Date: 2017/9/2
  * Time: 19:49
  */
-namespace Here\Lib\Interfaces;
+namespace Here\Lib\Http\Adapter;
 
 
 /**

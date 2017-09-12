@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Abstracts;
+namespace Here\Lib\Exceptions\Level;
 
 
 /**

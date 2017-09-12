@@ -9,11 +9,14 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib;
-
-
 use Here\Lib\Exceptions\EnvOverrideError;
 
-class Environment {
+
+/**
+ * Class Environment
+ * @package Here\Lib
+ */
+final class Environment {
     /**
      * @var array
      */
@@ -35,7 +38,7 @@ class Environment {
 
         if ($override === false) {
             if (array_key_exists($name, self::$_env)) {
-                throw new EnvOverrideError("cannot override {$name}");
+                throw new EnvOverrideError("cannot override {$name} attribute");
             }
         }
         self::$_env[$name] = $value;

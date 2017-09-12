@@ -6,7 +6,6 @@
  * Time: 17:03
  */
 namespace Here\Lib\Exceptions\Level;
-use Here\Lib\Abstracts\ExceptionLevelBase;
 
 
 /**

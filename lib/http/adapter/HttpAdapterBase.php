@@ -1,6 +1,6 @@
 <?php
 /**
- * HttpSocketAdapter.php
+ * HttpAdapterBase.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -11,9 +11,5 @@
 namespace Here\Lib\Http\Adapter;
 
 
-/**
- * Class HttpSocketAdapter
- * @package Here\Lib\Http\Adapter
- */
-class HttpSocketAdapter extends HttpAdapterBase {
+abstract class HttpAdapterBase implements HttpAdapterInterface {
 }

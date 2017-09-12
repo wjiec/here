@@ -10,13 +10,14 @@
  */
 namespace Here\Lib;
 use Here\Lib\Exceptions\AssertError;
+use http\Exception\BadConversionException;
 
 
 /**
  * Class Toolkit
  * @package Here\Lib
  */
-class Toolkit {
+final class Toolkit {
     /**
      * @param $length
      * @return bool|string
@@ -86,6 +87,25 @@ class Toolkit {
         } catch (AssertError $e) {
             return intval($object);
         }
+    }
+
+    /**
+     * @param string $string
+     * @param string $source_encoding
+     * @throws \Exception
+     * @return string
+     * @TODO
+     */
+    final public static function _($string, $source_encoding = 'gb2312') {
+        if (json_encode($string) === false) {
+            try {
+                return trim(iconv($source_encoding, 'utf-8', $string));
+            } catch (\Exception $e) {
+                throw $e;
+            }
+        }
+        // result
+        return $string;
     }
 
     /**

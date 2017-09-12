@@ -8,10 +8,11 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Abstracts;
+namespace Here\Lib\Exceptions;
 use Throwable;
 use Here\Lib\Assert;
 use Here\Lib\Toolkit;
+use Here\Lib\Exceptions\Level\ExceptionLevelBase;
 
 
 /**

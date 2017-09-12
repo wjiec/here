@@ -10,7 +10,7 @@
  */
 namespace Here\Lib;
 use Here\Lib\Exceptions\AssertError;
-use Here\Lib\Abstracts\ExceptionBase;
+use Here\Lib\Exceptions\ExceptionBase;
 
 
 /**

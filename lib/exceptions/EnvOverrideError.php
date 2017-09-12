@@ -9,10 +9,13 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Exceptions;
-use Here\Lib\Abstracts\ExceptionBase;
 use Here\Lib\Exceptions\Level\Warning;
 
 
+/**
+ * Class EnvOverrideError
+ * @package Here\Lib\Exceptions
+ */
 class EnvOverrideError extends ExceptionBase {
     use Warning;
 }

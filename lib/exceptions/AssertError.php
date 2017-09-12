@@ -10,7 +10,6 @@
  */
 namespace Here\Lib\Exceptions;
 use Here\Lib\Exceptions\Level\Error;
-use Here\Lib\Abstracts\ExceptionBase;
 
 
 /**

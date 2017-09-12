@@ -1,6 +1,6 @@
 <?php
 /**
- * HttpAdapterBase.php
+ * Response.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,9 +8,13 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Abstracts;
-use Here\Lib\Interfaces\HttpAdapterInterface;
+namespace Here\Lib;
 
 
-abstract class HttpAdapterBase implements HttpAdapterInterface {
+/**
+ * Class Response
+ * @package Here\Lib
+ * @TODO
+ */
+final class Response {
 }

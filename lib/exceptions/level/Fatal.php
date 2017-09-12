@@ -9,7 +9,6 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Exceptions\Level;
-use Here\Lib\Abstracts\ExceptionLevelBase;
 
 
 /**

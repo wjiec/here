@@ -9,7 +9,6 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Http\Adapter;
-use Here\Lib\Abstracts\HttpAdapterBase;
 
 
 /**
