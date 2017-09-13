@@ -8,7 +8,8 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib;
+namespace Here\Lib\Input;
+use Here\Lib\Environment;
 
 
 /**
@@ -72,6 +73,16 @@ final class Request {
         }
 
         return $default;
+    }
+
+    /**
+     * @param int $filter
+     * @param string $name
+     * @param null $default
+     * @return string
+     * @TODO, filter
+     */
+    final public static function get_param_safe($filter, $name, $default = null) {
     }
 
     /**

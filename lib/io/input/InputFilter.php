@@ -1,6 +1,6 @@
 <?php
 /**
- * Response.php
+ * InputFilter.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,13 +8,13 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib;
+namespace Here\Lib\IO\Input;
+use Here\Lib\IO\IoFilterInterface;
 
 
 /**
- * Class Response
- * @package Here\Lib
- * @TODO
+ * Class InputFilter
+ * @package Here\Lib\Input
  */
-final class Response {
+class InputFilter implements IoFilterInterface {
 }
