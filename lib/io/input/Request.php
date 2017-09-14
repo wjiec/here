@@ -8,8 +8,9 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Input;
+namespace Here\Lib\Io\Input;
 use Here\Lib\Environment;
+use Here\Lib\Io\Filter\IoFilterInterface;
 
 
 /**
@@ -76,13 +77,13 @@ final class Request {
     }
 
     /**
-     * @param int $filter
+     * @param IoFilterInterface $filter
      * @param string $name
      * @param null $default
      * @return string
      * @TODO, filter
      */
-    final public static function get_param_safe($filter, $name, $default = null) {
+    final public static function get_param_safe(IoFilterInterface $filter, $name, $default = null) {
     }
 
     /**

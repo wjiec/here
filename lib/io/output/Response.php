@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\IO\Output;
+namespace Here\Lib\Io\Output;
 
 
 /**

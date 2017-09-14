@@ -1,6 +1,6 @@
 <?php
 /**
- * InputFilter.php
+ * Logger.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,13 +8,8 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\IO\Input;
-use Here\Lib\IO\IoFilterInterface;
+namespace Here\Lib\Io\Output;
 
 
-/**
- * Class InputFilter
- * @package Here\Lib\Input
- */
-class InputFilter implements IoFilterInterface {
+class Logger {
 }
