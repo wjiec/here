@@ -11,7 +11,8 @@
  */
 namespace Here;
 use Here\Lib\Autoloader;
-use Here\Lib\Config\Yaml\YamlConfig;
+use Here\Lib\Ext\Regex\Regex;
+use Here\Lib\Io\Filter\StringFilter;
 
 
 /* root absolute path with `Here` */
@@ -30,5 +31,7 @@ Autoloader::register('Here\\Lib', '/lib');
 Autoloader::register('Here\\Config', '/etc');
 
 /* `Here` test case */
-$object = YamlConfig::load_file('./etc/configure.yml');
-var_dump($object);
+//$filter = (new StringFilter())->validate('email', 0);
+//var_dump($filter->apply('valid@example.com'));
+//var_dump($filter->apply('invalid@emial@example.com'));
+new Regex('/^asd($/');
