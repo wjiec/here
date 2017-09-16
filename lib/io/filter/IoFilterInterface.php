@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ShadowMan
- * Date: 2017/9/13
- * Time: 23:30
+ * IoFilterInterface.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Io\Filter;
 
@@ -14,27 +17,7 @@ namespace Here\Lib\Io\Filter;
  */
 interface IoFilterInterface {
     /**
-     * @param string $validator
-     * @param int $flags
-     * @return $this
-     */
-    public function validate($validator, $flags);
-
-    /**
-     * @param string $sanitizer
-     * @param int $flags
-     * @return $this
-     */
-    public function sanitize($sanitizer, $flags);
-
-    /**
-     * @param callable $callback
-     * @return $this
-     */
-    public function callback($callback);
-
-    /**
-     * @param mixed $object
+     * @param string $object
      * @param mixed|null $default
      * @return mixed|null
      */

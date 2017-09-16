@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib;
-use Here\Lib\Exceptions\EnvOverrideError;
+use Here\Lib\Exceptions\OverrideError;
 
 
 /**
@@ -31,14 +31,14 @@ final class Environment {
      * @param string $name
      * @param mixed $value
      * @param bool $override
-     * @throws EnvOverrideError
+     * @throws OverrideError
      */
     final public static function set_env($name, $value, $override = true) {
         Assert::String($name);
 
         if ($override === false) {
             if (array_key_exists($name, self::$_env)) {
-                throw new EnvOverrideError("cannot override {$name} attribute");
+                throw new OverrideError("cannot override {$name} attribute");
             }
         }
         self::$_env[$name] = $value;

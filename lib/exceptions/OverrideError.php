@@ -1,6 +1,6 @@
 <?php
 /**
- * EnvOverrideError.php
+ * OverrideErrorp
  *
  * @package   Here\Lib\Exceptions
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -13,9 +13,9 @@ use Here\Lib\Exceptions\Level\Warning;
 
 
 /**
- * Class EnvOverrideError
+ * Class OverrideError
  * @package Here\Lib\Exceptions
  */
-class EnvOverrideError extends ExceptionBase {
+class OverrideError extends ExceptionBase {
     use Warning;
 }
