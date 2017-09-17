@@ -16,7 +16,7 @@ use Here\Lib\Io\Filter\IoFilterBase;
  * Class IpValidator
  * @package Here\Lib\Io\Filter\Validator
  */
-class IpValidator extends IoFilterBase {
+final class IpValidator extends IoFilterBase {
     /**
      * IpValidator constructor.
      * @param int $family
@@ -44,8 +44,9 @@ class IpValidator extends IoFilterBase {
      * @param mixed|null $default
      * @return string|mixed
      */
-    final public function apply($object, $default = null) {
-        return filter_var($object, FILTER_VALIDATE_IP, $this->get_options()) ?: $default;
+    final public function apply($object, $default = false) {
+        $this->default = $default;
+        return filter_var($object, FILTER_VALIDATE_IP, $this->get_options());
     }
 
     // IPv4 family

@@ -10,7 +10,6 @@
  */
 namespace Here\Lib\Io\Filter;
 use Here\Lib\Assert;
-use Here\Lib\Exceptions\OverrideError;
 
 
 /**
@@ -29,15 +28,20 @@ abstract class IoFilterBase implements IoFilterInterface {
     /**
      * @param string $name
      * @param mixed $value
-     * @param bool $override
-     * @throws OverrideError
      */
-    final protected function set_option($name, $value, $override = true) {
-        Assert::String($name);
-        if ($override === false && array_key_exists($name, $this->_options['options'])) {
-            throw new OverrideError("cannot override filter options `{$name}`");
-        }
+    final public function __set($name, $value) {
         $this->_options['options'][$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    final public function __get($name) {
+        if (array_key_exists($name, $this->_options)) {
+            return $this->_options[$name];
+        }
+        return null;
     }
 
     /**

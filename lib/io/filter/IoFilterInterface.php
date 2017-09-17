@@ -21,5 +21,5 @@ interface IoFilterInterface {
      * @param mixed|null $default
      * @return mixed|null
      */
-    public function apply($object, $default = null);
+    public function apply($object, $default = false);
 }

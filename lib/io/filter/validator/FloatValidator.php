@@ -1,6 +1,6 @@
 <?php
 /**
- * BooleanValidator.php
+ * FloatValidator.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -13,18 +13,25 @@ use Here\Lib\Io\Filter\IoFilterBase;
 
 
 /**
- * Class BooleanValidator
+ * Class FloatValidator
  * @package Here\Lib\Io\Filter\Validator
  */
-final class BooleanValidator extends IoFilterBase {
+final class FloatValidator extends IoFilterBase {
+    /**
+     * FloatValidator constructor.
+     */
+    final public function __construct(/* $decimal */) {
+        // FILTER_VALIDATE_FLOAT, decimal option mean decimal notation['.', ','].
+    }
+
     /**
      * @see IoFilterBase::apply()
-     * @param string $object
-     * @param mixed $default
-     * @return bool|null
+     * @param string|mixed $object
+     * @param null|mixed $default
+     * @return bool|mixed
      */
     final public function apply($object, $default = false) {
         $this->default = $default;
-        return filter_var($object, FILTER_VALIDATE_BOOLEAN, $this->get_options());
+        return filter_var($object, FILTER_VALIDATE_FLOAT, $this->get_options());
     }
 }

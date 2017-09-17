@@ -1,6 +1,6 @@
 <?php
 /**
- * BooleanValidator.php
+ * MacAddrValidator.phpor.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -13,18 +13,18 @@ use Here\Lib\Io\Filter\IoFilterBase;
 
 
 /**
- * Class BooleanValidator
+ * Class MacAddrValidator
  * @package Here\Lib\Io\Filter\Validator
  */
-final class BooleanValidator extends IoFilterBase {
+final class MacAddrValidator extends IoFilterBase {
     /**
      * @see IoFilterBase::apply()
      * @param string $object
-     * @param mixed $default
-     * @return bool|null
+     * @param bool $default
+     * @return mixed
      */
     final public function apply($object, $default = false) {
         $this->default = $default;
-        return filter_var($object, FILTER_VALIDATE_BOOLEAN, $this->get_options());
+        return filter_var($object, FILTER_VALIDATE_MAC, $this->get_options());
     }
 }
