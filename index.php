@@ -11,15 +11,13 @@
  */
 namespace Here;
 use Here\Lib\Autoloader;
-use Here\Lib\Ext\Regex\Regex;
-use Here\Lib\Io\Filter\Validator\FloatValidator;
-use Here\Lib\Io\Filter\Validator\IntegerValidator;
-use Here\Lib\Io\Filter\Validator\IpValidator;
-use Here\Lib\Io\Filter\Validator\EmailValidator;
-use Here\Lib\Io\Filter\Validator\MacAddrValidator;
-use Here\Lib\Io\Filter\Validator\RegexValidator;
-use Here\Lib\Io\Filter\Validator\UrlValidator;
-
+use Here\Lib\Io\Filter\Sanitizer\EmailSanitizer;
+use Here\Lib\Io\Filter\Sanitizer\HtmlSanitizer;
+use Here\Lib\Io\Filter\Sanitizer\NumberSanitizer;
+use Here\Lib\Io\Filter\Sanitizer\QuotesSanitizer;
+use Here\Lib\Io\Filter\Sanitizer\StringSanitizer;
+use Here\lib\io\filter\sanitizer\UrlEncodeSanitizer;
+use Here\Lib\Io\Filter\Sanitizer\UrlSanitizer;
 
 /* root absolute path with `Here` */
 define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
@@ -37,46 +35,30 @@ Autoloader::register('Here\\Lib', '/lib');
 Autoloader::register('Here\\Config', '/etc');
 
 /* `Here` test case */
-$email_filter = new EmailValidator();
-var_dump($email_filter->apply('valid@example.com'));
-var_dump($email_filter->apply('invalid@emial@example.com'));
-var_dump($email_filter->apply('valid.com@example.com'));
+$email_filter = new EmailSanitizer();
+var_dump($email_filter->apply('valid@gamil.com'));
+var_dump($email_filter->apply('i n v a l i d@gamil.com'));
+var_dump($email_filter->apply('invalid\\//@@email@gamil.com'));
 
-$ip_filter = new IpValidator();
-var_dump($ip_filter->apply('192.168.1.1'));
-var_dump($ip_filter->apply('10.1.1.1'));
-var_dump($ip_filter->apply('127.0.0.1'));
-var_dump($ip_filter->apply('127.0.0.1.1', 'invalid ip address'));
-var_dump($ip_filter->apply('::1', '127.0.0.1'));
-var_dump($ip_filter->apply('CDCD:910A:2222:5498:8475:1111:3900:2020', '127.0.0.1'));
-var_dump($ip_filter->apply('10.1.1.1'));
+$url_encode_filter = new UrlEncodeSanitizer();
+var_dump($url_encode_filter->apply("\n\t\0\1\2\3\4\5\6\7 "));
+var_dump($url_encode_filter->apply("\xff\xee\xdd\xcc\xbb\xaa"));
 
-$float_filter = new FloatValidator();
-var_dump($float_filter->apply('2.33'));
-var_dump($float_filter->apply('-2.33'));
-var_dump($float_filter->apply(12.34));
-var_dump($float_filter->apply('a1.23'));
+$quotes_filter = new QuotesSanitizer();
+echo $quotes_filter->apply("asd\t\n 'ni hao' \"hello\" 'halo'");
 
-$integer_filter = new IntegerValidator(0x11, 0xff);
-var_dump($integer_filter->apply('123'));
-var_dump($integer_filter->apply('0755', 'out of range'));
-var_dump($integer_filter->apply('0xaa'));
-var_dump($integer_filter->apply('s0xaa'));
-var_dump($integer_filter->apply('0xaa'));
-var_dump($integer_filter->apply(111));
+$number_filter = new NumberSanitizer();
+var_dump($number_filter->apply('2.33e-3'));
+var_dump($number_filter->apply(2.33e-3));
+var_dump($number_filter->apply('1/10'));
 
-$mac_filter = new MacAddrValidator();
-var_dump($mac_filter->apply('asd'));
-var_dump($mac_filter->apply('00-01-6C-06-A6-29'));
+$html_filter = new HtmlSanitizer();
+var_dump($html_filter->apply('<script>alert("Hello, World")</script>'));
+var_dump($html_filter->apply("~!@#$%^&*()_+"));
 
-$regex_filter = new RegexValidator(new Regex('/^\$\w+$/'));
-var_dump($regex_filter->apply('$asd'));
-var_dump($regex_filter->apply('%asd'));
+$string_filter = new StringSanitizer();
+var_dump($string_filter->apply('$asc = &$qwe;'));
+var_dump($string_filter->apply('~!@#$%^&*()_+|}{:"?><\''));
 
-$url_filter = new UrlValidator();
-var_dump($url_filter->apply('https://www.shellboot.com'));
-var_dump($url_filter->apply('https://www.shellboot.com/'));
-var_dump($url_filter->apply('www.shellboot.com/'));
-var_dump($url_filter->apply('ssh://ssh.shellboot.com/'));
-var_dump($url_filter->apply('ssh://ssh.shellboot.com:root@root'));
-var_dump($url_filter->apply('https://www.shellboot.com/articles/list?pageSize=10'));
+$url_filter = new UrlSanitizer();
+var_dump($url_filter->apply('http://www.shellboot.com/articles/list?pageSize=10#bottom'));
