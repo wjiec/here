@@ -24,7 +24,7 @@ final class NumberSanitizer extends IoFilterBase {
      * @param bool $thousand
      * @param bool $scientific
      */
-    final public function __construct($allow_float = true, $fraction = true, $thousand = false, $scientific = true) {
+    final public function __construct($allow_float = true, $fraction = true, $thousand = false, $scientific = false) {
         if ($allow_float === true) {
              $this->_filter_id = FILTER_SANITIZE_NUMBER_FLOAT;
 

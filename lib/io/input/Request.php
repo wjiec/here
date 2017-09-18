@@ -10,7 +10,7 @@
  */
 namespace Here\Lib\Io\Input;
 use Here\Lib\Environment;
-use Here\Lib\Io\Filter\IoFilterInterface;
+use Here\Lib\Io\Filter\IoFilterBase;
 
 
 /**
@@ -77,13 +77,13 @@ final class Request {
     }
 
     /**
-     * @param IoFilterInterface $filter
+     * @param IoFilterBase $filter
      * @param string $name
      * @param null $default
      * @return string
-     * @TODO, filter
      */
-    final public static function get_param_safe(IoFilterInterface $filter, $name, $default = null) {
+    final public static function get_param_safe(IoFilterBase $filter, $name, $default = null) {
+        return $filter->apply(self::get_param($name, $default), $default);
     }
 
     /**
@@ -113,6 +113,49 @@ final class Request {
         }
 
         return $default;
+    }
+
+    /**
+     * @param IoFilterBase $filter
+     * @param string $name
+     * @param null|mixed $default
+     * @return string
+     */
+    final public static function post_param_safe(IoFilterBase $filter, $name, $default = null) {
+        return $filter->apply(self::post_param($name, $default), $default);
+    }
+
+    /**
+     * @param string $name
+     * @param mixed|null $default
+     * @return string
+     */
+    final public static function request_param($name, $default = null) {
+        if (in_array(self::request_method(), array('get', 'post'))) {
+            if (self::request_method() === 'get') {
+                return self::get_param($name, $default);
+            }
+            return self::post_param($name, $default);
+        }
+
+        $params = self::json_body();
+        if ($params === null || empty($params)) {
+            return $default;
+        }
+        if (array_key_exists($name, $params)) {
+            return $params[$name];
+        }
+        return $default;
+    }
+
+    /**
+     * @param IoFilterBase $filter
+     * @param string $name
+     * @param null|mixed $default
+     * @return string
+     */
+    final public static function request_param_safe(IoFilterBase $filter, $name, $default = null) {
+        return $filter->apply(self::request_param($name, $default), $default);
     }
 
     /**
@@ -193,7 +236,7 @@ final class Request {
      * @return string
      */
     final public static function request_method() {
-        return Environment::get_server_env('request_method');
+        return strtolower(Environment::get_server_env('request_method'));
     }
 
     /**
