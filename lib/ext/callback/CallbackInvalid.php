@@ -1,6 +1,6 @@
 <?php
 /**
- * RegexPatternInvalid.php
+ * CallbackInvalid.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,11 +8,15 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Ext\Regex;
+namespace Here\Lib\Ext\Callback;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\Level\Warning;
 
 
-class RegexPatternInvalid extends ExceptionBase {
+/**
+ * Class CallbackInvalid
+ * @package Here\Lib\Ext\CallbackObject
+ */
+final class CallbackInvalid extends ExceptionBase {
     use Warning;
 }

@@ -11,7 +11,9 @@
  */
 namespace Here;
 use Here\Lib\Autoloader;
-use Here\Lib\Io\Filter\Validator\IntegerValidator;
+use Here\Lib\Ext\Callback\CallbackObject;
+use Here\Lib\Io\Filter\Sanitizer\NumberSanitizer;
+use Here\Lib\Io\Filter\Validator\CallbackValidator;
 use Here\Lib\Io\Input\Request;
 
 /* root absolute path with `Here` */
@@ -30,4 +32,10 @@ Autoloader::register('Here\\Lib', '/lib');
 Autoloader::register('Here\\Config', '/etc');
 
 /* `Here` test case */
-var_dump(Request::get_param_safe(new IntegerValidator(), 'pageSize', 16));
+var_dump(Request::get_param_safe(new NumberSanitizer(), 'pageSize', 16));
+
+$callback_filter = new CallbackValidator(new CallbackObject(function($string) {
+    return trim($string);
+}));
+// http://127.0.0.1/?pageSize=asd123asd&article=%20%20blank
+var_dump(Request::get_param_safe($callback_filter, 'article', 'valid_title'));
