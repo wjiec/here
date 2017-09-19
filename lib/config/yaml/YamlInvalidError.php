@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\lib\config\yaml;
-use Here\Lib\Abstracts\ExceptionBase;
+use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\Level\Warning;
 
 

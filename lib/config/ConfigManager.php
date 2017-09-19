@@ -18,7 +18,8 @@ namespace Here\Lib\Config;
 class ConfigManager {
     /**
      * @param string $config_name
+     * @param string $parser
      */
-    final public static function get_conf($config_name) {
+    final public static function get_conf($config_name, $parser = 'yaml') {
     }
 }
