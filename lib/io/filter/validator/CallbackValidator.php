@@ -9,8 +9,9 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Io\Filter\Validator;
-use Here\Lib\Ext\Callback\CallbackObject;
 use Here\Lib\Io\Filter\IoFilterBase;
+use Here\Lib\Ext\Callback\CallbackObject;
+use Here\Lib\Ext\Callback\CallbackInvalid;
 
 
 /**
@@ -21,9 +22,13 @@ final class CallbackValidator extends IoFilterBase {
     /**
      * CallbackValidator constructor.
      * @param CallbackObject $callback
+     * @throws CallbackInvalid
      */
     final public function __construct(CallbackObject $callback) {
         $this->_callback = $callback;
+        if ($this->_callback->get_args_count() !== 1) {
+            throw new CallbackInvalid("callback object except 1 arg, got 0");
+        }
     }
 
     /**

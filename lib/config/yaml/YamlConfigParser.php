@@ -13,11 +13,6 @@ namespace Here\Lib\Config\Yaml;
 
 class YamlConfigParser {
     /**
-     * @var string
-     */
-    private $_version;
-
-    /**
      * @var array
      */
     private $_lines;
@@ -34,11 +29,8 @@ class YamlConfigParser {
 
     /**
      * YamlConfigParser constructor.
-     * @param string $version
      */
-    final public function __construct($version) {
-        $this->_version = $version;
-    }
+    final public function __construct() {}
 
     /**
      * @param string $contents
@@ -72,7 +64,7 @@ class YamlConfigParser {
         }
 
         // skip Yaml 1.2 header `%YAML: 1.2`
-        $contents = preg_replace("/^\%YAML[:\s][\d\.]*.*\n/", '', $contents, -1, $replace_count);
+        $contents = preg_replace("/^\%YAML[: ][\d\.]+.*\n/", '', $contents, -1, $replace_count);
         $this->_skip_line_count += $replace_count;
 
         // skip leading comments or `---` document delimiter

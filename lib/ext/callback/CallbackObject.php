@@ -22,6 +22,21 @@ class CallbackObject {
     private $_callback;
 
     /**
+     * @var int
+     */
+    private $_args_count = 0;
+
+    /**
+     * @var array
+     */
+    private $_args_names = array();
+
+    /**
+     * @var array
+     */
+    private $_args_default = array();
+
+    /**
      * CallbackObject constructor.
      * @param callable $callback
      * @throws CallbackInvalid
@@ -31,6 +46,7 @@ class CallbackObject {
             throw new CallbackInvalid("callback is not callable");
         }
         $this->_callback = $callback;
+        $this->_reflection();
     }
 
     /**
@@ -41,10 +57,32 @@ class CallbackObject {
     }
 
     /**
+     * @return int
+     */
+    final public function get_args_count() {
+        return $this->_args_count;
+    }
+
+    /**
      * @param array ...$arg
      * @return mixed
      */
     final public function call(...$arg) {
         return call_user_func_array($this->_callback, $arg);
+    }
+
+    /**
+     * reflection function
+     */
+    final private function _reflection() {
+        $ref = new \ReflectionFunction($this->_callback);
+
+        $this->_args_count = $ref->getNumberOfParameters();
+        foreach ($ref->getParameters() as $param) {
+            $this->_args_names[] = $param->name;
+            if ($param->isOptional()) {
+                $this->_args_default[] = $param->getDefaultValue();
+            }
+        }
     }
 }
