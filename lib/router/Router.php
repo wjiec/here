@@ -9,7 +9,8 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router;
-use Here\Lib\Ext\Callback\CallbackObject;
+use Here\Lib\Ext\Singleton\Singleton;
+use Here\Lib\Ext\Singleton\SingletonRefuse;
 use Here\Lib\Io\Input\Request;
 
 
@@ -18,6 +19,11 @@ use Here\Lib\Io\Input\Request;
  * @package Here\Lib\Router
  */
 class Router {
+    /**
+     * Singleton
+     */
+    use Singleton;
+
     /**
      * @var array
      */
@@ -60,7 +66,12 @@ class Router {
      * @return bool
      */
     final public static function start_router($router_tables, $request_method = null, $request_uri = null) {
-        return (new self($router_tables))->router($request_method, $request_uri);
+        try {
+            self::get_instance();
+        } catch (SingletonRefuse $e) {
+            self::set_instance(new self($router_tables));
+        }
+        return self::get_instance()->router($request_method, $request_uri);
     }
 
     /**
@@ -75,16 +86,23 @@ class Router {
 
         // check method is allowed
         if (!in_array($this->_request_method, self::$_ALLOWED_METHODS)) {
-            throw new MethodNotAllowed("{$this->_request_method} is not allowed");
+            throw new MethodNotAllowed("`{$this->_request_method}` is not allowed");
         }
 
         return true;
     }
 
     /**
-     * @param CallbackObject $callback
+     * @param int $error_code
+     * @param array ...$args
      */
-    final public function default_error_handler(CallbackObject $callback) {
+    final public function trigger_error($error_code, ...$args) {
+    }
+
+    /**
+     * @param RouterCallback $callback
+     */
+    final public function set_default_error_handler(RouterCallback $callback) {
         // do not need to type checking
         $this->_errors_handler['default'] = $callback;
     }
