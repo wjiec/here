@@ -50,7 +50,6 @@ abstract class ExceptionBase extends \Exception {
 
         // resolve exception code
         $this->_resolve_backtrace();
-        var_dump($this->_message);
 
         // make sure using get_message override method
         parent::__construct('Please using ExceptionBase::get_message method',

@@ -33,7 +33,7 @@ final class Response {
      * @param int $status_code
      */
     final public static function header($key, $value, $override = true, $status_code = 200) {
-        \header("{$key}: $value", $override, $status_code);
+        header("{$key}: $value", $override, $status_code);
     }
 
     /**
