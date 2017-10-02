@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Io\Output;
-use Here\Lib\Router\Router;
+use Here\Lib\Router\Dispatcher;
 
 
 /**
@@ -45,7 +45,7 @@ final class Response {
         self::header('Content-Type', 'text/html; charset=utf-8', false, $status_code);
         // check trigger error handler
         if ($trigger_handler) {
-            Router::get_instance()->trigger_error($status_code);
+            Dispatcher::get_instance()->trigger_error($status_code);
         }
     }
 }

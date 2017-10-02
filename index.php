@@ -10,8 +10,10 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here;
+use Here\Config\UserCollector;
 use Here\Lib\Autoloader;
-use Here\Lib\Router\Router;
+use Here\Lib\Io\Input\Request;
+use Here\Lib\Router\Dispatcher;
 
 /* root absolute path with `Here` */
 define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
@@ -32,5 +34,8 @@ Autoloader::register('Here\Config', '/etc');
  * @TODO loading configure for user
  */
 
-/* instantiation `Router` with start */
-Router::start_router(null);
+/* create router dispatcher instance */
+$router_dispatcher = new Dispatcher(new UserCollector());
+
+/* start dispatch */
+$router_dispatcher->dispatch(Request::request_method(), Request::request_uri());

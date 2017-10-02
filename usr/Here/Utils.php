@@ -101,6 +101,7 @@ class Here_Utils {
      * patch path to standard format
      *
      * @param string $path
+     * @return string
      */
     public static function path_patch($path) {
         return trim(str_replace('/\\', '/', $path), '/');

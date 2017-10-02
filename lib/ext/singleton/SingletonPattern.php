@@ -11,7 +11,7 @@
 namespace Here\Lib\Ext\Singleton;
 
 
-trait Singleton {
+trait SingletonPattern {
     /**
      * @var self
      */
@@ -43,6 +43,11 @@ trait Singleton {
         if (get_class($self) !== __CLASS__) {
             throw new SingletonRefuse('instance invalid of self');
         }
+
+        if (self::$_instance !== null) {
+            throw new SingletonRefuse('cannot set instance second');
+        }
+
         self::$_instance = $self;
     }
 }
