@@ -41,14 +41,15 @@ class Dispatcher {
     /**
      * @param null $request_method
      * @param null $request_uri
-     * @throws MethodNotAllowed
      */
     final public function dispatch($request_method, $request_uri) {
         // check method is allowed
         if (!in_array($request_method, self::$_ALLOWED_METHODS)) {
             $this->trigger_error(405, "`{$request_method}` is not allowed");
-//            throw new MethodNotAllowed("`{$request_method}` is not allowed");
         }
+
+        $match = $this->_collector->resolve($request_method, $request_uri);
+        var_dump($match);
     }
 
     /**

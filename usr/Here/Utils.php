@@ -56,6 +56,7 @@ class Here_Utils {
      * convert object to int type
      *
      * @param mixed $object
+     * @param int $default
      * @return int
      */
     public static function to_int($object, $default = 0) {
