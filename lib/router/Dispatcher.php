@@ -47,9 +47,6 @@ class Dispatcher {
         if (!in_array($request_method, self::$_ALLOWED_METHODS)) {
             $this->trigger_error(405, "`{$request_method}` is not allowed");
         }
-
-        $match = $this->_collector->resolve($request_method, $request_uri);
-        var_dump($match);
     }
 
     /**

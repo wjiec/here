@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Method;
+use Here\Lib\Router\Collector\Method\Meta\MetaParser;
 
 
 /**
@@ -17,15 +18,42 @@ namespace Here\Lib\Router\Collector\Method;
  */
 final class MethodParser {
     /**
-     * @var \ReflectionMethod
+     * @var MetaParser
      */
-    private $_method_ref;
+    private $_meta_parser;
 
     /**
      * MethodParser constructor.
-     * @param \ReflectionMethod $method
      */
-    final public function __construct(\ReflectionMethod $method) {
-        $this->_method_ref = $method;
+    final public function __construct() {
+        $this->_meta_parser = new MetaParser();
+    }
+
+    /**
+     * @param \ReflectionMethod $method
+     * @return MethodParseResult
+     */
+    final public function parse(\ReflectionMethod $method) {
+        $result = new MethodParseResult($method->name);
+
+        // not export method
+        if (strpos($method->name, '_') === 0) {
+            return $result->set_available(false);
+        }
+
+        // parse meta document
+        $meta_group = $this->_meta_parser->parse($method->getDocComment());
+        if ($meta_group === false || count($meta_group) === 0) { // empty meta_string or invalid meta
+            return $result->set_available(false);
+        }
+
+        return $result->set_available(true);
+    }
+
+    /**
+     * @return bool
+     */
+    final public function is_available() {
+       return true;
     }
 }

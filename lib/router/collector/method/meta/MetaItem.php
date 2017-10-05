@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Router\Collector\Meta;
+namespace Here\Lib\Router\Collector\Method\Meta;
 
 
 /**
@@ -34,5 +34,19 @@ class MetaItem {
     final public function __construct($name, $value) {
         $this->name = $name;
         $this->value = $value;
+    }
+
+    /**
+     * @return string
+     */
+    final public function get_name() {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    final public function get_value() {
+        return $this->value;
     }
 }

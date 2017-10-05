@@ -10,7 +10,7 @@
  */
 namespace Here\Lib\Router\Collector;
 use Here\Lib\Router\Collector\Method\MethodParser;
-use Here\Lib\Router\RouterMatch;
+use Here\Lib\Router\Collector\Method\MethodParseResult;
 
 
 /**
@@ -23,18 +23,18 @@ abstract class RouterCollector {
      * RouterCollector constructor.
      */
     final public function __construct() {
+        $method_parser = new MethodParser();
+
         $ref = new \ReflectionClass(get_class($this));
         foreach ($ref->getMethods() as $method) {
-            new MethodParser($method);
-        }
-    }
+            var_dump($method);
+            /* @var MethodParseResult $method_info */
+            $method_info = $method_parser->parse($method);
+            if (!$method_info || !$method_info->get_available()) {
+                continue;
+            }
 
-    /**
-     * @NotRouterNode
-     * @param string $request_method
-     * @param string $request_uri
-     * @return RouterMatch
-     */
-    final public function resolve($request_method, $request_uri) {
+            var_dump($method_info);
+        }
     }
 }
