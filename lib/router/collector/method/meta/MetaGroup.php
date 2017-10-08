@@ -23,6 +23,7 @@ final class MetaGroup implements \IteratorAggregate, \Countable {
 
     /**
      * MetaGroup constructor.
+     * @param string $meta_string
      */
     final public function __construct($meta_string) {
         $this->_meta_items = array();

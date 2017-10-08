@@ -27,7 +27,6 @@ abstract class RouterCollector {
 
         $ref = new \ReflectionClass(get_class($this));
         foreach ($ref->getMethods() as $method) {
-            var_dump($method);
             /* @var MethodParseResult $method_info */
             $method_info = $method_parser->parse($method);
             if (!$method_info || !$method_info->get_available()) {

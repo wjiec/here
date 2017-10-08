@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Method\Meta\Syntax;
+use Here\Lib\Router\Collector\Method\Meta\MetaItem;
 use Here\Lib\Router\Collector\Method\Meta\Syntax\Result\MetaParseResultInterface;
 
 
@@ -18,8 +19,8 @@ use Here\Lib\Router\Collector\Method\Meta\Syntax\Result\MetaParseResultInterface
  */
 interface MetaSyntaxParserInterface {
     /**
-     * @param string $value
+     * @param MetaItem $item
      * @return MetaParseResultInterface
      */
-    public function parse($value);
+    public function parse(MetaItem $item);
 }

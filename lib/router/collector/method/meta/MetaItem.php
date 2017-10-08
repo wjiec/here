@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Method\Meta;
+use Here\Lib\Router\Collector\Method\Meta\Syntax\Result\MetaParseResultInterface;
 
 
 /**
@@ -19,12 +20,12 @@ class MetaItem {
     /**
      * @var string
      */
-    public $name;
+    private $_name;
 
     /**
      * @var string
      */
-    public $value;
+    private $_value;
 
     /**
      * MetaItem constructor.
@@ -32,21 +33,21 @@ class MetaItem {
      * @param string $value
      */
     final public function __construct($name, $value) {
-        $this->name = $name;
-        $this->value = $value;
+        $this->_name = $name;
+        $this->_value = $value;
     }
 
     /**
      * @return string
      */
     final public function get_name() {
-        return $this->name;
+        return $this->_name;
     }
 
     /**
      * @return string
      */
     final public function get_value() {
-        return $this->value;
+        return $this->_value;
     }
 }

@@ -33,9 +33,8 @@ class Dispatcher {
      * @param RouterCollector $collector
      */
     final public function __construct(RouterCollector $collector) {
-        $this->_collector = $collector;
-
         self::set_instance($this);
+        $this->_collector = $collector;
     }
 
     /**
@@ -44,7 +43,7 @@ class Dispatcher {
      */
     final public function dispatch($request_method, $request_uri) {
         // check method is allowed
-        if (!in_array($request_method, self::$_ALLOWED_METHODS)) {
+        if (!in_array($request_method, self::ALLOWED_METHODS)) {
             $this->trigger_error(405, "`{$request_method}` is not allowed");
         }
     }
@@ -60,5 +59,5 @@ class Dispatcher {
     /**
      * @var array
      */
-    private static $_ALLOWED_METHODS = array('get', 'post', 'put', 'update', 'patch', 'delete', 'options', 'head');
+    const ALLOWED_METHODS = array('get', 'post', 'put', 'update', 'patch', 'delete', 'options', 'head');
 }

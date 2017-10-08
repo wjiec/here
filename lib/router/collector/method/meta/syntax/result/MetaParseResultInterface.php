@@ -13,5 +13,8 @@ namespace Here\Lib\Router\Collector\Method\Meta\Syntax\Result;
  * @package Here\Lib\Router\Collector\Meta\Syntax\Result
  */
 interface MetaParseResultInterface {
-
+    /**
+     * @return bool
+     */
+    public function is_available();
 }

@@ -42,10 +42,11 @@ final class MethodParser {
         }
 
         // parse meta document
-        $meta_group = $this->_meta_parser->parse($method->getDocComment());
-        if ($meta_group === false || count($meta_group) === 0) { // empty meta_string or invalid meta
+        $meta = $this->_meta_parser->parse($method->getDocComment());
+        if ($meta === false || count($meta) === 0) { // empty meta_string or invalid meta
             return $result->set_available(false);
         }
+        $result->set_meta($meta);
 
         return $result->set_available(true);
     }

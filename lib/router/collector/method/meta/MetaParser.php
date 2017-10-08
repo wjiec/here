@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Router\Collector\Method\Meta;
 use Here\Lib\Autoloader;
+use Here\Lib\Router\Collector\Method\Meta\Syntax\MetaSyntaxParserInterface;
 
 
 /**
@@ -24,7 +25,7 @@ final class MetaParser {
 
     /**
      * @param string $meta_string
-     * @return bool|MetaGroup
+     * @return bool|MetaParseResult
      */
     final public function parse($meta_string) {
         $meta_string = trim($meta_string);
@@ -32,16 +33,33 @@ final class MetaParser {
             return false;
         }
 
+        $meta_result = new MetaParseResult();
         /* @var MetaItem $item */
         foreach (new MetaGroup($meta_string) as $item) {
-            $parser_name = sprintf('%s\Syntax\Syntax%sParser', __NAMESPACE__, ucfirst($item->name));
+            $parser_name = sprintf('%s\Syntax\Syntax%sParser',
+                __NAMESPACE__, ucfirst($item->get_name()));
 
             if (!Autoloader::class_exists($parser_name)) {
                 continue;
             }
 
-            var_dump($parser_name);
+            /* @var MetaSyntaxParserInterface $parser */
             $parser = new $parser_name();
+            $result = $parser->parse($item);
+            if (!$result->is_available()) {
+                continue;
+            }
+
+            $meta_result->set_item(new MetaItem($item->get_name(), $result));
         }
+
+        return $meta_result;
     }
+
+    /**
+     * @var array
+     */
+    const ALLOWED_SYNTAX = array(
+
+    );
 }

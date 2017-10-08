@@ -10,7 +10,8 @@
  */
 namespace Here\Lib\Router\Collector\Method;
 use Here\Lib\Assert;
-use Here\Lib\Router\Collector\Meta\MetaGroup;
+use Here\Lib\Router\Collector\Method\Meta\MetaGroup;
+use Here\Lib\Router\Collector\Method\Meta\MetaParseResult;
 
 
 /**
@@ -27,6 +28,11 @@ final class MethodParseResult {
      * @var bool
      */
     private $_available;
+
+    /**
+     * @var MetaParseResult
+     */
+    private $_meta;
 
     /**
      * MethodParseResult constructor.
@@ -62,9 +68,16 @@ final class MethodParseResult {
     }
 
     /**
-     * @param MetaGroup $group
+     * @param MetaParseResult $meta
      */
-    final public function set_meta_group(MetaGroup $group) {
+    final public function set_meta(MetaParseResult $meta) {
+        $this->_meta = $meta;
+    }
 
+    /**
+     * @return MetaParseResult
+     */
+    final public function get_meta() {
+        return $this->_meta;
     }
 }
