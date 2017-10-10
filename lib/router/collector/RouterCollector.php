@@ -9,9 +9,6 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector;
-use Here\Lib\Router\Collector\Method\MethodParser;
-use Here\Lib\Router\Collector\Method\MethodParseResult;
-
 
 /**
  * Class RouterCollector
@@ -23,17 +20,9 @@ abstract class RouterCollector {
      * RouterCollector constructor.
      */
     final public function __construct() {
-        $method_parser = new MethodParser();
-
         $ref = new \ReflectionClass(get_class($this));
         foreach ($ref->getMethods() as $method) {
-            /* @var MethodParseResult $method_info */
-            $method_info = $method_parser->parse($method);
-            if (!$method_info || !$method_info->get_available()) {
-                continue;
-            }
-
-            var_dump($method_info);
+            var_dump($method);
         }
     }
 }

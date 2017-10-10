@@ -30,10 +30,6 @@ Autoloader::register('Here\Lib', '/lib');
 /* register `Here\Conf` namespace */
 Autoloader::register('Here\Config', '/etc');
 
-/**
- * @TODO loading configure for user
- */
-
 /* create router dispatcher instance */
 $router_dispatcher = new Dispatcher(new UserCollector());
 

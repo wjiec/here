@@ -9,7 +9,6 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router;
-use Here\Lib\Ext\Singleton\SingletonPattern;
 use Here\Lib\Router\Collector\RouterCollector;
 
 
@@ -17,12 +16,7 @@ use Here\Lib\Router\Collector\RouterCollector;
  * Class Router
  * @package Here\Lib\Router
  */
-class Dispatcher {
-    /**
-     * Singleton
-     */
-    use SingletonPattern;
-
+final class Dispatcher {
     /**
      * @var RouterCollector
      */
@@ -33,7 +27,6 @@ class Dispatcher {
      * @param RouterCollector $collector
      */
     final public function __construct(RouterCollector $collector) {
-        self::set_instance($this);
         $this->_collector = $collector;
     }
 
@@ -43,7 +36,7 @@ class Dispatcher {
      */
     final public function dispatch($request_method, $request_uri) {
         // check method is allowed
-        if (!in_array($request_method, self::ALLOWED_METHODS)) {
+        if (!AllowedMethods::check($request_method)) {
             $this->trigger_error(405, "`{$request_method}` is not allowed");
         }
     }
@@ -55,9 +48,4 @@ class Dispatcher {
     final public function trigger_error($error_code, ...$args) {
         var_dump($error_code, $args);
     }
-
-    /**
-     * @var array
-     */
-    const ALLOWED_METHODS = array('get', 'post', 'put', 'update', 'patch', 'delete', 'options', 'head');
 }
