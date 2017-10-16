@@ -8,7 +8,8 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Exceptions;
+namespace Here\Lib\Loader;
+use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\Level\Fatal;
 
 

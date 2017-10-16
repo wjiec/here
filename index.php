@@ -9,9 +9,14 @@
  * @version   Develop: 0.1.0
  * @link      https://github.com/JShadowMan/here
  */
+
+/* enable strict mode */
+declare(strict_types=1);
+
+/* namespaces definitions */
 namespace Here;
 use Here\Config\UserCollector;
-use Here\Lib\Autoloader;
+use Here\Lib\Loader\Autoloader;
 use Here\Lib\Io\Input\Request;
 use Here\Lib\Router\Dispatcher;
 
@@ -19,7 +24,7 @@ use Here\Lib\Router\Dispatcher;
 define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
 
 /* the only explicit `require_once` to include `Autoloader` */
-require_once 'lib/Autoloader.php';
+require_once 'lib/loader/Autoloader.php';
 
 /* register root directory (must be call first) */
 Autoloader::set_root('Here', __HERE_ROOT_DIRECTORY__);

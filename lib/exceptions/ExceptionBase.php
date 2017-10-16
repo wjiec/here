@@ -43,7 +43,7 @@ abstract class ExceptionBase extends \Exception {
      * @param ExceptionLevelBase $level
      * @param Throwable|null $previous
      */
-    public function __construct($message, ExceptionLevelBase $level = null, Throwable $previous = null) {
+    public function __construct(string $message, ExceptionLevelBase $level = null, Throwable $previous = null) {
         // exception message
         Assert::String($message);
         $this->_message = $message;
