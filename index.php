@@ -15,9 +15,11 @@ declare(strict_types=1);
 
 /* namespaces definitions */
 namespace Here;
-
-/* root absolute path with `Here` */
-define('__HERE_ROOT_DIRECTORY__', str_replace('\\', '/', dirname(__FILE__)));
+use Here\Lib\Loader\Autoloader;
 
 /* the only explicit `require_once` to include `Autoloader` */
 require_once 'Lib/Loader/Autoloader.php';
+
+/* register classes loader and set default namespace */
+Autoloader::add_namespace(__NAMESPACE__, __DIR__);
+
