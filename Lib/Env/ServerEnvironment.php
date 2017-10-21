@@ -16,7 +16,7 @@ trait ServerEnvironment {
     /**
      * @var array
      */
-    private static $_server_envs = array();
+    private static $_server_env = array();
 
     /**
      * @param string $name
@@ -24,20 +24,12 @@ trait ServerEnvironment {
      * @return string|null
      */
     final public static function get_server_env(string $name, ?string $default = null) {
-        if (empty(self::$_server_envs)) {
+        if (empty(self::$_server_env)) {
             foreach ($_SERVER as $key => $val) {
-                self::$_server_envs[strtolower($key)] = $val;
+                self::$_server_env[strtolower($key)] = $val;
             }
         }
 
-        return self::$_server_envs[strtolower($name)] ?? $default;
-    }
-
-    /**
-     * @return array
-     */
-    final public static function get_server_envs(): array {
-        self::get_server_env('mixed');
-        return self::$_server_envs;
+        return self::$_server_env[strtolower($name)] ?? $default;
     }
 }

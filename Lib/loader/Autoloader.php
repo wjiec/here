@@ -18,12 +18,12 @@ namespace Here\Lib\Loader;
 final class Autoloader {
     /**
      * @var array
+     * @TODO, prefix-tree ?
      */
     private static $_prefixes = array();
 
     /**
      * @var bool
-     * @TODO, prefix-tree ?
      */
     private static $_already_registered;
 
@@ -119,6 +119,7 @@ final class Autoloader {
     final private static function _include_file(string $file_name, bool $just_check): bool {
         if (is_file($file_name)) {
             if (!$just_check) {
+                /* dynamic include classes definition */
                 require_once $file_name;
             }
             return true;

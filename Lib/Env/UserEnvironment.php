@@ -16,7 +16,7 @@ trait UserEnvironment {
     /**
      * @var array
      */
-    private static $_user_envs = array();
+    private static $_user_env = array();
 
     /**
      * @param string $name
@@ -24,18 +24,19 @@ trait UserEnvironment {
      * @return mixed
      */
     final public static function get_user_env(string $name, ?string $default = null) {
-        return self::$_user_envs[$name] ?? $default;
+        return self::$_user_env[$name] ?? $default;
     }
 
     /**
      * @param string $name
      * @param string $value
+     * @param bool $override
      * @throws EnvironmentOverride
      */
     final public static function set_user_env(string $name, string $value, bool $override = true): void {
-        if (!$override && isset(self::$_user_envs[$name])) {
+        if (!$override && isset(self::$_user_env[$name])) {
             throw new EnvironmentOverride("cannot override {$name} environment");
         }
-        self::$_user_envs[$name] = $value;
+        self::$_user_env[$name] = $value;
     }
 }

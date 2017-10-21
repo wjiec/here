@@ -1,6 +1,6 @@
 <?php
 /**
- * HereBlogger.php
+ * Application.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,13 +8,16 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\App\Blogger;
-use Here\App\Application;
+namespace Here\App;
 
 
 /**
- * Class HereBlogger
- * @package Here\App\Blogger
+ * Class Application
+ * @package Here\App
  */
-final class HereBlogger extends Application {
+abstract class Application {
+    /**
+     * Application constructor.
+     */
+    final public function __construct() {}
 }
