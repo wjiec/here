@@ -40,7 +40,7 @@ final class Autoloader {
         }
 
         $namespace = trim($namespace, '\\') . '\\';
-        $base_dir = trim(str_replace('\\', '/', $base_dir), '/') . '/';
+        $base_dir = rtrim(str_replace('\\', '/', $base_dir), '/') . '/';
 
         if (!isset(self::$_prefixes[$namespace])) {
             self::$_prefixes[$namespace] = array();

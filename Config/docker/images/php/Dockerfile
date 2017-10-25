@@ -153,7 +153,10 @@ RUN set -ex \
            echo; \
            echo '[www]'; \
            echo 'listen = [::]:9000'; \
-       } | tee php-fpm.d/php-fpm-server.conf
+       } | tee php-fpm.d/zzz.conf \
+    && mkdir "/var/www"
 
+ENV PATH $PHP_HOME/bin:$PHP_HOME/sbin:$PATH
+WORKDIR /var/www
 EXPOSE 9000
-CMD ["/usr/local/php7/sbin/php-fpm"]
+CMD ["php-fpm"]
