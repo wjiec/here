@@ -6,7 +6,7 @@
  * Time: 15:40
  */
 namespace Here\Lib\Router;
-use Here\Lib\Assert;
+
 
 /**
  * Class AllowedMethods
@@ -14,7 +14,7 @@ use Here\Lib\Assert;
  */
 final class AllowedMethods {
     /**
-     *
+     * allowed methods for request
      */
     const ALLOWED_METHODS = array('get', 'post', 'put', 'delete', 'update', 'patch', 'options', 'head');
 
@@ -22,9 +22,7 @@ final class AllowedMethods {
      * @param string $method
      * @return bool
      */
-    final public static function check($method) {
-        Assert::String($method);
-
+    final public static function contains(string $method): bool {
         return in_array(strtolower($method), self::ALLOWED_METHODS);
     }
 }

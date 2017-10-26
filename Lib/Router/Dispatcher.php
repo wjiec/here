@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router;
+use Here\Lib\Router\Collector\CollectorInterface;
 use Here\Lib\Router\Collector\RouterCollector;
 
 
@@ -23,22 +24,24 @@ final class Dispatcher {
     private $_collector;
 
     /**
-     * Router constructor.
-     * @param RouterCollector $collector
+     * Dispatcher constructor.
+     * @param CollectorInterface $collector
      */
-    final public function __construct(RouterCollector $collector) {
+    final public function __construct(CollectorInterface $collector) {
         $this->_collector = $collector;
     }
 
     /**
-     * @param null $request_method
-     * @param null $request_uri
+     * @param null|string $request_method
+     * @param null|string $request_uri
      */
-    final public function dispatch($request_method, $request_uri) {
+    final public function dispatch(?string $request_method, ?string $request_uri): void {
         // check method is allowed
-        if (!AllowedMethods::check($request_method)) {
+        if (!AllowedMethods::contains($request_method)) {
             $this->trigger_error(405, "`{$request_method}` is not allowed");
         }
+
+        var_dump($request_method, $request_uri);
     }
 
     /**

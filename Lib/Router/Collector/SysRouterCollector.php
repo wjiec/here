@@ -1,6 +1,6 @@
 <?php
 /**
- * RouterMatch.php
+ * SysRouterCollector.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Router;
+namespace Here\Lib\Router\Collector;
 
 
 /**
- * Class RouterMatch
- * @package Here\Lib\Router
+ * Class SysRouterCollector
+ * @package Here\Lib\Router\Collector
  */
-final class RouterMatch {
+class SysRouterCollector extends RouterCollector {
 }

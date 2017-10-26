@@ -15,8 +15,10 @@ declare(strict_types=1);
 
 /* namespaces definitions */
 namespace Here;
+use Here\Config\Router\UserCollector;
 use Here\Lib\Loader\Autoloader;
-use Here\App\Blogger\HereBlogger;
+use Here\Lib\Router\Dispatcher;
+use Here\Lib\Stream\IStream\Client\Request;
 
 /* the only explicit `require_once` to include `Autoloader` */
 require_once 'Lib/Loader/Autoloader.php';
@@ -24,5 +26,8 @@ require_once 'Lib/Loader/Autoloader.php';
 /* register classes loader and set default namespace */
 Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 
-/* blogger master module */
-new HereBlogger();
+/* create dispatcher for global */
+$dispatcher = new Dispatcher(new UserCollector());
+
+/* dispatch request resources */
+$dispatcher->dispatch(Request::request_method(), Request::request_uri());

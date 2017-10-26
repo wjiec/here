@@ -1,20 +1,18 @@
 <?php
 /**
- * HereBlogger.php
+ * Blogger.php
  *
- * @package   Here
+ * @package   here
  * @author    ShadowMan <shadowman@shellboot.com>
  * @copyright Copyright (C) 2016-2017 ShadowMan
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\App\Blogger;
-use Here\App\Application;
+namespace Here\App;
 
 
 /**
- * Class HereBlogger
- * @package Here\App\Blogger
+ * Class Blogger
+ * @package Here\App
  */
-final class HereBlogger extends Application {
-}
+class Blogger extends Application {}

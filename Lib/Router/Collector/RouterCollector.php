@@ -1,6 +1,6 @@
 <?php
 /**
- * RouterCallback.php
+ * RouterCollector.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Router;
-use Here\Lib\Ext\Callback\CallbackObject;
+namespace Here\Lib\Router\Collector;
 
 
 /**
- * Class RouterCallback
- * @package Here\Lib\Router
+ * Class RouterCollector
+ * @package Here\Lib\Router\Collector
  */
-class RouterCallback extends CallbackObject {}
+abstract class RouterCollector implements CollectorInterface {
+}
