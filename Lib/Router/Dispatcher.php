@@ -1,6 +1,6 @@
 <?php
 /**
- * Router.php
+ * Dispatcher.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

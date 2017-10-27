@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 10/20/2017
- * Time: 10:06
+ * UserEnvironment.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Env;
 
@@ -31,11 +34,11 @@ trait UserEnvironment {
      * @param string $name
      * @param string $value
      * @param bool $override
-     * @throws EnvironmentOverride
+     * @throws EnvironmentOverrideError
      */
     final public static function set_user_env(string $name, string $value, bool $override = true): void {
         if (!$override && isset(self::$_user_env[$name])) {
-            throw new EnvironmentOverride("cannot override {$name} environment");
+            throw new EnvironmentOverrideError("cannot override {$name} environment");
         }
         self::$_user_env[$name] = $value;
     }

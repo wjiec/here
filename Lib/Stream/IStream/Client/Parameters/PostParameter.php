@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ShadowMan
- * Date: 2017/10/26
- * Time: 22:10
+ * PostParameter.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Stream\IStream\Client\Parameters;
 

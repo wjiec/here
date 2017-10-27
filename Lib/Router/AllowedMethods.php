@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 10/10/2017
- * Time: 15:40
+ * AllowedMethods.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router;
 
