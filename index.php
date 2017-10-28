@@ -16,6 +16,7 @@ declare(strict_types=1);
 /* namespaces definitions */
 namespace Here;
 use Here\Config\Router\UserCollector;
+use Here\Lib\Http\HttpStatusCode;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Stream\IStream\Client\Request;
@@ -31,3 +32,8 @@ $dispatcher = new Dispatcher(new UserCollector());
 
 /* dispatch request resources */
 $dispatcher->dispatch(Request::request_method(), Request::request_uri());
+
+/* test case */
+echo "<pre>";
+var_dump((new HttpStatusCode(HttpStatusCode::HTTP_STATUS_NOT_FOUND))->name(),
+    (new HttpStatusCode(HttpStatusCode::HTTP_STATUS_NOT_FOUND))->value());
