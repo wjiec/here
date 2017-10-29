@@ -32,16 +32,14 @@ final class Dispatcher {
     }
 
     /**
-     * @param null|string $request_method
-     * @param null|string $request_uri
+     * @param string $request_method
+     * @param string $request_uri
      */
-    final public function dispatch(?string $request_method, ?string $request_uri): void {
+    final public function dispatch(string $request_method, string $request_uri): void {
         // check method is allowed
         if (!AllowedMethods::contains($request_method)) {
             $this->trigger_error(405, "`{$request_method}` is not allowed");
         }
-
-        var_dump($request_method, $request_uri);
     }
 
     /**

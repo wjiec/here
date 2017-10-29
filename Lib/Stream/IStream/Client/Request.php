@@ -17,7 +17,7 @@ use Here\Lib\Stream\IStream\Client\Parameters\PostParameter;
  * Class Request
  * @package Here\Stream\IStream\Client
  */
-final class Request {
+class Request {
     /**
      * get requests property/methods
      */

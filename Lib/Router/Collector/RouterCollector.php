@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector;
+use Here\Lib\Router\Collector\Generator\RouterGenerator;
 
 
 /**
@@ -16,4 +17,13 @@ namespace Here\Lib\Router\Collector;
  * @package Here\Lib\Router\Collector
  */
 abstract class RouterCollector implements CollectorInterface {
+    /**
+     * RouterCollector constructor.
+     */
+    final public function __construct() {
+        $ref = new \ReflectionClass(get_class($this));
+        foreach ($ref->getMethods() as $method) {
+            var_dump(RouterGenerator::generate($method));
+        }
+    }
 }

@@ -16,7 +16,6 @@ declare(strict_types=1);
 /* namespaces definitions */
 namespace Here;
 use Here\Config\Router\UserCollector;
-use Here\Lib\Http\HttpStatusCode;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Stream\IStream\Client\Request;
@@ -27,6 +26,8 @@ require_once 'Lib/Loader/Autoloader.php';
 /* register classes loader and set default namespace */
 Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 
+echo "<pre>";
+
 /* create dispatcher for global */
 $dispatcher = new Dispatcher(new UserCollector());
 
@@ -35,5 +36,3 @@ $dispatcher->dispatch(Request::request_method(), Request::request_uri());
 
 /* test case */
 echo "<pre>";
-var_dump((new HttpStatusCode(HttpStatusCode::HTTP_STATUS_NOT_FOUND))->name(),
-    (new HttpStatusCode(HttpStatusCode::HTTP_STATUS_NOT_FOUND))->value());

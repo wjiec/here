@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Stream\OStream\Client;
+namespace Here\Lib\Stream\OStream\Client\Component;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\Level\Warning;
 
