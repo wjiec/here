@@ -10,9 +10,7 @@
  */
 namespace Here\Lib\Exceptions;
 use Throwable;
-use Here\Lib\Assert;
-use Here\Lib\Toolkit;
-use Here\Lib\Exceptions\Level\ExceptionLevelBase;
+use Here\Lib\Exceptions\Level\ExceptionLevelTrait;
 
 
 /**
@@ -21,35 +19,34 @@ use Here\Lib\Exceptions\Level\ExceptionLevelBase;
  */
 abstract class ExceptionBase extends \Exception {
     /**
-     * exception level trait
+     * exception Level trait
      */
-    use ExceptionLevelBase;
+    use ExceptionLevelTrait;
 
     /**
-     * error message
-     *
+     * default error code
+     */
+    private const DEFAULT_ERROR_CODE = 1996;
+
+    /**
      * @var string
      */
     protected $_message;
 
     /**
-     * @var array
+     * @var StackTrace
      */
-    protected $_backtrace;
+    protected $_stack_trace;
 
     /**
      * ExceptionBase constructor.
      * @param string $message
-     * @param ExceptionLevelBase $level
      * @param Throwable|null $previous
      */
-    public function __construct(string $message, ExceptionLevelBase $level = null, Throwable $previous = null) {
+    public function __construct(string $message, Throwable $previous = null) {
         // exception message
-        Assert::String($message);
         $this->_message = $message;
-
-        // resolve exception code
-        $this->_resolve_backtrace();
+        $this->_stack_trace = new StackTrace();
 
         // make sure using get_message override method
         parent::__construct('Please using ExceptionBase::get_message method',
@@ -64,30 +61,26 @@ abstract class ExceptionBase extends \Exception {
     }
 
     /**
-     * @return array
+     * @return string
      */
-    final public function get_backtrace() {
-        return $this->_backtrace;
-    }
+    final public function __toString(): string {
+        $called_class_name = get_called_class();
+        $trace_string = "{$called_class_name}(\"{$this->_message}\")\n";
 
-    /**
-     * resolve exception code
-     */
-    final private function _resolve_backtrace() {
-        $backtrace = Toolkit::get_backtrace();
-        foreach ($backtrace as $item) {
-            $this->_backtrace[] = array(
-                'file' => $item['file'],
-                'line' => $item['line'],
-                'class' => $item['class'],
-                'function' => $item['function'],
-                'call_type' => $item['type']
-            );
+        foreach ($this->_stack_trace as $stack) {
+            $trace_string .= sprintf("#%d [ %s:%s ] <===> %s%s%s(%s);\n", ...array(
+                $stack[StackTrace::STACK_TRACE_CALLED_INDEX],
+                $stack[StackTrace::STACK_TRACE_CALLED_AT],
+                $stack[StackTrace::STACK_TRACE_CALLED_LINE],
+                $stack[StackTrace::STACK_TRACE_CLASS_NAME],
+                $stack[StackTrace::STACK_TRACE_CALL_OPERATOR],
+                $stack[StackTrace::STACK_TRACE_FUNCTION_NAME],
+                $stack[StackTrace::STACK_TRACE_ARGUMENTS]
+                /**
+                 * @TODO stringify arguments
+                 */
+            ));
         }
+        return $trace_string;
     }
-
-    /**
-     * default error code
-     */
-    const DEFAULT_ERROR_CODE = 1996;
 }

@@ -16,10 +16,10 @@ namespace Here\Lib\Exceptions\Level;
  * @package Here\Lib\Exceptions\Level
  */
 trait Warning {
-    use ExceptionLevelBase;
+    use ExceptionLevelTrait;
 
     /**
-     * @see ExceptionLevelBase::get_level()
+     * @see ExceptionLevelTrait::get_level()
      * @return int
      */
     final public function get_level() {
@@ -27,7 +27,7 @@ trait Warning {
     }
 
     /**
-     * @see ExceptionLevelBase::get_level_name()
+     * @see ExceptionLevelTrait::get_level_name()
      * @return string
      */
     final public function get_level_name() {
