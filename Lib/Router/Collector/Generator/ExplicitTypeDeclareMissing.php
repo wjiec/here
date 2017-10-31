@@ -1,6 +1,6 @@
 <?php
 /**
- * UncertainRouterTypeError.php.php
+ * ExplicitTypeDeclareMissing.php.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -10,13 +10,13 @@
  */
 namespace Here\Lib\Router\Collector\Generator;
 use Here\Lib\Exceptions\ExceptionBase;
-use Here\Lib\Exceptions\Level\Warning;
+use Here\Lib\Exceptions\Level\Error;
 
 
 /**
- * Class UncertainRouterTypeError
+ * Class ExplicitTypeDeclareMissing
  * @package Here\Lib\Router\Collector\Generator
  */
-final class UncertainRouterTypeError extends ExceptionBase {
-    use Warning;
+final class ExplicitTypeDeclareMissing extends ExceptionBase {
+    use Error;
 }

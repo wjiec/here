@@ -35,4 +35,4 @@ $dispatcher = new Dispatcher(new UserCollector());
 $dispatcher->dispatch(Request::request_method(), Request::request_uri());
 
 /* test case */
-echo "<pre>";
+echo "</pre>";

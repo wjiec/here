@@ -34,7 +34,6 @@ trait DefaultChannel {
      * @param RouterRequest $request
      * @param RouterResponse $response
      *
-     *
      * @routerChannel
      * @addLogger
      * @addMethods GET
@@ -50,6 +49,10 @@ trait DefaultChannel {
     /**
      * @param RouterRequest $request
      * @param RouterResponse $response
+     *
+     * @routerChannel
+     * @addMethods GET
+     * @addUrl /article/<article_title:\w+>
      */
     final public function article(RouterRequest $request, RouterResponse $response): void {
         var_dump($request, $response);
@@ -58,6 +61,10 @@ trait DefaultChannel {
     /**
      * @param RouterRequest $request
      * @param RouterResponse $response
+     *
+     * @routerChannel
+     * @addMethods GET
+     * @addUrl /static/<theme:\w+>/<...>
      */
     final public function resources(RouterRequest $request, RouterResponse $response): void {
         var_dump($request, $response);

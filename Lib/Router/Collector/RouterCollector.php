@@ -23,7 +23,9 @@ abstract class RouterCollector implements CollectorInterface {
     final public function __construct() {
         $ref = new \ReflectionClass(get_class($this));
         foreach ($ref->getMethods() as $method) {
-            var_dump(RouterGenerator::generate($method));
+            if ($node = RouterGenerator::generate($method)) {
+                var_dump($node);
+            }
         }
     }
 }

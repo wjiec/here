@@ -9,14 +9,14 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Http;
-use Here\Lib\Ext\Enum\Enum;
+use Here\Lib\Ext\Enum\EnumType;
 
 
 /**
  * Class HttpStatusCode
  * @package Here\Lib\Stream\OStream\Client
  */
-final class HttpStatusCode extends Enum {
+final class HttpStatusCode extends EnumType {
     /**
      * default http status code
      */

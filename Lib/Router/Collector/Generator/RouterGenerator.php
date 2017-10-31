@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Generator;
+use Here\Lib\Router\Collector\RouterType;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
 
@@ -30,13 +31,13 @@ final class RouterGenerator {
         }
 
         $meta_info = self::_get_meta_info($method->getDocComment());
-        switch (RouterTypeAnalyzer::analysis($meta_info)->value()) {
+        switch (RouterTypeAnalyzer::analysis($method->name, $meta_info)->value()) {
             case RouterType::ROUTER_TYPE_CHANNEL:
                 return new RouterChannel($meta_info);
             case RouterType::ROUTER_TYPE_MIDDLEWARE:
                 return new RouterMiddleware($meta_info);
             default:
-                throw new UncertainRouterTypeError("uncertain router type");
+                throw new UncertainRouterTypeError("uncertain router type for '{$method->name}'");
         }
     }
 

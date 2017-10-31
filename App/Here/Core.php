@@ -117,7 +117,7 @@ class Core {
      * @param string $error_line
      */
     public static function _catch_error_handler($errno, $error, $error_file, $error_line) {
-        // user error level
+        // user error Level
         $level = array (
             E_WARNING => ":Warning", // 2
             E_PARSE => ":Parse", // 4

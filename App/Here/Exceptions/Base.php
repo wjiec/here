@@ -22,7 +22,7 @@ class Here_Exceptions_Base extends Exception {
     protected $_string_error_code;
 
     /**
-     * current exceptions level
+     * current exceptions Level
      *
      * @var string
      */
@@ -113,28 +113,28 @@ class Here_Exceptions_Base extends Exception {
     const DEFAULT_ERROR_CODE = 1996;
 
     /**
-     * exceptions level: Fatal
+     * exceptions Level: Fatal
      *
      * @var int
      */
     const EXCEPTION_LEVEL_FATAL = 100;
 
     /**
-     * exceptions level: Error
+     * exceptions Level: Error
      *
      * @var int
      */
     const EXCEPTION_LEVEL_ERROR = 75;
 
     /**
-     * exceptions level: Warning
+     * exceptions Level: Warning
      *
      * @var int
      */
     const EXCEPTION_LEVEL_WARNING = 50;
 
     /**
-     * exceptions level: Ignore
+     * exceptions Level: Ignore
      *
      * @var int
      */

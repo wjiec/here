@@ -99,7 +99,7 @@ define('_here_enable_recovery_mode', false);
 define('_here_recovery_url_', '/recovery-guide');
 
 /**
- * if exception level bigger than that, we must notification admin
+ * if exception Level bigger than that, we must notification admin
  *
  * ExceptionBase Level:
  *      Fatal: 100

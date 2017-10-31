@@ -76,7 +76,7 @@ $.ready(function() {
                         let check_response = $.Utility.json_decode(response.text);
                         // add selector key
                         check_response.selector = `#${item_id}`;
-                        // level
+                        // Level
                         check_response.level = step.fail_level;
                         // check status
                         if (check_response.status === 0) {
