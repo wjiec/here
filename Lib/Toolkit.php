@@ -16,6 +16,7 @@ use http\Exception\BadConversionException;
 /**
  * Class Toolkit
  * @package Here\Lib
+ * @TODO move to `Utils`
  */
 final class Toolkit {
     /**

@@ -47,7 +47,6 @@ final class Autoloader {
         }
 
         if ($prepend) {
-            // @TODO. src and tests folder
             array_unshift(self::$_prefixes[$namespace], $base_dir);
         } else {
             self::$_prefixes[$namespace][] = $base_dir;
