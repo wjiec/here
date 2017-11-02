@@ -20,4 +20,14 @@ interface EnumInterface {
      * @return array
      */
     public static function get_constants(): array;
+
+    /**
+     * @return string
+     */
+    public function name(): string;
+
+    /**
+     * @return mixed
+     */
+    public function value();
 }
