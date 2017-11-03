@@ -24,7 +24,8 @@ trait DefaultMiddleware {
      * @return bool
      *
      * @routerMiddleware
-     * @addLogger
+     * @middlewareAlias auth
+     * @addLogger authorizationLogger
      */
     final public function authorization(RouterRequest $request, RouterResponse $response): bool {
         if (!$request::url_param('uid')) {

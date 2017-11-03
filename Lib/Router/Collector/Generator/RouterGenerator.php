@@ -33,9 +33,9 @@ final class RouterGenerator {
         $meta_info = self::_get_meta_info($method->getDocComment());
         switch (RouterTypeAnalyzer::analysis($method->name, $meta_info)->value()) {
             case RouterType::ROUTER_TYPE_CHANNEL:
-                return new RouterChannel($meta_info);
+                return new RouterChannel($method->name, $meta_info);
             case RouterType::ROUTER_TYPE_MIDDLEWARE:
-                return new RouterMiddleware($meta_info);
+                return new RouterMiddleware($method->name, $meta_info);
             default:
                 throw new UncertainRouterTypeError("uncertain router type for '{$method->name}'");
         }
