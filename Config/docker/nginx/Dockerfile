@@ -33,15 +33,17 @@ RUN set -ex \
         pcre-dev \
         openssl-dev \
         perl-dev \
-    \    
+    \
     && mkdir -p "/usr/src" \
     && curl -SL "http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz" -o nginx.tar.gz \
+    \
     && tar xvf nginx.tar.gz -C /usr/src \
     && rm -rf nginx.tar.gz* \
     \
     && mkdir -p "$NGINX_HOME" \
     && apk add --virtual \
         openssl \
+    \
     && cd "/usr/src/nginx-$NGINX_VERSION" \
     && ./configure \
         --user=www \
@@ -66,18 +68,21 @@ RUN set -ex \
         --with-http_gzip_static_module \
         --with-http_perl_module \
         --with-pcre-jit \
+    \
     && make \
     && make install \
     && make clean \
     \
     && cd "$NGINX_HOME" \
     && rm -rf "/usr/src/*" \
+    \
     && chown -R www:www /usr/local/nginx \
     && { \
            echo; \
            echo '# stay in the foreground so Docker has a process to track'; \
            echo 'daemon off;'; \
        } >> /usr/local/nginx/etc/nginx.conf \
+    \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
     && nginxRuntimeDeps="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/nginx \
@@ -87,6 +92,7 @@ RUN set -ex \
     )" \
     && apk add --virtual .nginx-runtime-deps $nginxRuntimeDeps \
     && apk del .build-deps \
+    \
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*
 

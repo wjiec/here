@@ -26,33 +26,30 @@ RUN set -x \
     && apk add --virtual .build-deps \
         autoconf \
         bison \
+        coreutils \
+        curl \
+        curl-dev \
         dpkg \
         dpkg-dev \
         file \
-        g++ \
         gcc \
+        gettext \
+        gettext-dev \
+        g++ \
         libc-dev \
+        libedit-dev \
+        libmcrypt-dev \
+        libxml2-dev \
         make \
+        openssl-dev \
         pcre-dev \
         pkgconf \
         re2c \
-        coreutils \
-        file \
-        curl-dev \
-        g++ \
-        gcc \
-        libc-dev \
-        gettext \
-        gettext-dev \
-        libedit-dev \
-        openssl-dev \
-        libxml2-dev \
-        libmcrypt-dev \
-        curl \
         tar \
         xz \
     \
     && mkdir -p "/usr/src" \
+    \
     && country=`wget -T1 -q -O- google.com 2>&1 | sed -nr 's/.*(timed\ out).*/China/p'` \
     && if [ "$country" == "China" ]; then \
            curl -SL "http://cn2.php.net/get/php-7.1.10.tar.gz/from/this/mirror" -o php.tar.gz; \
@@ -60,14 +57,17 @@ RUN set -x \
            curl -SL "http://php.net/get/php-$PHP_VERSION.tar.gz/from/this/mirror" -o php.tar.gz; \
        fi; \
     unset country \
+    \
     && tar xvf php.tar.gz -C /usr/src \
     && rm -rf php.tar.gz \
     \
     && mkdir -p "$PHP_HOME" \
     && mkdir -p "$PHP_CONF_PATH/conf.d" \
+    \
     && export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
     && export CPPFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
-    && LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
+    && export LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
+    \
     && apk add --virtual .runtime-deps \
         ca-certificates \
         openssl \
@@ -108,12 +108,16 @@ RUN set -x \
         --enable-sockets \
         \
         --disable-fileinfo \
+    \
     && make -j "$(nproc)" \
     && make install \
     && make clean \
+    \
     && cd "$PHP_HOME" \
     && rm -rf "/usr/src/php-$PHP_VERSION" \
+    \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
+    \
     && phpRuntimeDeps="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/php7 \
             | tr ',' '\n' \
@@ -122,11 +126,11 @@ RUN set -x \
     )" \
     && apk add --virtual .php-runtime-deps $phpRuntimeDeps \
     && apk del .build-deps \
+    \
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*
 
 # configure for php-fpm
-WORKDIR /usr/local/php7/etc
 RUN set -ex \
     && cd /usr/local/php7/etc \
     && if [ -d php-fpm.d ]; then \
@@ -134,7 +138,7 @@ RUN set -ex \
            cp php-fpm.d/www.conf.default php-fpm.d/www.conf; \
        fi; \
     \
-      { \
+       { \
            echo '[global]'; \
            echo 'error_log = /proc/self/fd/2'; \
            echo; \
