@@ -3,7 +3,7 @@
 version: '3'
 services:
   php:
-    image: "shellboot/php"
+    image: "shellboot/rpi-php"
     environment:
       - MYSQL_HOST=mysql
       - MYSQL_PORT=3306
@@ -14,11 +14,11 @@ services:
       - .:/var/www
 
   nginx:
-    image: "shellboot/nginx"
+    image: "shellboot/rpi-nginx"
     depends_on:
      - php
     volumes:
       - .:/var/www
-      - ./Config/docker/nginx/conf:/usr/local/nginx/etc
+      - ./Config/docker/etc/nginx:/usr/local/nginx/etc
     ports:
       - "80:80"
