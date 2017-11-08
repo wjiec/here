@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Router\Collector;
 use Here\Lib\Router\Collector\Generator\RouterGenerator;
+use Here\Lib\Router\RouterCallback;
 
 
 /**
@@ -23,7 +24,9 @@ abstract class RouterCollector implements CollectorInterface {
     final public function __construct() {
         $ref = new \ReflectionClass(get_class($this));
         foreach ($ref->getMethods() as $method) {
-            if ($node = RouterGenerator::generate($method)) {
+            $callback = new RouterCallback(array($this, $method->name));
+
+            if ($node = RouterGenerator::generate($method, $callback)) {
                 var_dump($node);
             }
         }

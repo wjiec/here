@@ -12,6 +12,7 @@ namespace Here\Lib\Router\Collector\Generator;
 use Here\Lib\Router\Collector\RouterType;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
+use Here\Lib\Router\RouterCallback;
 
 
 /**
@@ -21,10 +22,11 @@ use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
 final class RouterGenerator {
     /**
      * @param \ReflectionMethod $method
+     * @param RouterCallback $callback
      * @return bool|RouterChannel|RouterMiddleware
      * @throws UncertainRouterTypeError
      */
-    final public static function generate(\ReflectionMethod $method) {
+    final public static function generate(\ReflectionMethod $method, RouterCallback $callback) {
         // skip all private/protected and private-like methods
         if ($method->name[0] === '_' || !$method->isPublic()) {
             return false;
@@ -33,9 +35,9 @@ final class RouterGenerator {
         $meta_info = self::_get_meta_info($method->getDocComment());
         switch (RouterTypeAnalyzer::analysis($method->name, $meta_info)->value()) {
             case RouterType::ROUTER_TYPE_CHANNEL:
-                return new RouterChannel($method->name, $meta_info);
+                return new RouterChannel($method->name, $meta_info, $callback);
             case RouterType::ROUTER_TYPE_MIDDLEWARE:
-                return new RouterMiddleware($method->name, $meta_info);
+                return new RouterMiddleware($method->name, $meta_info, $callback);
             default:
                 throw new UncertainRouterTypeError("uncertain router type for '{$method->name}'");
         }

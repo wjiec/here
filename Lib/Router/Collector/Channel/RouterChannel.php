@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Router\Collector\Channel;
 use Here\Lib\Router\Collector\MetaComponent;
+use Here\Lib\Router\RouterCallback;
 
 
 /**
@@ -18,18 +19,13 @@ use Here\Lib\Router\Collector\MetaComponent;
  */
 final class RouterChannel extends MetaComponent {
     /**
-     * @var string
-     */
-    private $_channel_name;
-
-    /**
      * RouterChannel constructor.
      * @param string $name
      * @param array $meta
+     * @param RouterCallback $callback
      */
-    final public function __construct(string $name, array $meta) {
-        $this->_channel_name = $name;
-
+    final public function __construct(string $name, array $meta, RouterCallback $callback) {
+        $this->set_component_name($name);
         $allowed_syntax = AllowedChannelSyntax::get_constants();
         $this->compile_values($allowed_syntax, $meta);
     }

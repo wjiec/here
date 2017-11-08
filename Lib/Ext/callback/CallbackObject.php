@@ -41,41 +41,53 @@ class CallbackObject {
      * @param callable $callback
      * @throws CallbackInvalid
      */
-    final public function __construct($callback) {
-        if (!is_callable($callback)) {
-            throw new CallbackInvalid("callback is not callable");
-        }
+    final public function __construct(callable $callback) {
         $this->_callback = $callback;
         $this->_reflection();
     }
 
     /**
-     * @return callable
-     */
-    final public function get_callback() {
-        return $this->_callback;
-    }
-
-    /**
      * @return int
      */
-    final public function get_args_count() {
+    final public function get_args_count(): int {
         return $this->_args_count;
     }
 
     /**
-     * @param array ...$arg
+     * @param array ...$args
      * @return mixed
      */
-    final public function call(...$arg) {
-        return call_user_func_array($this->_callback, $arg);
+    final public function apply(...$args) {
+        $require_arg_count = $this->_args_count - count($this->_args_default);
+        if (count($args) < $require_arg_count) {
+            $pass_count = count($args);
+            throw new \ArgumentCountError("Too few arguments to `CallbackObject` " .
+                "{$pass_count} passed and exactly {$require_arg_count} expected");
+        }
+
+        // build all arguments
+        $complete_args = array_pad(array(), $require_arg_count, null);
+        foreach ($this->_args_default as $default_value) {
+            $complete_args[] = $default_value;
+        }
+
+        // override user arguments
+        foreach ($args as $index => $arg) {
+            $complete_args[$index] = $arg;
+        }
+
+        return call_user_func_array($this->_callback, $complete_args);
     }
 
     /**
-     * reflection function
+     * reflection callback function
      */
-    final private function _reflection() {
-        $ref = new \ReflectionFunction($this->_callback);
+    final private function _reflection(): void {
+        if (is_array($this->_callback)) {
+            $ref = new \ReflectionMethod(...$this->_callback);
+        } else if (is_string($this->_callback)) {
+            $ref = new \ReflectionFunction($this->_callback);
+        }
 
         $this->_args_count = $ref->getNumberOfParameters();
         foreach ($ref->getParameters() as $param) {

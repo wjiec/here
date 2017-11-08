@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Router\Collector\Middleware;
 use Here\Lib\Router\Collector\MetaComponent;
+use Here\Lib\Router\RouterCallback;
 
 
 /**
@@ -18,18 +19,13 @@ use Here\Lib\Router\Collector\MetaComponent;
  */
 final class RouterMiddleware extends MetaComponent {
     /**
-     * @var string
-     */
-    private $_middleware_name;
-
-    /**
      * RouterMiddleware constructor.
      * @param string $name
      * @param array $meta
+     * @param RouterCallback $callback
      */
-    final public function __construct(string $name, array $meta) {
-        $this->_middleware_name = $name;
-
+    final public function __construct(string $name, array $meta, RouterCallback $callback) {
+        $this->set_component_name($name);
         $allowed_syntax = AllowedMiddlewareSyntax::get_constants();
         $this->compile_values($allowed_syntax, $meta);
     }

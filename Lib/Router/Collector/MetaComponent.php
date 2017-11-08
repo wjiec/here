@@ -25,6 +25,26 @@ abstract class MetaComponent {
     private $_components;
 
     /**
+     * @var string
+     */
+    private $_component_name;
+
+    /**
+     * @param string $name
+     * @return array
+     */
+    final public function get_component(string $name): array {
+        return $this->_components[$name] ?? array();
+    }
+
+    /**
+     * @return string
+     */
+    final public function get_component_name(): string {
+        return $this->_component_name;
+    }
+
+    /**
      * @param string $name
      * @param mixed $value
      */
@@ -34,10 +54,9 @@ abstract class MetaComponent {
 
     /**
      * @param string $name
-     * @return array
      */
-    final public function get_component(string $name): array {
-        return $this->_components[$name] ?? array();
+    final protected function set_component_name(string $name): void {
+        $this->_component_name = $name;
     }
 
     /**
