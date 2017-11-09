@@ -89,7 +89,7 @@ RUN set -ex \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
-    )" \
+       )" \
     && apk add --virtual .nginx-runtime-deps $nginxRuntimeDeps \
     && apk del .build-deps \
     \
