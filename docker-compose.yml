@@ -12,7 +12,6 @@ services:
       - MYSQL_DATABASE=here
     volumes:
       - .:/var/www
-
   nginx:
     image: "shellboot/nginx"
     depends_on:
