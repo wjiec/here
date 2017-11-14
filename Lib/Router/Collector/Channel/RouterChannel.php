@@ -17,7 +17,17 @@ use Here\Lib\Router\RouterCallback;
  * Class RouterChannel
  * @package Here\Lib\Router\Collector\Channel
  */
-final class RouterChannel extends MetaComponent {
+final class RouterChannel {
+    /**
+     * @var string
+     */
+    private $_channel_name;
+
+    /**
+     * meta components utils
+     */
+    use MetaComponent;
+
     /**
      * RouterChannel constructor.
      * @param string $name
@@ -25,8 +35,9 @@ final class RouterChannel extends MetaComponent {
      * @param RouterCallback $callback
      */
     final public function __construct(string $name, array $meta, RouterCallback $callback) {
-        $this->set_component_name($name);
+        $this->_channel_name = $name;
+
         $allowed_syntax = AllowedChannelSyntax::get_constants();
-        $this->compile_values($allowed_syntax, $meta);
+        $this->compile_components($allowed_syntax, $meta);
     }
 }

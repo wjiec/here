@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Router\Collector\Middleware;
+namespace Here\Lib\Router\Collector\DefaultRouter;
 use Here\Lib\Router\RouterRequest;
 use Here\Lib\Router\RouterResponse;
 

@@ -9,8 +9,8 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector;
-use Here\Lib\Router\Collector\Channel\DefaultChannel;
-use Here\Lib\Router\Collector\Middleware\DefaultMiddleware;
+use Here\Lib\Router\Collector\DefaultRouter\DefaultChannel;
+use Here\Lib\Router\Collector\DefaultRouter\DefaultMiddleware;
 
 
 /**

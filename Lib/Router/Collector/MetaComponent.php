@@ -12,58 +12,55 @@ namespace Here\Lib\Router\Collector;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\CompilerNotFound;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerInterface;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterface;
 
 
 /**
  * Class MetaComponent
  * @package Lib\Router\Collector
  */
-abstract class MetaComponent {
+trait MetaComponent {
     /**
      * @var array
      */
     private $_components;
 
     /**
-     * @var string
-     */
-    private $_component_name;
-
-    /**
      * @param string $name
-     * @return array
+     * @param MetaSyntaxCompilerResultInterface $value
      */
-    final public function get_component(string $name): array {
-        return $this->_components[$name] ?? array();
-    }
-
-    /**
-     * @return string
-     */
-    final public function get_component_name(): string {
-        return $this->_component_name;
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     */
-    final protected function add_component(string $name, $value): void {
+    final protected function add_component(string $name, MetaSyntaxCompilerResultInterface $value): void {
+        // component_name => array( 'val1', 'val2', 'val3')
         $this->_components[$name] = $value;
     }
 
     /**
-     * @param string $name
+     * @param string $component_name
+     * @return bool
      */
-    final protected function set_component_name(string $name): void {
-        $this->_component_name = $name;
+    final protected function has_component(string $component_name): bool {
+        return isset($this->_components[ucfirst($component_name)]);
+    }
+
+    /**
+     * @param $component_name
+     * @return MetaSyntaxCompilerResultInterface
+     * @throws MetaComponentNotFound
+     */
+    final protected function get_components($component_name): MetaSyntaxCompilerResultInterface {
+        if (!$this->has_component($component_name)) {
+            throw new MetaComponentNotFound("cannot found component `{$component_name}`");
+        }
+
+        return $this->_components[ucfirst($component_name)];
     }
 
     /**
      * @param array $allowed_syntax
      * @param array $meta
+     * @throws CompilerNotFound
      */
-    final protected function compile_values(array $allowed_syntax, array $meta): void {
+    final protected function compile_components(array $allowed_syntax, array $meta): void {
         foreach ($meta as $syntax => $value) {
             if (in_array($syntax, $allowed_syntax)) {
                 $syntax = ucfirst($syntax);

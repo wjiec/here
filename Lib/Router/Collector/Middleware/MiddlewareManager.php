@@ -19,7 +19,7 @@ final class MiddlewareManager {
     /**
      * @var array
      */
-    private $_middlewares;
+    private $_middleware_pool;
 
     /**
      * @var array
@@ -30,29 +30,44 @@ final class MiddlewareManager {
      * MiddlewareManager constructor.
      */
     final public function __construct() {
+        $this->_middleware_alias = array();
+        $this->_middleware_pool = array();
     }
 
     /**
      * @param RouterMiddleware $middleware
+     * @throws DuplicateMiddleware
      */
     final public function add_middleware(RouterMiddleware $middleware): void {
+        $middleware_name = $middleware->get_middleware_name();
+        if ($this->has_middleware($middleware_name)) {
+            throw new DuplicateMiddleware("the same middleware name by `{$middleware_name}`");
+        }
 
+        $this->_middleware_pool[$middleware_name] = $middleware;
+        if ($middleware->has_alias_component()) {
+            $alias = $middleware->get_alias();
+            foreach ($alias as $middleware_alias) {
+                $this->_middleware_alias[$middleware_alias] = &$this->_middleware_pool[$middleware_name];
+            }
+        }
     }
 
     /**
      * @param string $middleware_name
      * @return RouterMiddleware
+     * @throws MiddlewareNotFound
      */
     final public function get_middleware(string $middleware_name): RouterMiddleware {
         if (!$this->has_middleware($middleware_name)) {
             throw new MiddlewareNotFound("cannot found middleware, `{$middleware_name}`");
         }
 
-        if (array_key_exists($middleware_name, $this->_middleware_alias)) {
-            $middleware_name = $this->_middleware_alias[$middleware_name];
+        if (isset($this->_middleware_alias[$middleware_name])) {
+            return $this->_middleware_alias[$middleware_name];
         }
 
-        return $this->_middlewares[$middleware_name];
+        return $this->_middleware_pool[$middleware_name];
     }
 
     /**
@@ -60,7 +75,7 @@ final class MiddlewareManager {
      * @return bool
      */
     final public function has_middleware(string $middleware_name): bool {
-        return array_key_exists($middleware_name, $this->_middlewares)
+        return array_key_exists($middleware_name, $this->_middleware_pool)
             || array_key_exists($middleware_name, $this->_middleware_alias);
     }
 }

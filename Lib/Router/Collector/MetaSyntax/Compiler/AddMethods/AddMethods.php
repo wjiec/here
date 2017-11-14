@@ -9,12 +9,12 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterface;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
 
 
 /**
  * Class AddMethods
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods
  */
-final class AddMethods implements MetaSyntaxCompilerResultInterface {
+final class AddMethods extends MetaSyntaxCompilerResultBase {
 }

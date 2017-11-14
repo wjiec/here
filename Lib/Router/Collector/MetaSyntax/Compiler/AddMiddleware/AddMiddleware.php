@@ -9,12 +9,12 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterface;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
 
 
 /**
  * Class AddMiddleware
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware
  */
-final class AddMiddleware implements MetaSyntaxCompilerResultInterface {
+final class AddMiddleware extends MetaSyntaxCompilerResultBase {
 }

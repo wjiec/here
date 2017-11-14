@@ -10,7 +10,7 @@
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerInterface;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterface;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
 
 
 /**
@@ -20,9 +20,9 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterf
 final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
     /**
      * @param array $value
-     * @return MetaSyntaxCompilerResultInterface
+     * @return MetaSyntaxCompilerResultBase
      */
-    final public static function compile(array $value): MetaSyntaxCompilerResultInterface {
+    final public static function compile(array $value): MetaSyntaxCompilerResultBase {
         return new AddUrl();
     }
 }

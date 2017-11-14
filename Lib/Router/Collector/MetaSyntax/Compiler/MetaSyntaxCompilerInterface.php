@@ -18,7 +18,7 @@ namespace Here\Lib\Router\Collector\MetaSyntax\Compiler;
 interface MetaSyntaxCompilerInterface {
     /**
      * @param array $value
-     * @return mixed
+     * @return MetaSyntaxCompilerResultBase
      */
-    public static function compile(array $value): MetaSyntaxCompilerResultInterface;
+    public static function compile(array $value): MetaSyntaxCompilerResultBase;
 }

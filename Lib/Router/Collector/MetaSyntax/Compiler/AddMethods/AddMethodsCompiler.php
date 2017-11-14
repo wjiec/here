@@ -9,10 +9,9 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods;
-
-
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerInterface;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterface;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
+
 
 /**
  * Class AddMethodsCompiler
@@ -21,9 +20,9 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterf
 final class AddMethodsCompiler implements MetaSyntaxCompilerInterface {
     /**
      * @param array $value
-     * @return MetaSyntaxCompilerResultInterface
+     * @return MetaSyntaxCompilerResultBase
      */
-    final public static function compile(array $value): MetaSyntaxCompilerResultInterface {
+    final public static function compile(array $value): MetaSyntaxCompilerResultBase {
         return new AddMethods();
     }
 }

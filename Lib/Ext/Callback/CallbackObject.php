@@ -39,9 +39,8 @@ class CallbackObject {
     /**
      * CallbackObject constructor.
      * @param callable $callback
-     * @throws CallbackInvalid
      */
-    final public function __construct(callable $callback) {
+    final public function __construct($callback) {
         $this->_callback = $callback;
         $this->_reflection();
     }
@@ -56,6 +55,7 @@ class CallbackObject {
     /**
      * @param array ...$args
      * @return mixed
+     * @throws \ArgumentCountError
      */
     final public function apply(...$args) {
         $require_arg_count = $this->_args_count - count($this->_args_default);
@@ -80,13 +80,15 @@ class CallbackObject {
     }
 
     /**
-     * reflection callback function
+     * @throws InvalidCallback
      */
     final private function _reflection(): void {
         if (is_array($this->_callback)) {
             $ref = new \ReflectionMethod(...$this->_callback);
         } else if (is_string($this->_callback)) {
             $ref = new \ReflectionFunction($this->_callback);
+        } else {
+            throw new InvalidCallback("invalid callback");
         }
 
         $this->_args_count = $ref->getNumberOfParameters();

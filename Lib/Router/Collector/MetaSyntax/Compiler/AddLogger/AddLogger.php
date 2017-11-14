@@ -9,13 +9,13 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddLogger;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterface;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
 
 
 /**
  * Class AddLogger
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddLogger
  */
-final class AddLogger implements MetaSyntaxCompilerResultInterface {
+final class AddLogger extends MetaSyntaxCompilerResultBase {
 
 }

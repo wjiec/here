@@ -19,6 +19,6 @@ services:
      - php
     volumes:
       - .:/var/www
-      - ./Config/docker/etc/nginx:/usr/local/nginx/etc
+      - ./Config/docker/nginx/conf:/usr/local/nginx/etc
     ports:
       - "80:80"
