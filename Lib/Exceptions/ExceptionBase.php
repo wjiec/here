@@ -19,14 +19,14 @@ use Here\Lib\Exceptions\Level\ExceptionLevelTrait;
  */
 abstract class ExceptionBase extends \Exception {
     /**
-     * exception Level trait
-     */
-    use ExceptionLevelTrait;
-
-    /**
      * default error code
      */
     private const DEFAULT_ERROR_CODE = 1996;
+
+    /**
+     * exception Level trait
+     */
+    use ExceptionLevelTrait;
 
     /**
      * @var string
