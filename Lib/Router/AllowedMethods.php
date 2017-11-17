@@ -19,7 +19,7 @@ final class AllowedMethods {
     /**
      * allowed methods for request
      */
-    const ALLOWED_METHODS = array('get', 'post', 'put', 'delete', 'update', 'patch', 'options', 'head');
+    private const ALLOWED_METHODS = array('get', 'post', 'put', 'delete', 'update', 'patch', 'options', 'head');
 
     /**
      * @param string $method
@@ -27,5 +27,13 @@ final class AllowedMethods {
      */
     final public static function contains(string $method): bool {
         return in_array(strtolower($method), self::ALLOWED_METHODS);
+    }
+
+    /**
+     * @param string $method
+     * @return string
+     */
+    final public static function standardize(string $method): string {
+        return strtolower($method);
     }
 }
