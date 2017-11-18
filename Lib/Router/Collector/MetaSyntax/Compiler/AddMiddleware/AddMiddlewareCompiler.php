@@ -23,6 +23,12 @@ final class AddMiddlewareCompiler implements MetaSyntaxCompilerInterface {
      * @return MetaSyntaxCompilerResultBase
      */
     final public static function compile(array $value): MetaSyntaxCompilerResultBase {
-        return new AddMiddleware();
+        $add_middleware_component = new AddMiddleware();
+
+        foreach ($value as $middleware_name) {
+            $add_middleware_component->add_result($middleware_name);
+        }
+
+        return $add_middleware_component;
     }
 }

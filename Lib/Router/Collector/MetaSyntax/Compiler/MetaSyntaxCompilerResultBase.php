@@ -22,12 +22,17 @@ abstract class MetaSyntaxCompilerResultBase implements MetaSyntaxCompilerResultI
     private $_results = array();
 
     /**
+     * MetaSyntaxCompilerResultBase constructor.
+     */
+    final public function __construct() {}
+
+    /**
      * @param $value
      * @param null|string $name
      * @param bool $override
      * @throws MetaSyntaxResultOverride
      */
-    final protected function add_result($value, ?string $name = null, bool $override = true): void {
+    final public function add_result($value, ?string $name = null, bool $override = true): void {
         if ($name === null) {
             $this->_results[] = $value;
         } else {

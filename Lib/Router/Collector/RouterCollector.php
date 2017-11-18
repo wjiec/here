@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector;
+use Here\Lib\Router\Collector\Channel\ChannelManager;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\Generator\RouterGenerator;
 use Here\Lib\Router\Collector\Middleware\MiddlewareManager;
@@ -27,13 +28,18 @@ abstract class RouterCollector implements CollectorInterface {
     private $_middleware_manager;
 
     /**
+     * @var ChannelManager
+     */
+    private $_channel_manager;
+
+    /**
      * RouterCollector constructor.
      */
     final public function __construct() {
         $this->_middleware_manager = new MiddlewareManager();
+        $this->_channel_manager = new ChannelManager();
 
         $this->_parse_methods();
-        var_dump($this->_middleware_manager->get_middleware('auth'));
     }
 
     /**
@@ -48,7 +54,7 @@ abstract class RouterCollector implements CollectorInterface {
                 if ($node instanceof RouterMiddleware) {
                     $this->_middleware_manager->add_middleware($node);
                 } else if ($node instanceof RouterChannel) {
-//                    var_dump($node);
+                    $this->_channel_manager->add_channel($node);
                 }
             }
         }

@@ -16,5 +16,4 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
  * Class AddMiddleware
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware
  */
-final class AddMiddleware extends MetaSyntaxCompilerResultBase {
-}
+final class AddMiddleware extends MetaSyntaxCompilerResultBase {}

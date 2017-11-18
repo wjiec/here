@@ -16,5 +16,4 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
  * Class AddMethods
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods
  */
-final class AddMethods extends MetaSyntaxCompilerResultBase {
-}
+final class AddMethods extends MetaSyntaxCompilerResultBase {}
