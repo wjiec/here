@@ -2,7 +2,7 @@
 /**
  * ChannelManager.php
  *
- * @package   www
+ * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
  * @copyright Copyright (C) 2016-2017 ShadowMan
  * @license   MIT License
@@ -10,6 +10,9 @@
  */
 namespace Here\Lib\Router\Collector\Channel;
 use Here\Lib\Router\Collector\Channel\Trie\ChannelTrie;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods\AddMethods;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddlewareCompiler;
 
 
 /**
@@ -33,9 +36,13 @@ final class ChannelManager {
      * @param RouterChannel $channel
      */
     final public function add_channel(RouterChannel $channel): void {
-        var_dump($channel->get_methods_component());
+        /* @var AddMethods $method_component */
+        $method_component = $channel->get_methods_component();
+
+        /* @var AddMiddleware $middleware_component */
+        $middleware_component = AddMiddlewareCompiler::compile(array());
         if ($channel->has_middleware_component()) {
-            var_dump($channel->get_middleware_component());
+            $middleware_component = $channel->get_middleware_component();
         }
     }
 }
