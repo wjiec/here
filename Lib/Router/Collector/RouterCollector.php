@@ -20,6 +20,7 @@ use Here\Lib\Router\RouterCallback;
 /**
  * Class RouterCollector
  * @package Here\Lib\Router\Collector
+ * @TODO life-cycle hook function
  */
 abstract class RouterCollector implements CollectorInterface {
     /**

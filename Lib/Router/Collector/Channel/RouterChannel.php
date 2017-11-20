@@ -12,6 +12,7 @@ namespace Here\Lib\Router\Collector\Channel;
 use Here\Lib\Router\Collector\MetaComponent;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods\AddMethods;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\AddUrl;
 use Here\Lib\Router\RouterCallback;
 
 
@@ -76,6 +77,15 @@ final class RouterChannel {
      */
     final public function has_url_component(): bool {
         return $this->has_component(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_URL);
+    }
+
+    /**
+     * @return AddUrl
+     */
+    final public function get_url_component(): AddUrl {
+        /* @var AddUrl $url_component */
+        $url_component = $this->get_components(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_URL);
+        return $url_component;
     }
 
     /**
