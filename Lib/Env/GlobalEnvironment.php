@@ -16,7 +16,14 @@ namespace Here\Lib\Env;
  * @package Here\Env
  */
 final class GlobalEnvironment {
+    /**
+     * predefined environment variables
+     */
     use ServerEnvironment;
+
+    /**
+     * custom environment variables
+     */
     use UserEnvironment;
 
     /**

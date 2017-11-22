@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\RuleParser\UrlRuleParser;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerInterface;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
 
@@ -27,7 +28,7 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
 
         foreach ($value as $url_rule) {
             // check is scalar type
-            if (preg_match('/[\<\>\[\]]+/', $url_rule, $matches) === 0) {
+            if (preg_match('/[\<\>\[\]]/', $url_rule, $matches) === 0) {
                 $add_url_component->add_result(self::_parse_scalar(trim($url_rule)));
             } else {
                 $add_url_component->add_result(self::_parse_complex(trim($url_rule)));
@@ -42,9 +43,9 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
      * @return string
      */
     final private static function _parse_scalar(string $url): string {
-        $segments = explode('/', str_replace('.', '/', $url));
+        $segments = explode('/', $url);
         $clean_url = join('/', array_filter($segments, function($segment): bool {
-            return $segment !== '';
+            return $segment !== '' || $segment !== null;
         }));
 
         return sprintf("/%s", $clean_url);
@@ -55,26 +56,9 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
      * @return string
      */
     final private static function _parse_complex(string $url): string {
-        $segments = self::_separate_segments($url);
+        $parser = UrlRuleParser::parser($url);
+        var_dump($parser, $parser->parse()); die();
 
-        $segment = '';
-        $separate = null;
-        foreach (str_split($url) as $char) {
-            echo $char;
-        }
-
-        echo sprintf("%s\n", htmlspecialchars($url));
         return $url;
-    }
-
-    /**
-     * @param string $utl
-     * @return array
-     */
-    final private static function _separate_segments(string $utl): array {
-        $segments = array();
-
-
-        return $segments;
     }
 }

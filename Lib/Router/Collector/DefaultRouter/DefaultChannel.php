@@ -24,7 +24,7 @@ trait DefaultChannel {
      *
      * @routerChannel
      * @addMethods GET
-     * @addUrl /[:index(\.html|php)?]
+     * @addUrl /index[:\.(html|php)?]
      */
     final public function index(RouterRequest $request, RouterResponse $response): void {
         var_dump($request, $response);
