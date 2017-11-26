@@ -1,6 +1,6 @@
 <?php
 /**
- * RuleInvalid.php
+ * TooLittleAction.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,15 +8,15 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\RuleParser;
+namespace Here\Lib\Ext\FSM\Graph;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\Level\Error;
 
 
 /**
- * Class RuleInvalid
- * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\RuleParser
+ * Class TooLittleAction
+ * @package Here\Lib\Ext\FSM\Graph
  */
-final class RuleInvalid extends ExceptionBase {
+final class ActionCountNotMatch extends ExceptionBase {
     use Error;
 }
