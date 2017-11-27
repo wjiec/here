@@ -10,8 +10,8 @@
  */
 namespace Here\Lib\Ext\FSM\Graph;
 use Here\Lib\Ext\FSM\Action\ActionInterface;
-use Here\lib\Ext\FSM\Event\EventGenerator;
-use Here\lib\Ext\FSM\Event\EventInterface;
+use Here\Lib\Ext\FSM\Event\EventGenerator;
+use Here\Lib\Ext\FSM\Event\EventInterface;
 use Here\Lib\Ext\FSM\State\StateInterface;
 
 
@@ -59,12 +59,12 @@ final class StateEventGraph {
     }
 
     /**
-     * @param ActionInterface[] ...$actions
+     * @param ActionInterface[]|null[] ...$actions
      * @return StateEventGraph
      * @throws ActionCountNotMatch
      * @throws TooMoreAction
      */
-    final public function fill_action(ActionInterface ...$actions): self {
+    final public function fill_action(/*?ActionInterface*/ ...$actions): self {
         if (count($this->_actions) === count($this->_events)) {
             throw new TooMoreAction("state-event graph is full");
         }

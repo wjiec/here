@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\lib\Ext\FSM\Event;
+namespace Here\Lib\Ext\FSM\Event;
 
 
 /**

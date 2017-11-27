@@ -1,6 +1,6 @@
 <?php
 /**
- * RegexPathEndState.php
+ * RegexPathState.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -16,4 +16,4 @@ use Here\Lib\Ext\FSM\State\StateInterface;
  * Class RegexPathStartState
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State
  */
-final class RegexPathEndState implements StateInterface {}
+final class RegexPathState implements StateInterface {}

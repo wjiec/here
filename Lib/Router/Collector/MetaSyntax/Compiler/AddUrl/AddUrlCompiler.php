@@ -12,12 +12,20 @@ namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl;
 use Here\lib\Ext\FSM\Event\EventGenerator;
 use Here\Lib\Ext\FSM\FiniteStateMachine;
 use Here\Lib\Ext\FSM\Graph\StateEventGraph;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\EofCharEvent;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\OptionalPathEndEvent;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\OptionalPathStartEvent;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\RegexPathEvent;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\ScalarCharEvent;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\UrlSeparatorEvent;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\VariablePathEndEvent;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\VariablePathStartEvent;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\NamedPathState;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\OptionalPathEndState;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\OptionalPathStartState;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\ParseEndState;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\ParseStartState;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\RegexPathEndState;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\RegexPathState;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\RegexPathStartState;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\ScalarPathState;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\State\VariablePathEndState;
@@ -68,29 +76,48 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
         $graph = new StateEventGraph();
 
         // states
-        $parse_start = new ParseStartState();
-        $parse_end = new ParseEndState();
-        $scalar_path = new ScalarPathState();
-        $var_start = new VariablePathStartState();
-        $var_end = new VariablePathEndState();
-        $opt_start = new OptionalPathStartState();
-        $opt_end = new OptionalPathEndState();
-        $named_path = new NamedPathState();
-        $reg_start = new RegexPathStartState();
-        $reg_end = new RegexPathEndState();
+        $graph->set_states(
+            new ParseStartState(), new ScalarPathState(),  // scalar path
+            new VariablePathStartState(), new VariablePathEndState(),  // variable path
+            new OptionalPathStartState(), new OptionalPathEndState(),  // optional path
+            new NamedPathState(),  // named path
+            new RegexPathStartState(), new RegexPathState() // regex mode
+        );
 
-        // event
+        // events
+        $graph->set_events(
+            new ScalarCharEvent(), new UrlSeparatorEvent(),  // scalar char ot utl separator
+            new VariablePathStartEvent(), new VariablePathEndEvent(),  // variable path
+            new OptionalPathStartEvent(), new OptionalPathEndEvent(),  // optional path
+            new RegexPathEvent(),
+            new EofCharEvent()
+        );
 
-        $graph->set_states($parse_start, $scalar_path, $var_start, $var_end, $opt_start, $opt_end, $named_path, $reg_start, $reg_end, $parse_end);
-        $graph->set_events();
-//        $graph/* ParseStart ScalarPath VariablePathStart VariablePathEnd OptionalPathStart OptionalPathEnd NamedPath RegexPathStart RegexPathEnd ParseEnd */
-//        /* Event */->fill_action()
-//        /* Event */->fill_action()
-//        /* Event */->fill_action()
-//        /* Event */->fill_action()
-//        /* Event */->fill_action()
-//        /* Event */->fill_action()
-//        ;
+        $sep = 'Separator Action';
+        $kps = 'Keep State';
+        $chk = 'Multi Check Cond';
+        $nnd = 'Named Node';
+        $gVS = 'Go to varS';
+        $gVE = 'Go to varE';
+        $gOS = 'Go to optS';
+        $gOE = 'Go to optE';
+        $end = "success exit";
+        $reS = 'Regex Start';
+        $mVE = "maybe varE";
+        $mOE = "maybe optE";
+        $reg = "regex pattern";
+        $cPC = "check previous character";
+
+        $graph/*                                          start scalar varS  varE  optS  optE  name  regS  regex */
+        /* ScalarCharEvent         */->fill_action(NULL, $kps, $nnd, NULL, $nnd, NULL, $kps, $reg, $reg)
+        /* UrlSeparatorEvent       */->fill_action($sep, $sep, NULL, $sep, NULL, $sep, NULL, $cPC, $sep)
+        /* VariablePathStartEvent  */->fill_action(NULL, $gVS, NULL, NULL, NULL, NULL, NULL, $cPC, $cPC)
+        /* VariablePathEndEvent    */->fill_action(NULL, NULL, NULL, NULL, NULL, NULL, $gVE, $mVE, $mVE)
+        /* OptionalPathStartEvent  */->fill_action(NULL, $gOS, NULL, NULL, NULL, NULL, NULL, $cPC, $cPC)
+        /* OptionalPathEndEvent    */->fill_action(NULL, NULL, NULL, NULL, NULL, NULL, $gOE, $mOE, $mOE)
+        /* RegexPathEvent          */->fill_action(NULL, $chk, $reS, NULL, $reS, NULL, $reS, $cPC, $cPC)
+        /* EofCharEvent            */->fill_action(NULL, $end, NULL, $end, NULL, $end, NULL, NULL, NULL)
+        ;
         return $graph;
     }
 }
