@@ -108,7 +108,7 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
         $reg = "regex pattern";
         $cPC = "check previous character";
 
-        $graph/*                                          start scalar varS  varE  optS  optE  name  regS  regex */
+        $graph/*                                   start scalar varS  varE  optS  optE  name  regS  regex */
         /* ScalarCharEvent         */->fill_action(NULL, $kps, $nnd, NULL, $nnd, NULL, $kps, $reg, $reg)
         /* UrlSeparatorEvent       */->fill_action($sep, $sep, NULL, $sep, NULL, $sep, NULL, $cPC, $sep)
         /* VariablePathStartEvent  */->fill_action(NULL, $gVS, NULL, NULL, NULL, NULL, NULL, $cPC, $cPC)

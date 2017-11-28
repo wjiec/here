@@ -6,12 +6,6 @@ version: '3'
 services:
   php:
     image: "shellboot/php"
-    environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_USERNAME=root
-      - MYSQL_PASSWORD=root
-      - MYSQL_DATABASE=here
     volumes:
       - .:/var/www
   nginx:
