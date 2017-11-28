@@ -4,7 +4,7 @@ FROM alpine:latest
 # author
 MAINTAINER Wang <shadowman@shellboot.com>
 
-# China mirrors and create www-user
+# China mirrors and create redis user and group
 RUN set -x \
     && country=`wget -T1 -q -O- google.com 2>&1 | sed -nr 's/.*(timed\ out).*/China/p'` \
     && if [ "$country" == "China" ]; then \
@@ -15,12 +15,12 @@ RUN set -x \
     addgroup -S redis \
     && adduser -S -G redis redis
 
-# environments for nginx
+# environments for redis
 ENV REDIS_VERSION 4.0.2
 ENV REDIS_HOME /usr/local/redis
 ENV REDIS_DATA_DIR /var/redis
 
-# install build deps and fetch/build/install nginx
+# install build deps and fetch/build/install redis
 RUN set -ex \
     && apk update \
     && apk add --virtual .build-deps \
@@ -39,7 +39,7 @@ RUN set -ex \
     && export PREFIX="$REDIS_HOME" \
     \
     && grep -q '^#define CONFIG_DEFAULT_PROTECTED_MODE 1$' ./src/server.h \
-    && sed -ri 's!^(#define CONFIG_DEFAULT_PROTECTED_MODE) 1$!\1 0!' ./src/server.h \
+    && sed -ri 's/^(#define CONFIG_DEFAULT_PROTECTED_MODE) 1$/\1 0/' ./src/server.h \
     && grep -q '^#define CONFIG_DEFAULT_PROTECTED_MODE 0$' ./src/server.h \
     \
     && make \
@@ -50,13 +50,13 @@ RUN set -ex \
     && rm -rf "/usr/src/*" \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
-    && nginxRuntimeDeps="$( \
-            scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/redis \
+    && redisRuntimeDeps="$( \
+            scanelf --needed --nobanner --format '%n#p' --recursive $REDIS_HOME \
                 | tr ',' '\n' \
                 | sort -u \
                 | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
        )" \
-    && apk add --virtual .nginx-runtime-deps $nginxRuntimeDeps \
+    && apk add --virtual .redis-runtime-deps $redisRuntimeDeps \
     && apk del .build-deps \
     \
     && rm -rf /var/cache/apk/* \
@@ -66,9 +66,17 @@ RUN set -ex \
 RUN mkdir -p "$REDIS_DATA_DIR" \
     && chown -R redis:redis "$REDIS_DATA_DIR"
 
-COPY start-redis-server.sh /usr/local/redis/bin
+# executeable path
 ENV PATH $REDIS_HOME/bin:$PATH
+
+# data volume
 VOLUME /var/redis
+
+# workshop
 WORKDIR /var/redis
+
+# expose port number
 EXPOSE 6379
-CMD ["start-redis-server"]
+
+# start server
+CMD ["redis-server"]
