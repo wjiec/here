@@ -17,8 +17,10 @@ RUN set -x \
 
 # environment for php7
 ENV PHP_VERSION 7.1.10
-ENV PHP_HOME /usr/local/php7
-ENV PHP_CONF_PATH /usr/local/php7/etc
+
+# generic named for home folder
+ENV PHP_HOME /usr/local/php
+ENV PHP_CONF_PATH /usr/local/php/etc
 
 # install deps and fetch/compile/install php
 RUN set -x \
@@ -48,18 +50,18 @@ RUN set -x \
         tar \
         xz \
     \
-    && mkdir -p "/usr/src" \
-    \
     && country=`wget -T1 -q -O- google.com 2>&1 | sed -nr 's/.*(timed\ out).*/China/p'` \
     && if [ "$country" == "China" ]; then \
-           curl -SL "http://cn2.php.net/get/php-7.1.10.tar.gz/from/this/mirror" -o php.tar.gz; \
+           curl -SL "http://cn2.php.net/get/php-$PHP_VERSION.tar.gz/from/this/mirror" -o php.tar.gz; \
        else \
            curl -SL "http://php.net/get/php-$PHP_VERSION.tar.gz/from/this/mirror" -o php.tar.gz; \
        fi; \
     unset country \
     \
+    && mkdir -p "/usr/src" \
+    \
     && tar xvf php.tar.gz -C /usr/src \
-    && rm -rf php.tar.gz \
+    && rm -rf php.tar.gz* \
     \
     && mkdir -p "$PHP_HOME" \
     && mkdir -p "$PHP_CONF_PATH/conf.d" \
@@ -82,30 +84,30 @@ RUN set -x \
         --with-fpm-user=www \
         --with-fpm-group=www \
         \
-        --bindir=/usr/local/php7/bin \
-        --sbindir=/usr/local/php7/sbin \
-        --includedir=/usr/local/php7/include \
-        --libdir=/usr/local/php7/lib \
+        --bindir="$PHP_HOME/bin" \
+        --sbindir="$PHP_HOME/sbin" \
+        --includedir="$PHP_HOME/include" \
+        --libdir="$PHP_HOME/lib" \
         \
-        --disable-cgi \
         --enable-fpm \
+        --disable-cgi \
         \
-        --with-iconv \
-        --with-openssl \
-        --with-zlib \
         --with-curl \
+        --with-gettext \
+        --with-iconv \
         --with-mcrypt \
         --with-mysqli \
+        --with-openssl \
         --with-pdo-mysql=shared,mysqlnd \
-        --with-gettext \
+        --with-zlib \
         \
-        --enable-zip \
         --enable-ftp \
-        --enable-mbstring \
         --enable-mbregex \
-        --enable-opcache \
+        --enable-mbstring \
         --enable-mysqlnd \
+        --enable-opcache \
         --enable-sockets \
+        --enable-zip \
         \
         --disable-fileinfo \
     \
@@ -114,12 +116,12 @@ RUN set -x \
     && make clean \
     \
     && cd "$PHP_HOME" \
-    && rm -rf "/usr/src/php-$PHP_VERSION" \
+    && rm -rf "/usr/src/*" \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
     \
     && phpRuntimeDeps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/php7 \
+        scanelf --needed --nobanner --format '%n#p' --recursive $PHP_HOME \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
@@ -132,10 +134,17 @@ RUN set -x \
 
 # configure for php-fpm
 RUN set -ex \
-    && cd /usr/local/php7/etc \
+    && cd $PHP_CONF_PATH \
     && if [ -d php-fpm.d ]; then \
            cp php-fpm.conf.default php-fpm.conf; \
            cp php-fpm.d/www.conf.default php-fpm.d/www.conf; \
+       else \
+           mkdir php-fpm.d; \
+           cp php-fpm.conf.default php-fpm.d/www.conf; \
+           { \
+               echo '[global]'; \
+           	   echo 'include=etc/php-fpm.d/*.conf'; \
+           } | tee php-fpm.conf; \
        fi; \
     \
        { \
@@ -157,10 +166,19 @@ RUN set -ex \
            echo; \
            echo '[www]'; \
            echo 'listen = [::]:9000'; \
-       } | tee php-fpm.d/zzz.conf \
-    && mkdir "/var/www"
+       } | tee php-fpm.d/zzz.conf
 
+# set executeable path
 ENV PATH $PHP_HOME/bin:$PHP_HOME/sbin:$PATH
+
+# workshop
 WORKDIR /var/www
+
+# expose port
 EXPOSE 9000
+
+# entry pointer
+ENTRYPOINT ["php-fpm"]
+
+# command
 CMD ["php-fpm"]
