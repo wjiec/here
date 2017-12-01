@@ -116,12 +116,12 @@ RUN set -x \
     && make clean \
     \
     && cd "$PHP_HOME" \
-    && rm -rf "/usr/src/*" \
+    && rm -rf /usr/src/* \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
     \
     && phpRuntimeDeps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive " $PHP_HOME " \
+        scanelf --needed --nobanner --format '%n#p' --recursive $PHP_HOME \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
@@ -176,9 +176,6 @@ WORKDIR /var/www
 
 # expose port
 EXPOSE 9000
-
-# entry pointer
-ENTRYPOINT ["php-fpm"]
 
 # command
 CMD ["php-fpm"]
