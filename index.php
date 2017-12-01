@@ -19,6 +19,8 @@ use Here\Config\Router\UserCollector;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Stream\IStream\Client\Request;
+use Here\Lib\Utils\Jwt\Jwt;
+use Here\Lib\Utils\Jwt\JwtAlgorithmType;
 
 /* the only explicit `require_once` to include `Autoloader` */
 require_once 'Lib/Loader/Autoloader.php';
@@ -27,6 +29,11 @@ require_once 'Lib/Loader/Autoloader.php';
 Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 
 echo "<pre>";
+
+$encrypt = Jwt::generate(array('user' => 'admin'), 'ILoveYou', new JwtAlgorithmType(JwtAlgorithmType::JWT_TYPE_HS256));
+$decrypt = Jwt::parse($encrypt, 'ILoveYou');
+var_dump($encrypt);
+var_dump($decrypt);
 
 /* create dispatcher for global */
 $dispatcher = new Dispatcher(new UserCollector());
