@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Ext\FSM;
-use Here\lib\Ext\FSM\Event\EventGenerator;
+use Here\Lib\Ext\FSM\Event\EventGenerator;
 use Here\Lib\Ext\FSM\External\ExternalObjectInterface;
 use Here\Lib\Ext\FSM\Graph\StateEventGraph;
 use Here\Lib\Ext\FSM\State\StateInterface;

@@ -30,11 +30,6 @@ Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 
 echo "<pre>";
 
-$encrypt = Jwt::generate(array('user' => 'admin'), 'ILoveYou', new JwtAlgorithmType(JwtAlgorithmType::JWT_TYPE_HS256));
-$decrypt = Jwt::parse($encrypt, 'ILoveYou');
-var_dump($encrypt);
-var_dump($decrypt);
-
 /* create dispatcher for global */
 $dispatcher = new Dispatcher(new UserCollector());
 

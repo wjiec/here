@@ -13,7 +13,7 @@ namespace Here\Lib\Ext\FSM\Event;
 
 /**
  * Interface EventInterface
- * @package Here\lib\Ext\FSM\Event
+ * @package Here\Lib\Ext\FSM\Event
  */
 interface EventInterface {
 }

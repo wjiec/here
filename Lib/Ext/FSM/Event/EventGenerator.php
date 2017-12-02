@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\lib\Ext\FSM\Event;
+namespace Here\Lib\Ext\FSM\Event;
 
 
 /**
  * Interface EventGenerator
- * @package Here\lib\Ext\FSM\Event
+ * @package Here\Lib\Ext\FSM\Event
  */
 interface EventGenerator {
     /**

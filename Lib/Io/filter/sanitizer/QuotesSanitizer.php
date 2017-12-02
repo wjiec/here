@@ -14,7 +14,7 @@ use Here\Lib\Io\Filter\IoFilterBase;
 
 /**
  * Class QuotesSanitizer
- * @package Here\lib\io\filter\sanitizer
+ * @package Here\Lib\io\filter\sanitizer
  */
 final class QuotesSanitizer extends IoFilterBase {
     /**

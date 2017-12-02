@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\lib\config\Yaml;
+namespace Here\Lib\config\Yaml;
 
 
 /**
  * Class YamlConfigDumper
- * @package Here\lib\config\Yaml
+ * @package Here\Lib\config\Yaml
  */
 class YamlConfigDumper {
     /**

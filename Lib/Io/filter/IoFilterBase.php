@@ -14,7 +14,7 @@ use Here\Lib\Assert;
 
 /**
  * Class IoFilterBase
- * @package Here\lib\io\filter\validator
+ * @package Here\Lib\io\filter\validator
  */
 abstract class IoFilterBase implements IoFilterInterface {
     /**

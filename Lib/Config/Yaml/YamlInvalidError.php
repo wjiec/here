@@ -8,14 +8,14 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\lib\config\yaml;
+namespace Here\Lib\config\yaml;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\Level\Warning;
 
 
 /**
  * Class YamlInvalidError
- * @package Here\lib\config\yaml
+ * @package Here\Lib\config\yaml
  */
 class YamlInvalidError extends ExceptionBase {
     use Warning;

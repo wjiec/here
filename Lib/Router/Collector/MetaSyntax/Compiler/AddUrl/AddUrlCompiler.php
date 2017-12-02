@@ -9,7 +9,8 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl;
-use Here\lib\Ext\FSM\Event\EventGenerator;
+use Here\Lib\Ext\FSM\Event\ArrayToEventGenerator;
+use Here\Lib\Ext\FSM\Event\EventGenerator;
 use Here\Lib\Ext\FSM\FiniteStateMachine;
 use Here\Lib\Ext\FSM\Graph\StateEventGraph;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Event\EofCharEvent;
@@ -42,6 +43,8 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
     /**
      * @param array $value
      * @return MetaSyntaxCompilerResultBase
+     * @throws \Here\Lib\Ext\FSM\Graph\ActionCountNotMatch
+     * @throws \Here\Lib\Ext\FSM\Graph\TooMoreAction
      */
     final public static function compile(array $value): MetaSyntaxCompilerResultBase {
         $fsm = self::get_syntax_fsm();
@@ -49,7 +52,7 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
 
         foreach ($value as $url_rule) {
             var_dump(sprintf("%s", htmlentities($url_rule)));
-            // $fsm->run(self::get_event_generator($url_rule));
+             $fsm->run(self::get_event_generator($url_rule), new ParseStartState(), null);
         }
 
         return $add_url_component;
@@ -57,6 +60,8 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
 
     /**
      * @return FiniteStateMachine
+     * @throws \Here\Lib\Ext\FSM\Graph\ActionCountNotMatch
+     * @throws \Here\Lib\Ext\FSM\Graph\TooMoreAction
      */
     final private static function get_syntax_fsm(): FiniteStateMachine {
         return new FiniteStateMachine(self::get_state_event_graph());
@@ -67,10 +72,15 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
      * @return EventGenerator
      */
     final private static function get_event_generator(string $url): EventGenerator {
+        return new ArrayToEventGenerator(
+            array_merge(str_split($url), array("\0"))
+        );
     }
 
     /**
      * @return StateEventGraph
+     * @throws \Here\Lib\Ext\FSM\Graph\ActionCountNotMatch
+     * @throws \Here\Lib\Ext\FSM\Graph\TooMoreAction
      */
     final private static function get_state_event_graph(): StateEventGraph {
         $graph = new StateEventGraph();
@@ -108,7 +118,7 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
         $reg = "regex pattern";
         $cPC = "check previous character";
 
-        $graph/*                                   start scalar varS  varE  optS  optE  name  regS  regex */
+        $graph/*                                          start scalar varS  varE  optS  optE  name  regS  regex */
         /* ScalarCharEvent         */->fill_action(NULL, $kps, $nnd, NULL, $nnd, NULL, $kps, $reg, $reg)
         /* UrlSeparatorEvent       */->fill_action($sep, $sep, NULL, $sep, NULL, $sep, NULL, $cPC, $sep)
         /* VariablePathStartEvent  */->fill_action(NULL, $gVS, NULL, NULL, NULL, NULL, NULL, $cPC, $cPC)
