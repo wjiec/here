@@ -15,7 +15,7 @@ namespace Here\Lib\Ext\Stack;
  * Class Stack
  * @package Here\Lib\Ext\Stack
  */
-final class Stack {
+class Stack {
     /**
      * @var array
      */
@@ -78,5 +78,13 @@ final class Stack {
         }
 
         return $this->_stack[$this->_index - $offset];
+    }
+
+    /**
+     * @param $element
+     * @return bool
+     */
+    final public function has_element($element): bool {
+        return array_search($element, $this->_stack);
     }
 }

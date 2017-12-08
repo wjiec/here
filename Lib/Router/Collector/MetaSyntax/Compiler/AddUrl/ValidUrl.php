@@ -1,6 +1,6 @@
 <?php
 /**
- * InvalidUrlRule.php
+ * ValidUrl.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -9,14 +9,12 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl;
-use Here\Lib\Exceptions\ExceptionBase;
-use Here\Lib\Exceptions\Level\Error;
 
 
 /**
- * Class InvalidUrlRule
+ * Class ValidUrlObject
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl
  */
-final class InvalidUrlRule extends ExceptionBase {
-    use Error;
+final class ValidUrl {
+
 }
