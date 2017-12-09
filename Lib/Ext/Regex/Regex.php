@@ -9,7 +9,6 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Ext\Regex;
-use Here\Lib\Assert;
 
 
 /**
@@ -27,9 +26,7 @@ final class Regex {
      * @param string $pattern
      * @throws RegexPatternInvalid
      */
-    final public function __construct($pattern) {
-        Assert::String($pattern);
-
+    final public function __construct(string $pattern) {
         // validate pattern
         if (@preg_match($pattern, null) === false) {
             throw new RegexPatternInvalid(self::$_errors[PREG_INTERNAL_ERROR]);
@@ -38,17 +35,17 @@ final class Regex {
     }
 
     /**
-     * @param string $object
+     * @param string $subject
      * @param bool $offset_capture
-     * @return bool|array
+     * @return array|bool
      */
-    final public function match($object, $offset_capture = false) {
+    final public function match(string $subject, bool $offset_capture = false) {
         $flag = 0;
         if ($offset_capture === true) {
             $flag |= PREG_OFFSET_CAPTURE;
         }
 
-        if (($count = preg_match($this->_pattern, $object, $matches, $flag)) !== false) {
+        if (($count = preg_match($this->_pattern, $subject, $matches, $flag)) !== false) {
             if ($count === 0) {
                 return array();
             }
@@ -58,11 +55,11 @@ final class Regex {
     }
 
     /**
-     * @param string $object
+     * @param string $subject
      * @return bool|array
      */
-    final public function match_all($object) {
-        if (($count = preg_match_all($this->_pattern, $object, $matches)) !== false) {
+    final public function match_all(string $subject) {
+        if (($count = preg_match_all($this->_pattern, $subject, $matches)) !== false) {
             if ($count === 0) {
                 return array();
             }
@@ -72,25 +69,25 @@ final class Regex {
     }
 
     /**
-     * @param string $object
+     * @param string $subject
      * @param string $replacement
      * @param int $limit
      * @param int $count
      * @return string
      */
-    final public function replace($object, $replacement, $limit = -1, &$count) {
-        return preg_replace($this->_pattern, $replacement, $object, $limit, $count) ?: null;
+    final public function replace(string $subject, string $replacement, int $limit = -1, int &$count) {
+        return preg_replace($this->_pattern, $replacement, $subject, $limit, $count) ?: null;
     }
 
     /**
      * @return string
      */
-    final public function get_pattern() {
+    final public function get_pattern(): string {
         return $this->_pattern;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     final public function get_last_error() {
         if (array_key_exists(preg_last_error(), self::$_errors)) {
