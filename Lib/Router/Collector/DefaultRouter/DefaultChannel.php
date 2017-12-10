@@ -38,7 +38,7 @@ trait DefaultChannel {
      * @addLogger
      * @addMethods GET
      * @addUrl /manager
-     * @addUrl /manager/<path:...>
+     * @addUrl /manager/{path:RS2}
      * @addMiddleware authorization
      *
      * @TODO `manager` form admin user setting
@@ -65,7 +65,7 @@ trait DefaultChannel {
      *
      * @routerChannel
      * @addMethods GET
-     * @addUrl /static/<theme_name:\w+>/<resource_path:...>
+     * @addUrl /static/<theme_name:\w+>/{resource_path:R}
      */
     final public function resources(RouterRequest $request, RouterResponse $response): void {
         var_dump($request, $response);
