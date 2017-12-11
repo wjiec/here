@@ -35,7 +35,12 @@ final class ValidUrlType extends EnumType {
     /**
      * composite path
      */
-    public const VALID_URL_TYPE_COMPOSITE_PATH = 0x0008;
+    public const VALID_URL_TYPE_COMPOSITE_VAR_PATH = 0x0008;
+
+    /**
+     * composite path
+     */
+    public const VALID_URL_TYPE_COMPOSITE_OPT_PATH = 0x0010;
 
     /**
      * full-matched path

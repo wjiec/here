@@ -16,6 +16,11 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
 
 
 /**
+ * @TODO
+ *  1. /rule/ and /rule
+ */
+
+/**
  * Class AddUrlCompiler
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl
  */
@@ -45,7 +50,9 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
      */
     final private static function _parse_url(string $url): array {
         $segments = explode(HereConstant::URL_SEPARATOR, $url);
-        $valid_url = new ValidUrl();
+        $valid_urls = array(new ValidUrl());
+        /* @var ValidUrl $valid_url */
+        $valid_url = &$valid_urls[0];
 
         $first_segment = array_shift($segments);
         if ($first_segment !== "") {
@@ -57,7 +64,7 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
         }
 
         // parse each part of URL by separator('/')
-        foreach ($segments as $segment) {
+        foreach ($segments as $index => $segment) {
             if (($matches = self::_parse_scalar_path($segment)) && !empty($matches)) {  // scalar path
                 $valid_url->scalar_component(new Regex(sprintf('/^%s$/', $matches['scalar'])));
             } else if (($matches = self::_parse_complex_path($segment)) && !empty($matches)) {  // complex path
@@ -85,6 +92,10 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
                 }
 
                 $valid_url->composite_component(
+                    new ValidUrlType($sym_start === self::VARIABLE_PATH_START_SYM
+                        ? ValidUrlType::VALID_URL_TYPE_COMPOSITE_VAR_PATH
+                        : ValidUrlType::VALID_URL_TYPE_COMPOSITE_OPT_PATH
+                    ),
                     $matches['scalar'],
                     new Regex(sprintf('/^%s$/', $matches['pattern'])),
                     $matches['name'] ?? null
@@ -97,11 +108,27 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
             } else {
                 throw new InvalidRule("valid segment, ('{$segment}')");
             }
+
+            $last_component = $valid_url->last_component_type()->value();
+            if (in_array($last_component, self::END_COMPONENT)) {
+                if ($index !== count($segments) - 1) {
+                    throw new InvalidRule("segment ('{$segment}') must on the end of rule)");
+                } else {
+                    // clone an optional rule
+                    $clone_valid_url = clone $valid_url;
+
+                    // add scalar component
+                    $component = $clone_valid_url->pop_last();
+                    $clone_valid_url->scalar_component(
+                        new Regex(sprintf('/^%s$/', $component->scalar))
+                    );
+
+                    $valid_urls[] = $clone_valid_url;
+                }
+            }
         }
 
-        var_dump($valid_url);
-
-        return array($valid_url);
+        return $valid_urls;
     }
 
     /**
@@ -216,5 +243,14 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
         self::VARIABLE_PATH_START_SYM => self::VARIABLE_PATH_END_SYM,
         self::OPTIONAL_PATH_START_SYM => self::OPTIONAL_PATH_END_SYM,
         self::FULL_MATCHED_START_SYM => self::FULL_MATCHED_END_SYM
+    );
+
+    /**
+     * follow component must on the end of rule
+     */
+    private const END_COMPONENT = array(
+        ValidUrlType::VALID_URL_TYPE_OPTIONAL_PATH,
+        ValidUrlType::VALID_URL_TYPE_COMPOSITE_OPT_PATH,
+        ValidUrlType::VALID_URL_TYPE_FULL_MATCHED_PATH
     );
 }

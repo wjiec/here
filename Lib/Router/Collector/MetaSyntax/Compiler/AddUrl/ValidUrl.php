@@ -25,7 +25,7 @@ final class ValidUrl {
     /**
      * ValidUrl constructor.
      */
-    public function __construct() {
+    final public function __construct() {
         $this->_components = array();
     }
 
@@ -33,10 +33,10 @@ final class ValidUrl {
      * @param Regex $regex
      * @param null|string $name
      */
-    public function scalar_component(Regex $regex, ?string $name = null): void {
+    final public function scalar_component(Regex $regex, ?string $name = null): void {
         $component = new \stdClass();
 
-        $component->type = ValidUrlType::VALID_URL_TYPE_SCALAR_PATH;
+        $component->type = new ValidUrlType(ValidUrlType::VALID_URL_TYPE_SCALAR_PATH);
         $component->regex = $regex;
         $component->name = $name;
 
@@ -48,7 +48,7 @@ final class ValidUrl {
      * @param Regex $regex
      * @param null|string $name
      */
-    public function complex_component(ValidUrlType $type, Regex $regex, ?string $name = null): void {
+    final public function complex_component(ValidUrlType $type, Regex $regex, ?string $name = null): void {
         $component = new \stdClass();
 
         $component->type = $type;
@@ -59,14 +59,15 @@ final class ValidUrl {
     }
 
     /**
+     * @param ValidUrlType $type
      * @param string $scalar
      * @param Regex $regex
      * @param null|string $name
      */
-    public function composite_component(string $scalar, Regex $regex, ?string $name = null): void {
+    final public function composite_component(ValidUrlType $type, string $scalar, Regex $regex, ?string $name = null): void {
         $component = new \stdClass();
 
-        $component->type = ValidUrlType::VALID_URL_TYPE_COMPOSITE_PATH;
+        $component->type = $type;
         $component->scalar = $scalar;
         $component->regex = $regex;
         $component->name = $name;
@@ -78,10 +79,10 @@ final class ValidUrl {
      * @param string $name
      * @param null|string $attributes
      */
-    public function full_matched_component(string $name, ?string $attributes = null): void {
+    final public function full_matched_component(string $name, ?string $attributes = null): void {
         $component = new \stdClass();
 
-        $component->type = ValidUrlType::VALID_URL_TYPE_FULL_MATCHED_PATH;
+        $component->type = new ValidUrlType(ValidUrlType::VALID_URL_TYPE_FULL_MATCHED_PATH);
         $component->name = $name;
         $component->attributes = $attributes;
 
@@ -89,9 +90,23 @@ final class ValidUrl {
     }
 
     /**
+     * @return ValidUrlType
+     */
+    final public function last_component_type(): ValidUrlType {
+        return $this->_components[count($this->_components) - 1]->type;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    final public function pop_last(): \stdClass {
+        return array_pop($this->_components);
+    }
+
+    /**
      * @param \stdClass $component
      */
-    private function _add_component(\stdClass $component): void {
+    final private function _add_component(\stdClass $component): void {
         $this->_components[] = $component;
     }
 }
