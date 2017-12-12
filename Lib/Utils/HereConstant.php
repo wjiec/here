@@ -20,4 +20,9 @@ final class HereConstant {
      * url separator
      */
     public const URL_SEPARATOR = '/';
+
+    /**
+     * path separator
+     */
+    public const PATH_SEPARATOR = '/';
 }
