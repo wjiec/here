@@ -18,6 +18,11 @@ use Here\Lib\Ext\Enum\EnumType;
  */
 final class ValidUrlType extends EnumType {
     /**
+     * default valid type of url
+     */
+    public const __default = self::VALID_URL_TYPE_SCALAR_PATH;
+
+    /**
      * scalar_path
      */
     public const VALID_URL_TYPE_SCALAR_PATH = 0x0001;

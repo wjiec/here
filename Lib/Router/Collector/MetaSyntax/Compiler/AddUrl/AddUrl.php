@@ -16,5 +16,4 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
  * Class AddUrl
  * @package Lib\Router\Collector\MetaSyntax\Compiler\AddUrl
  */
-final class AddUrl extends MetaSyntaxCompilerResultBase {
-}
+final class AddUrl extends MetaSyntaxCompilerResultBase {}

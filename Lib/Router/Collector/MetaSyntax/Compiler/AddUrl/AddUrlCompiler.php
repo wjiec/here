@@ -16,11 +16,6 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
 
 
 /**
- * @TODO
- *  1. /rule/ and /rule
- */
-
-/**
  * Class AddUrlCompiler
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl
  */
