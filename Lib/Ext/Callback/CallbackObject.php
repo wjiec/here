@@ -38,7 +38,8 @@ class CallbackObject {
 
     /**
      * CallbackObject constructor.
-     * @param callable $callback
+     * @param $callback
+     * @throws InvalidCallback
      */
     final public function __construct($callback) {
         $this->_callback = $callback;

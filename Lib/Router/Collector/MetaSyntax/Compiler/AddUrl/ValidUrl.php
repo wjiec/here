@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl;
 use Here\Lib\Ext\Regex\Regex;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ComponentBase;
 
 
 /**
@@ -18,15 +19,39 @@ use Here\Lib\Ext\Regex\Regex;
  */
 final class ValidUrl {
     /**
-     * @var array|string[]
+     * @var array|ComponentBase[]
      */
     private $_components;
+
+    /**
+     * @var bool
+     */
+    private $_end_flag;
 
     /**
      * ValidUrl constructor.
      */
     final public function __construct() {
+        $this->_end_flag;
         $this->_components = array();
+    }
+
+    /**
+     * @param ComponentBase $component
+     * @throws InvalidRule
+     */
+    final public function add_component(ComponentBase $component): void {
+        // check flag
+        if ($this->_end_flag) {
+            throw new InvalidRule("invalid of last segment");
+        }
+
+        // setting flag of end-segment
+        if (in_array($component->_type->value(), self::END_COMPONENT)) {
+            $this->_end_flag = true;
+        }
+
+        $this->_components[] = $component;
     }
 
     /**
@@ -109,4 +134,13 @@ final class ValidUrl {
     final private function _add_component(\stdClass $component): void {
         $this->_components[] = $component;
     }
+
+    /**
+     * follow component must in the end of segments
+     */
+    private const END_COMPONENT = array(
+        ValidUrlType::VALID_URL_TYPE_OPTIONAL_PATH,
+        ValidUrlType::VALID_URL_TYPE_COMPOSITE_OPT_PATH,
+        ValidUrlType::VALID_URL_TYPE_FULL_MATCHED_PATH
+    );
 }
