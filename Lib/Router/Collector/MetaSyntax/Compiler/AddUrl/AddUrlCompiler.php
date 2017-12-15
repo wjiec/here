@@ -31,11 +31,13 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
         $add_url_component = new AddUrl();
 
         foreach ($value as $rule) {
+            /* @var ValidUrl $valid_url */
             foreach (RuleParser::parse($rule) as $valid_url) {
                 $add_url_component->add_result($valid_url);
             }
         }
 
+        var_dump($add_url_component);
         return $add_url_component;
     }
 }

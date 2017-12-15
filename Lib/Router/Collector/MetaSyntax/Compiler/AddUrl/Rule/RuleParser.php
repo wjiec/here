@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Rule;
 use Here\Lib\Ext\Regex\Regex;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ComponentBase;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ComponentBuilder;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ScalarComponent;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrl;
@@ -60,7 +61,24 @@ final class RuleParser {
             $valid_url->add_component(ComponentBuilder::build($type, $matches));
         }
 
+        // clone valid_url is last component is OPTIONAL-RULE
+        if ($valid_url->last_component_type()->value() === ValidUrlType::VALID_URL_TYPE_OPTIONAL_PATH) {
+            $new_valid_url = clone $valid_url;
+            $new_valid_url->pop_last();
+
+            $valid_urls[] = $new_valid_url;
+        }
+
         return $valid_urls;
+    }
+
+    /**
+     * @param ValidUrl $valid_url
+     * @return bool
+     */
+    final public static function is_end_component(ValidUrl $valid_url): bool {
+        $last_component_type = $valid_url->last_component_type();
+        return in_array($last_component_type->value(), self::END_COMPONENT);
     }
 
     /**
@@ -100,7 +118,7 @@ final class RuleParser {
             if ($sym_start === self::OPTIONAL_PATH_START_SYM) {
                 $type = isset($matches['scalar'])
                     ? new ValidUrlType(ValidUrlType::VALID_URL_TYPE_COMPOSITE_VAR_PATH)
-                    : new ValidUrlType(ValidUrlType::VALID_URL_TYPE_VARIABLE_PATH);
+                    : new ValidUrlType(ValidUrlType::VALID_URL_TYPE_OPTIONAL_PATH);
                 $result = $matches;
             }
         }
@@ -124,7 +142,7 @@ final class RuleParser {
      * @return array
      */
     final private static function _is_scalar(string $segment): array {
-        if (preg_match('/^(?<scalar>\w+)$/', $segment, $matches)) {
+        if (preg_match('/^(?<scalar>[\w\$]+)$/', $segment, $matches)) {
             return $matches;
         }
         return array();
@@ -233,5 +251,14 @@ final class RuleParser {
         self::VARIABLE_PATH_START_SYM => self::VARIABLE_PATH_END_SYM,
         self::OPTIONAL_PATH_START_SYM => self::OPTIONAL_PATH_END_SYM,
         self::FULL_MATCHED_START_SYM => self::FULL_MATCHED_END_SYM
+    );
+
+    /**
+     * follow component must in the end of segments
+     */
+    private const END_COMPONENT = array(
+        ValidUrlType::VALID_URL_TYPE_OPTIONAL_PATH,
+        ValidUrlType::VALID_URL_TYPE_COMPOSITE_OPT_PATH,
+        ValidUrlType::VALID_URL_TYPE_FULL_MATCHED_PATH
     );
 }

@@ -37,8 +37,8 @@ trait DefaultChannel {
      * @routerChannel
      * @addLogger
      * @addMethods GET
-     * @addUrl /manager
-     * @addUrl /manager/{path:RS2}
+     * @addUrl /$manager
+     * @addUrl /$manager/{path:RS2}
      * @addMiddleware authorization
      *
      * @TODO `manager` form admin user setting
@@ -56,6 +56,18 @@ trait DefaultChannel {
      * @addUrl /article/<article_title:\w+>
      */
     final public function article(RouterRequest $request, RouterResponse $response): void {
+        var_dump($request, $response);
+    }
+
+    /**
+     * @param RouterRequest $request
+     * @param RouterResponse $response
+     *
+     * @routerChannel
+     * @addMethods GET
+     * @addUrl /user/profile/[user_id:\d+]
+     */
+    final public function user_profile(RouterRequest $request, RouterResponse $response): void {
         var_dump($request, $response);
     }
 

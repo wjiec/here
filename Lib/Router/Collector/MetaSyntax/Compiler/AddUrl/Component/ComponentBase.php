@@ -32,9 +32,9 @@ abstract class ComponentBase extends \stdClass {
 
     /**
      * @param string $name
-     * @return null|string
+     * @return mixed
      */
-    final public function __get(string $name): ?string {
+    final public function __get(string $name) {
         if ($name[0] !== '_') {
             $name = "_{$name}";
         }
