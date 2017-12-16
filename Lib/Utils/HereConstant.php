@@ -25,4 +25,9 @@ final class HereConstant {
      * path separator
      */
     public const PATH_SEPARATOR = '/';
+
+    /**
+     * items separator
+     */
+    public const ITEM_SEPARATOR = ',';
 }

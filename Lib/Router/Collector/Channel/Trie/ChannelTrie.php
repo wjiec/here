@@ -33,18 +33,10 @@ final class ChannelTrie {
 
     /**
      * @param AddMethods $methods
-     * @param AddMiddleware $middleware
      * @param AddUrl $urls
+     * @param AddMiddleware|null $middleware
      */
-    final public function add_node(AddMethods $methods, AddMiddleware $middleware, AddUrl $urls): void {
-        $root = &$this->_trie;
-
-        foreach ($methods as $method) {
-            if (!isset($this->_trie[$method])) {
-                $this->_trie[$method] = array();
-            }
-
-            $root = &$this->_trie[$method];
-        }
+    final public function add_node(AddMethods $methods, AddUrl $urls, ?AddMiddleware $middleware = null): void {
+        var_dump($methods);
     }
 }

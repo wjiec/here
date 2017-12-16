@@ -37,7 +37,6 @@ final class AddUrlCompiler implements MetaSyntaxCompilerInterface {
             }
         }
 
-        var_dump($add_url_component);
         return $add_url_component;
     }
 }

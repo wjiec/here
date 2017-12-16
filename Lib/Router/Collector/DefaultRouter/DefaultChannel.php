@@ -64,7 +64,7 @@ trait DefaultChannel {
      * @param RouterResponse $response
      *
      * @routerChannel
-     * @addMethods GET
+     * @addMethods GET, POST
      * @addUrl /user/profile/[user_id:\d+]
      */
     final public function user_profile(RouterRequest $request, RouterResponse $response): void {

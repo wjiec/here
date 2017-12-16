@@ -35,6 +35,8 @@ abstract class RouterCollector implements CollectorInterface {
 
     /**
      * RouterCollector constructor.
+     * @throws Generator\UncertainRouterTypeError
+     * @throws Middleware\DuplicateMiddleware
      */
     final public function __construct() {
         $this->_middleware_manager = new MiddlewareManager();
@@ -44,7 +46,8 @@ abstract class RouterCollector implements CollectorInterface {
     }
 
     /**
-     * parse all methods to available node
+     * @throws Generator\UncertainRouterTypeError
+     * @throws Middleware\DuplicateMiddleware
      */
     final private function _parse_methods(): void {
         $ref = new \ReflectionClass(get_class($this));

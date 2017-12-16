@@ -42,13 +42,13 @@ final class ChannelManager {
         /* @var AddUrl $url_component */
         $url_component = $channel->get_url_component();
 
-        /* @var AddMiddleware $middleware_component */
-        $middleware_component = AddMiddlewareCompiler::compile(array());
+        /* @var AddMiddleware|null $middleware_component */
+        $middleware_component = null;
         if ($channel->has_middleware_component()) {
             $middleware_component = $channel->get_middleware_component();
         }
 
         // push node to trie of the router
-        $this->_channel_tree->add_node($method_component, $middleware_component, $url_component);
+        $this->_channel_tree->add_node($method_component, $url_component, $middleware_component);
     }
 }
