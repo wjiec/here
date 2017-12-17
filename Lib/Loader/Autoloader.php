@@ -18,7 +18,6 @@ namespace Here\Lib\Loader;
 final class Autoloader {
     /**
      * @var array
-     * @TODO, prefix-tree ?
      */
     private static $_prefixes = array();
 

@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Channel\Trie;
+use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods\AddMethods;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\AddUrl;
@@ -32,11 +33,20 @@ final class ChannelTrie {
     }
 
     /**
-     * @param AddMethods $methods
-     * @param AddUrl $urls
-     * @param AddMiddleware|null $middleware
+     * @param RouterChannel $channel
      */
-    final public function add_node(AddMethods $methods, AddUrl $urls, ?AddMiddleware $middleware = null): void {
-        var_dump($methods);
+    final public function add_node(RouterChannel $channel): void {
+        /* @var AddMethods $method_component */
+        $method_component = $channel->get_methods_component();
+        /* @var AddUrl $url_component */
+        $url_component = $channel->get_url_component();
+        /* @var AddMiddleware|null $middleware_component */
+        $middleware_component = null;
+        if ($channel->has_middleware_component()) {
+            $middleware_component = $channel->get_middleware_component();
+        }
+
+        var_dump($method_component, $url_component, $middleware_component);
+        echo "\n";
     }
 }

@@ -10,12 +10,11 @@
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Rule;
 use Here\Lib\Ext\Regex\Regex;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ComponentBase;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ComponentBuilder;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ScalarComponent;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrl;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrlType;
-use Here\Lib\Utils\HereConstant;
+use Here\Config\Constant\SysConstant;
 
 
 /**
@@ -31,8 +30,8 @@ final class RuleParser {
      * @throws \Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\InvalidRule
      */
     final public static function parse(string $rule): array {
-        $rule = rtrim($rule, HereConstant::URL_SEPARATOR);
-        $segments = explode(HereConstant::URL_SEPARATOR, $rule);
+        $rule = rtrim($rule, SysConstant::URL_SEPARATOR);
+        $segments = explode(SysConstant::URL_SEPARATOR, $rule);
 
         $valid_urls = array(new ValidUrl());
         /* @var ValidUrl $valid_url */

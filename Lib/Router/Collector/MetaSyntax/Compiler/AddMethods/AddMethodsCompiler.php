@@ -12,7 +12,7 @@ namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods;
 use Here\Lib\Router\AllowedMethods;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerInterface;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
-use Here\Lib\Utils\HereConstant;
+use Here\Config\Constant\SysConstant;
 
 
 /**
@@ -29,8 +29,8 @@ final class AddMethodsCompiler implements MetaSyntaxCompilerInterface {
         $add_methods_component = new AddMethods();
 
         foreach ($value as $methods) {
-            if (strpos($methods, HereConstant::ITEM_SEPARATOR) !== false) {
-                $methods = explode(HereConstant::ITEM_SEPARATOR, $methods);
+            if (strpos($methods, SysConstant::ITEM_SEPARATOR) !== false) {
+                $methods = explode(SysConstant::ITEM_SEPARATOR, $methods);
             } else {
                 $methods = array($methods);
             }

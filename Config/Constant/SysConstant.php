@@ -1,6 +1,6 @@
 <?php
 /**
- * HereConstant.php
+ * SysConstant.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,14 +8,14 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Utils;
+namespace Here\Config\Constant;
 
 
 /**
- * Class HereConstant
- * @package Here\Lib\Utils
+ * Class SysConstant
+ * @package Here\Config\Constant
  */
-final class HereConstant {
+final class SysConstant {
     /**
      * url separator
      */

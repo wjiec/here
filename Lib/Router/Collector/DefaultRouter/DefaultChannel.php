@@ -35,10 +35,10 @@ trait DefaultChannel {
      * @param RouterResponse $response
      *
      * @routerChannel
-     * @addLogger
+     * @addLogger DashBoard
      * @addMethods GET
-     * @addUrl /$manager
-     * @addUrl /$manager/{path:RS2}
+     * @addUrl /$dashboard
+     * @addUrl /$dashboard/{path:RS2}
      * @addMiddleware authorization
      *
      * @TODO `manager` form admin user setting

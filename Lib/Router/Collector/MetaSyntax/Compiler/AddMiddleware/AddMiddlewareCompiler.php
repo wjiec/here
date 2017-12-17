@@ -21,6 +21,7 @@ final class AddMiddlewareCompiler implements MetaSyntaxCompilerInterface {
     /**
      * @param array $value
      * @return MetaSyntaxCompilerResultBase
+     * @throws \Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxResultOverride
      */
     final public static function compile(array $value): MetaSyntaxCompilerResultBase {
         $add_middleware_component = new AddMiddleware();

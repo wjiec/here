@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ShadowMan
- * Date: 2017/11/30
- * Time: 23:18
+ * JwtGenerator.php
+ *
+ * @package   here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Utils\Jwt;
 

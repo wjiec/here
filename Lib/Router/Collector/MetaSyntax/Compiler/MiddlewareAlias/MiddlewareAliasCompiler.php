@@ -22,6 +22,7 @@ final class MiddlewareAliasCompiler implements MetaSyntaxCompilerInterface {
     /**
      * @param array $value
      * @return MetaSyntaxCompilerResultBase
+     * @throws \Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxResultOverride
      */
     final public static function compile(array $value): MetaSyntaxCompilerResultBase {
         $middleware_alias_component = new MiddlewareAlias();

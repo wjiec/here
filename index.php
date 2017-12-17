@@ -19,8 +19,6 @@ use Here\Config\Router\UserCollector;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Stream\IStream\Client\Request;
-use Here\Lib\Utils\Jwt\Jwt;
-use Here\Lib\Utils\Jwt\JwtAlgorithmType;
 
 /* the only explicit `require_once` to include `Autoloader` */
 require_once 'Lib/Loader/Autoloader.php';

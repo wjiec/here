@@ -25,10 +25,10 @@ trait DefaultMiddleware {
      *
      * @routerMiddleware
      * @middlewareAlias auth
-     * @addLogger authorizationLogger
+     * @addLogger Authorization "%date %time - %host: %url[$query] %user@%password"
      */
     final public function authorization(RouterRequest $request, RouterResponse $response): bool {
-        if (!$request::url_param('uid')) {
+        if (!$request::request_header('auth-token')) {
             return false;
         }
         return true;

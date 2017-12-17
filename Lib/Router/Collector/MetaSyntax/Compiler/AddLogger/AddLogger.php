@@ -16,6 +16,4 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
  * Class AddLogger
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddLogger
  */
-final class AddLogger extends MetaSyntaxCompilerResultBase {
-
-}
+final class AddLogger extends MetaSyntaxCompilerResultBase {}
