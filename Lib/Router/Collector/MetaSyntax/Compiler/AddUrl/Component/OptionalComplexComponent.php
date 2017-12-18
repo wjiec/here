@@ -17,7 +17,7 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrlType;
  * Class OptionalComplexComponent
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component
  */
-final class OptionalComplexComponent extends ComponentBase {
+final class OptionalComplexComponent extends ComponentBase implements ComplexComponentInterface {
     /**
      * OptionalComplexComponent constructor.
      * @param Regex $regex

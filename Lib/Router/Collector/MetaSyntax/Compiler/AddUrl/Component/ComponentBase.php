@@ -17,7 +17,7 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrlType;
  * Class ComponentBase
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component
  */
-abstract class ComponentBase extends \stdClass {
+abstract class ComponentBase extends \stdClass implements ComponentInterface {
     /**
      * ComponentBase constructor.
      * @param ValidUrlType $type
@@ -31,24 +31,23 @@ abstract class ComponentBase extends \stdClass {
     }
 
     /**
-     * @param string $name
-     * @return mixed
+     * @return ValidUrlType
      */
-    final public function __get(string $name) {
-        if ($name[0] !== '_') {
-            $name = "_{$name}";
-        }
-        return $this->{$name} ?? null;
+    final public function get_type(): ValidUrlType {
+        return $this->_type;
     }
 
     /**
-     * @param string $name
-     * @param mixed $value
+     * @return string
      */
-    final public function __set(string $name, $value): void {
-        if ($name[0] !== '_') {
-            $name = "_$name";
-        }
-        $this->{$name} = $value;
+    final public function get_name(): string {
+        return $this->_name;
+    }
+
+    /**
+     * @return Regex
+     */
+    final public function get_regex(): Regex {
+        return $this->_regex;
     }
 }

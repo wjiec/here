@@ -17,7 +17,7 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrlType;
  * Class ScalarComponent
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component
  */
-final class ScalarComponent extends ComponentBase {
+final class ScalarComponent extends ComponentBase implements ScalarComponentInterface {
     /**
      * ScalarComponent constructor.
      * @param Regex $regex

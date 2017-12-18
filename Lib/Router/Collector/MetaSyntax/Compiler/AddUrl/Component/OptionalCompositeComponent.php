@@ -17,7 +17,7 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrlType;
  * Class OptionalCompositeComponent
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component
  */
-final class OptionalCompositeComponent extends ComponentBase {
+final class OptionalCompositeComponent extends ComponentBase implements CompositeComponentInterface {
     /**
      * OptionalCompositeComponent constructor.
      * @param string $scalar
@@ -27,5 +27,12 @@ final class OptionalCompositeComponent extends ComponentBase {
     public function __construct(string $scalar, Regex $regex, ?string $name = null) {
         parent::__construct(new ValidUrlType(ValidUrlType::VALID_URL_TYPE_COMPOSITE_OPT_PATH), $regex, $name);
         $this->_scalar = $scalar;
+    }
+
+    /**
+     * @return string
+     */
+    public function get_scalar(): string {
+        return $this->_scalar;
     }
 }

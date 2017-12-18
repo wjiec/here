@@ -48,7 +48,7 @@ final class ValidUrl {
      * @return ValidUrlType
      */
     final public function last_component_type(): ValidUrlType {
-        return $this->_components[count($this->_components) - 1]->type;
+        return $this->_components[count($this->_components) - 1]->get_type();
     }
 
     /**
@@ -56,12 +56,5 @@ final class ValidUrl {
      */
     final public function pop_last(): \stdClass {
         return array_pop($this->_components);
-    }
-
-    /**
-     * @param \stdClass $component
-     */
-    final private function _add_component(\stdClass $component): void {
-        $this->_components[] = $component;
     }
 }
