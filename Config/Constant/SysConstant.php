@@ -30,4 +30,9 @@ final class SysConstant {
      * items separator
      */
     public const ITEM_SEPARATOR = ',';
+
+    /**
+     * characters to generate random string
+     */
+    public const RANDOM_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 }

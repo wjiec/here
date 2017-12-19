@@ -17,6 +17,11 @@ namespace Here\Config\Constant;
  */
 final class DefaultConstant {
     /**
+     * default charset
+     */
+    public const DEFAULT_CHARSET = "utf-8";
+
+    /**
      * default format for date
      *  * 2017-12-17
      */
