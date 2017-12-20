@@ -18,7 +18,7 @@ use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Rule\RuleParser;
  * Class ValidUrlObject
  * @package Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl
  */
-final class ValidUrl {
+final class ValidUrl implements \IteratorAggregate, \Countable {
     /**
      * @var array|ComponentBase[]
      */
@@ -52,9 +52,30 @@ final class ValidUrl {
     }
 
     /**
-     * @return \stdClass
+     * @return ComponentBase
      */
-    final public function pop_last(): \stdClass {
+    final public function pop_last(): ComponentBase {
         return array_pop($this->_components);
+    }
+
+    /**
+     * @return ComponentBase
+     */
+    final public function glimpse_last(): ComponentBase {
+        return $this->_components[count($this->_components) - 1];
+    }
+
+    /**
+     * @return \ArrayIterator
+     */
+    final public function getIterator(): \ArrayIterator {
+        return new \ArrayIterator($this->_components);
+    }
+
+    /**
+     * @return int
+     */
+    public function count(): int {
+        return \count($this->_components);
     }
 }

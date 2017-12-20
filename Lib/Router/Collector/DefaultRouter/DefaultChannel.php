@@ -24,6 +24,7 @@ trait DefaultChannel {
      *
      * @routerChannel
      * @addMethods GET
+     * @addUrl /
      * @addUrl /index[:\.(html|php)?]
      */
     final public function index(RouterRequest $request, RouterResponse $response): void {
@@ -37,8 +38,8 @@ trait DefaultChannel {
      * @routerChannel
      * @addLogger DashBoard
      * @addMethods GET
-     * @addUrl /$dashboard
-     * @addUrl /$dashboard/{path:RS2}
+     * @addUrl /&dashboard
+     * @addUrl /&dashboard/{path:RS2}
      * @addMiddleware authorization
      *
      * @TODO `manager` form admin user setting

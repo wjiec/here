@@ -62,5 +62,6 @@ abstract class RouterCollector implements CollectorInterface {
                 }
             }
         }
+        var_dump($this);
     }
 }

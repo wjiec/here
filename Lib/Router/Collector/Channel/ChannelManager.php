@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Channel;
-use Here\Lib\Router\Collector\Channel\Trie\ChannelTrie;
+use Here\Lib\Router\Collector\Channel\Tree\ChannelTree;
 
 
 /**
@@ -18,7 +18,7 @@ use Here\Lib\Router\Collector\Channel\Trie\ChannelTrie;
  */
 final class ChannelManager {
     /**
-     * @var ChannelTrie
+     * @var array|ChannelTree[]
      */
     private $_channel_tree;
 
@@ -26,13 +26,20 @@ final class ChannelManager {
      * ChannelManager constructor.
      */
     final public function __construct() {
-        $this->_channel_tree = new ChannelTrie();
+        $this->_channel_tree = array();
     }
 
     /**
      * @param RouterChannel $channel
+     * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
      */
-    final public function add_channel(RouterChannel $channel): void {
-        $this->_channel_tree->add_node($channel);
+    final public function add_channel(RouterChannel &$channel): void {
+        /* @var $method string */
+        foreach ($channel->get_methods_component() as $method) {
+            if (!isset($this->_channel_tree[$method])) {
+                $this->_channel_tree[$method] = new ChannelTree();
+            }
+            $this->_channel_tree[$method]->tree_parse($channel);
+        }
     }
 }

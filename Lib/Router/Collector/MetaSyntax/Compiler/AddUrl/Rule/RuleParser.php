@@ -141,7 +141,7 @@ final class RuleParser {
      * @return array
      */
     final private static function _is_scalar(string $segment): array {
-        if (preg_match('/^(?<scalar>[\w\$]+)$/', $segment, $matches)) {
+        if (preg_match('/^(?<scalar>[\w\&]+)$/', $segment, $matches)) {
             return $matches;
         }
         return array();
