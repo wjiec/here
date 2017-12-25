@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 12/25/2017
- * Time: 17:27
+ * FileOpenMode.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Ext\File;
 use Here\Lib\Ext\Enum\EnumType;

@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Administrator
- * Date: 12/25/2017
- * Time: 17:26
+ * FileObject.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Ext\File;
 
