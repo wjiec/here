@@ -37,6 +37,7 @@ abstract class RouterCollector implements CollectorInterface {
      * RouterCollector constructor.
      * @throws Generator\UncertainRouterTypeError
      * @throws Middleware\DuplicateMiddleware
+     * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
      */
     final public function __construct() {
         $this->_middleware_manager = new MiddlewareManager();
@@ -48,6 +49,7 @@ abstract class RouterCollector implements CollectorInterface {
     /**
      * @throws Generator\UncertainRouterTypeError
      * @throws Middleware\DuplicateMiddleware
+     * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
      */
     final private function _parse_methods(): void {
         $ref = new \ReflectionClass(get_class($this));
