@@ -32,6 +32,7 @@ final class ChannelManager {
     /**
      * @param RouterChannel $channel
      * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
+     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
      */
     final public function add_channel(RouterChannel &$channel): void {
         /* @var $method string */

@@ -36,6 +36,7 @@ abstract class RouterCollector implements CollectorInterface {
     /**
      * RouterCollector constructor.
      * @throws Generator\UncertainRouterTypeError
+     * @throws MetaComponentNotFound
      * @throws Middleware\DuplicateMiddleware
      * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
      */
@@ -48,6 +49,7 @@ abstract class RouterCollector implements CollectorInterface {
 
     /**
      * @throws Generator\UncertainRouterTypeError
+     * @throws MetaComponentNotFound
      * @throws Middleware\DuplicateMiddleware
      * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
      */

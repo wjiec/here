@@ -15,9 +15,9 @@ use Here\Lib\Ext\Regex\Regex;
  */
 interface ComponentInterface {
     /**
-     * @return string
+     * @return null|string
      */
-    public function get_name(): string;
+    public function get_name(): ?string;
 
     /**
      * @return Regex

@@ -38,9 +38,9 @@ abstract class ComponentBase extends \stdClass implements ComponentInterface {
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    final public function get_name(): string {
+    final public function get_name(): ?string {
         return $this->_name;
     }
 

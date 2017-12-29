@@ -37,6 +37,7 @@ final class RouterChannel {
      * @param array $meta
      * @param RouterCallback $callback
      * @throws InvalidChannel
+     * @throws \Here\Lib\Router\Collector\MetaSyntax\Compiler\CompilerNotFound
      */
     final public function __construct(string $name, array $meta, RouterCallback $callback) {
         $this->_channel_name = $name;
@@ -65,6 +66,7 @@ final class RouterChannel {
 
     /**
      * @return AddMethods
+     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
      */
     final public function get_methods_component(): AddMethods {
         /* @var AddMethods $methods_component */
@@ -81,6 +83,7 @@ final class RouterChannel {
 
     /**
      * @return AddUrl
+     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
      */
     final public function get_url_component(): AddUrl {
         /* @var AddUrl $url_component */
@@ -97,6 +100,7 @@ final class RouterChannel {
 
     /**
      * @return AddMiddleware
+     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
      */
     final public function get_middleware_component(): AddMiddleware {
         /* @var AddMiddleware $middleware_component */
