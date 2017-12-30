@@ -26,7 +26,11 @@ final class FullMatchComponent extends ComponentBase implements FullMatchCompone
     final public function __construct(?string $name = null, ?string $attributes) {
         parent::__construct(
             new ValidUrlType(ValidUrlType::VALID_URL_TYPE_FULL_MATCHED_PATH), new Regex('/^NOT_USE$/'), $name);
+
         $this->_attributes = $attributes;
+        if ($this->_attributes === null) {
+            $this->_attributes = strtoupper($this->_attributes);
+        }
     }
 
     /**

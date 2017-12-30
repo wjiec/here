@@ -44,7 +44,7 @@ trait DefaultChannel {
      *
      * @TODO `manager` form admin user setting
      */
-    final public function manager(RouterRequest $request, RouterResponse $response): void {
+    final public function dashboard(RouterRequest $request, RouterResponse $response): void {
         var_dump($request, $response);
     }
 

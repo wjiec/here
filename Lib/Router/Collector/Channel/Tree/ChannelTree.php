@@ -91,7 +91,8 @@ final class ChannelTree {
                     $this->_insert_complex_node($component); break;
                 case ($component instanceof CompositeComponentInterface):
                     $this->_insert_composite_node($component); break;
-                case ($component instanceof FullMatchComponentInterface): break;
+                case ($component instanceof FullMatchComponentInterface):
+                    $this->_insert_full_match_node($component); break;
                 default:
                     throw new ImpossibleError("what type of component?");
             }
@@ -174,6 +175,22 @@ final class ChannelTree {
             $this->_position[$complete_pattern] = array();
         }
         $this->_position = &$this->_position[$complete_pattern];
+    }
+
+    /**
+     * @param FullMatchComponentInterface $component
+     */
+    final private function _insert_full_match_node(FullMatchComponentInterface $component): void {
+        if (!isset($this->_position[TreeNodeType::NODE_TYPE_FULL_MATCH_PATH])) {
+            $this->_position[TreeNodeType::NODE_TYPE_FULL_MATCH_PATH] = array();
+        }
+        $this->_position = &$this->_position[TreeNodeType::NODE_TYPE_FULL_MATCH_PATH];
+
+        $complete_key = sprintf('%s@%s', $component->get_name(), $component->get_attributes());
+        if (!isset($this->_position[$complete_key])) {
+            $this->_position[$complete_key] = array();
+        }
+        $this->_position = &$this->_position[$complete_key];
     }
 
     /**
