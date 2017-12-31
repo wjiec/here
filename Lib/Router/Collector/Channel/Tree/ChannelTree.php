@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Channel\Tree;
+use Here\Config\Constant\SysConstant;
 use Here\Lib\Exceptions\Internal\ImpossibleError;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\AddUrl;
@@ -66,6 +67,24 @@ final class ChannelTree {
             $this->_position = &$this->_tree;
             $this->_insert_node($valid_url, $channel);
         }
+    }
+
+    /**
+     * @param string $request_uri
+     * @return RouterChannel|null
+     */
+    final public function find_channel(string $request_uri): ?RouterChannel {
+        $segments = array_filter(explode(SysConstant::URL_SEPARATOR, $request_uri), function($segment): bool {
+            return strlen($segment);
+        });
+
+        // root-path
+        if (empty($segments)) {
+            return $this->_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
+        }
+
+        // recursion find channel]
+        return null;
     }
 
     /**

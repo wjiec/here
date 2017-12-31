@@ -26,6 +26,9 @@ require_once 'Lib/Loader/Autoloader.php';
 /* register classes loader and set default namespace */
 Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 
+/* enable output buffer */
+ob_start();
+
 echo "<pre>";
 
 /* create dispatcher for global */

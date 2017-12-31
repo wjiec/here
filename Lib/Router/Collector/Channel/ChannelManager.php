@@ -9,7 +9,9 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Channel;
+use Here\Lib\Http\HttpStatusCode;
 use Here\Lib\Router\Collector\Channel\Tree\ChannelTree;
+use Here\Lib\Router\Collector\DispatchError;
 
 
 /**
@@ -42,5 +44,19 @@ final class ChannelManager {
             }
             $this->_channel_tree[$method]->tree_parse($channel);
         }
+    }
+
+    /**
+     * @param string $request_method
+     * @param $request_uri
+     * @return RouterChannel|null
+     * @throws DispatchError
+     */
+    final public function find_channel(string $request_method, $request_uri): ?RouterChannel {
+        if (!isset($this->_channel_tree[$request_method])) {
+            throw new DispatchError(HttpStatusCode::HTTP_STATUS_METHOD_NOT_ALLOWED, 'method not allowed');
+        }
+
+        return $this->_channel_tree[$request_method]->find_channel($request_uri);
     }
 }

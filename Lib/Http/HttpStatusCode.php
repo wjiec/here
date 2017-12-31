@@ -20,7 +20,7 @@ final class HttpStatusCode extends EnumType {
     /**
      * default http status code
      */
-    const __default = self::HTTP_STATUS_OK;
+    const __default = self::HTTP_STATUS_INTERNAL_SERVER_ERROR;
 
     /**
      * http status code: 100 -> continue;

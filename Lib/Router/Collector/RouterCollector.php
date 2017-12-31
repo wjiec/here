@@ -9,11 +9,13 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector;
+use Here\Lib\Http\HttpStatusCode;
 use Here\Lib\Router\Collector\Channel\ChannelManager;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\Generator\RouterGenerator;
 use Here\Lib\Router\Collector\Middleware\MiddlewareManager;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
+use \Here\Lib\Exceptions\Internal\ImpossibleError;
 use Here\Lib\Router\RouterCallback;
 
 
@@ -35,10 +37,10 @@ abstract class RouterCollector implements CollectorInterface {
 
     /**
      * RouterCollector constructor.
-     * @throws Generator\UncertainRouterTypeError
+     * @throws Generator\ExplicitTypeDeclareMissing
      * @throws MetaComponentNotFound
      * @throws Middleware\DuplicateMiddleware
-     * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
+     * @throws ImpossibleError
      */
     final public function __construct() {
         $this->_middleware_manager = new MiddlewareManager();
@@ -48,10 +50,25 @@ abstract class RouterCollector implements CollectorInterface {
     }
 
     /**
-     * @throws Generator\UncertainRouterTypeError
+     * @param string $request_method
+     * @param string $request_uri
+     * @return RouterChannel
+     * @throws DispatchError
+     */
+    final public function dispatch(string $request_method, string $request_uri): RouterChannel {
+        $channel = $this->_channel_manager->find_channel($request_method, $request_uri);
+
+        if ($channel === null) {
+            throw new DispatchError(HttpStatusCode::HTTP_STATUS_NOT_FOUND, 'Not Found');
+        }
+        return $channel;
+    }
+
+    /**
+     * @throws Generator\ExplicitTypeDeclareMissing
      * @throws MetaComponentNotFound
      * @throws Middleware\DuplicateMiddleware
-     * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
+     * @throws ImpossibleError
      */
     final private function _parse_methods(): void {
         $ref = new \ReflectionClass(get_class($this));
@@ -66,6 +83,5 @@ abstract class RouterCollector implements CollectorInterface {
                 }
             }
         }
-        var_dump($this);
     }
 }

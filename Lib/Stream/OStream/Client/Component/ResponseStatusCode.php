@@ -18,22 +18,9 @@ use Here\Lib\Http\HttpStatusCode;
  */
 trait ResponseStatusCode {
     /**
-     * @var HttpStatusCode
+     * @param int $code
      */
-    private $_http_status_code;
-
-    /**
-     * @param HttpStatusCode $code
-     */
-    final public function response_status_code(HttpStatusCode $code): void {
-        $this->_http_status_code = $code;
-    }
-
-    /**
-     * @return int
-     */
-    final public function make_response_status_code(): int {
-        \http_response_code($this->_http_status_code->value());
-        return $this->_http_status_code->value();
+    final public static function response_status_code(int $code): void {
+        http_response_code($code);
     }
 }

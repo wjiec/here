@@ -16,5 +16,4 @@ use Here\Lib\Stream\OStream\Client\Response;
  * Class RouterResponse
  * @package Here\Lib\Router
  */
-final class RouterResponse extends Response {
-}
+final class RouterResponse extends Response {}
