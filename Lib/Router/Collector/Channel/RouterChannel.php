@@ -65,10 +65,9 @@ final class RouterChannel {
     }
 
     /**
-     * @return AddMethods
-     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
+     * @return AddMethods|null
      */
-    final public function get_methods_component(): AddMethods {
+    final public function get_methods_component(): ?AddMethods {
         /* @var AddMethods $methods_component */
         $methods_component = $this->get_components(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_METHODS);
         return $methods_component;
@@ -82,10 +81,9 @@ final class RouterChannel {
     }
 
     /**
-     * @return AddUrl
-     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
+     * @return AddUrl|null
      */
-    final public function get_url_component(): AddUrl {
+    final public function get_url_component(): ?AddUrl {
         /* @var AddUrl $url_component */
         $url_component = $this->get_components(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_URL);
         return $url_component;
@@ -99,10 +97,9 @@ final class RouterChannel {
     }
 
     /**
-     * @return AddMiddleware
-     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
+     * @return AddMiddleware|null
      */
-    final public function get_middleware_component(): AddMiddleware {
+    final public function get_middleware_component(): ?AddMiddleware {
         /* @var AddMiddleware $middleware_component */
         $middleware_component = $this->get_components(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_MIDDLEWARE);
         return $middleware_component;

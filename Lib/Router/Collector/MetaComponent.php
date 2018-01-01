@@ -44,15 +44,10 @@ trait MetaComponent {
 
     /**
      * @param $component_name
-     * @return MetaSyntaxCompilerResultInterface
-     * @throws MetaComponentNotFound
+     * @return MetaSyntaxCompilerResultInterface|null
      */
-    final protected function get_components($component_name): MetaSyntaxCompilerResultInterface {
-        if (!$this->has_component($component_name)) {
-            throw new MetaComponentNotFound("cannot found component `{$component_name}`");
-        }
-
-        return $this->_components[ucfirst($component_name)];
+    final protected function get_components($component_name): ?MetaSyntaxCompilerResultInterface {
+        return $this->_components[ucfirst($component_name)] ?? null;
     }
 
     /**

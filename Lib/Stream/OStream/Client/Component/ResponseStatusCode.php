@@ -9,7 +9,6 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Stream\OStream\Client\Component;
-use Here\Lib\Http\HttpStatusCode;
 
 
 /**

@@ -10,9 +10,12 @@
  */
 namespace Here\Lib\Router\Collector\Channel\Tree;
 use Here\Config\Constant\SysConstant;
+use Here\Lib\Env\GlobalEnvironment;
 use Here\Lib\Exceptions\Internal\ImpossibleError;
+use Here\Lib\Ext\Regex\Regex;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\AddUrl;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\VariableCompositeComponent;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrl;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ComponentInterface;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\ComplexComponentInterface;
@@ -56,7 +59,6 @@ final class ChannelTree {
     /**
      * @param RouterChannel $channel
      * @throws ImpossibleError
-     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
      */
     final public function tree_parse(RouterChannel &$channel): void {
         /* @var AddUrl $add_url */
@@ -78,13 +80,106 @@ final class ChannelTree {
             return strlen($segment);
         });
 
-        // root-path
+        // recursion find channel
+        return $this->_recursion_find($this->_tree, $segments);
+    }
+
+    /**
+     * @param array $tree
+     * @param array $segments
+     * @return RouterChannel|null
+     */
+    final private function _recursion_find(array &$tree, array $segments): ?RouterChannel {
+        // first check segments is empty
         if (empty($segments)) {
-            return $this->_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
+            return $tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
         }
 
-        // recursion find channel]
+        $current_segment = array_shift($segments);
+
+        // second, check `scalar-node`
+        if (isset($tree[TreeNodeType::NODE_TYPE_SCALAR_PATH])) {
+            foreach ($tree[TreeNodeType::NODE_TYPE_SCALAR_PATH] as $_scalar => &$_scalar_tree) {
+                if ($_scalar[0] === '&') {
+                    $_scalar_name = substr($_scalar, 1);
+                    $_scalar = GlobalEnvironment::get_env($_scalar_name, $_scalar_name);
+                }
+
+                // scalar matched
+                if ($_scalar === $current_segment) {
+                    $channel = $this->_recursion_find($_scalar_tree, $segments);
+                    if ($channel instanceof RouterChannel) {
+                        // found channel
+                        return $channel;
+                    }
+                }
+            }
+            unset($_scalar_tree);
+        }
+
+        // third, check `composite-node`
+        if (isset($tree[TreeNodeType::NODE_TYPE_COMPOSITE_PATH])) {
+            foreach ($tree[TreeNodeType::NODE_TYPE_COMPOSITE_PATH] as $_pattern => &$_composite_tree) {
+                $regex = new Regex($_pattern);
+                if (($result = $regex->match($current_segment))) {
+                    $channel = $this->_recursion_find($_composite_tree, $segments);
+                    if ($channel instanceof RouterChannel) {
+                        return $channel;
+                    }
+                }
+            }
+            unset($_composite_tree);
+        }
+
+        // fourth, check `variable-node`, the same to `composite-node`
+        if (isset($tree[TreeNodeType::NODE_TYPE_VAR_COMPLEX_PATH])) {
+            foreach ($tree[TreeNodeType::NODE_TYPE_VAR_COMPLEX_PATH] as $_pattern => &$_var_tree) {
+                $regex = new Regex($_pattern);
+                if (($result = $regex->match($current_segment))) {
+                    $channel = $this->_recursion_find($_var_tree, $segments);
+                    if ($channel instanceof RouterChannel) {
+                        return $channel;
+                    }
+                }
+            }
+            unset($_var_tree);
+        }
+
+        // fifth, check `optional-node`, must be ending of route
+        if (empty($segments) && isset($tree[TreeNodeType::NODE_TYPE_OPT_COMPLEX_PATH])) {
+            foreach ($tree[TreeNodeType::NODE_TYPE_OPT_COMPLEX_PATH] as $_pattern => &$_opt_tree) {
+                $regex = new Regex($_pattern);
+                if (($result = $regex->match($current_segment))) {
+                    $channel = $_opt_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
+                    if ($channel instanceof RouterChannel) {
+                        return $channel;
+                    }
+                }
+            }
+            unset($_opt_tree);
+        }
+
+        // last check `full-match-node`
+        if (isset($tree[TreeNodeType::NODE_TYPE_FULL_MATCH_PATH])) {
+            foreach ($tree[TreeNodeType::NODE_TYPE_FULL_MATCH_PATH] as $_pattern => &$_full_match_tree) {
+                list($name, $attributes) = explode('@', $_pattern, 2);
+                if ($this->_check_attributes(array_merge(array($current_segment), $segments), $attributes)) {
+                    return $_full_match_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
+                }
+            }
+            unset($_full_match_tree);
+        }
+
         return null;
+    }
+
+    /**
+     * @param array $segments
+     * @param string $attributes
+     * @return bool
+     */
+    final private function _check_attributes(array $segments, string $attributes): bool {
+        return true;
     }
 
     /**
@@ -188,6 +283,7 @@ final class ChannelTree {
 
         $trimmed_pattern = self::_trim_pattern_wrapper($component->get_regex()->get_pattern());
         $complete_pattern = self::_make_composite_pattern(
+            ($component instanceof VariableCompositeComponent),
             $component->get_name(), $component->get_scalar(), $trimmed_pattern);
 
         if (!isset($this->_position[$complete_pattern])) {
@@ -222,14 +318,15 @@ final class ChannelTree {
     }
 
     /**
+     * @param bool $is_require
      * @param null|string $name
      * @param string $scalar
      * @param string $pattern
      * @return string
      */
-    final private static function _make_composite_pattern(?string $name, string $scalar, string $pattern): string {
+    final private static function _make_composite_pattern(bool $is_require, ?string $name, string $scalar, string $pattern): string {
         self::$_anonymous_name .= '_';
-        return sprintf('/^%s(?<%s>%s)?$/', $scalar, $name ?? self::$_anonymous_name, $pattern);
+        return sprintf('/^%s(?<%s>%s)%s$/', $scalar, $name ?? self::$_anonymous_name, $pattern, $is_require ? '' : '?');
     }
 
     /**

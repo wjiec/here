@@ -34,6 +34,7 @@ final class RouterMiddleware {
      * @param string $name
      * @param array $meta
      * @param RouterCallback $callback
+     * @throws \Here\Lib\Router\Collector\MetaSyntax\Compiler\CompilerNotFound
      */
     final public function __construct(string $name, array $meta, RouterCallback $callback) {
         $this->_middleware_name = $name;
