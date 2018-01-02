@@ -12,6 +12,7 @@ namespace Here\Lib\Router\Collector\Channel;
 use Here\Lib\Http\HttpStatusCode;
 use Here\Lib\Router\Collector\Channel\Tree\ChannelTree;
 use Here\Lib\Router\Collector\DispatchError;
+use Here\Lib\Router\RouterRequest;
 
 
 /**
@@ -34,7 +35,6 @@ final class ChannelManager {
     /**
      * @param RouterChannel $channel
      * @throws \Here\Lib\Exceptions\Internal\ImpossibleError
-     * @throws \Here\Lib\Router\Collector\MetaComponentNotFound
      */
     final public function add_channel(RouterChannel &$channel): void {
         /* @var $method string */
@@ -49,14 +49,15 @@ final class ChannelManager {
     /**
      * @param string $request_method
      * @param $request_uri
+     * @param RouterRequest $request
      * @return RouterChannel|null
      * @throws DispatchError
      */
-    final public function find_channel(string $request_method, $request_uri): ?RouterChannel {
+    final public function find_channel(string $request_method, $request_uri, RouterRequest $request): ?RouterChannel {
         if (!isset($this->_channel_tree[$request_method])) {
             throw new DispatchError(HttpStatusCode::HTTP_STATUS_METHOD_NOT_ALLOWED, 'method not allowed');
         }
 
-        return $this->_channel_tree[$request_method]->find_channel($request_uri);
+        return $this->_channel_tree[$request_method]->find_channel($request_uri, $request);
     }
 }

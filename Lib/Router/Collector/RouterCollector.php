@@ -17,6 +17,7 @@ use Here\Lib\Router\Collector\Middleware\MiddlewareManager;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
 use \Here\Lib\Exceptions\Internal\ImpossibleError;
 use Here\Lib\Router\RouterCallback;
+use Here\Lib\Router\RouterRequest;
 
 
 /**
@@ -38,7 +39,6 @@ abstract class RouterCollector implements CollectorInterface {
     /**
      * RouterCollector constructor.
      * @throws Generator\ExplicitTypeDeclareMissing
-     * @throws MetaComponentNotFound
      * @throws Middleware\DuplicateMiddleware
      * @throws ImpossibleError
      */
@@ -52,11 +52,12 @@ abstract class RouterCollector implements CollectorInterface {
     /**
      * @param string $request_method
      * @param string $request_uri
+     * @param RouterRequest $request
      * @return RouterChannel
      * @throws DispatchError
      */
-    final public function dispatch(string $request_method, string $request_uri): RouterChannel {
-        $channel = $this->_channel_manager->find_channel($request_method, $request_uri);
+    final public function dispatch(string $request_method, string $request_uri, RouterRequest $request): RouterChannel {
+        $channel = $this->_channel_manager->find_channel($request_method, $request_uri, $request);
 
         if ($channel === null) {
             throw new DispatchError(HttpStatusCode::HTTP_STATUS_NOT_FOUND, 'Not Found');
@@ -66,7 +67,6 @@ abstract class RouterCollector implements CollectorInterface {
 
     /**
      * @throws Generator\ExplicitTypeDeclareMissing
-     * @throws MetaComponentNotFound
      * @throws Middleware\DuplicateMiddleware
      * @throws ImpossibleError
      */

@@ -17,6 +17,11 @@ namespace Here\Config\Constant;
  */
 final class SysConstant {
     /**
+     * blogger version
+     */
+    public const HERE_VERSION = '0.0.1';
+
+    /**
      * url separator
      */
     public const URL_SEPARATOR = '/';

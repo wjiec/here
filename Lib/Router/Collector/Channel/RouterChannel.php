@@ -32,6 +32,11 @@ final class RouterChannel {
     private $_channel_name;
 
     /**
+     * @var RouterCallback
+     */
+    private $_callback;
+
+    /**
      * RouterChannel constructor.
      * @param string $name
      * @param array $meta
@@ -41,6 +46,7 @@ final class RouterChannel {
      */
     final public function __construct(string $name, array $meta, RouterCallback $callback) {
         $this->_channel_name = $name;
+        $this->_callback = $callback;
 
         $allowed_syntax = AllowedChannelSyntax::get_constants();
         $this->compile_components($allowed_syntax, $meta);
@@ -55,6 +61,13 @@ final class RouterChannel {
      */
     final public function get_channel_name(): string {
         return $this->_channel_name;
+    }
+
+    /**
+     * @return RouterCallback
+     */
+    final public function get_channel_callback(): RouterCallback {
+        return $this->_callback;
     }
 
     /**

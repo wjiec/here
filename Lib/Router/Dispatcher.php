@@ -10,10 +10,10 @@
  */
 namespace Here\Lib\Router;
 use Here\Config\Constant\SysConstant;
-use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\CollectorInterface;
 use Here\Lib\Router\Collector\DispatchError;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
 use Here\Lib\Router\Collector\RouterCollector;
 
 
@@ -66,7 +66,7 @@ final class Dispatcher {
 
         try {
             $trimmed_uri = trim($request_uri, SysConstant::URL_SEPARATOR);
-            $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
+            $channel = $this->_collector->dispatch($request_method, $trimmed_uri, $this->_request);
 
             $this->_run_life_cycle($channel);
         } catch (DispatchError $exception) {
@@ -78,12 +78,18 @@ final class Dispatcher {
      * @param RouterChannel $channel
      */
     final private function _run_life_cycle(RouterChannel $channel): void {
-        $middleware = null;
-        if ($channel->has_middleware_component()) {
-            $middleware = $channel->get_middleware_component();
-        }
+        $callback = $channel->get_channel_callback();
 
-        var_dump($channel->get_channel_name());
+        try {
+            $middleware = $channel->get_middleware_component();
+            if ($middleware instanceof AddMiddleware) {
+                var_dump($middleware);
+            }
+
+            // hook of callback before and middleware
+            $callback->apply($this->_request, $this->_response);
+            // hook if callback after and logger
+        } catch (\ArgumentCountError $e) {}
     }
 
     /**

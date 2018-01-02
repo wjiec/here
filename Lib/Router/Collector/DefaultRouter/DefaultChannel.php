@@ -89,8 +89,22 @@ trait DefaultChannel {
      * @param RouterResponse $response
      *
      * @routerChannel
+     * @addLogger ApiLogger
+     * @addMethods GET, POST
+     * @addUrl /api/v<api_version:\d{1,2}>/<module:\w+>/<action:\w+>
+     */
+    final public function api(RouterRequest $request, RouterResponse $response): void {
+        var_dump($request, $response);
+    }
+
+
+    /**
+     * @param RouterRequest $request
+     * @param RouterResponse $response
+     *
+     * @routerChannel
      * @addMethods GET
-     * @addUrl /<core>/<module:\w+>/<action:[a-zA-Z]+>
+     * @addUrl /user/<module:\w+>/<action:[a-zA-Z]+>
      */
     final public function test_router_1(RouterRequest $request, RouterResponse $response): void {
         var_dump($request, $response);
@@ -102,10 +116,9 @@ trait DefaultChannel {
      *
      * @routerChannel
      * @addMethods GET
-     * @addUrl /<core>/<module:\w+>/<action_id:\d+>
+     * @addUrl /user/<module:\w+>/<action_id:\d+>
      */
     final public function test_router_2(RouterRequest $request, RouterResponse $response): void {
         var_dump($request, $response);
     }
-
 }
