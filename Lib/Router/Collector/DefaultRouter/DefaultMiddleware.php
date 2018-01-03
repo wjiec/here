@@ -10,7 +10,6 @@
  */
 namespace Here\Lib\Router\Collector\DefaultRouter;
 use Here\Lib\Router\RouterRequest;
-use Here\Lib\Router\RouterResponse;
 
 
 /**
@@ -19,16 +18,14 @@ use Here\Lib\Router\RouterResponse;
  */
 trait DefaultMiddleware {
     /**
-     * @param RouterRequest $request
-     * @param RouterResponse $response
      * @return bool
      *
      * @routerMiddleware
      * @middlewareAlias auth
      * @addLogger Authorization "%date %time - %host: %url[$query] %user@%password"
      */
-    final public function authorization(RouterRequest $request, RouterResponse $response): bool {
-        if (!$request::request_header('auth-token')) {
+    final public function authorization(): bool {
+        if (!RouterRequest::request_header('auth-token')) {
             return false;
         }
         return true;

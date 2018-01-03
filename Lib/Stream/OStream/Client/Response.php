@@ -10,7 +10,7 @@
  */
 namespace Here\Lib\Stream\OStream\Client;
 use Here\Lib\Stream\OStream\Client\Component\ResponseHeader;
-use Here\Lib\Stream\OStream\Client\Component\ResponseStatusCode;
+use Here\Lib\Stream\OStream\Client\Component\ResponseOperation;
 
 
 /**
@@ -24,7 +24,7 @@ class Response {
     use ResponseHeader;
 
     /**
-     * modify response status code
+     * operation of response
      */
-    use ResponseStatusCode;
+    use ResponseOperation;
 }

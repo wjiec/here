@@ -34,24 +34,11 @@ final class Dispatcher {
     private $_collector;
 
     /**
-     * @var RouterRequest
-     */
-    private $_request;
-
-    /**
-     * @var RouterResponse
-     */
-    private $_response;
-
-    /**
      * Dispatcher constructor.
      * @param CollectorInterface $collector
      */
     final public function __construct(CollectorInterface $collector) {
         $this->_collector = $collector;
-
-        $this->_request = new RouterRequest();
-        $this->_response = new RouterResponse();
     }
 
     /**
@@ -66,7 +53,7 @@ final class Dispatcher {
 
         try {
             $trimmed_uri = trim($request_uri, SysConstant::URL_SEPARATOR);
-            $channel = $this->_collector->dispatch($request_method, $trimmed_uri, $this->_request);
+            $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
 
             $this->_run_life_cycle($channel);
         } catch (DispatchError $exception) {
@@ -87,7 +74,7 @@ final class Dispatcher {
             }
 
             // hook of callback before and middleware
-            $callback->apply($this->_request, $this->_response);
+            $callback->apply();
             // hook if callback after and logger
         } catch (\ArgumentCountError $e) {}
     }

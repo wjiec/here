@@ -19,6 +19,7 @@ use Here\Config\Router\UserCollector;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Stream\IStream\Client\Request;
+use Here\Lib\Stream\OStream\Client\Response;
 
 /* the only explicit `require_once` to include `Autoloader` */
 require_once 'Lib/Loader/Autoloader.php';
@@ -26,8 +27,8 @@ require_once 'Lib/Loader/Autoloader.php';
 /* register classes loader and set default namespace */
 Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 
-/* enable output buffer */
-ob_start();
+/* response environment initialization */
+Response::init();
 
 echo "<pre>";
 

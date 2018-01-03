@@ -42,11 +42,6 @@ final class ChannelTree {
     private $_position;
 
     /**
-     * @var RouterRequest
-     */
-    private $_request;
-
-    /**
      * @var string
      */
     private static $_anonymous_name;
@@ -79,15 +74,13 @@ final class ChannelTree {
 
     /**
      * @param string $request_uri
-     * @param RouterRequest $request
      * @return RouterChannel|null
      */
-    final public function find_channel(string $request_uri, RouterRequest $request): ?RouterChannel {
+    final public function find_channel(string $request_uri): ?RouterChannel {
         $segments = array_filter(explode(SysConstant::URL_SEPARATOR, $request_uri), function($segment): bool {
             return strlen($segment);
         });
 
-        $this->_request = $request;
         // recursion find channel
         return $this->_recursion_find($this->_tree, $segments);
     }
@@ -131,13 +124,13 @@ final class ChannelTree {
                 $regex = new Regex($_pattern);
                 if (($result = $regex->match($current_segment))) {
                     $name = self::_find_named_key($result);
-                    $this->_request->push_router_pair($name, $result[$name]);
+                    RouterRequest::push_router_pair($name, $result[$name]);
 
                     $channel = $this->_recursion_find($_composite_tree, $segments);
                     if ($channel instanceof RouterChannel) {
                         return $channel;
                     } else {
-                        $this->_request->delete_router_pair($name);
+                        RouterRequest::delete_router_pair($name);
                     }
                 }
             }
@@ -150,13 +143,13 @@ final class ChannelTree {
                 $regex = new Regex($_pattern);
                 if (($result = $regex->match($current_segment))) {
                     $name = self::_find_named_key($result);
-                    $this->_request->push_router_pair($name, $result[$name]);
+                    RouterRequest::push_router_pair($name, $result[$name]);
 
                     $channel = $this->_recursion_find($_var_tree, $segments);
                     if ($channel instanceof RouterChannel) {
                         return $channel;
                     } else {
-                        $this->_request->delete_router_pair($name);
+                        RouterRequest::delete_router_pair($name);
                     }
                 }
             }
@@ -169,13 +162,13 @@ final class ChannelTree {
                 $regex = new Regex($_pattern);
                 if (($result = $regex->match($current_segment))) {
                     $name = self::_find_named_key($result);
-                    $this->_request->push_router_pair($name, $result[$name]);
+                    RouterRequest::push_router_pair($name, $result[$name]);
 
                     $channel = $_opt_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
                     if ($channel instanceof RouterChannel) {
                         return $channel;
                     } else {
-                        $this->_request->delete_router_pair($name);
+                        RouterRequest::delete_router_pair($name);
                     }
                 }
             }
@@ -188,14 +181,14 @@ final class ChannelTree {
                 list($name, $attributes) = explode('@', $_pattern, 2);
 
                 $complete_segments = array_merge(array($current_segment), $segments);
-                $this->_request->push_router_pair($name, join(SysConstant::URL_SEPARATOR, $complete_segments));
+                RouterRequest::push_router_pair($name, join(SysConstant::URL_SEPARATOR, $complete_segments));
 
                 if ($this->_check_attributes($complete_segments, $attributes)) {
                     $channel = $_full_match_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
                     if ($channel instanceof RouterChannel) {
                         return $channel;
                     } else {
-                        $this->_request->delete_router_pair($name);
+                        RouterRequest::delete_router_pair($name);
                     }
                 }
             }
@@ -211,6 +204,28 @@ final class ChannelTree {
      * @return bool
      */
     final private function _check_attributes(array $segments, string $attributes): bool {
+        // empty attributes
+        if ($attributes === '') {
+            return true;
+        }
+
+        if (preg_match_all('/[A-Z]\d?/m', $attributes, $matches)) {
+            foreach ($matches[0] as $match_item) {
+                switch ($match_item[0]) {
+                    case 'R':  // required flag
+                        if (empty($segments)) {
+                            return false;
+                        }
+                        break;
+                    case 'S':  // segments limit
+                        if (count($segments) < intval($match_item[1])) {
+                            return false;
+                        }
+                        break;
+                }
+            }
+        }
+
         return true;
     }
 
