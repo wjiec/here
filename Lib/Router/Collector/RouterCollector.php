@@ -38,8 +38,8 @@ abstract class RouterCollector implements CollectorInterface {
     /**
      * RouterCollector constructor.
      * @throws Generator\ExplicitTypeDeclareMissing
-     * @throws Middleware\DuplicateMiddleware
      * @throws ImpossibleError
+     * @throws Middleware\DuplicateMiddleware
      */
     final public function __construct() {
         $this->_middleware_manager = new MiddlewareManager();
@@ -64,9 +64,25 @@ abstract class RouterCollector implements CollectorInterface {
     }
 
     /**
+     * @param string $middleware_name
+     * @throws MiddlewareError
+     * @throws \ArgumentCountError
+     */
+    final public function start_middleware(string $middleware_name): void {
+        if (!$this->_middleware_manager->has_middleware($middleware_name)) {
+            throw new MiddlewareError(500, "middleware `{}$middleware_name` not found");
+        }
+
+        /* @var RouterMiddleware $middleware */
+        if (($middleware = $this->_middleware_manager->get_middleware($middleware_name))) {
+            $middleware->apply_callback();
+        }
+    }
+
+    /**
      * @throws Generator\ExplicitTypeDeclareMissing
-     * @throws Middleware\DuplicateMiddleware
      * @throws ImpossibleError
+     * @throws Middleware\DuplicateMiddleware
      */
     final private function _parse_methods(): void {
         $ref = new \ReflectionClass(get_class($this));

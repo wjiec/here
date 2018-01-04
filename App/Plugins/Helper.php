@@ -1,6 +1,6 @@
 <?php
 /**
- * Here Plugins Helper
+ * Here Plugin Helper
  * 
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -12,7 +12,7 @@
 
 /** Class Plugins_Helper
  *
- * Plugins helper
+ * Plugin helper
  */
 class Plugins_Helper extends Here_Abstracts_Widget {
     /**
@@ -23,7 +23,7 @@ class Plugins_Helper extends Here_Abstracts_Widget {
     public function __construct(array $options = array()) {
         parent::__construct($options);
 
-        $this->set_widget_name('Plugins Helper');
+        $this->set_widget_name('Plugin Helper');
     }
 
     /**

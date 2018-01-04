@@ -63,6 +63,7 @@ final class Dispatcher {
 
     /**
      * @param RouterChannel $channel
+     * @throws Collector\MiddlewareError
      */
     final private function _run_life_cycle(RouterChannel $channel): void {
         $callback = $channel->get_channel_callback();
@@ -70,7 +71,10 @@ final class Dispatcher {
         try {
             $middleware = $channel->get_middleware_component();
             if ($middleware instanceof AddMiddleware) {
-                var_dump($middleware);
+                // running middleware
+                foreach ($middleware as $middleware_name) {
+                    $this->_collector->start_middleware($middleware_name);
+                }
             }
 
             // hook of callback before and middleware

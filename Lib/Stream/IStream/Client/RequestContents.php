@@ -58,13 +58,18 @@ trait RequestContents {
     final public static function request_header(string $name, ?string $default = null) {
         if (self::$_request_headers === null) {
             if (function_exists('apache_request_headers')) {
-                self::$_request_headers = apache_request_headers();
+                $headers = apache_request_headers();
             } else {
-                self::$_request_headers = self::_apache_request_headers();
+                $headers = self::_apache_request_headers();
+            }
+
+            // lowercase
+            foreach ($headers as $key => $value) {
+                self::$_request_headers[strtolower($key)] = $value;
             }
         }
 
-        return self::$_request_headers[$name] ?? $default;
+        return self::$_request_headers[strtolower($name)] ?? $default;
     }
 
     /**
@@ -96,6 +101,7 @@ trait RequestContents {
 
                     $arh_key = implode('-', $rx_matches);
                 }
+
                 $headers[$arh_key] = $val;
             }
         }

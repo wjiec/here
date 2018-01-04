@@ -18,7 +18,7 @@ use Throwable;
  * Class DispatchError
  * @package Here\Lib\Router\Collector
  */
-final class DispatchError extends ExceptionBase {
+class DispatchError extends ExceptionBase {
     /**
      * error level
      */

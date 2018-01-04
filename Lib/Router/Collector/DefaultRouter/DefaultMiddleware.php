@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\DefaultRouter;
+use Here\Lib\Router\Collector\MiddlewareError;
 use Here\Lib\Router\RouterRequest;
 
 
@@ -18,16 +19,15 @@ use Here\Lib\Router\RouterRequest;
  */
 trait DefaultMiddleware {
     /**
-     * @return bool
+     * @throws MiddlewareError
      *
      * @routerMiddleware
      * @middlewareAlias auth
      * @addLogger Authorization "%date %time - %host: %url[$query] %user@%password"
      */
-    final public function authorization(): bool {
+    final public function authorization(): void {
         if (!RouterRequest::request_header('auth-token')) {
-            return false;
+            throw new MiddlewareError(401, "cannot found auth-token");
         }
-        return true;
     }
 }

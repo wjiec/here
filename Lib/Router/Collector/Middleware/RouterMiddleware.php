@@ -30,6 +30,11 @@ final class RouterMiddleware {
     private $_middleware_name;
 
     /**
+     * @var RouterCallback
+     */
+    private $_callback;
+
+    /**
      * RouterMiddleware constructor.
      * @param string $name
      * @param array $meta
@@ -38,9 +43,19 @@ final class RouterMiddleware {
      */
     final public function __construct(string $name, array $meta, RouterCallback $callback) {
         $this->_middleware_name = $name;
+        $this->_callback = $callback;
 
         $allowed_syntax = AllowedMiddlewareSyntax::get_constants();
         $this->compile_components($allowed_syntax, $meta);
+    }
+
+    /**
+     * @param array ...$args
+     * @return mixed
+     * @throws \ArgumentCountError
+     */
+    final public function apply_callback(...$args) {
+        return $this->_callback->apply($args);
     }
 
     /**
@@ -58,15 +73,10 @@ final class RouterMiddleware {
     }
 
     /**
-     * @return MiddlewareAlias
-     * @throws MiddlewareAliasNotFound
+     * @return MiddlewareAlias|null
      */
-    final public function get_alias(): MiddlewareAlias {
-        if (!$this->has_alias_component()) {
-            throw new MiddlewareAliasNotFound("cannot found alias name to middleware `{$this->_middleware_name}`");
-        }
-
-        /* @var MiddlewareAlias $alias_component */
+    final public function get_alias(): ?MiddlewareAlias {
+        /* @var MiddlewareAlias|null $alias_component */
         $alias_component = $this->get_components(AllowedMiddlewareSyntax::MIDDLEWARE_SYNTAX_MIDDLEWARE_ALIAS);
         return $alias_component;
     }
