@@ -9,20 +9,5 @@
 # node
 node_modules
 
-# compile es6 file
-*.js
-
-# webstorm project
+# PHPStorm and WebStorm
 .idea
-
-# exclued webpack.config.js
-!webpack.config.js
-
-# exckude glup file
-!gulpfile.js
-
-# style sheet
-*.css
-
-# blogger configure file
-configure.php
