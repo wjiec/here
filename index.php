@@ -4,7 +4,7 @@
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
- * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @copyright Copyright (C) 2016-2018 ShadowMan
  * @license   MIT License
  * @version   Develop: 0.0.1
  * @link      https://github.com/JShadowMan/here
@@ -30,6 +30,7 @@ Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 /* response environment initialization */
 Response::init();
 
+/* test case */
 echo "<pre>";
 
 /* create dispatcher for global */

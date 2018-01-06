@@ -10,6 +10,8 @@
  */
 namespace Here\Lib\Router;
 use Here\Config\Constant\SysConstant;
+use Here\Config\Router\UserRouterLifeCycleHook;
+use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\CollectorInterface;
 use Here\Lib\Router\Collector\DispatchError;
@@ -46,18 +48,26 @@ final class Dispatcher {
      * @param string $request_uri
      */
     final public function dispatch(string $request_method, string $request_uri): void {
-        // check method is allowed
-        if (!AllowedMethods::contains($request_method)) {
-            $this->trigger_error(405, "`{$request_method}` is not allowed");
-        }
-
         try {
-            $trimmed_uri = trim($request_uri, SysConstant::URL_SEPARATOR);
-            $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
+            // on request received
+            UserRouterLifeCycleHook::on_request_enter();
 
-            $this->_run_life_cycle($channel);
-        } catch (DispatchError $exception) {
-            $this->trigger_error($exception->get_error_code(), $exception->get_message());
+            // check method is allowed
+            if (!AllowedMethods::contains($request_method)) {
+                $this->trigger_error(405, "`{$request_method}` is not allowed");
+            }
+
+            try {
+                $trimmed_uri = trim($request_uri, SysConstant::URL_SEPARATOR);
+                $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
+
+                $this->_exec_callback($channel);
+            } catch (DispatchError $exception) {
+                // check error handler exists?
+                $this->trigger_error($exception->get_error_code(), $exception->get_message());
+            }
+        } catch (ExceptionBase $except) {
+
         }
     }
 
@@ -65,7 +75,7 @@ final class Dispatcher {
      * @param RouterChannel $channel
      * @throws Collector\MiddlewareError
      */
-    final private function _run_life_cycle(RouterChannel $channel): void {
+    final private function _exec_callback(RouterChannel $channel): void {
         $callback = $channel->get_channel_callback();
 
         try {
