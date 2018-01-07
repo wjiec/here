@@ -13,6 +13,7 @@ use Here\Config\Constant\SysConstant;
 use Here\Config\Router\UserRouterLifeCycleHook;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
+use Here\Lib\Router\Collector\Channel\RouterChannelInterface;
 use Here\Lib\Router\Collector\CollectorInterface;
 use Here\Lib\Router\Collector\DispatchError;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
@@ -50,7 +51,7 @@ final class Dispatcher {
     final public function dispatch(string $request_method, string $request_uri): void {
         try {
             // on request received
-            UserRouterLifeCycleHook::on_request_enter();
+//            UserRouterLifeCycleHook::on_request_enter();
 
             // check method is allowed
             if (!AllowedMethods::contains($request_method)) {
@@ -73,11 +74,8 @@ final class Dispatcher {
 
     /**
      * @param RouterChannel $channel
-     * @throws Collector\MiddlewareError
      */
     final private function _exec_callback(RouterChannel $channel): void {
-        $callback = $channel->get_channel_callback();
-
         try {
             $middleware = $channel->get_middleware_component();
             if ($middleware instanceof AddMiddleware) {
@@ -88,7 +86,7 @@ final class Dispatcher {
             }
 
             // hook of callback before and middleware
-            $callback->apply();
+            $channel->apply_callback();
             // hook if callback after and logger
         } catch (\ArgumentCountError $e) {}
     }

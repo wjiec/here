@@ -13,6 +13,7 @@ use Here\Lib\Http\HttpStatusCode;
 use Here\Lib\Router\Collector\Channel\ChannelManager;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\Generator\RouterGenerator;
+use Here\Lib\Router\Collector\Handler\HandlerManager;
 use Here\Lib\Router\Collector\Middleware\MiddlewareManager;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
 use \Here\Lib\Exceptions\Internal\ImpossibleError;
@@ -36,6 +37,11 @@ abstract class RouterCollector implements CollectorInterface {
     private $_channel_manager;
 
     /**
+     * @var HandlerManager
+     */
+    private $_handler_manager;
+
+    /**
      * RouterCollector constructor.
      * @throws Generator\ExplicitTypeDeclareMissing
      * @throws ImpossibleError
@@ -44,6 +50,7 @@ abstract class RouterCollector implements CollectorInterface {
     final public function __construct() {
         $this->_middleware_manager = new MiddlewareManager();
         $this->_channel_manager = new ChannelManager();
+        $this->_handler_manager = new HandlerManager();
 
         $this->_parse_methods();
     }
@@ -70,7 +77,7 @@ abstract class RouterCollector implements CollectorInterface {
      */
     final public function start_middleware(string $middleware_name): void {
         if (!$this->_middleware_manager->has_middleware($middleware_name)) {
-            throw new MiddlewareError(500, "middleware `{}$middleware_name` not found");
+            throw new MiddlewareError(500, "middleware `{$middleware_name}` not found");
         }
 
         /* @var RouterMiddleware $middleware */

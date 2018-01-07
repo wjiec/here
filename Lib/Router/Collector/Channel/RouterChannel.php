@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Channel;
-use Here\Lib\Router\Collector\MetaComponent;
+use Here\Lib\Router\Collector\CollectorComponentBase;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMethods\AddMethods;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\AddUrl;
@@ -20,22 +20,7 @@ use Here\Lib\Router\RouterCallback;
  * Class RouterChannel
  * @package Here\Lib\Router\Collector\Channel
  */
-final class RouterChannel {
-    /**
-     * meta components utils
-     */
-    use MetaComponent;
-
-    /**
-     * @var string
-     */
-    private $_channel_name;
-
-    /**
-     * @var RouterCallback
-     */
-    private $_callback;
-
+final class RouterChannel extends CollectorComponentBase {
     /**
      * RouterChannel constructor.
      * @param string $name
@@ -45,36 +30,19 @@ final class RouterChannel {
      * @throws \Here\Lib\Router\Collector\MetaSyntax\Compiler\CompilerNotFound
      */
     final public function __construct(string $name, array $meta, RouterCallback $callback) {
-        $this->_channel_name = $name;
-        $this->_callback = $callback;
+        parent::__construct($name, $meta, $callback);
 
-        $allowed_syntax = AllowedChannelSyntax::get_constants();
-        $this->compile_components($allowed_syntax, $meta);
-
-        if (!$this->has_methods_component() || !$this->has_url_component()) {
-            throw new InvalidChannel("channel `{$this->_channel_name}` invalid, because missing method/url syntax");
+        if ($this->get_methods_component() === null || $this->get_url_component() === null) {
+            $channel_name = $this->get_component_name();
+            throw new InvalidChannel("channel `{$channel_name}` invalid, because missing method/url meta");
         }
     }
 
     /**
-     * @return string
+     * @return array
      */
-    final public function get_channel_name(): string {
-        return $this->_channel_name;
-    }
-
-    /**
-     * @return RouterCallback
-     */
-    final public function get_channel_callback(): RouterCallback {
-        return $this->_callback;
-    }
-
-    /**
-     * @return bool
-     */
-    final public function has_methods_component(): bool {
-        return $this->has_component(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_METHODS);
+    final protected function _allowed_syntax(): array {
+        return AllowedChannelSyntax::get_constants();
     }
 
     /**
@@ -87,26 +55,12 @@ final class RouterChannel {
     }
 
     /**
-     * @return bool
-     */
-    final public function has_url_component(): bool {
-        return $this->has_component(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_URL);
-    }
-
-    /**
      * @return AddUrl|null
      */
     final public function get_url_component(): ?AddUrl {
         /* @var AddUrl $url_component */
         $url_component = $this->get_components(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_URL);
         return $url_component;
-    }
-
-    /**
-     * @return bool
-     */
-    final public function has_middleware_component(): bool {
-        return $this->has_component(AllowedChannelSyntax::CHANNEL_SYNTAX_ADD_MIDDLEWARE);
     }
 
     /**

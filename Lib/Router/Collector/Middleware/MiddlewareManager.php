@@ -39,7 +39,7 @@ final class MiddlewareManager {
      * @throws DuplicateMiddleware
      */
     final public function add_middleware(RouterMiddleware $middleware): void {
-        $middleware_name = $middleware->get_middleware_name();
+        $middleware_name = $middleware->get_component_name();
         if ($this->has_middleware($middleware_name)) {
             throw new DuplicateMiddleware("the same middleware name by `{$middleware_name}`");
         }
