@@ -60,7 +60,7 @@ abstract class CollectorComponentBase implements CollectorComponentInterface {
      * @throws \ArgumentCountError
      */
     final public function apply_callback(...$args) {
-        return $this->_component_callback->apply($args);
+        return $this->_component_callback->apply(...$args);
     }
 
     /**

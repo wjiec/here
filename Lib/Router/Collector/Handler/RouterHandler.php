@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Router\Collector\Handler;
 use Here\Lib\Router\Collector\CollectorComponentBase;
+use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddHandler\AddHandler;
 
 
 /**
@@ -21,6 +22,22 @@ final class RouterHandler extends CollectorComponentBase {
      * @return array
      */
     final protected function _allowed_syntax(): array {
-        return array();
+        return AllowedHandlerSyntax::get_constants();
+    }
+
+    /**
+     * @return bool
+     */
+    final public function is_default_handler(): bool {
+        return $this->has_component(AllowedHandlerSyntax::HANDLER_SYNTAX_DEFAULT_HANDLER);
+    }
+
+    /**
+     * @return AddHandler|null
+     */
+    final public function get_add_handler_component(): ?AddHandler {
+        /* @var AddHandler|null $add_handler */
+        $add_handler = $this->get_components(AllowedHandlerSyntax::HANDLER_SYNTAX_ADD_HANDLER);
+        return $add_handler;
     }
 }

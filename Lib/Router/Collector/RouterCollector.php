@@ -14,6 +14,7 @@ use Here\Lib\Router\Collector\Channel\ChannelManager;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\Generator\RouterGenerator;
 use Here\Lib\Router\Collector\Handler\HandlerManager;
+use Here\Lib\Router\Collector\Handler\RouterHandler;
 use Here\Lib\Router\Collector\Middleware\MiddlewareManager;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
 use \Here\Lib\Exceptions\Internal\ImpossibleError;
@@ -44,6 +45,8 @@ abstract class RouterCollector implements CollectorInterface {
     /**
      * RouterCollector constructor.
      * @throws Generator\ExplicitTypeDeclareMissing
+     * @throws Handler\DuplicateDefaultHandler
+     * @throws Handler\InvalidRouterHandler
      * @throws ImpossibleError
      * @throws Middleware\DuplicateMiddleware
      */
@@ -87,7 +90,27 @@ abstract class RouterCollector implements CollectorInterface {
     }
 
     /**
+     * @param int $error_code
+     * @param string $message
+     * @return bool
+     * @throws \ArgumentCountError
+     */
+    final public function trigger_error(int $error_code, string $message): bool {
+        $handler = $this->_handler_manager->get_handler($error_code);
+        if ($handler === null) {
+            $handler = $this->_handler_manager->get_default_handler();
+            if ($handler === null) {
+                return false;
+            }
+        }
+        $handler->apply_callback($message);
+        return true;
+    }
+
+    /**
      * @throws Generator\ExplicitTypeDeclareMissing
+     * @throws Handler\DuplicateDefaultHandler
+     * @throws Handler\InvalidRouterHandler
      * @throws ImpossibleError
      * @throws Middleware\DuplicateMiddleware
      */
@@ -101,6 +124,8 @@ abstract class RouterCollector implements CollectorInterface {
                     $this->_middleware_manager->add_middleware($node);
                 } else if ($node instanceof RouterChannel) {
                     $this->_channel_manager->add_channel($node);
+                } else if ($node instanceof RouterHandler) {
+                    $this->_handler_manager->add_handler($node);
                 }
             }
         }

@@ -60,13 +60,12 @@ trait MetaSyntaxCompiler {
             if (in_array($syntax, $allowed_syntax)) {
                 $syntax = ucfirst($syntax);
                 /* @var MetaSyntaxCompilerInterface $compiler_name */
-                $compiler_name = "Here\\Lib\\Router\\Collector\\MetaSyntax\\Compiler\\{$syntax}\\{$syntax}Compiler";
+                $compiler_name = sprintf("%s\\Compiler\\{$syntax}\\{$syntax}Compiler", __NAMESPACE__);
                 if (!Autoloader::class_exists($compiler_name)) {
                     throw new CompilerNotFound("cannot found '{$syntax}' compiler, class => {$compiler_name}");
                 }
 
-                $this->add_component($syntax, call_user_func_array(
-                    array($compiler_name, 'compile'), array($value)));
+                $this->add_component($syntax, call_user_func_array(array($compiler_name, 'compile'), array($value)));
             }
         }
     }

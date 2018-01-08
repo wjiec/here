@@ -18,11 +18,10 @@ use Here\Lib\Router\Collector\RouterType;
  */
 final class RouterTypeAnalyzer {
     /**
-     * @param string $name
      * @param array $meta
      * @return RouterType
      */
-    final public static function analysis(string $name, array $meta): RouterType {
+    final public static function analysis(array $meta): RouterType {
         // allowed `routerChannel`, `routerMiddleware`
         foreach (RouterType::get_constants() as $type_name => $type_value) {
             if (isset($meta[$type_value])) {
@@ -34,6 +33,6 @@ final class RouterTypeAnalyzer {
     }
 
     /**
-     * @TODO router-type validate
+     * @TODO auto-detect
      */
 }

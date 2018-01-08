@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Router\Collector;
 use Here\Lib\Router\Collector\DefaultRouter\DefaultChannel;
+use Here\Lib\Router\Collector\DefaultRouter\DefaultHandler;
 use Here\Lib\Router\Collector\DefaultRouter\DefaultMiddleware;
 
 
@@ -24,7 +25,12 @@ abstract class SysRouterCollector extends RouterCollector {
     use DefaultMiddleware;
 
     /**
-     * loaded default channel
+     * default channel
      */
     use DefaultChannel;
+
+    /**
+     * default handler
+     */
+    use DefaultHandler;
 }

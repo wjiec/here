@@ -11,7 +11,7 @@
 namespace Here\Lib\Router\Collector\Generator;
 use Here\Lib\Env\BooleanString;
 use Here\Lib\Env\GlobalEnvironment;
-use Here\Lib\Exceptions\Internal\ImpossibleError;
+use Here\Lib\Router\Collector\Handler\RouterHandler;
 use Here\Lib\Router\Collector\RouterType;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
@@ -26,7 +26,7 @@ final class RouterGenerator {
     /**
      * @param \ReflectionMethod $method
      * @param RouterCallback $callback
-     * @return bool|RouterChannel|RouterMiddleware
+     * @return bool|RouterChannel|RouterMiddleware|RouterHandler
      * @throws ExplicitTypeDeclareMissing
      */
     final public static function generate(\ReflectionMethod $method, RouterCallback $callback) {
@@ -36,11 +36,13 @@ final class RouterGenerator {
         }
 
         $meta_info = self::_get_meta_info($method->getDocComment());
-        switch (RouterTypeAnalyzer::analysis($method->name, $meta_info)->value()) {
+        switch (RouterTypeAnalyzer::analysis($meta_info)->value()) {
             case RouterType::ROUTER_TYPE_CHANNEL:
                 return new RouterChannel($method->name, $meta_info, $callback);
             case RouterType::ROUTER_TYPE_MIDDLEWARE:
                 return new RouterMiddleware($method->name, $meta_info, $callback);
+            case RouterType::ROUTER_TYPE_HANDLER:
+                return new RouterHandler($method->name, $meta_info, $callback);
             case RouterType::ROUTER_TYPE_UNKNOWN:
                 if (BooleanString::is_true(GlobalEnvironment::get_user_env('strict_router'))) {
                     throw new ExplicitTypeDeclareMissing("'{$method->name}' missing explicit router-type declare");

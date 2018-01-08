@@ -90,4 +90,12 @@ abstract class EnumType implements EnumInterface {
 
         return $constants;
     }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    public static function contains($value): bool {
+        return in_array($value, self::get_constants());
+    }
 }

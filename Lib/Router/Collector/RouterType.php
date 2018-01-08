@@ -36,4 +36,9 @@ final class RouterType extends EnumType {
      * router type: middleware
      */
     public const ROUTER_TYPE_MIDDLEWARE = 'routerMiddleware';
+
+    /**
+     * router type: handler
+     */
+    public const ROUTER_TYPE_HANDLER = 'routerHandler';
 }
