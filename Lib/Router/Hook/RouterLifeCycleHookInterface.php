@@ -22,28 +22,7 @@ interface RouterLifeCycleHookInterface {
     public static function on_request_enter(): void;
 
     /**
-     * on request dispatch start
+     * process on response will send
      */
-    public static function on_request_dispatch_start(): void;
-
-    /**
-     * request dispatch end and middleware start(if exists)
-     */
-    public static function on_middleware_start(): void;
-
-    /**
-     * middleware over and callback start
-     */
-    public static function on_callback_start(): void;
-
-    /**
-     * on callback end
-     */
-    public static function on_callback_end(): void;
-
-    /**
-     * @param int $error_code
-     * @param string $error_message
-     */
-    public static function on_error_occurs(int $error_code, string $error_message): void;
+    public static function on_response_leave(): void;
 }

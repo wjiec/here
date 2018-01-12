@@ -4,23 +4,24 @@
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
- * @copyright Copyright (C) 2016-2017 ShadowMan
+ * @copyright Copyright (C) 2016-2018 ShadowMan
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router;
 use Here\Config\Constant\SysConstant;
+use Here\Config\Router\UserRouterLifeCycleHook;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\CollectorInterface;
 use Here\Lib\Router\Collector\DispatchError;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
 use Here\Lib\Router\Collector\RouterCollector;
+use Here\Lib\Router\Hook\SysRouterLifeCycleHook;
 
 
 /**
  * @TODO logger of any requests(DecoratorPattern)
- * @TODO request life-cycle(hook)
  */
 
 
@@ -48,6 +49,10 @@ final class Dispatcher {
      */
     final public function dispatch(string $request_method, string $request_uri): void {
         try {
+            // request has received
+            SysRouterLifeCycleHook::on_request_enter();
+            UserRouterLifeCycleHook::on_request_enter();
+
             try {
                 if (!AllowedMethods::contains($request_method)) {
                     throw new DispatchError(405, "`{$request_method}` is not allowed");
@@ -62,6 +67,10 @@ final class Dispatcher {
                     throw $exception;
                 }
             }
+
+            UserRouterLifeCycleHook::on_response_leave();
+            SysRouterLifeCycleHook::on_response_leave();
+            // @TODO response flush take over
         } catch (ExceptionBase $except) {
             // @TODO SysDefaultHandler
             var_dump(strval($except));
