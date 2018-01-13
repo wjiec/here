@@ -14,7 +14,6 @@ use Here\Config\Router\UserRouterLifeCycleHook;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\CollectorInterface;
-use Here\Lib\Router\Collector\DispatchError;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
 use Here\Lib\Router\Collector\RouterCollector;
 use Here\Lib\Router\Hook\SysRouterLifeCycleHook;
@@ -31,6 +30,11 @@ use Here\Lib\Router\Hook\SysRouterLifeCycleHook;
  */
 final class Dispatcher {
     /**
+     * @var Dispatcher
+     */
+    private static $_self_instance;
+
+    /**
      * @var RouterCollector
      */
     private $_collector;
@@ -38,8 +42,14 @@ final class Dispatcher {
     /**
      * Dispatcher constructor.
      * @param CollectorInterface $collector
+     * @throws DispatchError
      */
     final public function __construct(CollectorInterface $collector) {
+        if (self::$_self_instance !== null) {
+            throw new DispatchError(500, "Dispatcher must be singleton");
+        }
+
+        self::$_self_instance = $this;
         $this->_collector = $collector;
     }
 
@@ -53,25 +63,27 @@ final class Dispatcher {
             SysRouterLifeCycleHook::on_request_enter();
             UserRouterLifeCycleHook::on_request_enter();
 
-            try {
-                if (!AllowedMethods::contains($request_method)) {
-                    throw new DispatchError(405, "`{$request_method}` is not allowed");
-                }
-
-                $trimmed_uri = trim($request_uri, SysConstant::URL_SEPARATOR);
-                $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
-
-                $this->_exec_callback($channel);
-            } catch (DispatchError $exception) {
-                if (!$this->trigger_error($exception->get_error_code(), $exception->get_message())) {
-                    throw $exception;
-                }
+            if (!AllowedMethods::contains($request_method)) {
+                throw new DispatchError(405, "`{$request_method}` is not allowed");
             }
+
+            $trimmed_uri = trim($request_uri, SysConstant::URL_SEPARATOR);
+            $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
+
+            $this->_exec_callback($channel);
 
             UserRouterLifeCycleHook::on_response_leave();
             SysRouterLifeCycleHook::on_response_leave();
             // @TODO response flush take over
         } catch (ExceptionBase $except) {
+            // check DispatchError
+            if ($except instanceof DispatchError) {
+                if ($this->trigger_error($except->get_error_code(), $except->get_message())) {
+                    // @TODO commit response
+                    exit(0);
+                }
+            }
+
             // @TODO SysDefaultHandler
             var_dump(strval($except));
         }

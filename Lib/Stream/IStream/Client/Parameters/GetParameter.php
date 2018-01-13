@@ -31,7 +31,7 @@ trait GetParameter {
      * @param null|string $default
      * @return null|string
      */
-    final public static function url_param(string $name, ?string $default = null) {
+    final public static function url_param(string $name, ?string $default = null): ?string {
         // initial/reset state
         if (self::$_get_parameters === null) {
             self::$_get_parameters = $_GET;
@@ -55,5 +55,13 @@ trait GetParameter {
         }
 
         self::$_additional_get_parameters[$name] = $val;
+    }
+
+    /**
+     * @return bool
+     */
+    final public static function empty_get_params(): bool {
+        // impossible parameter name
+        return self::url_param('&=&') || empty(self::$_get_parameters);
     }
 }

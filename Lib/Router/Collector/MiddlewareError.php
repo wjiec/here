@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector;
+use Here\Lib\Router\DispatchError;
 
 
 /**

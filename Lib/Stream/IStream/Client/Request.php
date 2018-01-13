@@ -50,10 +50,17 @@ class Request {
             }
             return $post_param;
         } else {
-            if (self::request_method() === 'post') {
+            if (self::request_method() === RequestMethods::POST) {
                 return $post_param;
             }
             return $get_param;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    final public static function empty_request_params(): bool {
+        return self::empty_get_params() && self::empty_post_params();
     }
 }

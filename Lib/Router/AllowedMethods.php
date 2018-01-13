@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router;
+use Here\Lib\Stream\IStream\Client\RequestMethods;
 
 
 /**
@@ -17,16 +18,11 @@ namespace Here\Lib\Router;
  */
 final class AllowedMethods {
     /**
-     * allowed methods for request
-     */
-    private const ALLOWED_METHODS = array('get', 'post', 'put', 'delete', 'update', 'patch', 'options', 'head');
-
-    /**
      * @param string $method
      * @return bool
      */
     final public static function contains(string $method): bool {
-        return in_array(strtolower($method), self::ALLOWED_METHODS);
+        return in_array(strtolower($method), RequestMethods::get_browser_compatibility_methods());
     }
 
     /**

@@ -11,7 +11,7 @@
 namespace Here\Lib\Router\Collector\Channel;
 use Here\Lib\Http\HttpStatusCode;
 use Here\Lib\Router\Collector\Channel\Tree\ChannelTree;
-use Here\Lib\Router\Collector\DispatchError;
+use Here\Lib\Router\DispatchError;
 
 
 /**

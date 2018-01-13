@@ -17,7 +17,8 @@ use Here\Lib\Router\Collector\Handler\HandlerManager;
 use Here\Lib\Router\Collector\Handler\RouterHandler;
 use Here\Lib\Router\Collector\Middleware\MiddlewareManager;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
-use \Here\Lib\Exceptions\Internal\ImpossibleError;
+use Here\Lib\Exceptions\Internal\ImpossibleError;
+use Here\Lib\Router\DispatchError;
 use Here\Lib\Router\RouterCallback;
 
 

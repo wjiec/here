@@ -55,4 +55,11 @@ trait PostParameter {
 
         self::$_additional_post_parameters[$name] = $val;
     }
+
+    /**
+     * @return bool
+     */
+    final public static function empty_post_params(): bool {
+        return self::post_param('&=&') || empty(self::$_post_parameters);
+    }
 }

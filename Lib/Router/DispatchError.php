@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Router\Collector;
+namespace Here\Lib\Router;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\Level\Error;
 use Throwable;
