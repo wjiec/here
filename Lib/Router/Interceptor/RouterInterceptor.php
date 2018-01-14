@@ -10,7 +10,6 @@
  */
 namespace Here\Lib\Router\Interceptor;
 use Here\Lib\Env\GlobalEnvironment;
-use Here\Lib\Router\Dispatcher;
 use Here\Lib\Router\DispatchError;
 use Here\Lib\Stream\IStream\Client\Request;
 use Here\Lib\Stream\IStream\Client\RequestMethods;
