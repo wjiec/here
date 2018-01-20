@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ShadowMan
- * Date: 2018/1/2
- * Time: 21:08
+ * ComponentInterface.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2018 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Http\Client\Adapter;
 

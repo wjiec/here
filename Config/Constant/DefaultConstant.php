@@ -42,4 +42,9 @@ final class DefaultConstant {
      * default format for logger
      */
     public const DEFAULT_LOGGER_FORMAT = "%date %time: %addr %url%is_query%query";
+
+    /**
+     * (ノω<。)ノ))☆
+     */
+    public const DEFAULT_SECRET_KEY_PREFIX = ":Wcj*Love+Rhp:";
 }

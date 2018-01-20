@@ -19,10 +19,10 @@ trait ExceptionLevelTrait {
     /**
      * @return int
      */
-    abstract public function get_level();
+    abstract public function get_level(): int;
 
     /**
      * @return string
      */
-    abstract public function get_level_name();
+    abstract public function get_level_name(): string;
 }

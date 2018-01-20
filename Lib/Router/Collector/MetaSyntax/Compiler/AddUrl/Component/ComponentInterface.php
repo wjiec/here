@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ShadowMan
- * Date: 2017/12/19
- * Time: 22:44
+ * ComponentInterface.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2018 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component;
 use Here\Lib\Ext\Regex\Regex;

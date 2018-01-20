@@ -22,7 +22,7 @@ trait Error {
      * @see ExceptionLevelTrait::get_level()
      * @return int
      */
-    final public function get_level() {
+    final public function get_level(): int {
         return 80;
     }
 
@@ -30,7 +30,7 @@ trait Error {
      * @see ExceptionLevelTrait::get_level_name()
      * @return string
      */
-    final public function get_level_name() {
+    final public function get_level_name(): string {
         return 'Error';
     }
 }

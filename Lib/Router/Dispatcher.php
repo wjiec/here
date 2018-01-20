@@ -12,11 +12,13 @@ namespace Here\Lib\Router;
 use Here\Config\Constant\SysConstant;
 use Here\Config\Router\UserRouterLifeCycleHook;
 use Here\Lib\Exceptions\ExceptionBase;
+use Here\Lib\Exceptions\GlobalExceptionHandler;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\CollectorInterface;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
 use Here\Lib\Router\Collector\RouterCollector;
 use Here\Lib\Router\Hook\SysRouterLifeCycleHook;
+use Here\Lib\Stream\OStream\Client\Response;
 
 
 /**
@@ -74,18 +76,15 @@ final class Dispatcher {
 
             UserRouterLifeCycleHook::on_response_leave();
             SysRouterLifeCycleHook::on_response_leave();
-            // @TODO response flush take over
         } catch (ExceptionBase $except) {
             // check DispatchError
             if ($except instanceof DispatchError) {
                 if ($this->trigger_error($except->get_error_code(), $except->get_message())) {
-                    // @TODO commit response
-                    exit(0);
+                    Response::commit();
                 }
             }
 
-            // @TODO SysDefaultHandler
-            var_dump(strval($except));
+            GlobalExceptionHandler::trigger_exception($except);
         }
     }
 

@@ -15,11 +15,18 @@ declare(strict_types=1);
 
 /* namespaces definitions */
 namespace Here;
+use Here\App\Blogger\Blogger;
 use Here\Config\Router\UserCollector;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Stream\IStream\Client\Request;
-use Here\Lib\Stream\OStream\Client\Response;
+
+/** @TODO List
+ *
+ * Default error page
+ * I18n
+ *
+ */
 
 /* the only explicit `require_once` to include `Autoloader` */
 require_once 'Lib/Loader/Autoloader.php';
@@ -27,8 +34,8 @@ require_once 'Lib/Loader/Autoloader.php';
 /* register classes loader and set default namespace */
 Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 
-/* response environment initialization */
-Response::init();
+/* blogger environment initializing */
+Blogger::init();
 
 /* test case */
 echo "<pre>";

@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Stream\OStream\Client;
+use Here\App\InitializerInterface;
 use Here\Lib\Stream\OStream\Client\Component\ResponseHeader;
 use Here\Lib\Stream\OStream\Client\Component\ResponseOperation;
 
@@ -17,7 +18,7 @@ use Here\Lib\Stream\OStream\Client\Component\ResponseOperation;
  * Class Response
  * @package Here\Lib\Stream\OStream\Client
  */
-class Response {
+class Response implements InitializerInterface {
     /**
      * modify response headers
      */

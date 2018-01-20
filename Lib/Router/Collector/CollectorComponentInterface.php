@@ -1,9 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: ShadowMan
- * Date: 2018/1/7
- * Time: 19:14
+ * CollectorComponentInterface.php
+ *
+ * @package   Here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2018 ShadowMan
+ * @license   MIT License
+ * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector;
 use Here\Lib\Router\RouterCallback;

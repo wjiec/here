@@ -17,9 +17,14 @@ namespace Here\Config\Constant;
  */
 final class SysConstant {
     /**
+     * application name
+     */
+    public const HERE_NAME = 'Here';
+
+    /**
      * blogger version
      */
-    public const HERE_VERSION = '0.0.1';
+    public const HERE_VERSION = array(0, 0, 1);
 
     /**
      * url separator
@@ -40,4 +45,9 @@ final class SysConstant {
      * characters to generate random string
      */
     public const RANDOM_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+    /**
+     * empty string
+     */
+    public const EMPTY_STRING = '';
 }

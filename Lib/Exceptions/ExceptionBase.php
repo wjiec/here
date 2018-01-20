@@ -50,7 +50,7 @@ abstract class ExceptionBase extends \Exception {
 
         // make sure using get_message override method
         parent::__construct('Please using ExceptionBase::get_message method',
-            self::DEFAULT_ERROR_CODE, $previous);
+            $this->get_level(), $previous);
     }
 
     /**
