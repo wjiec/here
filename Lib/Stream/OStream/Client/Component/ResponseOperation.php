@@ -33,7 +33,6 @@ trait ResponseOperation {
             // when buffer is turned off
             if (
                 $phase & PHP_OUTPUT_HANDLER_FINAL
-                || $phase & PHP_OUTPUT_HANDLER_CLEAN
                 || $phase & PHP_OUTPUT_HANDLER_FLUSH
                 || $phase & PHP_OUTPUT_HANDLER_WRITE
             ) {
