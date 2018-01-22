@@ -1,6 +1,6 @@
 <?php
 /**
- * AddLoggerCompiler.php.php
+ * AddLoggerCompiler.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

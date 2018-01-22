@@ -1,6 +1,6 @@
 <?php
 /**
- * MetaComponent.php.php
+ * MetaComponent.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

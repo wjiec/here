@@ -1,6 +1,6 @@
 <?php
 /**
- * ExplicitTypeDeclareMissing.php.php
+ * ExplicitTypeDeclareMissing.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

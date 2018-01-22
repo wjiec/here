@@ -1,6 +1,6 @@
 <?php
 /**
- * MetaSyntaxCompilerInterface.php.php
+ * MetaSyntaxCompilerInterface.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

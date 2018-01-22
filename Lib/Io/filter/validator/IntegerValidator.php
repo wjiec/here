@@ -20,6 +20,10 @@ use Here\Lib\Io\Filter\IoFilterBase;
 final class IntegerValidator extends IoFilterBase {
     /**
      * IntegerValidator constructor.
+     * @param string $min
+     * @param string $max
+     * @param bool $allow_oct
+     * @param bool $allow_hex
      */
     final public function __construct(
         $min = self::INTEGER_VALIDATOR_RANGE_MINUS_INF,

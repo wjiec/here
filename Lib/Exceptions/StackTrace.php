@@ -1,6 +1,6 @@
 <?php
 /**
- * StackTrace.php.php
+ * StackTrace.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

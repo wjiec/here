@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\App;
+use Here\Lib\Utils\Interfaces\InitializerInterface;
 
 
 /**

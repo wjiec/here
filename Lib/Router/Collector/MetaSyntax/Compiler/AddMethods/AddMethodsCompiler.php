@@ -1,6 +1,6 @@
 <?php
 /**
- * AddMethodsCompiler.php.php
+ * AddMethodsCompiler.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

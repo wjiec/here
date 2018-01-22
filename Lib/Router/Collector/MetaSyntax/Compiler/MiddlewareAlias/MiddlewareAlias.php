@@ -1,6 +1,6 @@
 <?php
 /**
- * MiddlewareAlias.php.php
+ * MiddlewareAlias.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

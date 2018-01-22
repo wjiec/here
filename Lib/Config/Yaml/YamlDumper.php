@@ -21,6 +21,7 @@ trait YamlDumper {
      * @return string
      */
     final public static function dumps(YamlObject $yaml): string {
+        return '';
     }
 
     /**

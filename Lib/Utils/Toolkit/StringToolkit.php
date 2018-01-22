@@ -51,6 +51,23 @@ final class StringToolkit {
 
     /**
      * @param string $string
+     * @return string
+     */
+    final public static function crlf_to_lf(string $string): string {
+        return str_replace("\r\n", "\n", $string);
+    }
+
+    /**
+     * @param string $format
+     * @param array ...$args
+     * @return string
+     */
+    final public static function format(string $format, ...$args): string {
+        return sprintf($format, ...$args);
+    }
+
+    /**
+     * @param string $string
      * @param string $source_encoding
      * @return string
      */

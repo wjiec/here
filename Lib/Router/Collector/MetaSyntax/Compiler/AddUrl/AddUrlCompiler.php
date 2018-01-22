@@ -1,6 +1,6 @@
 <?php
 /**
- * AddUrlCompiler.php.php
+ * AddUrlCompiler.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

@@ -1,6 +1,6 @@
 <?php
 /**
- * RouterCallback.php.php
+ * RouterCallback.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\App\Blogger;
-use Here\App\InitializerInterface;
+use Here\Lib\Utils\Interfaces\InitializerInterface;
 use Here\Lib\Exceptions\GlobalExceptionHandler;
 use Here\Lib\Stream\OStream\Client\Response;
 

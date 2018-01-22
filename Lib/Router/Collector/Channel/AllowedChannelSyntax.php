@@ -1,6 +1,6 @@
 <?php
 /**
- * AllowedChannelSyntax.php.php
+ * AllowedChannelSyntax.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

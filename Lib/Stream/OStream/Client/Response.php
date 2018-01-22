@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Stream\OStream\Client;
-use Here\App\InitializerInterface;
+use Here\Lib\Utils\Interfaces\InitializerInterface;
 use Here\Lib\Stream\OStream\Client\Component\ResponseHeader;
 use Here\Lib\Stream\OStream\Client\Component\ResponseOperation;
 

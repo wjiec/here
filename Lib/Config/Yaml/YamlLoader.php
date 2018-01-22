@@ -21,6 +21,7 @@ trait YamlLoader {
      * @return YamlObject
      */
     final public static function loads(string $config): YamlObject {
+        return new YamlObject();
     }
 
     /**

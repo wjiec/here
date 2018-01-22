@@ -1,6 +1,6 @@
 <?php
 /**
- * CompilerNotFound.php
+ * RsaError.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,15 +8,15 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Router\Collector\MetaSyntax\Compiler;
+namespace Here\Lib\Utils\RSA;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\Level\Error;
 
 
 /**
- * Class CompilerNotFound
- * @package Lib\Router\Collector\MetaSyntax\Compiler
+ * Class RsaError
+ * @package Lib\Utils\Rsa
  */
-final class CompilerNotFound extends ExceptionBase {
+final class RSAError extends ExceptionBase {
     use Error;
 }

@@ -4,16 +4,16 @@
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
- * @copyright Copyright (C) 2016-2018 ShadowMan
+ * @copyright Copyright (C) 2016-2017 ShadowMan
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\App;
+namespace Here\Lib\Utils\Interfaces;
 
 
 /**
  * Interface InitializerInterface
- * @package Here\App\Blogger
+ * @package Here\Lib\Utils\Interfaces
  */
 interface InitializerInterface {
     /**
