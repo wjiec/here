@@ -38,42 +38,58 @@ final class RSAObject implements AvailableInterface {
 
     /**
      * RSAObject constructor.
-     * @param null|string $private_or_public
+     * @param string $private_or_public
      * @throws RSAError
      */
-    final public function __construct(?string $private_or_public = null) {
-        if ($private_or_public !== null) {
-            // standardize string
-            $private_or_public = StringToolkit::crlf_to_lf($private_or_public);
+    final public function __construct(string $private_or_public) {
+        // standardize string
+        $private_or_public = StringToolkit::crlf_to_lf($private_or_public);
 
-            $is_private = true;
-            $key = openssl_pkey_get_private($private_or_public);
+        $is_private = true;
+        $key = openssl_pkey_get_private($private_or_public);
+        if (!is_resource($key)) {
+            // check is public
+            $key = openssl_pkey_get_public($private_or_public);
             if (!is_resource($key)) {
-                // check is public
-                $key = openssl_pkey_get_public($private_or_public);
-                if (!is_resource($key)) {
-                    throw new RSAError('rsa key string invalid');
-                }
-
-                // switch to public
-                $is_private = false;
+                throw new RSAError('rsa key string invalid');
             }
 
-            // fetch private key details
-            $details = openssl_pkey_get_details($key);
-            if ($details === false) {
-                throw new RSAError(StringToolkit::format('get detail of %s key error',
-                    $is_private ? 'private' : 'public'));
-            }
-
-            $this->_key_bits = $details['bits'];
-            $this->_public_key = $details['key'];
-            $this->_private_key = $is_private ? $private_or_public : null;
-        } else {
-            $this->_private_key = null;
-            $this->_public_key = null;
-            $this->_key_bits = 0;
+            // switch to public
+            $is_private = false;
         }
+
+        // fetch private key details
+        $details = openssl_pkey_get_details($key);
+        if ($details === false) {
+            throw new RSAError(StringToolkit::format('get detail of %s key error',
+                $is_private ? 'private' : 'public'));
+        }
+
+        $this->_key_bits = $details['bits'];
+        $this->_public_key = $details['key'];
+        $this->_private_key = $is_private ? $private_or_public : null;
+    }
+
+    /**
+     * @param int $key_bits
+     * @param string $digest_alg
+     * @return RSAObject
+     * @throws RSAError
+     */
+    final public static function generate(int $key_bits = 1024, $digest_alg = 'sha512'): self {
+        $rsa_config = array(
+            'digest_alg' => $digest_alg,
+            'private_key_bits' => $key_bits,
+            'private_key_type' => OPENSSL_KEYTYPE_RSA
+        );
+
+        $key = openssl_pkey_new($rsa_config);
+        if ($key === false) {
+            throw new RSAError(openssl_error_string());
+        }
+
+        openssl_pkey_export($key, $private_key);
+        return new self(trim($private_key));
     }
 
     /**
@@ -81,6 +97,13 @@ final class RSAObject implements AvailableInterface {
      */
     final public static function available(): bool {
         return function_exists('openssl_encrypt');
+    }
+
+    /**
+     * @return string
+     */
+    final public function get_private_key(): string {
+        return $this->_private_key;
     }
 
     /**
