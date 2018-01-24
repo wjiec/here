@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Exceptions;
+use Here\Lib\Ext\Callback\CallbackObject;
 use Here\Lib\Utils\Interfaces\InitializerInterface;
 use Here\Lib\Stream\OStream\Client\Response;
 
@@ -18,6 +19,11 @@ use Here\Lib\Stream\OStream\Client\Response;
  * @package Here\Lib\Exceptions
  */
 final class GlobalExceptionHandler implements InitializerInterface {
+    /**
+     * @var array
+     */
+    private static $_exception_listeners = array();
+
     /**
      * global exception handler
      */
@@ -53,16 +59,41 @@ final class GlobalExceptionHandler implements InitializerInterface {
     }
 
     /**
-     * @param \Throwable $except
+     * @param string $exception_name
+     * @param CallbackObject $callback
      */
-    final public static function trigger_exception(\Throwable $except): void {
-        self::_exception_handler($except);
+    final public static function when(string $exception_name, CallbackObject $callback): void {
+        if (!isset(self::$_exception_listeners[$exception_name])) {
+            self::$_exception_listeners[$exception_name] = array();
+        }
+        self::$_exception_listeners[$exception_name][] = $callback;
+    }
+
+    /**
+     * @param \Throwable $except
+     * @param bool $skip_listener
+     */
+    final public static function trigger_exception(\Throwable $except, bool $skip_listener = false): void {
+        self::_exception_handler($except, $skip_listener);
     }
 
     /**
      * @param \Throwable $exception
+     * @param bool $skip_listener
      */
-    final private static function _exception_handler(\Throwable $exception): void {
+    final private static function _exception_handler(\Throwable $exception, bool $skip_listener = false): void {
+        $exception_name = get_class($exception);
+        if (!$skip_listener && isset(self::$_exception_listeners[$exception_name])) {
+            try {
+                /* @var CallbackObject $listener */
+                foreach (self::$_exception_listeners[$exception_name] as $listener) {
+                    $listener->apply($exception);
+                }
+            } catch (\ArgumentCountError $e) {
+                self::trigger_exception($e, true);
+            }
+        }
+
         $errno = $exception->getCode();
         $error = $exception->getMessage();
         if ($exception instanceof ExceptionBase) {
