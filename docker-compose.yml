@@ -17,3 +17,7 @@ services:
       - ./Config/docker/nginx/conf:/usr/local/nginx/etc
     ports:
       - "80:80"
+  redis:
+    image: "shellboot/redis"
+    volumes:
+      - /var/redis:/var/redis

@@ -16,7 +16,7 @@ RUN set -x \
     && adduser -S -G redis redis
 
 # environments for redis
-ENV REDIS_VERSION 4.0.2
+ENV REDIS_VERSION 4.0.7
 ENV REDIS_HOME /usr/local/redis
 ENV REDIS_DATA_DIR /var/redis
 
