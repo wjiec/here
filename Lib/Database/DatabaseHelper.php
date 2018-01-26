@@ -9,10 +9,18 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Database;
+use Here\Lib\Database\Model\ModelInterface;
 
 
 /**
  * Class DatabaseHelper
  * @package Here\Lib\Database
  */
-class DatabaseHelper {}
+final class DatabaseHelper {
+    /**
+     * DatabaseHelper constructor.
+     * @param ModelInterface $model
+     */
+    final public function __construct(ModelInterface $model) {
+    }
+}
