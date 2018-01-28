@@ -29,4 +29,10 @@ final class CacheManager {
     final public function __construct(CacheAdapterInterface $adapter) {
         $this->_adapter = $adapter;
     }
+
+    /**
+     * @param string $name
+     */
+    final public function get_item(string $name) {
+    }
 }

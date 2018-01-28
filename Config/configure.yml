@@ -1,31 +1,23 @@
-%YAML: 1.2
-
----
 #
 # Here Blogger Configure File
 #
 
-mysql_provider: &mysql_provider
-  provider: mysql
-
-pgsql_provider: &pgsql_provider
-  provider: pgsql
 
 # databases configures
 databases:
   -
-    host: localhost
+    host: mysql
     port: 3306
     username: root
     password: root
     database: here
     charset: utf8
-    <<: *mysql_provider
+    driver: mysql
 
 
 # caches server configures
 caches:
   -
-    host: localhost
+    host: redis
     port: 11211
-    provider: redis
+    driver: redis

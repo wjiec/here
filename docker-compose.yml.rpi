@@ -5,7 +5,7 @@
 version: '3'
 services:
   php:
-    image: "shellboot/rpi-php"
+    image: "shellboot/rpi-php:redis"
     volumes:
       - .:/var/www
   nginx:

@@ -24,13 +24,14 @@ ENV REDIS_DATA_DIR /var/redis
 RUN set -ex \
     && apk update \
     && apk add --virtual .build-deps \
+        curl \
         gcc \
         libc-dev \
         linux-headers \
         make \
     \
     && mkdir -p "/usr/src" \
-    && wget -O redis.tar.gz "http://download.redis.io/releases/redis-$REDIS_VERSION.tar.gz" \
+    && curl -SLo redis.tar.gz "http://download.redis.io/releases/redis-$REDIS_VERSION.tar.gz" \
     \
     && tar xvf redis.tar.gz -C /usr/src \
     && rm -rf redis.tar.gz* \

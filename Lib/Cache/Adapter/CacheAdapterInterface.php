@@ -16,5 +16,17 @@ namespace Here\Lib\Cache\Adapter;
  * @package Here\Lib\Cache\Adapter
  */
 interface CacheAdapterInterface {
+    /**
+     * @param string $name
+     * @return mixed
+     */
+    public function get_item(string $name);
 
+    /**
+     * @param string $name
+     * @param $value
+     * @param int $expired
+     * @return mixed
+     */
+    public function set_item(string $name, $value, $expired = 0);
 }

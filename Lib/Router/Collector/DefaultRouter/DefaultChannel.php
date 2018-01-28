@@ -75,12 +75,19 @@ trait DefaultChannel {
      * @routerChannel
      * @addLogger ApiLogger
      * @addMethods GET, POST
-     * @addUrl /api/v<api_version:\d{1,2}>/<module:\w+>/<action:\w+>
+     * @addUrl /api/v<api_version:\d{1,2}>/<module:\w+>/<action:[\w-]+>
      */
     final public function api(): void {
         var_dump('api');
         var_dump(RouterRequest::get_pair_value('api_version'));
         var_dump(RouterRequest::get_pair_value('module'));
         var_dump(RouterRequest::get_pair_value('action'));
+
+        $module = RouterRequest::get_pair_value('module');
+        $action = RouterRequest::get_pair_value('action');
+
+        if ($module === 'env' && $action === 'php-info') {
+            phpinfo();
+        }
     }
 }
