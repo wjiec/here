@@ -50,4 +50,9 @@ final class SysConstant {
      * empty string
      */
     public const EMPTY_STRING = '';
+
+    /**
+     * default error code
+     */
+    public const DEFAULT_ERROR_CODE = 1996;
 }

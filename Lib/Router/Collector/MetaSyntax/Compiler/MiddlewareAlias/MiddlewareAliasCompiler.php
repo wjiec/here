@@ -11,7 +11,6 @@
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\MiddlewareAlias;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerInterface;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultInterface;
 
 
 /**

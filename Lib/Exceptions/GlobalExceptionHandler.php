@@ -83,6 +83,7 @@ final class GlobalExceptionHandler implements InitializerInterface {
      */
     final private static function _exception_handler(\Throwable $exception, bool $skip_listener = false): void {
         $exception_name = get_class($exception);
+        // check current exception has listeners
         if (!$skip_listener && isset(self::$_exception_listeners[$exception_name])) {
             try {
                 /* @var CallbackObject $listener */

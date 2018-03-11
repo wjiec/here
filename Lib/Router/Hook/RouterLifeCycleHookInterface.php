@@ -25,4 +25,9 @@ interface RouterLifeCycleHookInterface {
      * process on response will send
      */
     public static function on_response_leave(): void;
+
+    /**
+     * process on response error occurs
+     */
+    public static function on_request_error(): void;
 }

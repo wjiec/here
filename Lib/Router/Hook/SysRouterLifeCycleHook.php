@@ -21,14 +21,15 @@ final class SysRouterLifeCycleHook extends RouterLifeCycleHookBase {
     /**
      * @inheritdoc
      */
-    public static function on_request_enter(): void {
+    final public static function on_request_enter(): void {
+        // reject robot request
         RouterInterceptor::reject_robot();
     }
 
     /**
      * @inheritdoc
      */
-    public static function on_response_leave(): void {
+    final public static function on_response_leave(): void {
         Response::commit();
     }
 }

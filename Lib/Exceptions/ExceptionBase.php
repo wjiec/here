@@ -19,11 +19,6 @@ use Here\Lib\Exceptions\Level\ExceptionLevelTrait;
  */
 abstract class ExceptionBase extends \Exception {
     /**
-     * default error code
-     */
-    private const DEFAULT_ERROR_CODE = 1996;
-
-    /**
      * exception Level trait
      */
     use ExceptionLevelTrait;
@@ -47,6 +42,7 @@ abstract class ExceptionBase extends \Exception {
         // exception message
         $this->_message = $message;
         $this->_stack_trace = new StackTrace();
+        LastException::set_exception($this);
 
         // make sure using get_message override method
         parent::__construct('Please using ExceptionBase::get_message method',
@@ -68,19 +64,41 @@ abstract class ExceptionBase extends \Exception {
         $trace_string = "{$called_class_name}(\"{$this->_message}\")\n";
 
         foreach ($this->_stack_trace as $stack) {
-            $trace_string .= sprintf("#%d [ %s:%s ] <===> %s%s%s(%s);\n", ...array(
+            $trace_string .= sprintf("#%d [ %s:%s ] <----> %s%s%s(%s);\n", ...array(
                 $stack[StackTrace::STACK_TRACE_CALLED_INDEX],
                 $stack[StackTrace::STACK_TRACE_CALLED_AT],
                 $stack[StackTrace::STACK_TRACE_CALLED_LINE],
                 $stack[StackTrace::STACK_TRACE_CLASS_NAME],
                 $stack[StackTrace::STACK_TRACE_CALL_OPERATOR],
                 $stack[StackTrace::STACK_TRACE_FUNCTION_NAME],
-                $stack[StackTrace::STACK_TRACE_ARGUMENTS]
+                self::stringify_arguments($stack[StackTrace::STACK_TRACE_ARGUMENTS])
                 /**
                  * @TODO stringify arguments
                  */
             ));
         }
         return $trace_string;
+    }
+
+    /**
+     * @param $arguments
+     * @return string
+     */
+    final private static function stringify_arguments($arguments): string {
+        if (is_array($arguments)) {
+            return 'array(' . join(',', array_map(function($v) {
+                return self::stringify_arguments($v);
+            }, $arguments)) . ')';
+        } else if (is_string($arguments)) {
+            return "'{$arguments}'";
+        } else if (is_integer($arguments) || is_float($arguments)) {
+            return strval($arguments);
+        } else if (is_object($arguments)) {
+            return get_class($arguments);
+        } else if (is_null($arguments)) {
+            return 'null';
+        } else {
+            return 'UNKNOWN';
+        }
     }
 }

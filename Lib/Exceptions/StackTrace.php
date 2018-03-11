@@ -42,8 +42,8 @@ class StackTrace implements \IteratorAggregate {
         foreach ($stack_trace as $index => $call_info) {
             $this->_trace_back[] = array(
                 self::STACK_TRACE_CALLED_INDEX  => $index,
-                self::STACK_TRACE_CALLED_AT     => $call_info['file'],
-                self::STACK_TRACE_CALLED_LINE   => $call_info['line'],
+                self::STACK_TRACE_CALLED_AT     => $call_info['file'] ?? 'UNKNOWN',
+                self::STACK_TRACE_CALLED_LINE   => $call_info['line'] ?? 'UNKNOWN',
                 self::STACK_TRACE_CLASS_NAME    => $call_info['class'] ?? '',
                 self::STACK_TRACE_FUNCTION_NAME => $call_info['function'],
                 self::STACK_TRACE_CALL_OPERATOR => $call_info['type'] ?? '::',

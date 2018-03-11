@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\DefaultRouter;
+use Here\Lib\Exceptions\LastException;
 use Here\Lib\Router\RouterRequest;
 
 
@@ -26,6 +27,7 @@ trait DefaultHandler {
     final public function default_handler(string $message): void {
         var_dump($message);
         var_dump(sprintf("Default Handler: %s", RouterRequest::request_uri()));
+        var_dump(LastException::get_stack_trace());
     }
 
     /**
