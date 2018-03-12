@@ -128,7 +128,7 @@ final class RSAObject implements AvailableInterface {
      * @throws RSAError
      */
     final public function encrypt(string $data, string $glue = '.',
-                                         ?TransformAdapterInterface $adapter = null): string {
+                                  ?TransformAdapterInterface $adapter = null): string {
         // public_encrypt
         return $this->_encrypt(false, $data, $glue, $adapter ?? new Base64Adapter());
     }
@@ -157,7 +157,7 @@ final class RSAObject implements AvailableInterface {
      * @throws RSAError
      */
     final public function signature(string $data, string $glue = '.',
-                                            ?TransformAdapterInterface $adapter = null): string {
+                                    ?TransformAdapterInterface $adapter = null): string {
         // private_encrypt
         if ($this->_private_key) {
             return $this->_encrypt(true, $data, $glue, $adapter ?? new Base64Adapter());

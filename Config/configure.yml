@@ -1,6 +1,18 @@
 #
-# Here Blogger Configure File
+# Blogger Configure File
 #
+
+
+# user environments
+environments:
+  debug_mode: off
+  strict_router: off
+  auto_commit_response: on
+
+
+# router configure
+router:
+  dashboard: dashboard
 
 
 # databases configures

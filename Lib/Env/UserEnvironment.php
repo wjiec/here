@@ -27,7 +27,7 @@ trait UserEnvironment {
      * @return mixed
      */
     final public static function get_user_env(string $name, ?string $default = null) {
-        return self::$_user_env[$name] ?? $default;
+        return static::$_user_env[$name] ?? $default;
     }
 
     /**
@@ -37,9 +37,9 @@ trait UserEnvironment {
      * @throws EnvironmentOverrideError
      */
     final public static function set_user_env(string $name, string $value, bool $override = true): void {
-        if (!$override && isset(self::$_user_env[$name])) {
+        if (!$override && isset(static::$_user_env[$name])) {
             throw new EnvironmentOverrideError("cannot override {$name} environment");
         }
-        self::$_user_env[$name] = $value;
+        static::$_user_env[$name] = $value;
     }
 }

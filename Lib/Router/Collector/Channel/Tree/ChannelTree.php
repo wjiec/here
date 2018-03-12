@@ -77,9 +77,12 @@ final class ChannelTree {
      * @return RouterChannel|null
      */
     final public function find_channel(string $request_uri): ?RouterChannel {
-        $segments = array_filter(explode(SysConstant::URL_SEPARATOR, $request_uri), function($segment): bool {
-            return strlen($segment);
-        });
+        $segments = array_filter(
+            explode(SysConstant::URL_SEPARATOR, $request_uri),
+            function($segment): bool {
+                return strlen($segment);
+            }
+        );
 
         // recursion find channel
         return $this->_recursion_find($this->_tree, $segments);
@@ -101,9 +104,10 @@ final class ChannelTree {
         // second, check `scalar-node`
         if (isset($tree[TreeNodeType::NODE_TYPE_SCALAR_PATH])) {
             foreach ($tree[TreeNodeType::NODE_TYPE_SCALAR_PATH] as $_scalar => &$_scalar_tree) {
+                // from user environment getting or using scalar value
                 if ($_scalar[0] === '&') {
                     $_scalar_name = substr($_scalar, 1);
-                    $_scalar = GlobalEnvironment::get_env($_scalar_name, $_scalar_name);
+                    $_scalar = GlobalEnvironment::get_user_env($_scalar_name, $_scalar_name);
                 }
 
                 // scalar matched
@@ -371,9 +375,11 @@ final class ChannelTree {
      * @param string $pattern
      * @return string
      */
-    final private static function _make_composite_pattern(bool $is_require, ?string $name, string $scalar, string $pattern): string {
+    final private static function _make_composite_pattern(bool $is_require, ?string $name,
+                                                          string $scalar, string $pattern): string {
         self::$_anonymous_name .= '_';
-        return sprintf('/^%s(?<%s>%s)%s$/', $scalar, $name ?? self::$_anonymous_name, $pattern, $is_require ? '' : '?');
+        return sprintf('/^%s(?<%s>%s)%s$/',
+            $scalar, $name ?? self::$_anonymous_name, $pattern, $is_require ? '' : '?');
     }
 
     /**

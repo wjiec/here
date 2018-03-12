@@ -1,6 +1,6 @@
 <?php
 /**
- * DatabaseHelper.php
+ * DuplexFileStream.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Database;
+namespace Lib\Stream\DuplexStream\Local;
 
 
 /**
- * Class DatabaseHelper
- * @package Here\Lib\Database
+ * Class DuplexFileStream
+ * @package Lib\Stream\DuplexStream\Local
  */
-final class DatabaseHelper {
+final class DuplexFileStream {
 }

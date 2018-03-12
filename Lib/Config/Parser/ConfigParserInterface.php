@@ -1,6 +1,6 @@
 <?php
 /**
- * DatabaseHelper.php
+ * ConfigParserInterface.php.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Database;
+namespace Lib\Config\Parser;
 
 
 /**
- * Class DatabaseHelper
- * @package Here\Lib\Database
+ * Interface ConfigParserInterface
+ * @package Lib\Config\Parser
  */
-final class DatabaseHelper {
+interface ConfigParserInterface {
 }

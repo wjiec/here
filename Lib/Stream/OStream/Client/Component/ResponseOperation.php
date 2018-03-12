@@ -10,6 +10,8 @@
  */
 namespace Here\Lib\Stream\OStream\Client\Component;
 use Here\Config\Constant\SysConstant;
+use Here\Lib\Env\BooleanString;
+use Here\Lib\Env\GlobalEnvironment;
 
 
 /**
@@ -26,10 +28,14 @@ trait ResponseOperation {
      * init response environments
      */
     final public static function init(): void {
-        self::$_commit_flag = false;
+        if (BooleanString::is_true(GlobalEnvironment::get_user_env('auto_commit_response'))) {
+            self::$_commit_flag = true;
+        } else {
+            self::$_commit_flag = false;
+        }
 
         // start output buffer
-        ob_start(function (string $buffer, int $phase): string {
+        ob_start(function(string $buffer, int $phase): string {
             // when buffer is turned off
             if (
                 $phase & PHP_OUTPUT_HANDLER_FINAL
@@ -62,10 +68,20 @@ trait ResponseOperation {
      * commit response to client and exit
      */
     final public static function commit(): void {
-        self::$_commit_flag = time();
+        self::$_commit_flag = true;
 
         // buffer output
         ob_end_flush();
         exit();
+    }
+
+    /**
+     * @param array ...$args
+     */
+    final public static function debug_output(...$args): void {
+        if (BooleanString::is_true(GlobalEnvironment::get_user_env('debug_mode'))) {
+            var_dump(...$args);
+            self::commit();
+        }
     }
 }

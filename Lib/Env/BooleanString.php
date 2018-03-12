@@ -55,7 +55,7 @@ final class BooleanString extends EnumType {
         $boolean_string = self::get_constants();
 
         $key = "BOOLEAN_STRING_$value";
-        return isset($boolean_string[$key]);
+        return isset($boolean_string[$key]) && $boolean_string[$key] === true;
     }
 
     /**

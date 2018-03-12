@@ -1,6 +1,6 @@
 <?php
 /**
- * RegexPatternInvalid.php
+ * FileStreamInvalid.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,15 +8,15 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Ext\Regex;
+namespace Lib\Stream;
 use Here\Lib\Exceptions\ExceptionBase;
-use Here\Lib\Exceptions\Level\Warning;
+use Here\Lib\Exceptions\Level\Error;
 
 
 /**
- * Class RegexPatternInvalid
- * @package Here\Lib\Ext\Regex
+ * Class FileStreamInvalid
+ * @package Lib\Stream
  */
-class RegexPatternInvalid extends ExceptionBase {
-    use Warning;
+final class FileStreamInvalid extends ExceptionBase {
+    use Error;
 }
