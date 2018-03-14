@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component;
-use Here\Lib\Ext\Regex\Regex;
+use Here\Lib\Extension\Regex\Regex;
 
 
 /**

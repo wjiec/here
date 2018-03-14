@@ -71,7 +71,7 @@ abstract class ExceptionBase extends \Exception {
                 $stack[StackTrace::STACK_TRACE_CLASS_NAME],
                 $stack[StackTrace::STACK_TRACE_CALL_OPERATOR],
                 $stack[StackTrace::STACK_TRACE_FUNCTION_NAME],
-                self::stringify_arguments($stack[StackTrace::STACK_TRACE_ARGUMENTS])
+                self::_stringify_arguments(...$stack[StackTrace::STACK_TRACE_ARGUMENTS])
                 /**
                  * @TODO stringify arguments
                  */
@@ -84,21 +84,27 @@ abstract class ExceptionBase extends \Exception {
      * @param $arguments
      * @return string
      */
-    final private static function stringify_arguments($arguments): string {
-        if (is_array($arguments)) {
-            return 'array(' . join(',', array_map(function($v) {
-                return self::stringify_arguments($v);
-            }, $arguments)) . ')';
-        } else if (is_string($arguments)) {
-            return "'{$arguments}'";
-        } else if (is_integer($arguments) || is_float($arguments)) {
-            return strval($arguments);
-        } else if (is_object($arguments)) {
-            return get_class($arguments);
-        } else if (is_null($arguments)) {
-            return 'null';
-        } else {
-            return 'UNKNOWN';
+    final private static function _stringify_arguments(...$arguments): string {
+        $result = array();
+
+        foreach ($arguments as $argument) {
+            if (is_array($argument)) {
+                $result[] = 'array(' . join(',', array_map(function($v) {
+                    return self::_stringify_arguments($v);
+                }, $argument)) . ')';
+            } else if (is_string($argument)) {
+                $result[] = "'{$argument}'";
+            } else if (is_integer($argument) || is_float($argument)) {
+                $result[] = strval($argument);
+            } else if (is_object($argument)) {
+                $result[] = get_class($argument);
+            } else if (is_null($argument)) {
+                $result[] = 'null';
+            } else {
+                $result[] = 'UNKNOWN';
+            }
         }
+
+        return join(',', $result);
     }
 }

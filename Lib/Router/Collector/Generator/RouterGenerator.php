@@ -9,13 +9,13 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Generator;
-use Here\Lib\Env\BooleanString;
-use Here\Lib\Env\GlobalEnvironment;
+use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Router\Collector\Handler\RouterHandler;
 use Here\Lib\Router\Collector\RouterType;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\Middleware\RouterMiddleware;
 use Here\Lib\Router\RouterCallback;
+use Here\Lib\Utils\Filter\Validator\TrueValidator;
 
 
 /**
@@ -44,7 +44,7 @@ final class RouterGenerator {
             case RouterType::ROUTER_TYPE_HANDLER:
                 return new RouterHandler($method->name, $meta_info, $callback);
             case RouterType::ROUTER_TYPE_UNKNOWN:
-                if (BooleanString::is_true(GlobalEnvironment::get_user_env('strict_router'))) {
+                if (TrueValidator::filter(GlobalEnvironment::get_user_env('strict_router'))) {
                     throw new ExplicitTypeDeclareMissing("'{$method->name}' missing explicit router-type declare");
                 }
         }

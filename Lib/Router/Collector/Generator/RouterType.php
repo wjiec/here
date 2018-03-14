@@ -11,7 +11,7 @@
 namespace Here\Lib\Router\Collector\Generator;
 
 
-use Here\Lib\Ext\Enum\Enum;
+use Here\Lib\Extension\Enum\Enum;
 
 /**
  * Class RouterType

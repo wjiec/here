@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector;
-use Here\Lib\Ext\Enum\EnumType;
+use Here\Lib\Extension\Enum\EnumType;
 
 
 /**

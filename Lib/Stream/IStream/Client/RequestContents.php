@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Stream\IStream\Client;
-use Here\Lib\Env\GlobalEnvironment;
+use Here\Lib\Environment\GlobalEnvironment;
 
 
 /**

@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Interceptor;
-use Here\Lib\Env\GlobalEnvironment;
+use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Router\DispatchError;
 use Here\Lib\Stream\IStream\Client\Request;
 use Here\Lib\Stream\IStream\Client\RequestMethods;

@@ -10,9 +10,9 @@
  */
 namespace Here\Lib\Router\Collector\Channel\Tree;
 use Here\Config\Constant\SysConstant;
-use Here\Lib\Env\GlobalEnvironment;
+use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Exceptions\Internal\ImpossibleError;
-use Here\Lib\Ext\Regex\Regex;
+use Here\Lib\Extension\Regex\Regex;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\AddUrl;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component\VariableCompositeComponent;

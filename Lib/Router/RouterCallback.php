@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router;
-use Here\Lib\Ext\Callback\CallbackObject;
+use Here\Lib\Extension\Callback\CallbackObject;
 
 
 /**

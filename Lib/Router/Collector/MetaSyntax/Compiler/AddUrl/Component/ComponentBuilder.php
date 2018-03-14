@@ -10,7 +10,7 @@
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\Component;
 use Here\Lib\Exceptions\Internal\ImpossibleError;
-use Here\Lib\Ext\Regex\Regex;
+use Here\Lib\Extension\Regex\Regex;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddUrl\ValidUrlType;
 
 

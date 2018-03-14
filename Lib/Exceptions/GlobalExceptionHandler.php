@@ -9,7 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Exceptions;
-use Here\Lib\Ext\Callback\CallbackObject;
+use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Utils\Interfaces\InitializerInterface;
 use Here\Lib\Stream\OStream\Client\Response;
 
@@ -43,7 +43,7 @@ final class GlobalExceptionHandler implements InitializerInterface {
         register_shutdown_function(function (): void {
             $last_error = error_get_last();
 
-            if ($last_error && $last_error['type'] === $last_error['type'] & self::FATAL_ERROR_VALUE) {
+            if ($last_error && $last_error['type'] === ($last_error['type'] & self::FATAL_ERROR_VALUE)) {
                 // clean "Fatal Error: ..." output
                 Response::clean_response();
 

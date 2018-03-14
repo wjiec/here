@@ -10,11 +10,11 @@
  */
 namespace Here\Lib\Router\Collector\MetaSyntax\Compiler\AddHandler;
 use Here\Config\Constant\SysConstant;
-use Here\Lib\Env\BooleanString;
-use Here\Lib\Env\GlobalEnvironment;
+use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Http\HttpStatusCode;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerInterface;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\MetaSyntaxCompilerResultBase;
+use Here\Lib\Utils\Filter\Validator\TrueValidator;
 
 
 /**
@@ -41,7 +41,7 @@ final class AddHandlerCompiler implements MetaSyntaxCompilerInterface {
             foreach ($error_codes as $error_code) {
                 $error_code = trim($error_code);
                 if (!HttpStatusCode::contains($error_code)) {
-                    if (BooleanString::is_true(GlobalEnvironment::get_user_env('strict_router'))) {
+                    if (TrueValidator::filter(GlobalEnvironment::get_user_env('strict_router'))) {
                         throw new UndefinedErrorCode("[StrictMode]: ErrorCode(`{$error_code}`) undefined");
                     }
                 }

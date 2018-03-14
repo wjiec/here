@@ -10,8 +10,8 @@
  */
 namespace Here\Lib\Stream\OStream\Client\Component;
 use Here\Config\Constant\SysConstant;
-use Here\Lib\Env\BooleanString;
-use Here\Lib\Env\GlobalEnvironment;
+use Here\Lib\Environment\GlobalEnvironment;
+use Here\Lib\Utils\Filter\Validator\TrueValidator;
 
 
 /**
@@ -28,7 +28,7 @@ trait ResponseOperation {
      * init response environments
      */
     final public static function init(): void {
-        if (BooleanString::is_true(GlobalEnvironment::get_user_env('auto_commit_response'))) {
+        if (TrueValidator::filter(GlobalEnvironment::get_user_env('auto_commit_response'))) {
             self::$_commit_flag = true;
         } else {
             self::$_commit_flag = false;
@@ -79,7 +79,7 @@ trait ResponseOperation {
      * @param array ...$args
      */
     final public static function debug_output(...$args): void {
-        if (BooleanString::is_true(GlobalEnvironment::get_user_env('debug_mode'))) {
+        if (TrueValidator::filter(GlobalEnvironment::get_user_env('debug_mode'))) {
             var_dump(...$args);
             self::commit();
         }
