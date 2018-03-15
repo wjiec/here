@@ -29,7 +29,7 @@ trait ResponseHeader {
     /**
      * @param int $code
      */
-    final public static function response_status_code(int $code): void {
+    final public static function set_response_status_code(int $code): void {
         http_response_code($code);
     }
 

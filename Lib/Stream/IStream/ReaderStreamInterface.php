@@ -8,8 +8,8 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Lib\Stream\IStream;
-use Lib\Stream\FileStreamInterface;
+namespace Here\Lib\Stream\IStream;
+use Here\Lib\Stream\FileStreamInterface;
 
 
 /**

@@ -28,11 +28,7 @@ trait ResponseOperation {
      * init response environments
      */
     final public static function init(): void {
-        if (TrueValidator::filter(GlobalEnvironment::get_user_env('auto_commit_response'))) {
-            self::$_commit_flag = true;
-        } else {
-            self::$_commit_flag = false;
-        }
+        self::$_commit_flag = false;
 
         // start output buffer
         ob_start(function(string $buffer, int $phase): string {

@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Lib\Stream;
+namespace Here\Lib\Stream;
 
 
 /**

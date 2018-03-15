@@ -8,10 +8,10 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Lib\Stream\DuplexStream;
-use Lib\Stream\FileStreamInterface;
-use Lib\Stream\IStream\ReaderStreamInterface;
-use Lib\Stream\OStream\WriterStreamInterface;
+namespace Here\Lib\Stream\DuplexStream;
+use Here\Lib\Stream\FileStreamInterface;
+use Here\Lib\Stream\IStream\ReaderStreamInterface;
+use Here\Lib\Stream\OStream\WriterStreamInterface;
 
 
 /**

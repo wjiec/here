@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Lib\Stream\DuplexStream\Local;
+namespace Here\Lib\Stream\DuplexStream\Local;
 
 
 /**

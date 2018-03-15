@@ -8,9 +8,9 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Lib\Stream\IStream\Local;
-use Lib\Stream\FileStreamBase;
-use Lib\Stream\IStream\ReaderStreamInterface;
+namespace Here\Lib\Stream\IStream\Local;
+use Here\Lib\Stream\FileStreamBase;
+use Here\Lib\Stream\IStream\ReaderStreamInterface;
 
 
 /**
@@ -19,18 +19,13 @@ use Lib\Stream\IStream\ReaderStreamInterface;
  */
 class FileReaderStream extends FileStreamBase implements ReaderStreamInterface {
     /**
-     * FileReaderStream constructor.
-     * @param string $file_path
-     */
-    final public function __construct(string $file_path) {
-        $this->open($file_path);
-    }
-
-    /**
      * @param int $number_of_size
      * @return string
      */
     final public function read(int $number_of_size = 0): string {
+        if ($number_of_size === 0) {
+            $number_of_size = filesize($this->_file_path);
+        }
         return fread($this->_file_handler, $number_of_size);
     }
 

@@ -8,10 +8,10 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Lib\Stream;
-use Lib\Stream\DuplexStream\DuplexStreamInterface;
-use Lib\Stream\IStream\ReaderStreamInterface;
-use Lib\Stream\OStream\WriterStreamInterface;
+namespace Here\Lib\Stream;
+use Here\Lib\Stream\DuplexStream\DuplexStreamInterface;
+use Here\Lib\Stream\IStream\ReaderStreamInterface;
+use Here\Lib\Stream\OStream\WriterStreamInterface;
 
 
 /**
@@ -23,6 +23,20 @@ abstract class FileStreamBase implements FileStreamInterface {
      * @var resource
      */
     protected $_file_handler;
+
+    /**
+     * @var string
+     */
+    protected $_file_path;
+
+    /**
+     * FileReaderStream constructor.
+     * @param string $file_path
+     */
+    final public function __construct(string $file_path) {
+        $this->_file_path = $file_path;
+        $this->open($this->_file_path);
+    }
 
     /**
      * @param string $file_path

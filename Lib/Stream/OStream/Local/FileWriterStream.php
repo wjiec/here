@@ -8,9 +8,9 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Lib\Stream\OStream\Local;
-use Lib\Stream\FileStreamBase;
-use Lib\Stream\OStream\WriterStreamInterface;
+namespace Here\Lib\Stream\OStream\Local;
+use Here\Lib\Stream\FileStreamBase;
+use Here\Lib\Stream\OStream\WriterStreamInterface;
 
 
 /**
