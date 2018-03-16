@@ -1,6 +1,6 @@
 <?php
 /**
- * ConfigObjectInterface.php
+ * ConfigObject.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -12,8 +12,9 @@ namespace Here\Lib\Config;
 
 
 /**
- * Class ConfigObjectInterface
- * @package Lib\Config
+ * Class ConfigObject
+ * @package Here\Lib\Config
  */
-interface ConfigObjectInterface {
+final class ConfigObject implements ConfigObjectInterface {
+
 }

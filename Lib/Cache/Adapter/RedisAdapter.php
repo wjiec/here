@@ -47,7 +47,7 @@ final class RedisAdapter extends CacheAdapterBase {
      * @param int $expired
      * @return mixed|void
      */
-    public function set_item(string $name, $value, $expired = 0) {
+    public function set_item(string $name, $value, int $expired = 0) {
         // TODO: Implement set_item() method.
     }
 }

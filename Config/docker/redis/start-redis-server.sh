@@ -1,11 +1,11 @@
 #!/bin/sh
 
 # path of redis configure file
-redis_conf_path=/usr/local/redis/etc/redis.conf
+REDIS_CONF_PATH=/usr/local/redis/etc/redis.conf
 
 # check redis configure exists
-if [ -f $redis_conf_path ]; then
-    redis-server $redis_conf_path;
+if [[ -f ${REDIS_CONF_PATH} ]]; then
+    redis-server ${REDIS_CONF_PATH};
 else
     redis-server
 fi;

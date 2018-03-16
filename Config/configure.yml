@@ -1,13 +1,15 @@
 #
 # Blogger Configure File
 #
+# True: yes|on|true
+# False: no|off|false
+#
 
 
 # user environments
 environments:
   debug_mode: off
   strict_router: off
-  auto_commit_response: on
 
 
 # router configure

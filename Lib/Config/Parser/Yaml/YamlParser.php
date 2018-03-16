@@ -1,6 +1,6 @@
 <?php
 /**
- * ConfigParserInterface.php.php
+ * YamlParser.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,24 +8,22 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Config\Parser;
+namespace Here\Lib\Config\Parser\Yaml;
 use Here\Lib\Config\ConfigObject;
+use Here\Lib\Config\Parser\ConfigParserBase;
 use Here\Lib\Stream\IStream\ReaderStreamInterface;
 
 
 /**
- * Interface ConfigParserInterface
- * @package Lib\Config\Parser
+ * Class YamlParser
+ * @package Here\Lib\Config\Parser\Yaml
  */
-interface ConfigParserInterface {
-    /**
-     * @param ConfigParserInterface $parser
-     */
-    public function add_parser(ConfigParserInterface $parser): void;
-
+final class YamlParser extends ConfigParserBase {
     /**
      * @param ReaderStreamInterface $stream
      * @return ConfigObject|null
      */
-    public function parse(ReaderStreamInterface $stream): ?ConfigObject;
+    final protected function parse_config(ReaderStreamInterface $stream): ?ConfigObject {
+        // TODO: Implement parse_config() method.
+    }
 }

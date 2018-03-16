@@ -1,6 +1,6 @@
 <?php
 /**
- * ConfigParserInterface.php.php
+ * JsonParser.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,24 +8,22 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Config\Parser;
+namespace Here\Lib\Config\Parser\Json;
 use Here\Lib\Config\ConfigObject;
+use Here\Lib\Config\Parser\ConfigParserBase;
 use Here\Lib\Stream\IStream\ReaderStreamInterface;
 
 
 /**
- * Interface ConfigParserInterface
- * @package Lib\Config\Parser
+ * Class JsonParser
+ * @package Here\Lib\Config\Parser\Json
  */
-interface ConfigParserInterface {
-    /**
-     * @param ConfigParserInterface $parser
-     */
-    public function add_parser(ConfigParserInterface $parser): void;
-
+final class JsonParser extends ConfigParserBase {
     /**
      * @param ReaderStreamInterface $stream
      * @return ConfigObject|null
      */
-    public function parse(ReaderStreamInterface $stream): ?ConfigObject;
+    final protected function parse_config(ReaderStreamInterface $stream): ?ConfigObject {
+        // TODO: Implement parse_config() method.
+    }
 }

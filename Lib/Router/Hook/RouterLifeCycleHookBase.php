@@ -29,11 +29,4 @@ abstract class RouterLifeCycleHookBase implements RouterLifeCycleHookInterface {
     public static function on_response_leave(): void {
         // @TODO logger
     }
-
-    /**
-     * @inheritdoc
-     */
-    public static function on_request_error(): void {
-        // @TODO error logger
-    }
 }

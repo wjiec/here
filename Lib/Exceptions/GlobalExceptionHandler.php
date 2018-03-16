@@ -155,7 +155,6 @@ final class GlobalExceptionHandler implements InitializerInterface {
         var_dump($context);
 
         echo '</pre>';
-
         Response::commit();
     }
 

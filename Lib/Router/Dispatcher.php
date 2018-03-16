@@ -60,32 +60,46 @@ final class Dispatcher {
      * @param string $request_uri
      */
     final public function dispatch(string $request_method, string $request_uri): void {
+        /**
+         * @TODO Filter Pattern { next() -> next() }
+         * @TODO refactoring
+         */
         try {
             // request has received
             SysRouterLifeCycleHook::on_request_enter();
             UserRouterLifeCycleHook::on_request_enter();
 
+            // check request method
             if (!AllowedMethods::contains($request_method)) {
                 throw new DispatchError(405, "`{$request_method}` is not allowed");
             }
 
+            // find channel by request uri
             $trimmed_uri = trim($request_uri, SysConstant::URL_SEPARATOR);
             $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
 
+            // execute channel callback
             $this->_exec_callback($channel);
-
-            UserRouterLifeCycleHook::on_response_leave();
-            SysRouterLifeCycleHook::on_response_leave();
         } catch (ExceptionBase $except) {
-            // check DispatchError
-            if ($except instanceof DispatchError) {
-                if ($this->trigger_error($except->get_error_code(), $except->get_message())) {
-                    Response::commit();
+            do {
+                // check DispatchError
+                if ($except instanceof DispatchError) {
+                    if ($this->trigger_error($except->get_error_code(), $except->get_message())) {
+                        // has error handler, skip `trigger_exception`
+                        break;
+                    }
                 }
-            }
 
-            GlobalExceptionHandler::trigger_exception($except);
+                GlobalExceptionHandler::trigger_exception($except);
+            } while (false);
         }
+
+        // request will leave
+        UserRouterLifeCycleHook::on_response_leave();
+        SysRouterLifeCycleHook::on_response_leave();
+
+        // response commit and exit
+        Response::commit();
     }
 
     /**
@@ -109,13 +123,13 @@ final class Dispatcher {
 
     /**
      * @param int $error_code
-     * @param array ...$args
+     * @param string $message
      * @return bool
      */
-    final public function trigger_error(int $error_code, ...$args): bool {
-        RouterResponse::response_status_code($error_code);
+    final public function trigger_error(int $error_code, string $message): bool {
+        RouterResponse::set_response_status_code($error_code);
         try {
-            return $this->_collector->trigger_error($error_code, ...$args);
+            return $this->_collector->trigger_error($error_code, $message);
         } catch (\ArgumentCountError $e) {}
 
         return true;

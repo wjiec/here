@@ -24,9 +24,9 @@ interface CacheAdapterInterface {
 
     /**
      * @param string $name
-     * @param $value
+     * @param mixed $value
      * @param int $expired
      * @return mixed
      */
-    public function set_item(string $name, $value, $expired = 0);
+    public function set_item(string $name, $value, int $expired = 0);
 }
