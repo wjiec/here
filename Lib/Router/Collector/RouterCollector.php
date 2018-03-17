@@ -56,7 +56,7 @@ abstract class RouterCollector implements CollectorInterface {
         $this->_channel_manager = new ChannelManager();
         $this->_handler_manager = new HandlerManager();
 
-        $this->_parse_methods();
+        $this->parse_methods();
     }
 
     /**
@@ -115,7 +115,7 @@ abstract class RouterCollector implements CollectorInterface {
      * @throws ImpossibleError
      * @throws Middleware\DuplicateMiddleware
      */
-    final private function _parse_methods(): void {
+    final private function parse_methods(): void {
         $ref = new \ReflectionClass(get_class($this));
         foreach ($ref->getMethods() as $method) {
             $callback = new RouterCallback(array($this, $method->name));

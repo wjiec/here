@@ -30,16 +30,16 @@ final class GlobalExceptionHandler implements InitializerInterface {
     final public static function init(): void {
         // global exception handler
         set_exception_handler(function(\Throwable $except): void {
-            self::_exception_handler($except);
+            self::exception_handler($except);
         });
 
         // error handler
         set_error_handler(function(int $errno, string $message, ?string $file, int $line, array $context): bool {
-            return self::_error_handler($errno, $message, $file, $line, $context);
+            return self::error_handler($errno, $message, $file, $line, $context);
         });
 
         // The following error types cannot be handled with a user defined function:
-        //  E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING
+        //   E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING
         register_shutdown_function(function (): void {
             $last_error = error_get_last();
 
@@ -53,7 +53,7 @@ final class GlobalExceptionHandler implements InitializerInterface {
                 $error_file = $last_error['file'];
 
                 // handler
-                self::_shutdown_handler($errno, $error, $error_file, $last_error);
+                self::shutdown_handler($errno, $error, $error_file, $last_error);
             }
         });
     }
@@ -74,14 +74,14 @@ final class GlobalExceptionHandler implements InitializerInterface {
      * @param bool $skip_listener
      */
     final public static function trigger_exception(\Throwable $except, bool $skip_listener = false): void {
-        self::_exception_handler($except, $skip_listener);
+        self::exception_handler($except, $skip_listener);
     }
 
     /**
      * @param \Throwable $exception
      * @param bool $skip_listener
      */
-    final private static function _exception_handler(\Throwable $exception, bool $skip_listener = false): void {
+    final private static function exception_handler(\Throwable $exception, bool $skip_listener = false): void {
         $exception_name = get_class($exception);
         // check current exception has listeners
         if (!$skip_listener && isset(self::$_exception_listeners[$exception_name])) {
@@ -103,7 +103,7 @@ final class GlobalExceptionHandler implements InitializerInterface {
         $file = $exception->getFile();
         $line = $exception->getLine();
 
-        self::_global_handler($errno, $error, $file, $line, array($exception));
+        self::global_handler($errno, $error, $file, $line, array($exception));
     }
 
     /**
@@ -114,10 +114,10 @@ final class GlobalExceptionHandler implements InitializerInterface {
      * @param array|null $context
      * @return bool
      */
-    final private static function _error_handler(int $errno, string $msg,
-                                                 ?string $file, ?int $line,
-                                                 ?array $context): bool {
-        self::_global_handler($errno, $msg, $file, $line, $context);
+    final private static function error_handler(int $errno, string $msg,
+                                                ?string $file, ?int $line,
+                                                ?array $context): bool {
+        self::global_handler($errno, $msg, $file, $line, $context);
         return true;
     }
 
@@ -129,8 +129,8 @@ final class GlobalExceptionHandler implements InitializerInterface {
      * @param null|string $filename
      * @param array|null $context
      */
-    final private static function _shutdown_handler(int $errno, string $msg, ?string $filename, ?array $context): void {
-        self::_global_handler($errno, $msg, $filename, $context['line'] ?? null, $context);
+    final private static function shutdown_handler(int $errno, string $msg, ?string $filename, ?array $context): void {
+        self::global_handler($errno, $msg, $filename, $context['line'] ?? null, $context);
     }
 
     /**
@@ -140,9 +140,9 @@ final class GlobalExceptionHandler implements InitializerInterface {
      * @param null|int $line
      * @param array|null $context
      */
-    final private static function _global_handler(int $errno, string $error,
-                                                  ?string $file, ?int $line,
-                                                  ?array $context): void {
+    final private static function global_handler(int $errno, string $error,
+                                                 ?string $file, ?int $line,
+                                                 ?array $context): void {
 
         // @TODO, default error page or trigger router error?
         Response::clean_response();

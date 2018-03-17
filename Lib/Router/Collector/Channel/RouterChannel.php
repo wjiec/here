@@ -41,7 +41,7 @@ final class RouterChannel extends CollectorComponentBase {
     /**
      * @return array
      */
-    final protected function _allowed_syntax(): array {
+    final protected function allowed_syntax(): array {
         return AllowedChannelSyntax::get_constants();
     }
 

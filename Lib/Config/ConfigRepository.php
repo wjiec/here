@@ -13,6 +13,7 @@ use Here\Lib\Config\Parser\ConfigParserInterface;
 use Here\Lib\Config\Parser\Json\JsonParser;
 use Here\Lib\Config\Parser\Yaml\YamlParser;
 use Here\Lib\Stream\IStream\Local\FileReaderStream;
+use Here\Lib\Stream\OStream\Client\Response;
 use Here\Lib\Utils\Storage\MemoryStorageTrait;
 
 
@@ -36,7 +37,7 @@ class ConfigRepository {
      * @return ConfigObjectInterface
      */
     final public static function get_config(string $config_path): ConfigObjectInterface {
-        $config = self::_get_persistent($config_path);
+        $config = self::get_persistent($config_path);
         if ($config instanceof ConfigObject) {
             return $config;
         }

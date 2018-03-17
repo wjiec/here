@@ -33,19 +33,19 @@ trait JwtParser {
         list($encode_header, $encode_payload, $encode_signature) = $segments;
 
         // decode header
-        $header = json_decode(self::_urlsafe_base64_decode($encode_header));
+        $header = json_decode(self::urlsafe_base64_decode($encode_header));
         if ($header === null) {
             throw new JwtInvalid('invalid segments of header');
         }
 
         // decode payload
-        $payload = json_decode(self::_urlsafe_base64_decode($encode_payload), true);
+        $payload = json_decode(self::urlsafe_base64_decode($encode_payload), true);
         if ($payload === null) {
             throw new JwtInvalid('Invalid segment encoding of payload');
         }
 
         // decode signature
-        $signature = self::_urlsafe_base64_decode($encode_signature);
+        $signature = self::urlsafe_base64_decode($encode_signature);
         if ($validate) {
             if (empty($header->alg)) {
                 throw new JwtInvalid('JWT header invalid, empty algorithm');
@@ -65,7 +65,7 @@ trait JwtParser {
      * @param string $b64_result
      * @return string
      */
-    private static function _urlsafe_base64_decode(string $b64_result): string {
+    private static function urlsafe_base64_decode(string $b64_result): string {
         /**
          * '-' => '+',
          * '_' => '/'

@@ -44,7 +44,7 @@ abstract class CollectorComponentBase implements CollectorComponentInterface {
         $this->_component_name = $name;
         $this->_component_callback = $callback;
 
-        $this->compile_components($this->_allowed_syntax(), $meta);
+        $this->compile_components($this->allowed_syntax(), $meta);
     }
 
     /**
@@ -66,5 +66,5 @@ abstract class CollectorComponentBase implements CollectorComponentInterface {
     /**
      * @return array
      */
-    abstract protected function _allowed_syntax(): array;
+    abstract protected function allowed_syntax(): array;
 }

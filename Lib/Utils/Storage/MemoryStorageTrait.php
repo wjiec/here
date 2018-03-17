@@ -26,7 +26,7 @@ trait MemoryStorageTrait {
      * @param null $default
      * @return null|mixed
      */
-    final protected static function _get_persistent(string $name, $default = null) {
+    final protected static function get_persistent(string $name, $default = null) {
         return static::$_storage[$name] ?? $default;
     }
 
@@ -34,7 +34,7 @@ trait MemoryStorageTrait {
      * @param string $name
      * @param $value
      */
-    final protected static function _set_persistent(string $name, $value) {
+    final protected static function set_persistent(string $name, $value) {
         static::$_storage[$name] = $value;
     }
 }

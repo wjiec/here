@@ -30,15 +30,15 @@ trait JwtGenerator {
             'alg' => $alg->value()
         );
         // encode header
-        $encode_header = self::_urlsafe_base64_encode(json_encode($header));
+        $encode_header = self::urlsafe_base64_encode(json_encode($header));
         // encode payload
-        $encode_payload = self::_urlsafe_base64_encode(json_encode($payload));
+        $encode_payload = self::urlsafe_base64_encode(json_encode($payload));
         // signature input
         $signature_source = join('.', array($encode_header, $encode_payload));
         // calc signature
         $signature = JwtSignature::generate($signature_source, $key, $alg);
         // encode signature
-        $encode_signature = self::_urlsafe_base64_encode($signature);
+        $encode_signature = self::urlsafe_base64_encode($signature);
         // header, payload, signature assembled together using '.'
         return join('.', array($encode_header, $encode_payload, $encode_signature));
     }
@@ -47,7 +47,7 @@ trait JwtGenerator {
      * @param string $payload
      * @return string
      */
-    private static function _urlsafe_base64_encode(string $payload): string {
+    private static function urlsafe_base64_encode(string $payload): string {
         $b64_result = base64_encode($payload);
         /**
          * '+'  => '-',

@@ -22,11 +22,11 @@ abstract class FilterBase implements FilterInterface {
      * @return bool
      */
     final public static function filter($object, int $options = 0): bool {
-        return filter_var($object, static::_filter_name());
+        return filter_var($object, static::filter_name());
     }
 
     /**
      * @return int
      */
-    abstract protected static function _filter_name(): int;
+    abstract protected static function filter_name(): int;
 }

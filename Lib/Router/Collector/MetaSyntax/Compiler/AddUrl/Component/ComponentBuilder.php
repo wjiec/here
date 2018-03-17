@@ -28,17 +28,17 @@ final class ComponentBuilder {
     final public static function build(ValidUrlType $type, array $matches): ComponentBase {
         switch ($type->value()) {
             case ValidUrlType::VALID_URL_TYPE_SCALAR_PATH:
-                return self::_build_scalar_component($matches); break;
+                return self::build_scalar_component($matches); break;
             case ValidUrlType::VALID_URL_TYPE_VARIABLE_PATH:
-                return self::_build_variable_complex_component($matches); break;
+                return self::build_variable_complex_component($matches); break;
             case ValidUrlType::VALID_URL_TYPE_OPTIONAL_PATH:
-                return self::_build_optional_complex_component($matches); break;
+                return self::build_optional_complex_component($matches); break;
             case ValidUrlType::VALID_URL_TYPE_COMPOSITE_VAR_PATH:
-                return self::_build_variable_composite_component($matches); break;
+                return self::build_variable_composite_component($matches); break;
             case ValidUrlType::VALID_URL_TYPE_COMPOSITE_OPT_PATH:
-                return self::_build_optional_composite_component($matches); break;
+                return self::build_optional_composite_component($matches); break;
             case ValidUrlType::VALID_URL_TYPE_FULL_MATCHED_PATH:
-                return self::_build_full_match_component($matches); break;
+                return self::build_full_match_component($matches); break;
             default:
                 throw new ImpossibleError("Undefined ValidUrlType");
         }
@@ -48,7 +48,7 @@ final class ComponentBuilder {
      * @param array $matches
      * @return ScalarComponent
      */
-    final private static function _build_scalar_component(array $matches): ScalarComponent {
+    final private static function build_scalar_component(array $matches): ScalarComponent {
         return new ScalarComponent(
             new Regex(sprintf('/^%s$/', $matches['scalar']))
         );
@@ -58,7 +58,7 @@ final class ComponentBuilder {
      * @param array $matches
      * @return VariableComplexComponent
      */
-    final private static function _build_variable_complex_component(array $matches): VariableComplexComponent {
+    final private static function build_variable_complex_component(array $matches): VariableComplexComponent {
         return new VariableComplexComponent(
             new Regex(sprintf('/^%s$/', $matches['pattern'] ?? '.*')),
             $matches['name'] ?? null
@@ -69,7 +69,7 @@ final class ComponentBuilder {
      * @param array $matches
      * @return OptionalComplexComponent
      */
-    final private static function _build_optional_complex_component(array $matches): OptionalComplexComponent {
+    final private static function build_optional_complex_component(array $matches): OptionalComplexComponent {
         return new OptionalComplexComponent(
             new Regex(sprintf('/^%s$/', $matches['pattern'] ?? '.*')),
             $matches['name'] ?? null
@@ -80,7 +80,7 @@ final class ComponentBuilder {
      * @param array $matches
      * @return VariableCompositeComponent
      */
-    final private static function _build_variable_composite_component(array $matches): VariableCompositeComponent {
+    final private static function build_variable_composite_component(array $matches): VariableCompositeComponent {
         return new VariableCompositeComponent(
             $matches['scalar'],
             new Regex(sprintf('/^%s$/', $matches['pattern'] ?? '.*')),
@@ -92,7 +92,7 @@ final class ComponentBuilder {
      * @param array $matches
      * @return OptionalCompositeComponent
      */
-    final private static function _build_optional_composite_component(array $matches): OptionalCompositeComponent {
+    final private static function build_optional_composite_component(array $matches): OptionalCompositeComponent {
         return new OptionalCompositeComponent(
             $matches['scalar'],
             new Regex(sprintf('/^%s$/', $matches['pattern'] ?? '.*')),
@@ -104,7 +104,7 @@ final class ComponentBuilder {
      * @param array $matches
      * @return FullMatchComponent
      */
-    final private static function _build_full_match_component(array $matches): FullMatchComponent {
+    final private static function build_full_match_component(array $matches): FullMatchComponent {
         return new FullMatchComponent(
             $matches['name'],
             $matches['attributes'] ?? null

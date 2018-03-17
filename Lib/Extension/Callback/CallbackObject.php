@@ -43,7 +43,7 @@ class CallbackObject {
      */
     final public function __construct($callback) {
         $this->_callback = $callback;
-        $this->_reflection();
+        $this->reflection();
     }
 
     /**
@@ -83,7 +83,7 @@ class CallbackObject {
     /**
      * @throws InvalidCallback
      */
-    final private function _reflection(): void {
+    final private function reflection(): void {
         if (is_array($this->_callback)) {
             $ref = new \ReflectionMethod(...$this->_callback);
         } else if (is_string($this->_callback)) {

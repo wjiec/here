@@ -68,7 +68,7 @@ final class IPNetwork {
         }
 
         // convert to number
-        $number = self::_ip_address_to_hex($ip_address);
+        $number = self::ip_address_to_hex($ip_address);
 
         // check exists
         if (isset($this->_ip_list[$number])) {
@@ -99,7 +99,7 @@ final class IPNetwork {
      */
     public function add_ip(string $ip, int $length = 0) {
         // presentation to number
-        $number = self::_ip_address_to_hex($ip);
+        $number = self::ip_address_to_hex($ip);
         // check length
         if ($length < 0 || $length > 32) {
             throw new IPNetworkError('CIDR length invalid');
@@ -114,7 +114,7 @@ final class IPNetwork {
      * @return bool|string
      * @throws IPNetworkError
      */
-    private static function _ip_address_to_hex(string $ip_address) {
+    private static function ip_address_to_hex(string $ip_address) {
         // check is ipv6
         $is_ipv6 = false;
 

@@ -71,7 +71,7 @@ abstract class ExceptionBase extends \Exception {
                 $stack[StackTrace::STACK_TRACE_CLASS_NAME],
                 $stack[StackTrace::STACK_TRACE_CALL_OPERATOR],
                 $stack[StackTrace::STACK_TRACE_FUNCTION_NAME],
-                self::_stringify_arguments(...$stack[StackTrace::STACK_TRACE_ARGUMENTS])
+                self::stringify_arguments(...$stack[StackTrace::STACK_TRACE_ARGUMENTS])
                 /**
                  * @TODO stringify arguments
                  */
@@ -84,13 +84,13 @@ abstract class ExceptionBase extends \Exception {
      * @param $arguments
      * @return string
      */
-    final private static function _stringify_arguments(...$arguments): string {
+    final private static function stringify_arguments(...$arguments): string {
         $result = array();
 
         foreach ($arguments as $argument) {
             if (is_array($argument)) {
                 $result[] = 'array(' . join(',', array_map(function($v) {
-                    return self::_stringify_arguments($v);
+                    return self::stringify_arguments($v);
                 }, $argument)) . ')';
             } else if (is_string($argument)) {
                 $result[] = "'{$argument}'";

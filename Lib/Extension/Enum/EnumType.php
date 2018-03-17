@@ -74,7 +74,7 @@ abstract class EnumType implements EnumInterface {
      * @param bool $within_default
      * @return array
      */
-    public static function get_constants($within_default = false): array {
+    final public static function get_constants(bool $within_default = false): array {
         $called_class_name = get_called_class();
 
         // cached constants for each classes base on `EnumType`
@@ -92,10 +92,10 @@ abstract class EnumType implements EnumInterface {
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      * @return bool
      */
-    public static function contains($value): bool {
+    final public static function contains($value): bool {
         return in_array($value, self::get_constants());
     }
 }

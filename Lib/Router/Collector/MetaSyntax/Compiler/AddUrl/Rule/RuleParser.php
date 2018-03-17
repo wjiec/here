@@ -52,7 +52,7 @@ final class RuleParser {
         // foreach parse all segment of url
         foreach ($segments as $segment) {
             /* @var ValidUrlType $type */ /* @var array $matches */
-            $type = self::_try_match($segment, $matches);
+            $type = self::try_match($segment, $matches);
             if (empty($matches)) {
                 throw new InvalidRule("invalid segment('{$segment}') of rule('{$rule}')");
             }
@@ -86,17 +86,17 @@ final class RuleParser {
      * @return ValidUrlType
      * @throws InvalidRule
      */
-    final private static function _try_match(string $segment, &$result): ValidUrlType {
+    final private static function try_match(string $segment, &$result): ValidUrlType {
         $type = null;
 
         // scalar type
-        if (($matches = self::_is_scalar($segment))) {
+        if (($matches = self::is_scalar($segment))) {
             $result = $matches;
             $type = new ValidUrlType(ValidUrlType::VALID_URL_TYPE_SCALAR_PATH);
         }
 
         // complex(variable & optional) segment | composite(scalar + (variable|optional)) segment
-        if (($matches = self::_is_complex($segment)) || ($matches = self::_is_composite($segment))) {
+        if (($matches = self::is_complex($segment)) || ($matches = self::is_composite($segment))) {
             $sym_start = $matches['start'] ?? null;
             $sym_end = $matches['end'] ?? null;
 
@@ -123,7 +123,7 @@ final class RuleParser {
         }
 
         // full-matched segment
-        if (($matches = self::_is_full_match($segment))) {
+        if (($matches = self::is_full_match($segment))) {
             $type = new ValidUrlType(ValidUrlType::VALID_URL_TYPE_FULL_MATCHED_PATH);
             $result = $matches;
         }
@@ -140,7 +140,7 @@ final class RuleParser {
      * @param string $segment
      * @return array
      */
-    final private static function _is_scalar(string $segment): array {
+    final private static function is_scalar(string $segment): array {
         if (preg_match('/^(?<scalar>[\w\&\-]+)$/', $segment, $matches)) {
             return $matches;
         }
@@ -151,7 +151,7 @@ final class RuleParser {
      * @param string $segment
      * @return array
      */
-    final private static function _is_complex(string $segment): array {
+    final private static function is_complex(string $segment): array {
         // only name part
         if (preg_match('/^(?<start>\<|\[)(?<name>\w+)\:?(?<end>\>|\])$/', $segment, $matches)) {
             return $matches;
@@ -174,7 +174,7 @@ final class RuleParser {
      * @param string $segment
      * @return array
      */
-    final private static function _is_composite(string $segment): array {
+    final private static function is_composite(string $segment): array {
         // only name part
         if (preg_match('/^(?<scalar>\w+)(?<start>\<|\[)(?<name>\w+)\:?(?<end>\>|\])$/', $segment, $matches)) {
             return $matches;
@@ -199,7 +199,7 @@ final class RuleParser {
      * @param string $segment
      * @return array
      */
-    final private static function _is_full_match(string $segment): array {
+    final private static function is_full_match(string $segment): array {
         // only segment name
         if (preg_match('/^\{(?<name>\w+)\}$/', $segment, $matches)) {
             return $matches;

@@ -12,7 +12,6 @@ namespace Here\Lib\Utils\RSA;
 use Here\Config\Constant\SysConstant;
 use Here\Lib\Utils\RSA\TransformAdapter\Base64Adapter;
 use Here\Lib\Utils\Toolkit\StringToolkit;
-use Here\Lib\Utils\Interfaces\AvailableInterface;
 use Here\Lib\Utils\RSA\TransformAdapter\TransformAdapterInterface;
 
 
@@ -20,7 +19,7 @@ use Here\Lib\Utils\RSA\TransformAdapter\TransformAdapterInterface;
  * Class RsaObject
  * @package Lib\Utils\Rsa
  */
-final class RSAObject implements AvailableInterface {
+final class RSAObject {
     /**
      * @var string|null
      */
@@ -130,7 +129,7 @@ final class RSAObject implements AvailableInterface {
     final public function encrypt(string $data, string $glue = '.',
                                   ?TransformAdapterInterface $adapter = null): string {
         // public_encrypt
-        return $this->_encrypt(false, $data, $glue, $adapter ?? new Base64Adapter());
+        return $this->do_encrypt(false, $data, $glue, $adapter ?? new Base64Adapter());
     }
 
     /**
@@ -144,7 +143,7 @@ final class RSAObject implements AvailableInterface {
                                   ?TransformAdapterInterface $adapter = null): string {
         // private_decrypt
         if ($this->_private_key) {
-            return $this->_decrypt(true, $data, $glue, $adapter ?? new Base64Adapter());
+            return $this->do_decrypt(true, $data, $glue, $adapter ?? new Base64Adapter());
         }
         return SysConstant::EMPTY_STRING;
     }
@@ -160,7 +159,7 @@ final class RSAObject implements AvailableInterface {
                                     ?TransformAdapterInterface $adapter = null): string {
         // private_encrypt
         if ($this->_private_key) {
-            return $this->_encrypt(true, $data, $glue, $adapter ?? new Base64Adapter());
+            return $this->do_encrypt(true, $data, $glue, $adapter ?? new Base64Adapter());
         }
         return SysConstant::EMPTY_STRING;
     }
@@ -175,7 +174,7 @@ final class RSAObject implements AvailableInterface {
     final public function validate(string $data, string $glue = '.',
                                    ?TransformAdapterInterface $adapter = null): string {
         // public_decrypt
-        return $this->_decrypt(false, $data, $glue, $adapter ?? new Base64Adapter());
+        return $this->do_decrypt(false, $data, $glue, $adapter ?? new Base64Adapter());
     }
 
     /**
@@ -186,10 +185,10 @@ final class RSAObject implements AvailableInterface {
      * @return string
      * @throws RSAError
      */
-    final private function _encrypt(bool $is_private, string $data, string $glue,
-                                    ?TransformAdapterInterface $adapter): string {
+    final private function do_encrypt(bool $is_private, string $data, string $glue,
+                                      ?TransformAdapterInterface $adapter): string {
         $results = array();
-        foreach (self::_split_data($data, $this->_key_bits) as $segment) {
+        foreach (self::split_data($data, $this->_key_bits) as $segment) {
             if ($is_private) {
                 $encrypt_result = openssl_private_encrypt($segment, $result, $this->_private_key);
             } else {
@@ -214,8 +213,8 @@ final class RSAObject implements AvailableInterface {
      * @return string
      * @throws RSAError
      */
-    final private function _decrypt(bool $is_private, string $data, string $glue,
-                                    ?TransformAdapterInterface $adapter): string {
+    final private function do_decrypt(bool $is_private, string $data, string $glue,
+                                      ?TransformAdapterInterface $adapter): string {
         $segments = $adapter->transform_backward($data, $glue);
 
         $results = array();
@@ -241,7 +240,7 @@ final class RSAObject implements AvailableInterface {
      * @param int $key_bits
      * @return array
      */
-    final private static function _split_data(string $data, int $key_bits): array {
+    final private static function split_data(string $data, int $key_bits): array {
         switch ($key_bits) {
             case 1024: $max_segment_size = 117; break;
             case 2048: $max_segment_size = 245; break;

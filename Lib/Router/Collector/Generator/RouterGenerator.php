@@ -35,7 +35,7 @@ final class RouterGenerator {
             return false;
         }
 
-        $meta_info = self::_get_meta_info($method->getDocComment());
+        $meta_info = self::get_meta_info($method->getDocComment());
         switch (RouterTypeAnalyzer::analysis($meta_info)->value()) {
             case RouterType::ROUTER_TYPE_CHANNEL:
                 return new RouterChannel($method->name, $meta_info, $callback);
@@ -56,10 +56,10 @@ final class RouterGenerator {
      * @param string $meta_string
      * @return array
      */
-    final private static function _get_meta_info(string $meta_string): array {
+    final private static function get_meta_info(string $meta_string): array {
         $meta_info = array();
 
-        $meta_string = self::_clean_string($meta_string);
+        $meta_string = self::clean_string($meta_string);
         foreach (explode("\n", $meta_string) as $line) {
             if (preg_match('/@(?<name>\w+)\s*(?<value>.*)?/', $line, $matches)) {
                 if (!isset($meta_info[$matches['name']])) {
@@ -76,7 +76,7 @@ final class RouterGenerator {
      * @param string $string
      * @return string
      */
-    final private static function _clean_string(string $string): string {
+    final private static function clean_string(string $string): string {
         return str_replace(array("\r\n", "\n"), "\n", $string);
     }
 }

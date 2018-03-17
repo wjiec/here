@@ -79,7 +79,7 @@ final class Dispatcher {
             $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
 
             // execute channel callback
-            $this->_exec_callback($channel);
+            $this->exec_callback($channel);
         } catch (ExceptionBase $except) {
             do {
                 // check DispatchError
@@ -103,9 +103,23 @@ final class Dispatcher {
     }
 
     /**
+     * @param int $error_code
+     * @param string $message
+     * @return bool
+     */
+    final public function trigger_error(int $error_code, string $message): bool {
+        RouterResponse::set_response_status_code($error_code);
+        try {
+            return $this->_collector->trigger_error($error_code, $message);
+        } catch (\ArgumentCountError $e) {}
+
+        return true;
+    }
+
+    /**
      * @param RouterChannel $channel
      */
-    final private function _exec_callback(RouterChannel $channel): void {
+    final private function exec_callback(RouterChannel $channel): void {
         try {
             $middleware = $channel->get_middleware_component();
             if ($middleware instanceof AddMiddleware) {
@@ -119,19 +133,5 @@ final class Dispatcher {
             $channel->apply_callback();
             // hook if callback after and logger
         } catch (\ArgumentCountError $e) {}
-    }
-
-    /**
-     * @param int $error_code
-     * @param string $message
-     * @return bool
-     */
-    final public function trigger_error(int $error_code, string $message): bool {
-        RouterResponse::set_response_status_code($error_code);
-        try {
-            return $this->_collector->trigger_error($error_code, $message);
-        } catch (\ArgumentCountError $e) {}
-
-        return true;
     }
 }

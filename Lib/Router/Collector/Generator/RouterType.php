@@ -9,15 +9,14 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router\Collector\Generator;
+use Here\Lib\Extension\Enum\EnumType;
 
-
-use Here\Lib\Extension\Enum\Enum;
 
 /**
  * Class RouterType
  * @package Here\Lib\Router\Collector\Generator
  */
-final class RouterType extends Enum {
+final class RouterType extends EnumType {
     /**
      * default is ROUTER_TYPE_CHANNEL
      */

@@ -20,7 +20,7 @@ final class TrueValidator extends FilterBase {
     /**
      * @return int
      */
-    final protected static function _filter_name(): int {
+    final protected static function filter_name(): int {
         return FILTER_VALIDATE_BOOLEAN;
     }
 }

@@ -21,7 +21,7 @@ final class RouterMiddleware extends CollectorComponentBase {
     /**
      * @return array
      */
-    protected function _allowed_syntax(): array {
+    protected function allowed_syntax(): array {
         return AllowedMiddlewareSyntax::get_constants();
     }
 

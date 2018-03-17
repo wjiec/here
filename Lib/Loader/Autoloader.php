@@ -64,7 +64,7 @@ final class Autoloader {
             $prefix = substr($prefix, 0, $pos + 1);
             $class = substr($class_name, $pos + 1);
 
-            if (self::_load_mapped_file($prefix, $class, $just_check)) {
+            if (self::load_mapped_file($prefix, $class, $just_check)) {
                 // we're found
                 return true;
             }
@@ -90,7 +90,7 @@ final class Autoloader {
      * @param bool $just_check
      * @return bool
      */
-    final private static function _load_mapped_file(string $namespace, string $class, bool $just_check): bool {
+    final private static function load_mapped_file(string $namespace, string $class, bool $just_check): bool {
         if (!isset(self::$_prefixes[$namespace])) {
             return false;
         }
@@ -101,7 +101,7 @@ final class Autoloader {
                 str_replace('\\', '/', $class) . '.php'
             ));
 
-            if (self::_include_file($file_name, $just_check)) {
+            if (self::include_file($file_name, $just_check)) {
                 return true;
             }
         }
@@ -114,7 +114,7 @@ final class Autoloader {
      * @param bool $just_check
      * @return bool
      */
-    final private static function _include_file(string $file_name, bool $just_check): bool {
+    final private static function include_file(string $file_name, bool $just_check): bool {
         if (is_file($file_name)) {
             if (!$just_check) {
                 /* dynamic include classes definition */

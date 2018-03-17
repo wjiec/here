@@ -54,7 +54,7 @@ abstract class FileStreamBase implements FileStreamInterface {
         }
 
         // open file
-        $this->_file_handler = fopen($file_path, $this->_resolve_open_mode());
+        $this->_file_handler = fopen($file_path, $this->resolve_open_mode());
     }
 
     /**
@@ -75,7 +75,7 @@ abstract class FileStreamBase implements FileStreamInterface {
     /**
      * @return string
      */
-    final private function _resolve_open_mode(): string {
+    final private function resolve_open_mode(): string {
         $mode = '';
         switch (true) {
             case ($this instanceof ReaderStreamInterface):

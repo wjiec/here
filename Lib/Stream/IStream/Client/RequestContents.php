@@ -60,7 +60,7 @@ trait RequestContents {
             if (function_exists('apache_request_headers')) {
                 $headers = apache_request_headers();
             } else {
-                $headers = self::_apache_request_headers();
+                $headers = self::apache_request_headers();
             }
 
             // lowercase
@@ -85,7 +85,7 @@ trait RequestContents {
     /**
      * @return array
      */
-    final private static function _apache_request_headers(): array {
+    final private static function apache_request_headers(): array {
         $headers = array();
         $http_reg = '/\AHTTP_/';
 

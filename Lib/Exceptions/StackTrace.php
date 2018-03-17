@@ -25,7 +25,7 @@ class StackTrace implements \IteratorAggregate {
      * StackTrace constructor.
      */
     final public function __construct() {
-        self::_analysis_stack_trace(debug_backtrace());
+        self::analysis_stack_trace(debug_backtrace());
     }
 
     /**
@@ -38,7 +38,7 @@ class StackTrace implements \IteratorAggregate {
     /**
      * @param array $stack_trace
      */
-    final private function _analysis_stack_trace(array $stack_trace): void {
+    final private function analysis_stack_trace(array $stack_trace): void {
         foreach ($stack_trace as $index => $call_info) {
             $this->_trace_back[] = array(
                 self::STACK_TRACE_CALLED_INDEX  => $index,

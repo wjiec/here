@@ -68,7 +68,7 @@ final class ChannelTree {
         /* @var ValidUrl $valid_url */
         foreach ($add_url as $valid_url) {
             $this->_position = &$this->_tree;
-            $this->_insert_node($valid_url, $channel);
+            $this->insert_node($valid_url, $channel);
         }
     }
 
@@ -85,7 +85,7 @@ final class ChannelTree {
         );
 
         // recursion find channel
-        return $this->_recursion_find($this->_tree, $segments);
+        return $this->recursion_find($this->_tree, $segments);
     }
 
     /**
@@ -93,7 +93,7 @@ final class ChannelTree {
      * @param array $segments
      * @return RouterChannel|null
      */
-    final private function _recursion_find(array &$tree, array $segments): ?RouterChannel {
+    final private function recursion_find(array &$tree, array $segments): ?RouterChannel {
         // first check segments is empty
         if (empty($segments)) {
             return $tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
@@ -112,7 +112,7 @@ final class ChannelTree {
 
                 // scalar matched
                 if ($_scalar === $current_segment) {
-                    $channel = $this->_recursion_find($_scalar_tree, $segments);
+                    $channel = $this->recursion_find($_scalar_tree, $segments);
                     if ($channel instanceof RouterChannel) {
                         // found channel
                         return $channel;
@@ -127,10 +127,10 @@ final class ChannelTree {
             foreach ($tree[TreeNodeType::NODE_TYPE_COMPOSITE_PATH] as $_pattern => &$_composite_tree) {
                 $regex = new Regex($_pattern);
                 if (($result = $regex->match($current_segment))) {
-                    $name = self::_find_named_key($result);
+                    $name = self::find_named_key($result);
                     RouterRequest::push_router_pair($name, $result[$name]);
 
-                    $channel = $this->_recursion_find($_composite_tree, $segments);
+                    $channel = $this->recursion_find($_composite_tree, $segments);
                     if ($channel instanceof RouterChannel) {
                         return $channel;
                     } else {
@@ -146,10 +146,10 @@ final class ChannelTree {
             foreach ($tree[TreeNodeType::NODE_TYPE_VAR_COMPLEX_PATH] as $_pattern => &$_var_tree) {
                 $regex = new Regex($_pattern);
                 if (($result = $regex->match($current_segment))) {
-                    $name = self::_find_named_key($result);
+                    $name = self::find_named_key($result);
                     RouterRequest::push_router_pair($name, $result[$name]);
 
-                    $channel = $this->_recursion_find($_var_tree, $segments);
+                    $channel = $this->recursion_find($_var_tree, $segments);
                     if ($channel instanceof RouterChannel) {
                         return $channel;
                     } else {
@@ -165,7 +165,7 @@ final class ChannelTree {
             foreach ($tree[TreeNodeType::NODE_TYPE_OPT_COMPLEX_PATH] as $_pattern => &$_opt_tree) {
                 $regex = new Regex($_pattern);
                 if (($result = $regex->match($current_segment))) {
-                    $name = self::_find_named_key($result);
+                    $name = self::find_named_key($result);
                     RouterRequest::push_router_pair($name, $result[$name]);
 
                     $channel = $_opt_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
@@ -187,7 +187,7 @@ final class ChannelTree {
                 $complete_segments = array_merge(array($current_segment), $segments);
                 RouterRequest::push_router_pair($name, join(SysConstant::URL_SEPARATOR, $complete_segments));
 
-                if ($this->_check_attributes($complete_segments, $attributes)) {
+                if ($this->check_attributes($complete_segments, $attributes)) {
                     $channel = $_full_match_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] ?? null;
                     if ($channel instanceof RouterChannel) {
                         return $channel;
@@ -207,7 +207,7 @@ final class ChannelTree {
      * @param string $attributes
      * @return bool
      */
-    final private function _check_attributes(array $segments, string $attributes): bool {
+    final private function check_attributes(array $segments, string $attributes): bool {
         // empty attributes
         if ($attributes === '') {
             return true;
@@ -238,9 +238,9 @@ final class ChannelTree {
      * @param RouterChannel $channel
      * @throws ImpossibleError
      */
-    final private function _insert_node(ValidUrl &$valid_url, RouterChannel &$channel): void {
+    final private function insert_node(ValidUrl &$valid_url, RouterChannel &$channel): void {
         if (count($valid_url) === 1) {
-            if ($this->_parse_root_path($valid_url)) {
+            if ($this->parse_root_path($valid_url)) {
                 $this->_tree[TreeNodeType::NODE_TYPE_MATCHED_CHANNEL] = $channel;
                 return;
             }
@@ -251,13 +251,13 @@ final class ChannelTree {
             $node_type = null;
             switch (true) {
                 case ($component instanceof ScalarComponentInterface):
-                    $this->_insert_scalar_node($component); break;
+                    $this->insert_scalar_node($component); break;
                 case ($component instanceof ComplexComponentInterface):
-                    $this->_insert_complex_node($component); break;
+                    $this->insert_complex_node($component); break;
                 case ($component instanceof CompositeComponentInterface):
-                    $this->_insert_composite_node($component); break;
+                    $this->insert_composite_node($component); break;
                 case ($component instanceof FullMatchComponentInterface):
-                    $this->_insert_full_match_node($component); break;
+                    $this->insert_full_match_node($component); break;
                 default:
                     throw new ImpossibleError("what type of component?");
             }
@@ -270,7 +270,7 @@ final class ChannelTree {
      * @param ValidUrl $valid_url
      * @return bool
      */
-    final private function _parse_root_path(ValidUrl $valid_url): bool {
+    final private function parse_root_path(ValidUrl $valid_url): bool {
         $first_component = $valid_url->glimpse_last();
 
         // is scalar component
@@ -286,14 +286,14 @@ final class ChannelTree {
     /**
      * @param ScalarComponentInterface $component
      */
-    final private function _insert_scalar_node(ScalarComponentInterface $component): void {
+    final private function insert_scalar_node(ScalarComponentInterface $component): void {
         if (!isset($this->_position[TreeNodeType::NODE_TYPE_SCALAR_PATH])) {
             $this->_position[TreeNodeType::NODE_TYPE_SCALAR_PATH] = array();
         }
         // switch to next layout
         $this->_position = &$this->_position[TreeNodeType::NODE_TYPE_SCALAR_PATH];
 
-        $scalar_string = self::_trim_pattern_wrapper($component->get_regex()->get_pattern());
+        $scalar_string = self::trim_pattern_wrapper($component->get_regex()->get_pattern());
         if (!isset($this->_position[$scalar_string])) {
             $this->_position[$scalar_string] = array();
         }
@@ -303,7 +303,7 @@ final class ChannelTree {
     /**
      * @param ComplexComponentInterface $component
      */
-    final private function _insert_complex_node(ComplexComponentInterface $component): void {
+    final private function insert_complex_node(ComplexComponentInterface $component): void {
         $node_type = TreeNodeType::NODE_TYPE_VAR_COMPLEX_PATH;
         if ($component instanceof OptionalComplexComponent) {
             $node_type = TreeNodeType::NODE_TYPE_OPT_COMPLEX_PATH;
@@ -315,8 +315,8 @@ final class ChannelTree {
         // switch to next layout
         $this->_position = &$this->_position[$node_type];
 
-        $trimmed_pattern = self::_trim_pattern_wrapper($component->get_regex()->get_pattern());
-        $complete_pattern = self::_make_named_pattern($component->get_name(), $trimmed_pattern);
+        $trimmed_pattern = self::trim_pattern_wrapper($component->get_regex()->get_pattern());
+        $complete_pattern = self::make_named_pattern($component->get_name(), $trimmed_pattern);
         if (!isset($this->_position[$complete_pattern])) {
             $this->_position[$complete_pattern] = array();
         }
@@ -326,14 +326,14 @@ final class ChannelTree {
     /**
      * @param CompositeComponentInterface $component
      */
-    final private function _insert_composite_node(CompositeComponentInterface $component): void {
+    final private function insert_composite_node(CompositeComponentInterface $component): void {
         if (!isset($this->_position[TreeNodeType::NODE_TYPE_COMPOSITE_PATH])) {
             $this->_position[TreeNodeType::NODE_TYPE_COMPOSITE_PATH] = array();
         }
         $this->_position = &$this->_position[TreeNodeType::NODE_TYPE_COMPOSITE_PATH];
 
-        $trimmed_pattern = self::_trim_pattern_wrapper($component->get_regex()->get_pattern());
-        $complete_pattern = self::_make_composite_pattern(
+        $trimmed_pattern = self::trim_pattern_wrapper($component->get_regex()->get_pattern());
+        $complete_pattern = self::make_composite_pattern(
             ($component instanceof VariableCompositeComponent),
             $component->get_name(), $component->get_scalar(), $trimmed_pattern);
 
@@ -346,7 +346,7 @@ final class ChannelTree {
     /**
      * @param FullMatchComponentInterface $component
      */
-    final private function _insert_full_match_node(FullMatchComponentInterface $component): void {
+    final private function insert_full_match_node(FullMatchComponentInterface $component): void {
         if (!isset($this->_position[TreeNodeType::NODE_TYPE_FULL_MATCH_PATH])) {
             $this->_position[TreeNodeType::NODE_TYPE_FULL_MATCH_PATH] = array();
         }
@@ -364,7 +364,7 @@ final class ChannelTree {
      * @param string $pattern
      * @return string
      */
-    final private static function _make_named_pattern(string $name, string $pattern): string {
+    final private static function make_named_pattern(string $name, string $pattern): string {
         return sprintf('/^(?<%s>%s)$/', $name, $pattern);
     }
 
@@ -375,8 +375,8 @@ final class ChannelTree {
      * @param string $pattern
      * @return string
      */
-    final private static function _make_composite_pattern(bool $is_require, ?string $name,
-                                                          string $scalar, string $pattern): string {
+    final private static function make_composite_pattern(bool $is_require, ?string $name,
+                                                         string $scalar, string $pattern): string {
         self::$_anonymous_name .= '_';
         return sprintf('/^%s(?<%s>%s)%s$/',
             $scalar, $name ?? self::$_anonymous_name, $pattern, $is_require ? '' : '?');
@@ -386,7 +386,7 @@ final class ChannelTree {
      * @param string $pattern
      * @return string
      */
-    final private static function _trim_pattern_wrapper(string $pattern): string {
+    final private static function trim_pattern_wrapper(string $pattern): string {
         // trim `/^` and `$/`
         return substr($pattern, 2, strlen($pattern) - 4);
     }
@@ -395,7 +395,7 @@ final class ChannelTree {
      * @param array $matches
      * @return string|null
      */
-    final private static function _find_named_key(array &$matches): ?string {
+    final private static function find_named_key(array &$matches): ?string {
         foreach ($matches as $key => $value) {
             if (is_string($key)) {
                 return $key;
