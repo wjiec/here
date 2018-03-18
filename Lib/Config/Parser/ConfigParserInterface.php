@@ -28,4 +28,10 @@ interface ConfigParserInterface {
      * @return ConfigObject|null
      */
     public function parse(ReaderStreamInterface $stream): ?ConfigObject;
+
+    /**
+     * @param ConfigObject $config
+     * @return string
+     */
+    public function dump(ConfigObject $config): string;
 }

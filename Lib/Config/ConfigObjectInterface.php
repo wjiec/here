@@ -16,4 +16,10 @@ namespace Here\Lib\Config;
  * @package Lib\Config
  */
 interface ConfigObjectInterface {
+    /**
+     * @param string $key
+     * @param null $default
+     * @return mixed
+     */
+    public function get_item(string $key, $default = null);
 }

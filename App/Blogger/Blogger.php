@@ -23,6 +23,7 @@ class Blogger implements ApplicationInterface {
      */
     final public static function init(): void {
         BloggerEnvironment::init();
+        BloggerEnvironment::init_config('configure.json');
     }
 
     /**

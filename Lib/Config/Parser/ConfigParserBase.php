@@ -52,8 +52,30 @@ abstract class ConfigParserBase implements ConfigParserInterface {
     }
 
     /**
+     * @param ConfigObject $config
+     * @return string
+     */
+    final public function dump(ConfigObject $config): string {
+        $stringify_config = $this->dump_config($config);
+        if ($stringify_config) {
+            return $stringify_config;
+        } else {
+            if ($this->_successor === null) {
+                return null;
+            }
+            return $this->_successor->dump($config);
+        }
+    }
+
+    /**
      * @param ReaderStreamInterface $stream
      * @return ConfigObject|null
      */
     abstract protected function parse_config(ReaderStreamInterface $stream): ?ConfigObject;
+
+    /**
+     * @param ConfigObject $config
+     * @return string
+     */
+    abstract protected function dump_config(ConfigObject $config): ?string;
 }

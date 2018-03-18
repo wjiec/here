@@ -20,6 +20,7 @@ use Here\Config\Router\UserCollector;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Stream\IStream\Client\Request;
+use Here\Lib\Stream\OStream\Client\Response;
 
 
 /** @TODO List
@@ -46,7 +47,11 @@ echo "<pre>";
 $dispatcher = new Dispatcher(new UserCollector());
 
 /* dispatch request resources */
-$dispatcher->dispatch(Request::request_method(), Request::request_uri());
+if (php_sapi_name() !== 'cli') {
+    $dispatcher->dispatch(Request::request_method(), Request::request_uri());
+} else {
+    Response::commit();
+}
 
 /* test case */
 echo "</pre>";

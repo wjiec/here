@@ -9,6 +9,9 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\App\Blogger;
+use Here\Lib\Config\ConfigRepository;
+use Here\Lib\Environment\EnvironmentOverrideError;
+use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Utils\Interfaces\InitializerInterface;
 use Here\Lib\Exceptions\GlobalExceptionHandler;
 use Here\Lib\Stream\OStream\Client\Response;
@@ -22,11 +25,27 @@ final class BloggerEnvironment implements InitializerInterface {
     /**
      * initializing blogger environment
      */
-    public static function init(): void {
+    final public static function init(): void {
         // response environment
         Response::init();
-
         // Gl0balException environment
         GlobalExceptionHandler::init();
+    }
+
+    /**
+     * @param string $config
+     */
+    final public static function init_config(string $config): void {
+        $config_object = ConfigRepository::get_config($config);
+
+        try {
+            foreach ($config_object->get_item('environment', array()) as $key => $value) {
+                GlobalEnvironment::set_user_env($key, $value);
+            }
+
+            foreach ($config_object->get_item('router', array()) as $key => $value) {
+                GlobalEnvironment::set_user_env($key, $value);
+            }
+        } catch (EnvironmentOverrideError $e) {}
     }
 }

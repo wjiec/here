@@ -24,6 +24,14 @@ final class YamlParser extends ConfigParserBase {
      * @return ConfigObject|null
      */
     final protected function parse_config(ReaderStreamInterface $stream): ?ConfigObject {
-        // TODO: Implement parse_config() method.
+        return null;
+    }
+
+    /**
+     * @param ConfigObject $config
+     * @return null|string
+     */
+    final protected function dump_config(ConfigObject $config): ?string {
+        return null;
     }
 }

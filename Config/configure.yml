@@ -7,7 +7,7 @@
 
 
 # user environments
-environments:
+environment:
   debug_mode: off
   strict_router: off
 
@@ -18,7 +18,7 @@ router:
 
 
 # databases configures
-databases:
+database:
   -
     host: mysql
     port: 3306
@@ -30,7 +30,7 @@ databases:
 
 
 # caches server configures
-caches:
+cache:
   -
     host: redis
     port: 11211

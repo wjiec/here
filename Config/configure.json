@@ -1,0 +1,23 @@
+{
+  "environment": {
+    "debug_mode": "off",
+    "strict_router": "off"
+  },
+  "router": {
+    "dashboard": "dashboard"
+  },
+  "database": [{
+    "host": "mysql",
+    "port": 3306,
+    "username": "root",
+    "password": "root",
+    "database": "here",
+    "charset": "utf8",
+    "driver": "mysql"
+  }],
+  "cache": [{
+    "host": "redis",
+    "port": 11211,
+    "driver": "redis"
+  }]
+}

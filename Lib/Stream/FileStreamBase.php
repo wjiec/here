@@ -30,8 +30,9 @@ abstract class FileStreamBase implements FileStreamInterface {
     protected $_file_path;
 
     /**
-     * FileReaderStream constructor.
+     * FileStreamBase constructor.
      * @param string $file_path
+     * @throws FileStreamInvalid
      */
     final public function __construct(string $file_path) {
         $this->_file_path = $file_path;
