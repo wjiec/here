@@ -1,7 +1,8 @@
 {
   "environment": {
     "debug_mode": "off",
-    "strict_router": "off"
+    "strict_router": "off",
+    "auto_commit": "on"
   },
   "router": {
     "dashboard": "dashboard"

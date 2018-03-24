@@ -10,15 +10,14 @@
  */
 namespace Here\Lib\Exceptions;
 use Here\Lib\Extension\Callback\CallbackObject;
-use Here\Lib\Utils\Interfaces\InitializerInterface;
-use Here\Lib\Stream\OStream\Client\Response;
+use Here\Lib\Stream\OStream\Client\OutputBuffer;
 
 
 /**
  * Class GlobalExceptionHandler
  * @package Here\Lib\Exceptions
  */
-final class GlobalExceptionHandler implements InitializerInterface {
+final class GlobalExceptionHandler {
     /**
      * @var array
      */
@@ -27,7 +26,7 @@ final class GlobalExceptionHandler implements InitializerInterface {
     /**
      * global exception handler
      */
-    final public static function init(): void {
+    final public static function error_trapping(): void {
         // global exception handler
         set_exception_handler(function(\Throwable $except): void {
             self::exception_handler($except);
@@ -45,7 +44,7 @@ final class GlobalExceptionHandler implements InitializerInterface {
 
             if ($last_error && $last_error['type'] === ($last_error['type'] & self::FATAL_ERROR_VALUE)) {
                 // clean "Fatal Error: ..." output
-                Response::clean_response();
+                OutputBuffer::clean_buffer();
 
                 // key information
                 $errno = $last_error['type'];
@@ -145,7 +144,7 @@ final class GlobalExceptionHandler implements InitializerInterface {
                                                  ?array $context): void {
 
         // @TODO, default error page or trigger router error?
-        Response::clean_response();
+        OutputBuffer::clean_buffer();
         echo '<pre>';
 
         var_dump($errno);
@@ -155,7 +154,7 @@ final class GlobalExceptionHandler implements InitializerInterface {
         var_dump($context);
 
         echo '</pre>';
-        Response::commit();
+        OutputBuffer::commit_buffer();
     }
 
     /**

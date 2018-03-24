@@ -10,7 +10,6 @@
  */
 namespace Here\Lib\Config\Parser;
 use Here\Lib\Config\ConfigObject;
-use Here\Lib\Stream\IStream\Local\FileReaderStream;
 use Here\Lib\Stream\IStream\ReaderStreamInterface;
 
 

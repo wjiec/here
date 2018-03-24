@@ -10,15 +10,12 @@
  */
 namespace Here\Lib\Router;
 use Here\Config\Constant\SysConstant;
-use Here\Config\Router\UserRouterLifeCycleHook;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\GlobalExceptionHandler;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\CollectorInterface;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
 use Here\Lib\Router\Collector\RouterCollector;
-use Here\Lib\Router\Hook\SysRouterLifeCycleHook;
-use Here\Lib\Stream\OStream\Client\Response;
 
 
 /**
@@ -47,6 +44,9 @@ final class Dispatcher {
      * @throws DispatchError
      */
     final public function __construct(CollectorInterface $collector) {
+        /**
+         * @TODO remove or hold this singleton mode
+         */
         if (self::$_self_instance !== null) {
             throw new DispatchError(500, "Dispatcher must be singleton");
         }
@@ -66,8 +66,8 @@ final class Dispatcher {
          */
         try {
             // request has received
-            SysRouterLifeCycleHook::on_request_enter();
-            UserRouterLifeCycleHook::on_request_enter();
+//            SysRouterLifeCycleHook::on_request_enter();
+//            UserRouterLifeCycleHook::on_request_enter();
 
             // check request method
             if (!AllowedMethods::contains($request_method)) {
@@ -95,11 +95,11 @@ final class Dispatcher {
         }
 
         // request will leave
-        UserRouterLifeCycleHook::on_response_leave();
-        SysRouterLifeCycleHook::on_response_leave();
+//        UserRouterLifeCycleHook::on_response_leave();
+//        SysRouterLifeCycleHook::on_response_leave();
 
         // response commit and exit
-        Response::commit();
+//        OutputBuffer::commit_buffer();
     }
 
     /**

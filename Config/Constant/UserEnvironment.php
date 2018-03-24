@@ -1,6 +1,6 @@
 <?php
 /**
- * ApplicationInterface.php
+ * UserEnvironment.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,16 +8,16 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\App;
+namespace Here\Config\Constant;
 
 
 /**
- * Interface ApplicationInterface
- * @package Here\App
+ * Class UserEnvironment
+ * @package Here\Config\Constant
  */
-interface ApplicationInterface {
+final class UserEnvironment {
     /**
-     * @return string
+     * auto commit environment
      */
-    public static function get_version(): string;
+    public const ENV_AUTO_COMMIT = 'auto_commit';
 }

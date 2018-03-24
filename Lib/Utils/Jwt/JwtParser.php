@@ -51,8 +51,8 @@ trait JwtParser {
                 throw new JwtInvalid('JWT header invalid, empty algorithm');
             }
 
-            $siganture_payload = join('.', array($encode_header, $encode_payload));
-            $generate_signature = JwtSignature::generate($siganture_payload, $key, new JwtAlgorithmType($header->alg));
+            $signature_payload = join('.', array($encode_header, $encode_payload));
+            $generate_signature = JwtSignature::generate($signature_payload, $key, new JwtAlgorithmType($header->alg));
             if ($signature !== $generate_signature) {
                 throw new JwtInvalid('Signature Validation failed');
             }

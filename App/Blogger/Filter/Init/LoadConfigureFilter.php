@@ -1,6 +1,6 @@
 <?php
 /**
- * BloggerEnvironment.php
+ * LoadConfigureFilter.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,44 +8,40 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\App\Blogger;
+namespace Here\App\Blogger\Filter\Init;
 use Here\Lib\Config\ConfigRepository;
 use Here\Lib\Environment\EnvironmentOverrideError;
 use Here\Lib\Environment\GlobalEnvironment;
-use Here\Lib\Utils\Interfaces\InitializerInterface;
-use Here\Lib\Exceptions\GlobalExceptionHandler;
-use Here\Lib\Stream\OStream\Client\Response;
+use Here\Lib\Extension\FilterChain\Proxy\FilterChainProxyBase;
 
 
 /**
- * Class BloggerEnvironment
- * @package Here\App\Blogger
+ * Class LoadConfigureFilter
+ * @package Here\App\Blogger\Filter
  */
-final class BloggerEnvironment implements InitializerInterface {
+final class LoadConfigureFilter extends FilterChainProxyBase {
     /**
-     * initializing blogger environment
+     * load user configure and merge to `GlobalEnvironment`
      */
-    final public static function init(): void {
-        // response environment
-        Response::init();
-        // Gl0balException environment
-        GlobalExceptionHandler::init();
-    }
-
-    /**
-     * @param string $config
-     */
-    final public static function init_config(string $config): void {
-        $config_object = ConfigRepository::get_config($config);
+    final public function do_filter(): void {
+        /**
+         * @TODO from outside getting this parameter
+         */
+        $config_object = ConfigRepository::get_config('configure.json');
 
         try {
+            /* environment segment */
             foreach ($config_object->get_item('environment', array()) as $key => $value) {
                 GlobalEnvironment::set_user_env($key, $value);
             }
 
+            /* router segment */
             foreach ($config_object->get_item('router', array()) as $key => $value) {
                 GlobalEnvironment::set_user_env($key, $value);
             }
         } catch (EnvironmentOverrideError $e) {}
+
+        /* exec next filter */
+        $this->next();
     }
 }

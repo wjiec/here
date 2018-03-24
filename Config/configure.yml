@@ -10,6 +10,7 @@
 environment:
   debug_mode: off
   strict_router: off
+  auto_commit: on
 
 
 # router configure

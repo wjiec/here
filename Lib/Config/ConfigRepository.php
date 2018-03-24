@@ -1,6 +1,6 @@
 <?php
 /**
- * ConfigRepositoryory.php
+ * ConfigRepository.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>

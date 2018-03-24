@@ -9,23 +9,28 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Stream\OStream\Client;
-use Here\Lib\Utils\Interfaces\InitializerInterface;
+use Here\Lib\Environment\GlobalEnvironment;
+use Here\Lib\Utils\Filter\Validator\TrueValidator;
 use Here\Lib\Stream\OStream\Client\Component\ResponseHeader;
-use Here\Lib\Stream\OStream\Client\Component\ResponseOperation;
 
 
 /**
  * Class Response
  * @package Here\Lib\Stream\OStream\Client
  */
-class Response implements InitializerInterface {
+class Response {
     /**
      * modify response headers
      */
     use ResponseHeader;
 
     /**
-     * operation of response
+     * @param array ...$args
      */
-    use ResponseOperation;
+    final public static function debug_output(...$args): void {
+        if (TrueValidator::filter(GlobalEnvironment::get_user_env('debug_mode'))) {
+            var_dump(...$args);
+            OutputBuffer::commit_buffer();
+        }
+    }
 }

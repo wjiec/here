@@ -33,8 +33,8 @@ require_once 'Lib/Loader/Autoloader.php';
 /* register classes loader and set default namespace */
 Autoloader::add_namespace(__NAMESPACE__, __DIR__);
 
-/* blogger environment initializing */
-Blogger::init();
+/* create `Blogger` instance */
+$blogger = new Blogger();
 
 /* start blogger service */
-Blogger::start_service();
+$blogger->start_service();

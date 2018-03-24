@@ -10,7 +10,7 @@
  */
 namespace Here\Lib\Router\Hook;
 use Here\Lib\Router\Interceptor\RouterInterceptor;
-use Here\Lib\Stream\OStream\Client\Response;
+use Here\Lib\Stream\OStream\Client\OutputBuffer;
 
 
 /**
@@ -30,6 +30,6 @@ final class SysRouterLifeCycleHook extends RouterLifeCycleHookBase {
      * @inheritdoc
      */
     final public static function on_response_leave(): void {
-        Response::commit();
+        OutputBuffer::commit_buffer();
     }
 }
