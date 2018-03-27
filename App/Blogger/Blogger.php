@@ -38,6 +38,7 @@ final class Blogger implements ApplicationInterface{
     final public function __construct() {
         /* initializing component by `FilterChain` */
         $this->init_components();
+
         /* register all filter chain */
         $this->register_all_filter();
     }
@@ -83,6 +84,8 @@ final class Blogger implements ApplicationInterface{
         if (TrueValidator::filter(GlobalEnvironment::get_user_env(UserEnvironment::ENV_AUTO_COMMIT))) {
             $this->_filter_chain->register_filter(new AutoCommitFilter());
         }
+
+        /* @TODO HTML escape filter */
 
         /* register `RobotReject` filter */
         $this->_filter_chain->register_filter(new RobotRejectFilter());

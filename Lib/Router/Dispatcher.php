@@ -12,6 +12,7 @@ namespace Here\Lib\Router;
 use Here\Config\Constant\SysConstant;
 use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\GlobalExceptionHandler;
+use Here\Lib\Extension\FilterChain\FilterChainContainer;
 use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\CollectorInterface;
 use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
@@ -64,6 +65,7 @@ final class Dispatcher {
          * @TODO Filter Pattern { next() -> next() }
          * @TODO refactoring
          */
+
         try {
             // request has received
 //            SysRouterLifeCycleHook::on_request_enter();

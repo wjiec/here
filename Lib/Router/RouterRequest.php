@@ -20,24 +20,24 @@ class RouterRequest extends Request {
     /**
      * @var array
      */
-    private static $_router_pairs = array();
+    private static $_route_parameters = array();
 
     /**
      * @param string $name
      * @param string|null $value
      */
-    final public static function push_router_pair(string $name, ?string $value): void {
+    final public static function add_route_param(string $name, ?string $value): void {
         if ($value) {
-            self::$_router_pairs[$name] = $value;
+            self::$_route_parameters[$name] = $value;
         }
     }
 
     /**
      * @param string $name
      */
-    final public static function delete_router_pair(string $name): void {
-        if (isset(self::$_router_pairs[$name])) {
-            unset(self::$_router_pairs[$name]);
+    final public static function delete_router_param(string $name): void {
+        if (isset(self::$_route_parameters[$name])) {
+            unset(self::$_route_parameters[$name]);
         }
     }
 
@@ -46,7 +46,7 @@ class RouterRequest extends Request {
      * @param null|string $default
      * @return null|string
      */
-    final public static function get_pair_value(string $name, ?string $default = null): ?string {
-        return self::$_router_pairs[$name] ?? $default;
+    final public static function route_param(string $name, ?string $default = null): ?string {
+        return self::$_route_parameters[$name] ?? $default;
     }
 }

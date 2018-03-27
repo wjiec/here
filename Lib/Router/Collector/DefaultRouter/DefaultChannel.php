@@ -37,7 +37,7 @@ trait DefaultChannel {
      */
     final public function dashboard(): void {
         var_dump('dashboard');
-        var_dump(RouterRequest::get_pair_value('path'));
+        var_dump(RouterRequest::route_param('path'));
     }
 
     /**
@@ -47,7 +47,7 @@ trait DefaultChannel {
      */
     final public function article(): void {
         var_dump('article');
-        var_dump(RouterRequest::get_pair_value('article_title'));
+        var_dump(RouterRequest::route_param('article_title'));
     }
 
     /**
@@ -57,7 +57,7 @@ trait DefaultChannel {
      */
     final public function user_profile(): void {
         var_dump('user_profile');
-        var_dump(RouterRequest::get_pair_value('user_id', '@self'));
+        var_dump(RouterRequest::route_param('user_id', '@self'));
     }
 
     /**
@@ -67,8 +67,8 @@ trait DefaultChannel {
      */
     final public function resources(): void {
         var_dump('dashboard');
-        var_dump(RouterRequest::get_pair_value('theme_name'));
-        var_dump(RouterRequest::get_pair_value('resource_path'));
+        var_dump(RouterRequest::route_param('theme_name'));
+        var_dump(RouterRequest::route_param('resource_path'));
     }
 
     /**
@@ -79,12 +79,12 @@ trait DefaultChannel {
      */
     final public function api(): void {
         var_dump('api');
-        var_dump(RouterRequest::get_pair_value('api_version'));
-        var_dump(RouterRequest::get_pair_value('module'));
-        var_dump(RouterRequest::get_pair_value('action'));
+        var_dump(RouterRequest::route_param('api_version'));
+        var_dump(RouterRequest::route_param('module'));
+        var_dump(RouterRequest::route_param('action'));
 
-        $module = RouterRequest::get_pair_value('module');
-        $action = RouterRequest::get_pair_value('action');
+        $module = RouterRequest::route_param('module');
+        $action = RouterRequest::route_param('action');
 
         if ($module === 'env' && $action === 'php-info') {
             phpinfo();
