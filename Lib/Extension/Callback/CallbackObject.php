@@ -86,7 +86,7 @@ class CallbackObject {
     final private function reflection(): void {
         if (is_array($this->_callback)) {
             $ref = new \ReflectionMethod(...$this->_callback);
-        } else if (is_string($this->_callback)) {
+        } else if (is_string($this->_callback) || is_callable($this->_callback)) {
             $ref = new \ReflectionFunction($this->_callback);
         } else {
             throw new InvalidCallback("invalid callback");

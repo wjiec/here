@@ -87,8 +87,16 @@ final class GlobalExceptionHandler {
             try {
                 /* @var CallbackObject $listener */
                 foreach (self::$_exception_listeners[$exception_name] as $listener) {
-                    $listener->apply($exception);
+                    // check return value of listener
+                    if (!$listener->apply($exception)) {
+                        self::trigger_exception($exception, true);
+                    }
                 }
+
+                /* clear last error */
+                error_clear_last();
+                OutputBuffer::commit_buffer();
+                return;
             } catch (\ArgumentCountError $e) {
                 self::trigger_exception($e, true);
             }

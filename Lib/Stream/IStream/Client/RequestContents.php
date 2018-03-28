@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Stream\IStream\Client;
+use Here\Config\Constant\SysEnvironment;
 use Here\Lib\Environment\GlobalEnvironment;
 
 
@@ -34,20 +35,23 @@ trait RequestContents {
 
     /**
      * @param bool $lower_case
-     * @return string
+     * @return null|string
      */
-    final public static function request_method(bool $lower_case = true): string {
-        if ($lower_case) {
-            return strtolower(GlobalEnvironment::get_server_env('request_method'));
-        }
-        return GlobalEnvironment::get_server_env('request_method');
+    final public static function request_method(bool $lower_case = true): ?string {
+        $request_method = GlobalEnvironment::get_server_env('request_method')
+            ?? GlobalEnvironment::get_user_env(SysEnvironment::ENV_REQUEST_METHOD);
+        return $lower_case ? strtolower($request_method) : $request_method;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    final public static function request_uri(): string {
-        return GlobalEnvironment::get_server_env('request_uri');
+    final public static function request_uri(): ?string {
+        $request_uri = GlobalEnvironment::get_server_env('request_uri')
+            ?? GlobalEnvironment::get_user_env(SysEnvironment::ENV_REQUEST_URI);
+
+        $url_parts = parse_url($request_uri);
+        return $url_parts['path'] ?? $request_uri;
     }
 
     /**
