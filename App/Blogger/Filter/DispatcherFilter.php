@@ -9,7 +9,9 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\App\Blogger\Filter;
+use Here\Config\Constant\SysEnvironment;
 use Here\Config\Router\UserCollector;
+use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Extension\FilterChain\Proxy\FilterChainProxyBase;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Router\RouterRequest;
@@ -29,13 +31,8 @@ final class DispatcherFilter extends FilterChainProxyBase {
         /* create `Dispatcher` load `UserCollector` */
         $dispatcher = new Dispatcher(new UserCollector());
 
-        /* cli mode just only debug */
-        if (php_sapi_name() === 'cli') {
-            $dispatcher->dispatch('get', '/');
-        } else {
-            /* find channel by user request method and uri */
-            $dispatcher->dispatch(RouterRequest::request_method(), RouterRequest::request_uri());
-        }
+        /* find channel by user request method and uri */
+        $dispatcher->dispatch(RouterRequest::request_method(), RouterRequest::request_uri());
 
         $this->next();
     }

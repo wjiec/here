@@ -21,4 +21,14 @@ final class SysEnvironment {
      * @internal private
      */
     public const ENV_COMMIT_STATUS = '__response_commit_status__';
+
+    /**
+     * request method on cli mode
+     */
+    public const ENV_REQUEST_METHOD = '__cli_request_method__';
+
+    /**
+     * request uri on cli mode
+     */
+    public const ENV_REQUEST_URI = '__cli_request_uri__';
 }

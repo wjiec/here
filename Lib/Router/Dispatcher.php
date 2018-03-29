@@ -9,14 +9,15 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Router;
-use Here\Config\Constant\SysConstant;
-use Here\Lib\Exceptions\ExceptionBase;
 use Here\Lib\Exceptions\GlobalExceptionHandler;
+use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Extension\FilterChain\FilterChainContainer;
-use Here\Lib\Router\Collector\Channel\RouterChannel;
 use Here\Lib\Router\Collector\CollectorInterface;
-use Here\Lib\Router\Collector\MetaSyntax\Compiler\AddMiddleware\AddMiddleware;
 use Here\Lib\Router\Collector\RouterCollector;
+use Here\Lib\Router\Filter\CleanRequestUri;
+use Here\Lib\Router\Filter\ExecuteChannel;
+use Here\Lib\Router\Filter\MatchChannel;
+use Here\Lib\Router\Filter\MethodAllowedFilter;
 
 
 /**
@@ -30,11 +31,6 @@ use Here\Lib\Router\Collector\RouterCollector;
  */
 final class Dispatcher {
     /**
-     * @var Dispatcher
-     */
-    private static $_self_instance;
-
-    /**
      * @var RouterCollector
      */
     private $_collector;
@@ -45,15 +41,20 @@ final class Dispatcher {
      * @throws DispatchError
      */
     final public function __construct(CollectorInterface $collector) {
-        /**
-         * @TODO remove or hold this singleton mode
-         */
-        if (self::$_self_instance !== null) {
-            throw new DispatchError(500, "Dispatcher must be singleton");
-        }
-
-        self::$_self_instance = $this;
         $this->_collector = $collector;
+
+        /* listening `DispatcherError` */
+        GlobalExceptionHandler::when(DispatchError::class, new CallbackObject(
+            function(DispatchError $e): bool {
+                if ($this->trigger_error($e->get_error_code(), $e->get_message())) {
+                    // has error handler, skip `trigger_exception`
+                    return true;
+                }
+
+                /* trigger `GlobalExceptionHandler` */
+                return false;
+            }
+        ));
     }
 
     /**
@@ -61,47 +62,26 @@ final class Dispatcher {
      * @param string $request_uri
      */
     final public function dispatch(string $request_method, string $request_uri): void {
-        /**
-         * @TODO Filter Pattern { next() -> next() }
-         * @TODO refactoring
-         */
+        /* variable for channel reference */
+        $channel = null;
 
-        try {
-            // request has received
-//            SysRouterLifeCycleHook::on_request_enter();
-//            UserRouterLifeCycleHook::on_request_enter();
+        /* dispatcher chain */
+        $container = new FilterChainContainer();
 
-            // check request method
-            if (!AllowedMethods::contains($request_method)) {
-                throw new DispatchError(405, "`{$request_method}` is not allowed");
-            }
+        /* `MethodAllowed` to check request method can be pass */
+        $container->register_filter(new MethodAllowedFilter($request_method));
 
-            // find channel by request uri
-            $trimmed_uri = trim($request_uri, SysConstant::URL_SEPARATOR);
-            $channel = $this->_collector->dispatch($request_method, $trimmed_uri);
+        /* `CleanRequestUri` to clean request uri */
+        $container->register_filter(new CleanRequestUri($request_uri));
 
-            // execute channel callback
-            $this->exec_callback($channel);
-        } catch (ExceptionBase $except) {
-            do {
-                // check DispatchError
-                if ($except instanceof DispatchError) {
-                    if ($this->trigger_error($except->get_error_code(), $except->get_message())) {
-                        // has error handler, skip `trigger_exception`
-                        break;
-                    }
-                }
+        /* `MatchChannel` to find channel by request uri */
+        $container->register_filter(new MatchChannel($this->_collector, $request_method, $request_uri, $channel));
 
-                GlobalExceptionHandler::trigger_exception($except);
-            } while (false);
-        }
+        /* `ExecuteChannel` to check middleware and start channel callback */
+        $container->register_filter(new ExecuteChannel($this->_collector, $channel));
 
-        // request will leave
-//        UserRouterLifeCycleHook::on_response_leave();
-//        SysRouterLifeCycleHook::on_response_leave();
-
-        // response commit and exit
-//        OutputBuffer::commit_buffer();
+        /* start dispatcher */
+        $container->start_filter();
     }
 
     /**
@@ -116,24 +96,5 @@ final class Dispatcher {
         } catch (\ArgumentCountError $e) {}
 
         return true;
-    }
-
-    /**
-     * @param RouterChannel $channel
-     */
-    final private function exec_callback(RouterChannel $channel): void {
-        try {
-            $middleware = $channel->get_middleware_component();
-            if ($middleware instanceof AddMiddleware) {
-                // running middleware
-                foreach ($middleware as $middleware_name) {
-                    $this->_collector->start_middleware($middleware_name);
-                }
-            }
-
-            // hook of callback before and middleware
-            $channel->apply_callback();
-            // hook if callback after and logger
-        } catch (\ArgumentCountError $e) {}
     }
 }

@@ -26,8 +26,10 @@ trait DefaultMiddleware {
      * @addLogger Authorization "%date %time - %host: %url[$query] %user@%password"
      */
     final public function authorization(): void {
-        if (!RouterRequest::request_header('auth-token')) {
+        if (RouterRequest::url_param('auth') === null) {
             throw new MiddlewareError(401, "cannot found auth-token");
+        } else if (RouterRequest::url_param('auth') !== 'token') {
+            throw new MiddlewareError(401, "auth-token error");
         }
     }
 }

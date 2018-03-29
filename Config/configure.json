@@ -1,6 +1,6 @@
 {
   "environment": {
-    "debug_mode": "off",
+    "debug_mode": "on",
     "strict_router": "off",
     "auto_commit": "on"
   },

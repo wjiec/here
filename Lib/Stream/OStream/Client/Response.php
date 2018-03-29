@@ -31,6 +31,7 @@ class Response {
         if (TrueValidator::filter(GlobalEnvironment::get_user_env('debug_mode'))) {
             var_dump(...$args);
             OutputBuffer::commit_buffer();
+            exit();
         }
     }
 }

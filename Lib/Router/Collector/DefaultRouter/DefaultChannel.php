@@ -66,7 +66,7 @@ trait DefaultChannel {
      * @addUrl /static/<theme_name:\w+>/{resource_path:R}
      */
     final public function resources(): void {
-        var_dump('dashboard');
+        var_dump('resources');
         var_dump(RouterRequest::route_param('theme_name'));
         var_dump(RouterRequest::route_param('resource_path'));
     }
