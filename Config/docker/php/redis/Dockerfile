@@ -17,17 +17,19 @@ ENV PHP_REDIS_VERSION 3.1.6
 
 
 # install deps and fetch/compile/install php-redis ext
+# curl-dev: https://github.com/JJ/alpine-perl6/issues/3
 RUN set -x \
     && apk update \
     && apk add --virtual .build-deps \
         autoconf \
         ca-certificates \
-        make \
         coreutils \
-        g++ \
-        gcc \
-        libc-dev \
         curl \
+        curl-dev \
+        gcc \
+        g++ \
+        libc-dev \
+        make \
         tar \
         zlib-dev \
     \
