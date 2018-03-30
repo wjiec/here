@@ -18,9 +18,10 @@ namespace Here\Lib\Cache\Adapter;
 interface CacheAdapterInterface {
     /**
      * @param string $name
+     * @param null $default
      * @return mixed
      */
-    public function get_item(string $name);
+    public function get_item(string $name, $default = null);
 
     /**
      * @param string $name

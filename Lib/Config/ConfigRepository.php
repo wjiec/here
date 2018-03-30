@@ -10,9 +10,12 @@
  */
 namespace Here\Lib\Config;
 use Here\Config\Constant\SysConstant;
+use Here\Lib\Cache\Adapter\Redis\RedisServerConfig;
+use Here\Lib\Cache\CacheServerConfigInterface;
 use Here\Lib\Config\Parser\ConfigParserInterface;
 use Here\Lib\Config\Parser\Json\JsonParser;
 use Here\Lib\Config\Parser\Yaml\YamlParser;
+use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Stream\IStream\Local\FileReaderStream;
 use Here\Lib\Utils\Storage\MemoryStorageTrait;
 
@@ -46,7 +49,43 @@ class ConfigRepository {
 
         // read file contents
         $config = self::$_parser_chain->parse(new FileReaderStream(self::search_config($config_path)));
+        self::set_persistent($config_path, $config);
         return $config;
+    }
+
+    /**
+     * @param string $key
+     * @param null $default
+     * @return mixed
+     */
+    final public static function get_item(string $key, $default = null) {
+        return self::forEach(new CallbackObject(
+            function(ConfigObjectInterface $config) use ($key, $default) {
+                return $config->get_item($key);
+            }
+        ), $default);
+    }
+
+    /**
+     * @param int $index
+     * @return CacheServerConfigInterface
+     */
+    final public static function get_cache(int $index = -1): CacheServerConfigInterface {
+        $cache = self::forEach(new CallbackObject(
+            function(ConfigObjectInterface $config) use ($index) {
+                return $config->get_cache($index);
+            }
+        ));
+
+        /**
+         * @todo xxx this
+         */
+        switch ($cache['driver']) {
+            case 'redis':
+                return new RedisServerConfig($cache);
+            default:
+                return $cache;
+        }
     }
 
     /**

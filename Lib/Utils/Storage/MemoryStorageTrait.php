@@ -9,6 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Utils\Storage;
+use Here\Lib\Extension\Callback\CallbackObject;
 
 
 /**
@@ -36,5 +37,20 @@ trait MemoryStorageTrait {
      */
     final protected static function set_persistent(string $name, $value) {
         static::$_storage[$name] = $value;
+    }
+
+    /**
+     * @param CallbackObject $callback
+     * @param null $default
+     * @return mixed|null
+     */
+    final protected static function forEach(CallbackObject $callback, $default = null) {
+        foreach (static::$_storage as $path => $config) {
+            $ret = $callback->apply($config, $path);
+            if ($ret) {
+                return $ret;
+            }
+        }
+        return $default;
     }
 }

@@ -10,6 +10,8 @@
  */
 namespace Here\Lib\Cache;
 use Here\Lib\Cache\Adapter\CacheAdapterInterface;
+use Here\Lib\Cache\Adapter\Redis\RedisServerConfig;
+use Here\Lib\Cache\Adapter\RedisAdapter;
 
 
 /**
@@ -24,15 +26,14 @@ final class CacheManager {
 
     /**
      * CacheManager constructor.
-     * @param CacheAdapterInterface $adapter
+     * @param CacheServerConfigInterface $config
      */
-    final public function __construct(CacheAdapterInterface $adapter) {
-        $this->_adapter = $adapter;
-    }
-
-    /**
-     * @param string $name
-     */
-    final public function get_item(string $name) {
+    final public function __construct(CacheServerConfigInterface $config) {
+        switch (true) {
+            case ($config instanceof RedisServerConfig):
+                $this->_adapter = new RedisAdapter($config); break;
+            default:
+                /* empty */
+        }
     }
 }

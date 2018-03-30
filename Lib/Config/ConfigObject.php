@@ -47,6 +47,19 @@ final class ConfigObject implements ConfigObjectInterface, \IteratorAggregate {
     }
 
     /**
+     * @param int $index  Assignment is -1 representation of random allocation
+     * @return array|null
+     */
+    final public function get_cache(int $index = -1): ?array {
+        $max_length = count($this->get_item(ConfigItemType::CFG_CACHE));
+        if ($index < 0 || $index >= $max_length) {
+            $index = random_int(0, $max_length - 1);
+        }
+
+        return $this->get_item(ConfigItemType::CFG_CACHE)[$index];
+    }
+
+    /**
      * @return array
      */
     final public function to_array(): array {

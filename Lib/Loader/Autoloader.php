@@ -24,7 +24,7 @@ final class Autoloader {
     /**
      * @var bool
      */
-    private static $_already_registered;
+    private static $_already_registered = false;
 
     /**
      * @param string $namespace

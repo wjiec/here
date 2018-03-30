@@ -22,4 +22,10 @@ interface ConfigObjectInterface {
      * @return mixed
      */
     public function get_item(string $key, $default = null);
+
+    /**
+     * @param int $index
+     * @return array|null
+     */
+    public function get_cache(int $index = -1): ?array;
 }

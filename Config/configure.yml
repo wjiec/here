@@ -34,5 +34,5 @@ database:
 cache:
   -
     host: redis
-    port: 11211
+    port: 6379
     driver: redis

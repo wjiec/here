@@ -1,6 +1,6 @@
 {
   "environment": {
-    "debug_mode": "on",
+    "debug_mode": "off",
     "strict_router": "off",
     "auto_commit": "on"
   },
@@ -18,7 +18,7 @@
   }],
   "cache": [{
     "host": "redis",
-    "port": 11211,
+    "port": 6379,
     "driver": "redis"
   }]
 }

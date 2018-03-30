@@ -20,4 +20,9 @@ final class UserEnvironment {
      * auto commit environment
      */
     public const ENV_AUTO_COMMIT = 'auto_commit';
+
+    /**
+     * debug mode
+     */
+    public const ENV_DEBUG_MODE = 'debug_mode';
 }
