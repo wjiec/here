@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Cache;
+namespace Here\Lib\Cache\Config;
 
 
 /**
@@ -16,6 +16,11 @@ namespace Here\Lib\Cache;
  * @package Here\Lib\Cache
  */
 interface CacheServerConfigInterface {
+    /**
+     * @return string
+     */
+    public function get_name(): string;
+
     /**
      * @return string
      */
@@ -36,4 +41,9 @@ interface CacheServerConfigInterface {
      * @return null|string
      */
     public function get_password(): ?string;
+
+    /**
+     * @return string
+     */
+    public function get_driver(): string;
 }

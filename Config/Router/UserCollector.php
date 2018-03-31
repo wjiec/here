@@ -10,11 +10,8 @@
  */
 namespace Here\Config\Router;
 use Here\Config\Constant\UserEnvironment;
-use Here\Lib\Cache\CacheManager;
-use Here\Lib\Config\ConfigRepository;
 use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Router\Collector\SysRouterCollector;
-use Here\Lib\Stream\OStream\Client\Response;
 
 
 /**
@@ -36,8 +33,5 @@ final class UserCollector extends SysRouterCollector {
      * @addUrl /debug
      */
     final public function debug(): void {
-        $cache = new CacheManager(ConfigRepository::get_cache());
-
-        Response::debug_output($cache);
     }
 }

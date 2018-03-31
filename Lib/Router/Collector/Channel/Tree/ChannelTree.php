@@ -214,6 +214,9 @@ final class ChannelTree {
         }
 
         if (preg_match_all('/[A-Z]\d?/m', $attributes, $matches)) {
+            /**
+             * @todo chain of parser
+             */
             foreach ($matches[0] as $match_item) {
                 switch ($match_item[0]) {
                     case 'R':  // required flag

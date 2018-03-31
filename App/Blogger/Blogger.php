@@ -13,6 +13,7 @@ use Here\App\ApplicationInterface;
 use Here\App\Blogger\Filter\AutoCommitFilter;
 use Here\App\Blogger\Filter\DispatcherFilter;
 use Here\App\Blogger\Filter\Init\BloggerComponentInit;
+use Here\App\Blogger\Filter\Init\DataProviderInit;
 use Here\App\Blogger\Filter\Init\LoadConfigureFilter;
 use Here\App\Blogger\Filter\RobotRejectFilter;
 use Here\Config\Constant\SysConstant;
@@ -69,6 +70,9 @@ final class Blogger implements ApplicationInterface{
 
         /* load configure and push it to `GlobalEnvironment` */
         $container->register_filter(new LoadConfigureFilter());
+
+        /* cache/database initializing */
+        $container->register_filter(new DataProviderInit());
 
         /* startup container */
         $container->start_filter();

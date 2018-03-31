@@ -31,12 +31,12 @@ final class LoadConfigureFilter extends FilterChainProxyBase {
 
         try {
             /* environment segment */
-            foreach ($config_object->get_item('environment', array()) as $key => $value) {
+            foreach ($config_object->get_config('environment', array()) as $key => $value) {
                 GlobalEnvironment::set_user_env($key, $value);
             }
 
             /* router segment */
-            foreach ($config_object->get_item('router', array()) as $key => $value) {
+            foreach ($config_object->get_config('router', array()) as $key => $value) {
                 GlobalEnvironment::set_user_env($key, $value);
             }
         } catch (EnvironmentOverrideError $e) {}

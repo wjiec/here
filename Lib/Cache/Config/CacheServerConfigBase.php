@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Cache;
+namespace Here\Lib\Cache\Config;
 
 
 /**
@@ -27,6 +27,22 @@ abstract class CacheServerConfigBase implements CacheServerConfigInterface {
      */
     final public function __construct(array $config) {
         $this->_config = $config;
+    }
+
+    /**
+     * @param UnknownCacheServerConfig $config
+     * @return CacheServerConfigBase
+     */
+    final public static function from(UnknownCacheServerConfig $config): self {
+        return new static($config->get_origin());
+    }
+
+    /**
+     * @return string
+     */
+    final public function get_name(): string {
+        return $this->_config['name']
+            ?? $this->_config['driver'];
     }
 
     /**
@@ -56,5 +72,19 @@ abstract class CacheServerConfigBase implements CacheServerConfigInterface {
      */
     final public function get_password(): ?string {
         return $this->_config['password'] ?? null;
+    }
+
+    /**
+     * @return string
+     */
+    final public function get_driver(): string {
+        return $this->_config['driver'];
+    }
+
+    /**
+     * @return array
+     */
+    final private function get_origin(): array {
+        return $this->_config;
     }
 }

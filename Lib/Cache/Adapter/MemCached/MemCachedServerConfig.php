@@ -1,6 +1,6 @@
 <?php
 /**
- * RedisServerConfig.php
+ * MemCachedServerConfig.php
  *
  * @package   Here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Cache\Adapter\Redis;
+namespace Here\Lib\Cache\Adapter\MemCached;
 use Here\Lib\Cache\Config\CacheServerConfigBase;
 
 
 /**
- * Class RedisServerConfig
- * @package Here\Lib\Cache\Adapter\Redis
+ * Class MemCachedServerConfig
+ * @package Here\Lib\Cache\Adapter\MemCached
  */
-final class RedisServerConfig extends CacheServerConfigBase {}
+final class MemCachedServerConfig extends CacheServerConfigBase {}

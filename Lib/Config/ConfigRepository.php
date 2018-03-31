@@ -10,8 +10,8 @@
  */
 namespace Here\Lib\Config;
 use Here\Config\Constant\SysConstant;
-use Here\Lib\Cache\Adapter\Redis\RedisServerConfig;
-use Here\Lib\Cache\CacheServerConfigInterface;
+use Here\Lib\Cache\Config\Parser\CacheConfigGenerator;
+use Here\Lib\Cache\Config\UnknownCacheServerConfig;
 use Here\Lib\Config\Parser\ConfigParserInterface;
 use Here\Lib\Config\Parser\Json\JsonParser;
 use Here\Lib\Config\Parser\Yaml\YamlParser;
@@ -61,31 +61,20 @@ class ConfigRepository {
     final public static function get_item(string $key, $default = null) {
         return self::forEach(new CallbackObject(
             function(ConfigObjectInterface $config) use ($key, $default) {
-                return $config->get_item($key);
+                return $config->get_config($key);
             }
         ), $default);
     }
 
     /**
-     * @param int $index
-     * @return CacheServerConfigInterface
+     * @return array array of `CacheServerConfigInterface`
      */
-    final public static function get_cache(int $index = -1): CacheServerConfigInterface {
-        $cache = self::forEach(new CallbackObject(
-            function(ConfigObjectInterface $config) use ($index) {
-                return $config->get_cache($index);
-            }
-        ));
-
-        /**
-         * @todo xxx this
-         */
-        switch ($cache['driver']) {
-            case 'redis':
-                return new RedisServerConfig($cache);
-            default:
-                return $cache;
+    final public static function get_cache(): array {
+        $cache_configs = array();
+        foreach (self::get_item(ConfigItemType::CFG_CACHE) as $cache) {
+            $cache_configs[] = CacheConfigGenerator::from(new UnknownCacheServerConfig($cache));
         }
+        return $cache_configs;
     }
 
     /**
