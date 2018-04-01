@@ -41,6 +41,7 @@ abstract class CacheConfigParserBase implements CacheConfigParserInterface {
      * @return CacheServerConfigInterface|null
      */
     final public function parse(CacheServerConfigInterface $config): ?CacheServerConfigInterface {
+        /* @var UnknownCacheServerConfig $config */
         $cache_server = $this->parse_config($config);
         if ($cache_server instanceof CacheServerConfigInterface) {
             return $cache_server;

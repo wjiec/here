@@ -38,7 +38,6 @@ final class Dispatcher {
     /**
      * Dispatcher constructor.
      * @param CollectorInterface $collector
-     * @throws DispatchError
      */
     final public function __construct(CollectorInterface $collector) {
         $this->_collector = $collector;

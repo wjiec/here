@@ -43,6 +43,7 @@ trait MemoryStorageTrait {
      * @param CallbackObject $callback
      * @param null $default
      * @return mixed|null
+     * @throws \ArgumentCountError
      */
     final protected static function forEach(CallbackObject $callback, $default = null) {
         foreach (static::$_storage as $path => $config) {

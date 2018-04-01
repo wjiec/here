@@ -34,6 +34,8 @@ final class MethodAllowedFilter extends FilterChainProxyBase {
 
     /**
      * check current request method can be pass
+     *
+     * @throws DispatchError
      */
     final public function do_filter(): void {
         if (!AllowedMethods::contains($this->_request_method)) {

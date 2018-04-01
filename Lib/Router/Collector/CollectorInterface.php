@@ -26,6 +26,7 @@ interface CollectorInterface {
 
     /**
      * @param string $middleware_name
+     * @throws MiddlewareError
      */
     public function start_middleware(string $middleware_name): void;
 }

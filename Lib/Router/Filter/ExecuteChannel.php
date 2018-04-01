@@ -42,10 +42,13 @@ final class ExecuteChannel extends FilterChainProxyBase {
         $this->_channel = &$channel;
     }
 
+
     /**
      * 1. check middleware exists
      *  i. start all middleware and check it
      * 2. apply channel callback
+     *
+     * @throws DispatchError
      */
     final public function do_filter(): void {
         try {

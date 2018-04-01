@@ -9,7 +9,6 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Extension\FilterChain;
-use Here\Lib\Extension\FilterChain\Proxy\FilterChainProxyBase;
 use Here\Lib\Extension\FilterChain\Proxy\FilterChainProxyInterface;
 
 

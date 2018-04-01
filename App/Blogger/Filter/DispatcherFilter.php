@@ -9,9 +9,7 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\App\Blogger\Filter;
-use Here\Config\Constant\SysEnvironment;
 use Here\Config\Router\UserCollector;
-use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Extension\FilterChain\Proxy\FilterChainProxyBase;
 use Here\Lib\Router\Dispatcher;
 use Here\Lib\Router\RouterRequest;

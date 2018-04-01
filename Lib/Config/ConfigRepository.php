@@ -56,7 +56,8 @@ class ConfigRepository {
     /**
      * @param string $key
      * @param null $default
-     * @return mixed
+     * @return mixed|null
+     * @throws \ArgumentCountError
      */
     final public static function get_item(string $key, $default = null) {
         return self::forEach(new CallbackObject(
@@ -67,7 +68,9 @@ class ConfigRepository {
     }
 
     /**
-     * @return array array of `CacheServerConfigInterface`
+     * @return array
+     * @throws \ArgumentCountError
+     * @throws \Here\Lib\Cache\Config\InvalidCacheServerConfig
      */
     final public static function get_cache(): array {
         $cache_configs = array();
