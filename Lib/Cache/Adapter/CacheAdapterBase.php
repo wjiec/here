@@ -15,5 +15,4 @@ namespace Here\Lib\Cache\Adapter;
  * Class CacheAdapterBase
  * @package Here\Lib\Cache\Adapter
  */
-abstract class CacheAdapterBase implements CacheAdapterInterface {
-}
+abstract class CacheAdapterBase implements CacheAdapterInterface {}

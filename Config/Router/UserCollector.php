@@ -11,7 +11,7 @@
 namespace Here\Config\Router;
 use Here\Config\Constant\UserEnvironment;
 use Here\Lib\Cache\CacheRepository;
-use Here\Lib\Cache\Data\DataType\StringType;
+use Here\Lib\Cache\Data\DataType\String\StringValue;
 use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Router\Collector\SysRouterCollector;
 use Here\Lib\Stream\OStream\Client\Response;
@@ -38,7 +38,7 @@ final class UserCollector extends SysRouterCollector {
      * @addUrl /debug
      */
     final public function debug(): void {
-        $test_data = new StringType('test_key');
+        $test_data = new StringValue('test_key');
         $test_data->set_data('asd');
 
         CacheRepository::set_persistent($test_data);

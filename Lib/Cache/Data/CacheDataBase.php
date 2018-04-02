@@ -58,30 +58,31 @@ abstract class CacheDataBase implements CacheDataInterface {
 
     /**
      * @param int $expired
+     * @return bool
      */
-    final public function set_expired(int $expired): void {
-        // TODO: Implement set_expired() method.
+    final public function set_expired(int $expired): bool {
+        return $this->_adapter->set_ttl($this->get_key(), $expired);
     }
 
     /**
      * @return int
      */
     final public function get_expired(): int {
-        // TODO: Implement get_expired() method.
+        return $this->_adapter->get_ttl($this->get_key());
     }
 
     /**
-     * @inheritdoc
+     * @return bool
      */
-    final public function remove_expired(): void {
-        // TODO: Implement remove_expired() method.
+    final public function remove_expired(): bool {
+        return $this->_adapter->persist_item($this->get_key());
     }
 
     /**
      * @return int
      */
     final public function destroy(): int {
-        // TODO: Implement destroy() method.
+        return $this->_adapter->destroy_item($this->get_key());
     }
 
     /**
@@ -89,11 +90,11 @@ abstract class CacheDataBase implements CacheDataInterface {
      * @return bool
      */
     final public function persistent(CacheAdapterInterface $adapter): bool {
-        // TODO: Implement persistent() method.
+        return $adapter->string_item_cache($this->get_key(), $this->get_value());
     }
 
     /**
      * @return mixed
      */
-    abstract protected function default_value();
+    abstract public function default_value();
 }
