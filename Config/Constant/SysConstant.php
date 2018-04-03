@@ -47,11 +47,6 @@ final class SysConstant {
     public const RANDOM_CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     /**
-     * empty string
-     */
-    public const EMPTY_STRING = '';
-
-    /**
      * default error code
      */
     public const DEFAULT_ERROR_CODE = 1996;

@@ -145,7 +145,7 @@ final class RSAObject {
         if ($this->_private_key) {
             return $this->do_decrypt(true, $data, $glue, $adapter ?? new Base64Adapter());
         }
-        return SysConstant::EMPTY_STRING;
+        return '';
     }
 
     /**
@@ -161,7 +161,7 @@ final class RSAObject {
         if ($this->_private_key) {
             return $this->do_encrypt(true, $data, $glue, $adapter ?? new Base64Adapter());
         }
-        return SysConstant::EMPTY_STRING;
+        return '';
     }
 
     /**

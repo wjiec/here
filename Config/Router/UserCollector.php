@@ -39,9 +39,11 @@ final class UserCollector extends SysRouterCollector {
      */
     final public function debug(): void {
         $test_data = new StringValue('test_key');
-        $test_data->set_data('asd');
+        $test_data->concat('-concat-');
 
         CacheRepository::set_persistent($test_data);
-        Response::debug_output(CacheRepository::get_persistent('test_key'));
+
+        $cache_data = CacheRepository::get_persistent('test_key');
+        Response::debug_output($cache_data, $cache_data->get_value());
     }
 }

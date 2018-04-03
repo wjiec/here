@@ -42,7 +42,7 @@ final class OutputBuffer {
             }
 
             GlobalEnvironment::set_user_env(SysEnvironment::ENV_COMMIT_STATUS, 'off');
-            return SysConstant::EMPTY_STRING;
+            return '';
         });
     }
 

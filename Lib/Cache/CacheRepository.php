@@ -13,8 +13,11 @@ use Here\Lib\Cache\Adapter\AdapterNotFound;
 use Here\Lib\Cache\Adapter\CacheAdapterInterface;
 use Here\Lib\Cache\Config\CacheServerConfigInterface;
 use Here\Lib\Cache\Data\CacheDataInterface;
+use Here\Lib\Cache\Data\DataType\CacheDataType;
+use Here\Lib\Cache\Data\DataType\String\StringValue;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Utils\Toolkit\StringToolkit;
+use function Sodium\crypto_aead_chacha20poly1305_decrypt;
 
 
 /**
@@ -35,7 +38,7 @@ final class CacheRepository {
         $adapter_name = ucfirst($config->get_driver());
         $adapter_class = StringToolkit::format('%s\Adapter\%s\%sAdapter', __NAMESPACE__, $adapter_name, $adapter_name);
         if (!Autoloader::class_exists($adapter_class)) {
-            throw new AdapterNotFound("cannot found `{$adapter_name}` cache adapter");
+            throw new AdapterNotFound("cannot found `{$adapter_name}` adapter");
         }
 
         $adapter = new $adapter_class($config);
@@ -47,9 +50,14 @@ final class CacheRepository {
 
     /**
      * @param string $key
-     * @return CacheDataInterface
+     * @return CacheDataInterface|null
      */
-    final public static function get_persistent(string $key): CacheDataInterface {
+    final public static function get_persistent(string $key): ?CacheDataInterface {
+        switch (self::get_adapter()->typeof($key)) {
+            case CacheDataType::CACHE_TYPE_STRING:
+                return new StringValue($key, self::get_adapter());
+            default: return null;
+        }
     }
 
     /**

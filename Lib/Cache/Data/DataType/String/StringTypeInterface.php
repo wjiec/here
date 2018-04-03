@@ -20,5 +20,11 @@ interface StringTypeInterface extends CacheDataInterface {
     /**
      * @param string $data
      */
-    public function set_data(string $data): void;
+    public function create_new(string $data): void;
+
+    /**
+     * @param string $concat_string
+     * @return int
+     */
+    public function concat(string $concat_string): int;
 }

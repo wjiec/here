@@ -30,16 +30,19 @@ abstract class CacheDataBase implements CacheDataInterface {
     /**
      * @var CacheAdapterInterface
      */
-    protected $_adapter;
+    private $_adapter;
 
     /**
      * CacheDataBase constructor.
      * @param string $key
+     * @param CacheAdapterInterface|null $adapter
      */
-    final public function __construct(string $key) {
+    final public function __construct(string $key, ?CacheAdapterInterface $adapter = null) {
         $this->_key = $key;
-        $this->_value = $this->default_value();
-        $this->_adapter = null;
+        /**
+         * @todo constructor require adapter?
+         */
+        $this->_adapter = $adapter;
     }
 
     /**
@@ -53,6 +56,11 @@ abstract class CacheDataBase implements CacheDataInterface {
      * @return mixed
      */
     final public function get_value() {
+        if ($this->_value) {
+            return $this->_value;
+        }
+
+        $this->_value = $this->refresh_value();
         return $this->_value;
     }
 
@@ -60,29 +68,29 @@ abstract class CacheDataBase implements CacheDataInterface {
      * @param int $expired
      * @return bool
      */
-    final public function set_expired(int $expired): bool {
-        return $this->_adapter->set_ttl($this->get_key(), $expired);
+    final public function set_expire(int $expired): bool {
+        return $this->_adapter->set_expire($this->get_key(), $expired);
     }
 
     /**
      * @return int
      */
-    final public function get_expired(): int {
-        return $this->_adapter->get_ttl($this->get_key());
+    final public function get_expire(): int {
+        return $this->_adapter->get_expire($this->get_key());
     }
 
     /**
      * @return bool
      */
-    final public function remove_expired(): bool {
-        return $this->_adapter->persist_item($this->get_key());
+    final public function remove_expire(): bool {
+        return $this->_adapter->remove_expire($this->get_key());
     }
 
     /**
      * @return int
      */
     final public function destroy(): int {
-        return $this->_adapter->destroy_item($this->get_key());
+        return $this->_adapter->delete_item($this->get_key());
     }
 
     /**
@@ -90,11 +98,18 @@ abstract class CacheDataBase implements CacheDataInterface {
      * @return bool
      */
     final public function persistent(CacheAdapterInterface $adapter): bool {
-        return $adapter->string_item_cache($this->get_key(), $this->get_value());
+        return $adapter->string_create($this->get_key(), $this->get_value());
+    }
+
+    /**
+     * @return CacheAdapterInterface
+     */
+    final protected function get_adapter(): CacheAdapterInterface {
+        return $this->_adapter;
     }
 
     /**
      * @return mixed
      */
-    abstract public function default_value();
+    abstract protected function refresh_value();
 }

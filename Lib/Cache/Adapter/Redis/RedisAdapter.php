@@ -9,14 +9,15 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Cache\Adapter\Redis;
-use Here\Lib\Cache\Adapter\CacheAdapterBase;
+use Here\Lib\Cache\Adapter\CacheAdapterInterface;
+use Here\Lib\Cache\Data\DataType\CacheDataType;
 
 
 /**
  * Class RedisAdapter
  * @package Here\Lib\Cache\Adapter
  */
-final class RedisAdapter extends CacheAdapterBase {
+final class RedisAdapter implements CacheAdapterInterface {
     /**
      * @var array
      */
@@ -42,7 +43,24 @@ final class RedisAdapter extends CacheAdapterBase {
      * @param string $key
      * @return int
      */
-    final public function destroy_item(string $key): int {
+    final public function typeof(string $key): int {
+        $this->connect_server();
+        switch ($this->_connection->type($key)) {
+            case \redis::REDIS_STRING: return CacheDataType::CACHE_TYPE_STRING;
+            case \redis::REDIS_LIST: return CacheDataType::CACHE_TYPE_LIST;
+            case \redis::REDIS_HASH: return CacheDataType::CACHE_TYPE_HASH;
+            case \redis::REDIS_SET: return CacheDataType::CACHE_TYPE_SET;
+            case \redis::REDIS_ZSET: return CacheDataType::CACHE_TYPE_ORDER_SET;
+            case \redis::REDIS_NOT_FOUND:
+            default: return CacheDataType::CACHE_TYPE_NONE;
+        }
+    }
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    final public function delete_item(string $key): int {
         $this->connect_server();
         return $this->_connection->delete($key);
     }
@@ -51,7 +69,7 @@ final class RedisAdapter extends CacheAdapterBase {
      * @param string $key
      * @return bool
      */
-    final public function persist_item(string $key): bool {
+    final public function remove_expire(string $key): bool {
         $this->connect_server();
         return $this->_connection->persist($key);
     }
@@ -60,7 +78,7 @@ final class RedisAdapter extends CacheAdapterBase {
      * @param string $key
      * @return int
      */
-    final public function get_ttl(string $key): int {
+    final public function get_expire(string $key): int {
         $this->connect_server();
         return $this->_connection->ttl($key);
     }
@@ -70,7 +88,7 @@ final class RedisAdapter extends CacheAdapterBase {
      * @param int $expired
      * @return bool
      */
-    final public function set_ttl(string $key, int $expired): bool {
+    final public function set_expire(string $key, int $expired): bool {
         $this->connect_server();
         return $this->_connection->expire($key, $expired);
     }
@@ -80,8 +98,38 @@ final class RedisAdapter extends CacheAdapterBase {
      * @param string $value
      * @return bool
      */
-    final public function string_item_cache(string $key, string $value): bool {
+    final public function string_create(string $key, string $value): bool {
+        $this->connect_server();
         return $this->_connection->set($key, $value);
+    }
+
+    /**
+     * @param string $key
+     * @param string $default
+     * @return string
+     */
+    final public function string_get(string $key, string $default): string {
+        $this->connect_server();
+        return $this->_connection->get($key) ?? $default;
+    }
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    final public function string_get_length(string $key): int {
+        $this->connect_server();
+        return $this->_connection->strlen($key);
+    }
+
+    /**
+     * @param string $key
+     * @param string $concat_string
+     * @return int
+     */
+    final public function string_concat(string $key, string $concat_string): int {
+        $this->connect_server();
+        return $this->_connection->append($key, $concat_string);
     }
 
     /**

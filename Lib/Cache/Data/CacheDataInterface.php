@@ -37,17 +37,17 @@ interface CacheDataInterface {
      * @param int $expired
      * @return bool
      */
-    public function set_expired(int $expired): bool;
+    public function set_expire(int $expired): bool;
 
     /**
      * @return int
      */
-    public function get_expired(): int;
+    public function get_expire(): int;
 
     /**
      * @return bool
      */
-    public function remove_expired(): bool;
+    public function remove_expire(): bool;
 
     /**
      * @return int
