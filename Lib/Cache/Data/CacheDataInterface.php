@@ -9,7 +9,6 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Cache\Data;
-use Here\Lib\Cache\Adapter\CacheAdapterInterface;
 
 
 /**
@@ -58,10 +57,4 @@ interface CacheDataInterface {
      * @return int
      */
     public function destroy(): int;
-
-    /**
-     * @param CacheAdapterInterface $adapter
-     * @return bool
-     */
-    public function persistent(CacheAdapterInterface $adapter): bool;
 }

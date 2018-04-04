@@ -15,6 +15,7 @@ use Here\App\Blogger\Filter\DispatcherFilter;
 use Here\App\Blogger\Filter\Init\BloggerComponentInit;
 use Here\App\Blogger\Filter\Init\DataProviderInit;
 use Here\App\Blogger\Filter\Init\LoadConfigureFilter;
+use Here\App\Blogger\Filter\OverFrequencyRejectFilter;
 use Here\App\Blogger\Filter\RobotRejectFilter;
 use Here\Config\Constant\SysConstant;
 use Here\Config\Constant\UserEnvironment;
@@ -90,6 +91,9 @@ final class Blogger implements ApplicationInterface{
         }
 
         /* @TODO HTML escape filter */
+
+        /* reject (?)req/(?)sec user forbidden by ip address */
+        $this->_filter_chain->register_filter(new OverFrequencyRejectFilter());
 
         /* register `RobotReject` filter */
         $this->_filter_chain->register_filter(new RobotRejectFilter());

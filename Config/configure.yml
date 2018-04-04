@@ -37,3 +37,11 @@ cache:
     host: redis
     port: 6379
     driver: redis
+
+
+# request configure
+request:
+    policy:
+      time_limit: 30
+      count_limit: 30
+      forbidden_time: 300

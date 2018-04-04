@@ -26,7 +26,7 @@ final class IPNetwork {
      * @param array $ip_addresses
      * @throws IPNetworkError
      */
-    public function __construct(array $ip_addresses = array()) {
+    final public function __construct(array $ip_addresses = array()) {
         // add to forbidden list
         foreach ($ip_addresses as $ip_address) {
             // the multi ip address
@@ -61,7 +61,7 @@ final class IPNetwork {
      * @return bool
      * @throws IPNetworkError
      */
-    public function contains(string $ip_address): bool {
+    final public function contains(string $ip_address): bool {
         // ip list is empty
         if (empty($this->_ip_list)) {
             return false;
@@ -97,7 +97,7 @@ final class IPNetwork {
      * @param int $length
      * @throws IPNetworkError
      */
-    public function add_ip(string $ip, int $length = 0) {
+    final public function add_ip(string $ip, int $length = 0) {
         // presentation to number
         $number = self::ip_address_to_hex($ip);
         // check length
@@ -114,7 +114,7 @@ final class IPNetwork {
      * @return bool|string
      * @throws IPNetworkError
      */
-    private static function ip_address_to_hex(string $ip_address) {
+    final private static function ip_address_to_hex(string $ip_address) {
         // check is ipv6
         $is_ipv6 = false;
 

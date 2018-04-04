@@ -29,13 +29,18 @@ final class RedisAdapter implements CacheAdapterInterface {
     private $_connection;
 
     /**
+     * @var bool
+     */
+    private $_connected_flag = false;
+
+    /**
      * RedisAdapter constructor.
      * @param RedisServerConfig $config
      */
     final public function __construct(RedisServerConfig $config) {
         $this->_server = $config;
         $this->_connection = new \redis();
-
+        // connecting directly
         $this->connect_server();
     }
 
@@ -44,7 +49,6 @@ final class RedisAdapter implements CacheAdapterInterface {
      * @return int
      */
     final public function typeof(string $key): int {
-        $this->connect_server();
         switch ($this->_connection->type($key)) {
             case \redis::REDIS_STRING: return CacheDataType::CACHE_TYPE_STRING;
             case \redis::REDIS_LIST: return CacheDataType::CACHE_TYPE_LIST;
@@ -61,8 +65,7 @@ final class RedisAdapter implements CacheAdapterInterface {
      * @return int
      */
     final public function delete_item(string $key): int {
-        $this->connect_server();
-        return $this->_connection->delete($key);
+        return $this->_connection->del($key);
     }
 
     /**
@@ -70,7 +73,6 @@ final class RedisAdapter implements CacheAdapterInterface {
      * @return bool
      */
     final public function remove_expire(string $key): bool {
-        $this->connect_server();
         return $this->_connection->persist($key);
     }
 
@@ -79,7 +81,6 @@ final class RedisAdapter implements CacheAdapterInterface {
      * @return int
      */
     final public function get_expire(string $key): int {
-        $this->connect_server();
         return $this->_connection->ttl($key);
     }
 
@@ -89,7 +90,6 @@ final class RedisAdapter implements CacheAdapterInterface {
      * @return bool
      */
     final public function set_expire(string $key, int $expired): bool {
-        $this->connect_server();
         return $this->_connection->expire($key, $expired);
     }
 
@@ -99,7 +99,6 @@ final class RedisAdapter implements CacheAdapterInterface {
      * @return bool
      */
     final public function string_create(string $key, string $value): bool {
-        $this->connect_server();
         return $this->_connection->set($key, $value);
     }
 
@@ -118,7 +117,6 @@ final class RedisAdapter implements CacheAdapterInterface {
      * @return int
      */
     final public function string_get_length(string $key): int {
-        $this->connect_server();
         return $this->_connection->strlen($key);
     }
 
@@ -128,8 +126,23 @@ final class RedisAdapter implements CacheAdapterInterface {
      * @return int
      */
     final public function string_concat(string $key, string $concat_string): int {
-        $this->connect_server();
         return $this->_connection->append($key, $concat_string);
+    }
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    final public function string_increment(string $key): int {
+        return $this->_connection->incr($key);
+    }
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    final public function string_decrement(string $key): int {
+        return $this->_connection->decr($key);
     }
 
     /**
@@ -137,13 +150,20 @@ final class RedisAdapter implements CacheAdapterInterface {
      * 2. connect to redis when connection invalid
      */
     final private function connect_server(): void {
+        // skip ping when connected flag set
+        if ($this->_connected_flag) {
+            return;
+        }
+
         try {
             // check connection
             $this->_connection->ping();
+            // set connected flag
+            $this->_connected_flag = true;
         } catch (\Exception $_) {
             // connect to redis server
             $this->_connection->pconnect(
-            // host and port
+                // host and port
                 $this->_server->get_host(), $this->_server->get_port(6379)
             );
         }

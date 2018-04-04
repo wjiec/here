@@ -22,13 +22,14 @@ final class JsonParser extends ConfigParserBase {
     /**
      * @param ReaderStreamInterface $stream
      * @return ConfigObject|null
+     * @throws JsonConfigInvalid
      */
     final protected function parse_config(ReaderStreamInterface $stream): ?ConfigObject {
         try {
             $parse_object = json_decode($stream->read(), true);
             return new ConfigObject($parse_object);
         } catch (\Exception $e) {
-            return null;
+            throw new JsonConfigInvalid("configure file `{$stream->get_name()}` invalid: {$e->getMessage()}");
         }
     }
 

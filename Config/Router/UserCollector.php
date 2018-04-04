@@ -14,6 +14,7 @@ use Here\Lib\Cache\CacheRepository;
 use Here\Lib\Cache\Data\DataType\String\StringValue;
 use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Router\Collector\SysRouterCollector;
+use Here\Lib\Stream\IStream\Client\Request;
 use Here\Lib\Stream\OStream\Client\Response;
 
 
@@ -38,12 +39,6 @@ final class UserCollector extends SysRouterCollector {
      * @addUrl /debug
      */
     final public function debug(): void {
-        $test_data = new StringValue('test_key');
-        $test_data->concat('-concat-');
-
-        CacheRepository::set_persistent($test_data);
-
-        $cache_data = CacheRepository::get_persistent('test_key');
-        Response::debug_output($cache_data, $cache_data->get_value());
+        Response::debug_output_exit((new StringValue(Request::client_ip()))->get_value());
     }
 }

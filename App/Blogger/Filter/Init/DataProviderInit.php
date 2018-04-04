@@ -23,16 +23,11 @@ class DataProviderInit extends FilterChainProxyBase {
      * 1. init cache adapter
      * 2. init database adapter
      *  i. load model ?
-     *
-     * @throws \ArgumentCountError
-     * @throws \Here\Lib\Cache\Adapter\AdapterNotFound
-     * @throws \Here\Lib\Cache\Config\InvalidCacheServerConfig
      */
     public function do_filter(): void {
         // 1. cache adapter
-        foreach (ConfigRepository::get_cache() as $config) {
-            CacheRepository::add_server($config);
-        }
+        CacheRepository::add_server(ConfigRepository::get_redis_server());
+
         /**
          * @todo database adapter
          */

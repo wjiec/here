@@ -17,7 +17,6 @@ use Here\Lib\Cache\Data\DataType\CacheDataType;
 use Here\Lib\Cache\Data\DataType\String\StringValue;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Utils\Toolkit\StringToolkit;
-use function Sodium\crypto_aead_chacha20poly1305_decrypt;
 
 
 /**
@@ -26,9 +25,9 @@ use function Sodium\crypto_aead_chacha20poly1305_decrypt;
  */
 final class CacheRepository {
     /**
-     * @var CacheAdapterInterface[]
+     * @var CacheAdapterInterface
      */
-    private static $_adapter = array();
+    private static $_adapter;
 
     /**
      * @param CacheServerConfigInterface $config
@@ -41,11 +40,7 @@ final class CacheRepository {
             throw new AdapterNotFound("cannot found `{$adapter_name}` adapter");
         }
 
-        $adapter = new $adapter_class($config);
-        self::$_adapter[] = array(
-            'name' => $config->get_name(),
-            'adapter' => $adapter
-        );
+        self::$_adapter = new $adapter_class($config);
     }
 
     /**
@@ -55,23 +50,18 @@ final class CacheRepository {
     final public static function get_persistent(string $key): ?CacheDataInterface {
         switch (self::get_adapter()->typeof($key)) {
             case CacheDataType::CACHE_TYPE_STRING:
-                return new StringValue($key, self::get_adapter());
+                return new StringValue($key);
             default: return null;
         }
     }
 
     /**
-     * @param CacheDataInterface $data
-     * @return bool
-     */
-    final public static function set_persistent(CacheDataInterface $data): bool {
-        return $data->persistent(self::get_adapter());
-    }
-
-    /**
      * @return CacheAdapterInterface
      */
-    final private static function get_adapter(): CacheAdapterInterface {
-        return self::$_adapter[0]['adapter'];
+    final public static function get_adapter(): CacheAdapterInterface {
+        /**
+         * @todo not security?
+         */
+        return self::$_adapter;
     }
 }

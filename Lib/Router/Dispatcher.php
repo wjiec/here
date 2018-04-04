@@ -18,6 +18,7 @@ use Here\Lib\Router\Filter\CleanRequestUri;
 use Here\Lib\Router\Filter\ExecuteChannel;
 use Here\Lib\Router\Filter\MatchChannel;
 use Here\Lib\Router\Filter\MethodAllowedFilter;
+use Here\Lib\Stream\OStream\Client\Response;
 
 
 /**
@@ -34,6 +35,11 @@ final class Dispatcher {
      * @var RouterCollector
      */
     private $_collector;
+
+    /**
+     * @var DispatchError
+     */
+    private static $_pre_error;
 
     /**
      * Dispatcher constructor.
@@ -54,6 +60,11 @@ final class Dispatcher {
                 return false;
             }
         ));
+
+        // check last exception exists
+        if (self::$_pre_error !== null) {
+            GlobalExceptionHandler::trigger_exception(self::$_pre_error);
+        }
     }
 
     /**
@@ -95,5 +106,12 @@ final class Dispatcher {
         } catch (\ArgumentCountError $e) {}
 
         return true;
+    }
+
+    /**
+     * @param DispatchError $error
+     */
+    final public static function trigger_error_directly(DispatchError $error): void {
+        self::$_pre_error = $error;
     }
 }

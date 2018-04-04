@@ -10,8 +10,7 @@
  */
 namespace Here\Lib\Config;
 use Here\Config\Constant\SysConstant;
-use Here\Lib\Cache\Config\Parser\CacheConfigGenerator;
-use Here\Lib\Cache\Config\UnknownCacheServerConfig;
+use Here\Lib\Cache\Adapter\Redis\RedisServerConfig;
 use Here\Lib\Config\Parser\ConfigParserInterface;
 use Here\Lib\Config\Parser\Json\JsonParser;
 use Here\Lib\Config\Parser\Yaml\YamlParser;
@@ -68,16 +67,15 @@ class ConfigRepository {
     }
 
     /**
-     * @return array
-     * @throws \ArgumentCountError
-     * @throws \Here\Lib\Cache\Config\InvalidCacheServerConfig
+     * @return RedisServerConfig
      */
-    final public static function get_cache(): array {
-        $cache_configs = array();
-        foreach (self::get_item(ConfigItemType::CFG_CACHE) as $cache) {
-            $cache_configs[] = CacheConfigGenerator::from(new UnknownCacheServerConfig($cache));
+    final public static function get_redis_server(): RedisServerConfig {
+        /* @var RedisServerConfig[] $redis_servers */
+        $redis_servers = array();
+        foreach (self::get_item(ConfigItemType::CFG_CACHE) as $config) {
+            $redis_servers[] = new RedisServerConfig($config);
         }
-        return $cache_configs;
+        return $redis_servers[0];
     }
 
     /**

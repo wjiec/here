@@ -9,14 +9,13 @@
  * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Lib\Cache\Data\DataType\String;
-use Here\Lib\Cache\Data\CacheDataInterface;
 
 
 /**
  * Interface StringTypeInterface
  * @package Here\Lib\Cache\Data\DataType\String
  */
-interface StringTypeInterface extends CacheDataInterface {
+interface StringTypeInterface {
     /**
      * @param string $data
      */
@@ -27,4 +26,14 @@ interface StringTypeInterface extends CacheDataInterface {
      * @return int
      */
     public function concat(string $concat_string): int;
+
+    /**
+     * @return int
+     */
+    public function increment(): int;
+
+    /**
+     * @return int
+     */
+    public function decrement(): int;
 }

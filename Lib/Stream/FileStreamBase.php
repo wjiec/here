@@ -59,6 +59,13 @@ abstract class FileStreamBase implements FileStreamInterface {
     }
 
     /**
+     * @return string
+     */
+    final public function get_name(): string {
+        return $this->_file_path;
+    }
+
+    /**
      * @inheritdoc
      */
     final public function close(): void {

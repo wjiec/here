@@ -27,11 +27,17 @@ class Response {
     /**
      * @param array ...$args
      */
-    final public static function debug_output(...$args): void {
+    final public static function debug_output_exit(...$args): void {
         if (TrueValidator::filter(GlobalEnvironment::get_user_env('debug_mode'))) {
             var_dump(...$args);
             OutputBuffer::commit_buffer();
             exit();
+        }
+    }
+
+    final public static function debug_output(...$args): void {
+        if (TrueValidator::filter(GlobalEnvironment::get_user_env('debug_mode'))) {
+            var_dump(...$args);
         }
     }
 }

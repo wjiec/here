@@ -22,6 +22,7 @@ final class StringValue extends CacheDataBase implements StringTypeInterface {
      */
     final public function create_new(string $data): void {
         $this->_value = $data;
+        $this->get_adapter()->string_create($this->get_key(), $this->get_value());
     }
 
     /**
@@ -45,5 +46,19 @@ final class StringValue extends CacheDataBase implements StringTypeInterface {
      */
     final public function concat(string $concat_string): int {
         return $this->get_adapter()->string_concat($this->get_key(), $concat_string);
+    }
+
+    /**
+     * @return int
+     */
+    final public function increment(): int {
+        return $this->get_adapter()->string_increment($this->get_key());
+    }
+
+    /**
+     * @return int
+     */
+    final public function decrement(): int {
+        return $this->get_adapter()->string_decrement($this->get_key());
     }
 }

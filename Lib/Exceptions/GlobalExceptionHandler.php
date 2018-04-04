@@ -96,7 +96,7 @@ final class GlobalExceptionHandler {
                 /* clear last error */
                 error_clear_last();
                 OutputBuffer::commit_buffer();
-                return;
+                exit();
             } catch (\ArgumentCountError $e) {
                 self::trigger_exception($e, true);
             }

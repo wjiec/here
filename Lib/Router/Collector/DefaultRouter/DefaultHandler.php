@@ -25,9 +25,11 @@ trait DefaultHandler {
      * @defaultHandler
      */
     final public function default_handler(string $message): void {
+        echo "<pre>";
         var_dump($message);
         var_dump(sprintf("Default Handler: %s", RouterRequest::request_uri()));
         var_dump(LastException::get_stack_trace());
+        echo "</pre>";
     }
 
     /**
@@ -37,7 +39,9 @@ trait DefaultHandler {
      * @addHandler 404
      */
     final public function not_found_handler(string $message): void {
+        echo "<pre>";
         var_dump($message);
         var_dump(sprintf("Request Not Found: %s", RouterRequest::request_uri()));
+        echo "</pre>";
     }
 }

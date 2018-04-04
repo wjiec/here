@@ -73,4 +73,16 @@ interface CacheAdapterInterface {
      * @return int
      */
     public function string_concat(string $key, string $concat_string): int;
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    public function string_increment(string  $key): int;
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    public function string_decrement(string $key): int;
 }

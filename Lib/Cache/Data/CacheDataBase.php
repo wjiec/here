@@ -10,6 +10,7 @@
  */
 namespace Here\Lib\Cache\Data;
 use Here\Lib\Cache\Adapter\CacheAdapterInterface;
+use Here\Lib\Cache\CacheRepository;
 
 
 /**
@@ -35,14 +36,10 @@ abstract class CacheDataBase implements CacheDataInterface {
     /**
      * CacheDataBase constructor.
      * @param string $key
-     * @param CacheAdapterInterface|null $adapter
      */
-    final public function __construct(string $key, ?CacheAdapterInterface $adapter = null) {
+    final public function __construct(string $key) {
         $this->_key = $key;
-        /**
-         * @todo constructor require adapter?
-         */
-        $this->_adapter = $adapter;
+        $this->_adapter = CacheRepository::get_adapter();
     }
 
     /**
@@ -91,14 +88,6 @@ abstract class CacheDataBase implements CacheDataInterface {
      */
     final public function destroy(): int {
         return $this->_adapter->delete_item($this->get_key());
-    }
-
-    /**
-     * @param CacheAdapterInterface $adapter
-     * @return bool
-     */
-    final public function persistent(CacheAdapterInterface $adapter): bool {
-        return $adapter->string_create($this->get_key(), $this->get_value());
     }
 
     /**
