@@ -19,7 +19,7 @@ interface StringTypeInterface {
     /**
      * @param string $data
      */
-    public function create_new(string $data): void;
+    public function assign(string $data): void;
 
     /**
      * @param string $concat_string

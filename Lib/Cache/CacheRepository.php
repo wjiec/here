@@ -12,9 +12,6 @@ namespace Here\Lib\Cache;
 use Here\Lib\Cache\Adapter\AdapterNotFound;
 use Here\Lib\Cache\Adapter\CacheAdapterInterface;
 use Here\Lib\Cache\Config\CacheServerConfigInterface;
-use Here\Lib\Cache\Data\CacheDataInterface;
-use Here\Lib\Cache\Data\DataType\CacheDataType;
-use Here\Lib\Cache\Data\DataType\String\StringValue;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Utils\Toolkit\StringToolkit;
 
@@ -41,18 +38,6 @@ final class CacheRepository {
         }
 
         self::$_adapter = new $adapter_class($config);
-    }
-
-    /**
-     * @param string $key
-     * @return CacheDataInterface|null
-     */
-    final public static function get_persistent(string $key): ?CacheDataInterface {
-        switch (self::get_adapter()->typeof($key)) {
-            case CacheDataType::CACHE_TYPE_STRING:
-                return new StringValue($key);
-            default: return null;
-        }
     }
 
     /**

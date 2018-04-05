@@ -10,12 +10,9 @@
  */
 namespace Here\Config\Router;
 use Here\Config\Constant\UserEnvironment;
-use Here\Lib\Cache\CacheRepository;
-use Here\Lib\Cache\Data\DataType\String\StringValue;
+use Here\Lib\Environment\EnvironmentOverrideError;
 use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Router\Collector\SysRouterCollector;
-use Here\Lib\Stream\IStream\Client\Request;
-use Here\Lib\Stream\OStream\Client\Response;
 
 
 /**
@@ -24,12 +21,12 @@ use Here\Lib\Stream\OStream\Client\Response;
  */
 final class UserCollector extends SysRouterCollector {
     /**
-     * @throws \Here\Lib\Environment\EnvironmentOverrideError
-     *
      * @routerMiddleware
      */
     final public function enable_debug(): void {
-        GlobalEnvironment::set_user_env(UserEnvironment::ENV_DEBUG_MODE, 'on');
+        try {
+            GlobalEnvironment::set_user_env(UserEnvironment::ENV_DEBUG_MODE, 'on');
+        } catch (EnvironmentOverrideError $e) {}
     }
 
     /**
@@ -39,6 +36,5 @@ final class UserCollector extends SysRouterCollector {
      * @addUrl /debug
      */
     final public function debug(): void {
-        Response::debug_output_exit((new StringValue(Request::client_ip()))->get_value());
     }
 }

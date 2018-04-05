@@ -20,7 +20,7 @@ final class StringValue extends CacheDataBase implements StringTypeInterface {
     /**
      * @param string $data
      */
-    final public function create_new(string $data): void {
+    final public function assign(string $data): void {
         $this->_value = $data;
         $this->get_adapter()->string_create($this->get_key(), $this->get_value());
     }

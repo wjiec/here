@@ -112,6 +112,8 @@ final class Dispatcher {
      * @param DispatchError $error
      */
     final public static function trigger_error_directly(DispatchError $error): void {
-        self::$_pre_error = $error;
+        if (!self::$_pre_error) {
+            self::$_pre_error = $error;
+        }
     }
 }
