@@ -11,6 +11,7 @@
 namespace Here\Lib\Cache\Adapter\Redis;
 use Here\Lib\Cache\Adapter\CacheAdapterInterface;
 use Here\Lib\Cache\Data\DataType\CacheDataType;
+use Here\Lib\Utils\Toolkit\StringToolkit;
 
 
 /**
@@ -143,6 +144,89 @@ final class RedisAdapter implements CacheAdapterInterface {
      */
     final public function string_decrement(string $key): int {
         return $this->_connection->decr($key);
+    }
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    final public function list_get(string $key): array {
+        return $this->list_range($key, 0, -1);
+    }
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    final public function list_get_length(string $key): int {
+        return $this->_connection->lLen($key);
+    }
+
+    /**
+     * @param string $key
+     * @param array ...$values
+     * @return int
+     */
+    final public function list_push(string $key, ...$values): int {
+        return $this->_connection->rPush($key, ...$values);
+    }
+
+    /**
+     * @param string $key
+     * @param null $default
+     * @return mixed
+     */
+    final public function list_pop(string $key, $default = null) {
+        return $this->_connection->rPop($key) ?? $default;
+    }
+
+    /**
+     * @param string $key
+     * @param array ...$values
+     * @return int
+     */
+    final public function list_unshift(string $key, ...$values): int {
+        return $this->_connection->lPush($key, ...$values);
+    }
+
+    /**
+     * @param string $key
+     * @param null $default
+     * @return mixed
+     */
+    final public function list_shift(string $key, $default = null) {
+        return $this->_connection->lPop($key) ?? $default;
+    }
+
+    /**
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @return array
+     */
+    final public function list_range(string $key, int $start, int $end): array {
+        return $this->_connection->lRange($key, $start, $end);
+    }
+
+    /**
+     * @param string $key
+     * @param int $index
+     * @param mixed $new_value
+     * @return bool
+     */
+    final public function list_set_item(string $key, int $index, $new_value): bool {
+        return $this->_connection->lSet($key, $index, $new_value);
+    }
+
+    /**
+     * @param string $key
+     * @param int $index
+     * @return int
+     */
+    final public function list_remove_item(string $key, int $index): int {
+        $random_value = StringToolkit::format('__%s__', StringToolkit::random_string(16));
+        $this->list_set_item($key, $index, $random_value);
+        return $this->_connection->lRem($key, $random_value, 1);
     }
 
     /**
