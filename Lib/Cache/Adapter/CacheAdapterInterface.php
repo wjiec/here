@@ -148,4 +148,73 @@ interface CacheAdapterInterface {
      * @return int
      */
     public function list_remove_item(string $key, int $index): int;
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    public function hash_get(string $key): array;
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    public function hash_get_length(string $key): int;
+
+    /**
+     * @param string $key
+     * @param string $index
+     * @param mixed|null $default
+     * @return string|null
+     */
+    public function hash_get_item(string $key, string $index, $default = null): ?string;
+
+    /**
+     * @param string $key
+     * @param array $indexes
+     * @param mixed|null $default
+     * @return array
+     */
+    public function hash_multi_get_item(string $key, array $indexes, $default = null): array;
+
+    /**
+     * @param string $key
+     * @param string $index
+     * @param string $val
+     * @return int
+     */
+    public function hash_set_item(string $key, string $index, string $val): int;
+
+    /**
+     * @param string $key
+     * @param array $values
+     * @return int
+     */
+    public function hash_multi_set_item(string $key, array $values): int;
+
+    /**
+     * @param string $key
+     * @param string $index
+     * @return int
+     */
+    public function hash_remove_item(string $key, string $index): int;
+
+    /**
+     * @param string $key
+     * @param string[] $index
+     * @return int
+     */
+    public function hash_multi_remove_item(string $key, array $index): int;
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    public function hash_get_keys(string $key): array;
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    public function hash_get_values(string $key): array;
 }

@@ -230,6 +230,100 @@ final class RedisAdapter implements CacheAdapterInterface {
     }
 
     /**
+     * @param string $key
+     * @return array
+     */
+    final public function hash_get(string $key): array {
+        return $this->_connection->hGetAll($key) ?? array();
+    }
+
+    /**
+     * @param string $key
+     * @return int
+     */
+    final public function hash_get_length(string $key): int {
+        return $this->_connection->hLen($key);
+    }
+
+    /**
+     * @param string $key
+     * @param string $index
+     * @param null $default
+     * @return null|string
+     */
+    final public function hash_get_item(string $key, string $index, $default = null): ?string {
+        return $this->_connection->hGet($key, $index) ?? $default;
+    }
+
+    /**
+     * @param string $key
+     * @param array $indexes
+     * @param null $default
+     * @return array
+     */
+    final public function hash_multi_get_item(string $key, array $indexes, $default = null): array {
+        $result = $this->_connection->hMGet($key, $indexes);
+        $values = array_map(function($val) use($default) {
+            return $val ? $val : $default;
+        }, array_values($result));
+
+        return array_combine(array_keys($result), $values);
+    }
+
+    /**
+     * @param string $key
+     * @param string $index
+     * @param string $val
+     * @return int
+     */
+    final public function hash_set_item(string $key, string $index, string $val): int {
+        return $this->_connection->hSet($key, $index, $val);
+    }
+
+    /**
+     * @param string $key
+     * @param array $values
+     * @return int
+     */
+    final public function hash_multi_set_item(string $key, array $values): int {
+        return $this->_connection->hMset($key, $values);
+    }
+
+    /**
+     * @param string $key
+     * @param string $index
+     * @return int
+     */
+    final public function hash_remove_item(string $key, string $index): int {
+        return $this->_connection->hDel($key, $index);
+    }
+
+    /**
+     * @param string $key
+     * @param string[] $index
+     * @return int
+     */
+    final public function hash_multi_remove_item(string $key, array $index): int {
+        return $this->_connection->hDel($key, ...$index);
+    }
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    final public function hash_get_keys(string $key): array {
+        return $this->_connection->hKeys($key) ?? array();
+    }
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    final public function hash_get_values(string $key): array {
+        return $this->_connection->hVals($key) ?? array();
+    }
+
+    /**
      * 1. check connect available
      * 2. connect to redis when connection invalid
      */
