@@ -217,4 +217,63 @@ interface CacheAdapterInterface {
      * @return array
      */
     public function hash_get_values(string $key): array;
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    public function set_get(string $key): array;
+
+    /**
+     * @param string $key
+     * @param string[] ...$values
+     * @return int
+     */
+    public function set_add(string $key, string ...$values): int;
+
+    /**
+     * @param string $key
+     * @param string[] ...$values
+     * @return int
+     */
+    public function set_remove(string $key, string ...$values): int;
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return bool
+     */
+    public function set_exists(string $key, string $value): bool;
+
+    /**
+     * @param string $key
+     * @param null|string $default
+     * @return null|string
+     */
+    public function set_random_pop(string $key, ?string $default = null): ?string;
+
+    /**
+     * @param string $key
+     * @param null|string $default
+     * @return null|string
+     */
+    public function set_random_cat(string $key, ?string $default = null): ?string;
+
+    /**
+     * @param string[] ...$keys
+     * @return array
+     */
+    public function set_inter(string ...$keys): array;
+
+    /**
+     * @param string[] ...$keys
+     * @return array
+     */
+    public function set_union(string ...$keys): array;
+
+    /**
+     * @param string[] ...$keys
+     * @return array
+     */
+    public function set_diff(string ...$keys): array;
 }

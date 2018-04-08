@@ -324,6 +324,85 @@ final class RedisAdapter implements CacheAdapterInterface {
     }
 
     /**
+     * @param string $key
+     * @return array
+     */
+    final public function set_get(string $key): array {
+        return $this->_connection->sMembers($key);
+    }
+
+    /**
+     * @param string $key
+     * @param string[] ...$values
+     * @return int
+     */
+    final public function set_add(string $key, string ...$values): int {
+        return $this->_connection->sAdd($key, ...$values);
+    }
+
+    /**
+     * @param string $key
+     * @param string[] ...$values
+     * @return int
+     */
+    final public function set_remove(string $key, string ...$values): int {
+        return $this->_connection->sRem($key, ...$values);
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return bool
+     */
+    final public function set_exists(string $key, string $value): bool {
+        return $this->_connection->sIsMember($key, $value);
+    }
+
+    /**
+     * @param string $key
+     * @param null|string $default
+     * @return null|string
+     */
+    final public function set_random_pop(string $key, ?string $default = null): ?string {
+        $result = $this->_connection->sPop($key);
+        return $result ? $result : $default;
+    }
+
+    /**
+     * @param string $key
+     * @param null|string $default
+     * @return null|string
+     */
+    final public function set_random_cat(string $key, ?string $default = null): ?string {
+        $result = $this->_connection->sRandMember($key);
+        return $result ? $result : $default;
+    }
+
+    /**
+     * @param string[] ...$keys
+     * @return array
+     */
+    final public function set_inter(string ...$keys): array {
+        return $this->_connection->sInter(...$keys);
+    }
+
+    /**
+     * @param string[] ...$keys
+     * @return array
+     */
+    final public function set_union(string ...$keys): array {
+        return $this->_connection->sUnion(...$keys);
+    }
+
+    /**
+     * @param string[] ...$keys
+     * @return array
+     */
+    final public function set_diff(string ...$keys): array {
+        return $this->_connection->sDiff(...$keys);
+    }
+
+    /**
      * 1. check connect available
      * 2. connect to redis when connection invalid
      */
