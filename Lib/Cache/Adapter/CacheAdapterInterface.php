@@ -276,4 +276,61 @@ interface CacheAdapterInterface {
      * @return array
      */
     public function set_diff(string ...$keys): array;
+
+    /**
+     * @param string $key
+     * @return array
+     */
+    public function order_set_get(string $key): array;
+
+    /**
+     * @param string $key
+     * @param array $data
+     * @return int
+     */
+    public function order_set_add(string $key, array $data): int;
+
+    /**
+     * @param string $key
+     * @param string[] ...$values
+     * @return int
+     */
+    public function order_set_remove(string $key, string ...$values): int;
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return int
+     */
+    public function order_set_score(string $key, string $value): int;
+
+    /**
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @return array
+     */
+    public function order_set_range(string $key, int $start, int $end): array;
+
+    /**
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @return array
+     */
+    public function order_set_reverse_range(string $key, int $start, int $end): array;
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return int
+     */
+    public function order_set_rank(string $key, string $value): int;
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return int
+     */
+    public function order_set_reverse_rank(string $key, string $value): int;
 }

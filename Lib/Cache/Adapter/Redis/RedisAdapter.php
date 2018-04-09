@@ -403,6 +403,86 @@ final class RedisAdapter implements CacheAdapterInterface {
     }
 
     /**
+     * @param string $key
+     * @return array
+     */
+    final public function order_set_get(string $key): array {
+        return $this->order_set_range($key, 0, -1);
+    }
+
+    /**
+     * @param string $key
+     * @param array $data
+     * @return int
+     */
+    final public function order_set_add(string $key, array $data): int {
+        $params = array();
+        foreach ($data as $score => $val) {
+            if (is_integer($score)) {
+                $params[] = $score;
+                $params[] = $val;
+            }
+        }
+        return $this->_connection->zAdd($key, ...$params);
+    }
+
+    /**
+     * @param string $key
+     * @param string[] ...$values
+     * @return int
+     */
+    final public function order_set_remove(string $key, string ...$values): int {
+        return $this->_connection->zRem($key, ...$values);
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return int
+     */
+    final public function order_set_score(string $key, string $value): int {
+        return $this->_connection->zScore($key, $value);
+    }
+
+    /**
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @return array
+     */
+    final public function order_set_range(string $key, int $start, int $end): array {
+        return $this->_connection->zRange($key, $start, $end);
+    }
+
+    /**
+     * @param string $key
+     * @param int $start
+     * @param int $end
+     * @return array
+     */
+    final public function order_set_reverse_range(string $key, int $start, int $end): array {
+        return $this->_connection->zRevRange($key, $start, $end);
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return int
+     */
+    final public function order_set_rank(string $key, string $value): int {
+        return $this->_connection->zRank($key, $value);
+    }
+
+    /**
+     * @param string $key
+     * @param string $value
+     * @return int
+     */
+    final public function order_set_reverse_rank(string $key, string $value): int {
+        return $this->_connection->zRevRank($key, $value);
+    }
+
+    /**
      * 1. check connect available
      * 2. connect to redis when connection invalid
      */
