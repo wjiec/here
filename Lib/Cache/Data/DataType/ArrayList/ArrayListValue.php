@@ -45,40 +45,40 @@ final class ArrayListValue extends CacheDataBase implements ArrayListTypeInterfa
     }
 
     /**
-     * @param array ...$values
+     * @param string[] ...$values
      * @return int
      */
-    final public function push(...$values): int {
+    final public function push(string ...$values): int {
         $result = $this->get_adapter()->list_push($this->get_key(), ...$values);
         $this->_value = $this->refresh_value();
         return $result;
     }
 
     /**
-     * @param null $default
-     * @return mixed
+     * @param null|string $default
+     * @return null|string
      */
-    final public function pop($default = null) {
+    final public function pop(?string $default = null): ?string {
         $result = $this->get_adapter()->list_pop($this->get_key(), $default);
         $this->_value = $this->refresh_value();
         return $result;
     }
 
     /**
-     * @param array ...$values
+     * @param string[] ...$values
      * @return int
      */
-    final public function unshift(...$values): int {
+    final public function unshift(string ...$values): int {
         $result = $this->get_adapter()->list_unshift($this->get_key(), ...$values);
         $this->_value = $this->refresh_value();
         return $result;
     }
 
     /**
-     * @param null $default
-     * @return mixed
+     * @param null|string $default
+     * @return null|string
      */
-    final public function shift($default = null) {
+    final public function shift(?string $default = null): ?string {
         $result =  $this->get_adapter()->list_shift($this->get_key(), $default);
         $this->_value = $this->refresh_value();
         return $result;

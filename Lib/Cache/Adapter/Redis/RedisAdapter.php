@@ -164,37 +164,37 @@ final class RedisAdapter implements CacheAdapterInterface {
 
     /**
      * @param string $key
-     * @param array ...$values
+     * @param string[] ...$values
      * @return int
      */
-    final public function list_push(string $key, ...$values): int {
+    final public function list_push(string $key, string ...$values): int {
         return $this->_connection->rPush($key, ...$values);
     }
 
     /**
      * @param string $key
-     * @param null $default
-     * @return mixed
+     * @param null|string $default
+     * @return null|string
      */
-    final public function list_pop(string $key, $default = null) {
+    final public function list_pop(string $key, ?string $default = null): ?string {
         return $this->_connection->rPop($key) ?? $default;
     }
 
     /**
      * @param string $key
-     * @param array ...$values
+     * @param string[] ...$values
      * @return int
      */
-    final public function list_unshift(string $key, ...$values): int {
+    final public function list_unshift(string $key, string ...$values): int {
         return $this->_connection->lPush($key, ...$values);
     }
 
     /**
      * @param string $key
-     * @param null $default
-     * @return mixed
+     * @param null|string $default
+     * @return null|string
      */
-    final public function list_shift(string $key, $default = null) {
+    final public function list_shift(string $key, ?string $default = null): ?string {
         return $this->_connection->lPop($key) ?? $default;
     }
 

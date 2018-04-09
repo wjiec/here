@@ -100,31 +100,31 @@ interface CacheAdapterInterface {
 
     /**
      * @param string $key
-     * @param array ...$values
+     * @param string[] ...$values
      * @return int
      */
-    public function list_push(string $key, ...$values): int;
+    public function list_push(string $key, string ...$values): int;
 
     /**
      * @param string $key
-     * @param mixed|null $default
-     * @return mixed
+     * @param null|string $default
+     * @return null|string
      */
-    public function list_pop(string $key, $default = null);
+    public function list_pop(string $key, ?string $default = null): ?string;
 
     /**
      * @param string $key
-     * @param array ...$values
+     * @param string[] ...$values
      * @return int
      */
-    public function list_unshift(string $key, ...$values): int;
+    public function list_unshift(string $key, string ...$values): int;
 
     /**
      * @param string $key
-     * @param mixed|null $default
-     * @return mixed
+     * @param null|string $default
+     * @return null|string
      */
-    public function list_shift(string $key, $default = null);
+    public function list_shift(string $key, ?string $default = null): ?string;
 
     /**
      * @param string $key

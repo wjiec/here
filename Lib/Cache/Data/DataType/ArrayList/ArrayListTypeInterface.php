@@ -22,26 +22,26 @@ interface ArrayListTypeInterface extends \ArrayAccess {
     public function assign(array $data): void;
 
     /**
-     * @param array ...$values
+     * @param string[] ...$values
      * @return int
      */
-    public function push(...$values): int;
+    public function push(string ...$values): int;
 
     /**
-     * @param mixed|null $default
-     * @return mixed
+     * @param null|string $default
+     * @return null|string
      */
-    public function pop($default = null);
+    public function pop(?string $default = null): ?string;
 
     /**
-     * @param array ...$values
+     * @param string[] ...$values
      * @return int
      */
-    public function unshift(...$values): int;
+    public function unshift(string ...$values): int;
 
     /**
-     * @param mixed|null $default
-     * @return mixed
+     * @param null|string $default
+     * @return null|string
      */
-    public function shift($default = null);
+    public function shift(?string $default = null): ?string;
 }
