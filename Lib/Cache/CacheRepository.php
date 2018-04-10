@@ -32,7 +32,8 @@ final class CacheRepository {
      */
     final public static function add_server(CacheServerConfigInterface $config): void {
         $adapter_name = ucfirst($config->get_driver());
-        $adapter_class = StringToolkit::format('%s\Adapter\%s\%sAdapter', __NAMESPACE__, $adapter_name, $adapter_name);
+        $adapter_class = StringToolkit::format('%s\Adapter\%s\%sAdapter',
+            __NAMESPACE__, $adapter_name, $adapter_name);
         if (!Autoloader::class_exists($adapter_class)) {
             throw new AdapterNotFound("cannot found `{$adapter_name}` adapter");
         }

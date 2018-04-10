@@ -8,6 +8,7 @@
     "dashboard": "dashboard"
   },
   "database": [{
+    "name": "master",
     "host": "mysql",
     "port": 3306,
     "username": "root",

@@ -14,6 +14,8 @@ use Here\Lib\Cache\Adapter\Redis\RedisServerConfig;
 use Here\Lib\Config\Parser\ConfigParserInterface;
 use Here\Lib\Config\Parser\Json\JsonParser;
 use Here\Lib\Config\Parser\Yaml\YamlParser;
+use Here\Lib\Database\Config\DatabaseServerConfigInterface;
+use Here\Lib\Database\Config\MySQLServerConfig;
 use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Stream\IStream\Local\FileReaderStream;
 use Here\Lib\Utils\Storage\MemoryStorageTrait;
@@ -79,13 +81,21 @@ class ConfigRepository {
     }
 
     /**
+     * @return MySQLServerConfig
+     */
+    final public static function get_mysql_server(): MySQLServerConfig {
+        $database_servers = array();
+        foreach (self::get_item(ConfigItemType::CFG_DATABASE) as $config) {
+            $database_servers[] = new MySQLServerConfig($config);
+        }
+        return $database_servers[0];
+    }
+
+    /**
      * initializing chain of configure parser
      */
     final private static function init_parser_chain(): void {
         if (!self::$_parser_chain) {
-            /**
-             * @TODO DI and IoC optimize, from config or user control
-             */
             self::$_parser_chain = new YamlParser();
             self::$_parser_chain->add_parser(new JsonParser());
         }
