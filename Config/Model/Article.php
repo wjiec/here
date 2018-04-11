@@ -1,6 +1,6 @@
 <?php
 /**
- * MySQLServerConfig.php
+ * Article.php
  *
  * @package   here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Database\Config;
+namespace Here\Config\Model;
+use Here\Lib\Database\Model\DatabaseModelBase;
 
 
 /**
- * Class MySQLServerConfig
- *
- * @package Here\Lib\Database\Config
+ * Class Article
+ * @package Here\Config\Model
  */
-final class MySQLServerConfig extends DatabaseServerConfigBase {}
+final class Article extends DatabaseModelBase {}

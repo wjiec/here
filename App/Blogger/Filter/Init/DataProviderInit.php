@@ -11,6 +11,7 @@
 namespace Here\App\Blogger\Filter\Init;
 use Here\Lib\Cache\CacheRepository;
 use Here\Lib\Config\ConfigRepository;
+use Here\Lib\Database\DatabaseHelper;
 use Here\Lib\Extension\FilterChain\Proxy\FilterChainProxyBase;
 
 
@@ -22,14 +23,12 @@ class DataProviderInit extends FilterChainProxyBase {
     /**
      * 1. init cache adapter
      * 2. init database adapter
-     *  i. load model ?
+     * 3. adapter inject
      */
     public function do_filter(): void {
         // 1. cache adapter
         CacheRepository::add_server(ConfigRepository::get_redis_server());
-
-        /**
-         * @todo database adapter
-         */
+        // 2. database adapter
+        DatabaseHelper::add_server(ConfigRepository::get_mysql_server());
     }
 }

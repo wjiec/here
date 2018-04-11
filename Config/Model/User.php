@@ -1,20 +1,19 @@
 <?php
 /**
- * MySQLAdapter.php
- *
+ * User.php
  * @package   here
  * @author    ShadowMan <shadowman@shellboot.com>
  * @copyright Copyright (C) 2016-2018 ShadowMan
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Database\Adapter\MySQL;
+namespace Here\Config\Model;
+use Here\Lib\Database\Model\DatabaseModelBase;
 
 
 /**
- * Class MySQLAdapter
- * @package Here\Lib\Database\Adapter\MySQL
+ * Class User
+ * @package Here\Config\Model
  */
-final class MySQLAdapter {
-
+final class User extends DatabaseModelBase {
 }

@@ -14,8 +14,7 @@ use Here\Lib\Cache\Adapter\Redis\RedisServerConfig;
 use Here\Lib\Config\Parser\ConfigParserInterface;
 use Here\Lib\Config\Parser\Json\JsonParser;
 use Here\Lib\Config\Parser\Yaml\YamlParser;
-use Here\Lib\Database\Config\DatabaseServerConfigInterface;
-use Here\Lib\Database\Config\MySQLServerConfig;
+use Here\Lib\Database\Config\MysqlServerConfig;
 use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Stream\IStream\Local\FileReaderStream;
 use Here\Lib\Utils\Storage\MemoryStorageTrait;
@@ -81,12 +80,12 @@ class ConfigRepository {
     }
 
     /**
-     * @return MySQLServerConfig
+     * @return MysqlServerConfig
      */
-    final public static function get_mysql_server(): MySQLServerConfig {
+    final public static function get_mysql_server(): MysqlServerConfig {
         $database_servers = array();
         foreach (self::get_item(ConfigItemType::CFG_DATABASE) as $config) {
-            $database_servers[] = new MySQLServerConfig($config);
+            $database_servers[] = new MysqlServerConfig($config);
         }
         return $database_servers[0];
     }
