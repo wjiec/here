@@ -14,7 +14,6 @@ use Here\Config\Model\User;
 use Here\Lib\Environment\EnvironmentOverrideError;
 use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Router\Collector\SysRouterCollector;
-use Here\Lib\Stream\OStream\Client\Response;
 
 
 /**
@@ -38,7 +37,12 @@ final class UserCollector extends SysRouterCollector {
      * @addUrl /debug
      */
     final public function debug(): void {
+        echo '<pre>';
+
         $user = new User();
-        Response::debug_output($user);
+        $user->name = 'Jayson Wang';
+        $user->email = 'shadowman@shellboot.com';
+        $user->persistent();
+        var_dump($user);
     }
 }

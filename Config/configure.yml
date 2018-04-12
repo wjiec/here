@@ -42,7 +42,13 @@ cache:
 
 # request configure
 request:
-    policy:
-      time_limit: 30
-      count_limit: 30
-      forbidden_time: 300
+  policy:
+    time_limit: 30
+    count_limit: 30
+    forbidden_time: 300
+
+
+# security configure
+security:
+  rsa:
+    time_limit: 86400

@@ -41,4 +41,9 @@ interface DatabaseModelInterface {
      * @return DatabaseModelCollectionInterface
      */
     public static function find(DatabaseCriteriaInterface $criteria): DatabaseModelCollectionInterface;
+
+    /**
+     * @return bool
+     */
+    public function persistent(): bool;
 }

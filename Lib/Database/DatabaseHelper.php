@@ -12,8 +12,7 @@ namespace Here\Lib\Database;
 use Here\Lib\Database\Adapter\DatabaseAdapterInterface;
 use Here\Lib\Database\Adapter\DatabaseAdapterNotFound;
 use Here\Lib\Database\Config\DatabaseServerConfigInterface;
-use Here\Lib\Database\Model\DatabaseModelInterface;
-use Here\Lib\Database\Model\DatabaseModelNotFound;
+use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Utils\Toolkit\StringToolkit;
 
@@ -52,9 +51,48 @@ final class DatabaseHelper {
     }
 
     /**
+     * @param null|string $name
      * @return DatabaseAdapterInterface
      */
-    final public static function get_adapter(): DatabaseAdapterInterface {
+    final public static function get_adapter(?string $name = null): DatabaseAdapterInterface {
         return self::$_adapter;
+    }
+
+    /**
+     * @param string $sql
+     * @param array|null $params
+     * @return array
+     */
+    final public static function select(string $sql, ?array $params = null): array {
+    }
+
+    /**
+     * @param string $sql
+     * @param array|null $params
+     * @return int
+     */
+    final public static function insert(string $sql, ?array $params = null): int {
+    }
+
+    /**
+     * @param string $sql
+     * @param array|null $params
+     * @return int
+     */
+    final public static function update(string $sql, ?array $params = null): int {
+    }
+
+    /**
+     * @param string $sql
+     * @param array|null $params
+     * @return int
+     */
+    final public static function delete(string $sql, ?array $params = null): int {
+    }
+
+    /**
+     * @param CallbackObject $callback
+     */
+    final public static function transaction(CallbackObject $callback): void {
     }
 }

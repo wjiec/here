@@ -17,6 +17,7 @@ use Here\App\Blogger\Filter\Init\DataProviderInit;
 use Here\App\Blogger\Filter\Init\LoadConfigureFilter;
 use Here\App\Blogger\Filter\OverFrequencyRejectFilter;
 use Here\App\Blogger\Filter\RobotRejectFilter;
+use Here\App\Blogger\Filter\TemporaryDataEncryptFilter;
 use Here\Config\Constant\SysConstant;
 use Here\Config\Constant\UserEnvironment;
 use Here\Lib\Environment\GlobalEnvironment;
@@ -83,6 +84,7 @@ final class Blogger implements ApplicationInterface{
      * register all filter based on environments setting
      */
     final private function register_all_filter(): void {
+        /* blogger filter chain */
         $this->_filter_chain = new FilterChainContainer();
 
         /* register `AutoCommit` filter when it enabled */
@@ -97,6 +99,9 @@ final class Blogger implements ApplicationInterface{
 
         /* register `RobotReject` filter */
         $this->_filter_chain->register_filter(new RobotRejectFilter());
+
+        /* generate RSA-key to encrypt temporary data */
+        $this->_filter_chain->register_filter(new TemporaryDataEncryptFilter());
 
         /* register dispatcher */
         $this->_filter_chain->register_filter(new DispatcherFilter());

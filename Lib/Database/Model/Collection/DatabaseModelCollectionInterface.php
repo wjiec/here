@@ -16,4 +16,4 @@ namespace Here\Lib\Database\Model\Collection;
  *
  * @package Here\Lib\Database\Model\Collection
  */
-interface DatabaseModelCollectionInterface {}
+interface DatabaseModelCollectionInterface extends \IteratorAggregate {}

@@ -29,5 +29,10 @@
       "count_limit": 30,
       "forbidden_time": 300
     }
+  },
+  "security": {
+    "rsa": {
+      "time_limit": 86400
+    }
   }
 }
