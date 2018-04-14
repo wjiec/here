@@ -11,3 +11,6 @@ node_modules
 
 # PHPStorm and WebStorm
 .idea
+
+# blog runtime
+var
