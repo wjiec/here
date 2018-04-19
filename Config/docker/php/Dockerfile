@@ -1,5 +1,5 @@
 # minial install php7 for `Here`
-FROM alpine:latest
+FROM alpine:3.6
 
 # author info
 MAINTAINER Wang <shadowman@shellboot.com>

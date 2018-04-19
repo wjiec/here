@@ -1,4 +1,4 @@
-# minial install nginx
+# minial install mysql
 FROM alpine:3.6
 
 # author
@@ -15,13 +15,13 @@ RUN set -x \
     addgroup -S mysql \
     && adduser -S -G mysql mysql
 
-# environments for nginx
+# environments for mysql
 ENV MYSQL_MAJOR_VERSION 5.7
 ENV MYSQL_FULL_VERSION 5.7.21
 ENV MYSQL_HOME "/usr/local/mysql"
-ENV MYSQL_CONF_PATH "$NGINX_HOME/etc"
+ENV MYSQL_CONF_PATH "$MYSQL_HOME/etc"
 
-# install build deps and fetch/build/install nginx
+# install build deps and fetch/build/install mysql
 RUN set -ex \
     && apk update \
     && apk add --virtual .build-deps \
@@ -102,11 +102,43 @@ RUN set -ex \
     && make clean \
     \
     && cd "${MYSQL_HOME}" \
-    && rm -rf "/usr/src/*" \
+    && rm -rf /usr/src/* \
     && rm -rf "${MYSQL_HOME}/mysql-test" \
     \
     && chown -R mysql:mysql /usr/local/mysql \
-    && chown -R mysql:mysql /var/mysql
+    \
+    && mkdir -p "${MYSQL_CONF_PATH}" \
+    && mkdir -p "${MYSQL_CONF_PATH}/conf.d" \
+    && { \
+           echo "!includedir ${MYSQL_CONF_PATH}/mysql.conf.d/"; \
+           echo "!includedir ${MYSQL_CONF_PATH}/conf.d/"; \
+       } >> "${MYSQL_CONF_PATH}/my.cnf" \
+    \
+    && mkdir -p "${MYSQL_CONF_PATH}/mysql.conf.d" \
+    && { \
+           echo "[mysqld]"; \
+           echo "skip-host-cache"; \
+           echo "skip-name-resolve"; \
+           echo ; \
+       } >> "${MYSQL_CONF_PATH}/mysql.conf.d/docker.cnf" \
+    \
+    && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
+    \
+    && mysqlRuntimeDeps="$( \
+        scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/mysql \
+            | tr ',' '\n' \
+            | sort -u \
+            | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
+       )" \
+    && apk add --virtual .mysql-runtime-deps $mysqlRuntimeDeps \
+    && apk del .build-deps \
+    \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
+
+COPY mysql-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/mysql-entrypoint.sh
+ENTRYPOINT ["/usr/local/bin/mysql-entrypoint.sh"]
 
 ENV PATH $MYSQL_HOME/bin:$PATH
 WORKDIR /var/mysql

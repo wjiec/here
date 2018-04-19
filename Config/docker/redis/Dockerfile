@@ -1,5 +1,5 @@
 # minial install nginx
-FROM alpine:latest
+FROM alpine:3.6
 
 # author
 MAINTAINER Wang <shadowman@shellboot.com>
@@ -48,7 +48,7 @@ RUN set -ex \
     && make clean \
     \
     && cd "$REDIS_HOME" \
-    && rm -rf "/usr/src/*" \
+    && rm -rf /usr/src/* \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
     && redisRuntimeDeps="$( \

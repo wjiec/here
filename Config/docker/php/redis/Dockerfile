@@ -50,6 +50,6 @@ RUN set -x \
     \
     && apk del .build-deps \
     \
-    && rm -rf "/usr/src/*" \
+    && rm -rf /usr/src/* \
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*

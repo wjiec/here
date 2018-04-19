@@ -1,5 +1,5 @@
 # minial install nginx
-FROM alpine:latest
+FROM alpine:3.6
 
 # author
 MAINTAINER Wang <shadowman@shellboot.com>
@@ -74,7 +74,7 @@ RUN set -ex \
     && make clean \
     \
     && cd "$NGINX_HOME" \
-    && rm -rf "/usr/src/*" \
+    && rm -rf /usr/src/* \
     \
     && chown -R www:www /usr/local/nginx \
     && { \
