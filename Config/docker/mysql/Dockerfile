@@ -44,7 +44,7 @@ RUN set -ex \
         rpcgen \
     \
     && mkdir -p "/usr/src" \
-    && curl -SL "https://cdn.mysql.com//Downloads/MySQL-${MYSQL_MAJOR_VERSION}/mysql-${MYSQL_FULL_VERSION}.tar.gz" -o mysql.tar.gz \
+    && curl -SL "https://cdn.mysql.com/Downloads/MySQL-${MYSQL_MAJOR_VERSION}/mysql-${MYSQL_FULL_VERSION}.tar.gz" -o mysql.tar.gz \
     \
     && tar xvf mysql.tar.gz -C /usr/src \
     && rm -rf mysql.tar.gz* \
@@ -68,7 +68,6 @@ RUN set -ex \
            echo "};"; \
            echo ; \
        } > __linux_sigevent.tmp \
-    && cp mysys/posix_timers.c mysys/posix_timers.c.bak \
     && sed -i '44 r __linux_sigevent.tmp' mysys/posix_timers.c \
     && rm -rf __linux_sigevent.tmp \
     && sed -i 's/struct sigevent sigev;/struct linux_sigevent sigev;/g' mysys/posix_timers.c \
@@ -119,18 +118,27 @@ RUN set -ex \
            echo "[mysqld]"; \
            echo "skip-host-cache"; \
            echo "skip-name-resolve"; \
+           echo "pid-file       = /var/run/mysqld/mysqld.pid"; \
+           echo "socket         = /var/run/mysqld/mysqld.sock"; \
+           echo "datadir        = /var/mysql"; \
+           echo "symbolic-links = 0"; \
+           echo ; \
+           echo "[mysqldump]"; \
+           echo "quick"; \
+           echo "quote-names"; \
+           echo "max_allowed_packet	= 16M"; \
            echo ; \
        } >> "${MYSQL_CONF_PATH}/mysql.conf.d/docker.cnf" \
     \
-    && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
+    && { find . -type f -exec strip --strip-all {} + || true; } \
     \
-    && mysqlRuntimeDeps="$( \
+    && MYSQL_RUNTIME_DEPS="$( \
         scanelf --needed --nobanner --format '%n#p' --recursive /usr/local/mysql \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
        )" \
-    && apk add --virtual .mysql-runtime-deps $mysqlRuntimeDeps \
+    && apk add --virtual .mysql-runtime-deps $MYSQL_RUNTIME_DEPS \
     && apk del .build-deps \
     \
     && rm -rf /var/cache/apk/* \
