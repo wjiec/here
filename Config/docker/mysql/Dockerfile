@@ -42,6 +42,7 @@ RUN set -ex \
         perl-dev \
         pwgen \
         rpcgen \
+        wget \
     \
     && mkdir -p "/usr/src" \
     && curl -SL "https://cdn.mysql.com/Downloads/MySQL-${MYSQL_MAJOR_VERSION}/mysql-${MYSQL_FULL_VERSION}.tar.gz" -o mysql.tar.gz \
@@ -118,9 +119,7 @@ RUN set -ex \
            echo "[mysqld]"; \
            echo "skip-host-cache"; \
            echo "skip-name-resolve"; \
-           echo "pid-file       = /var/run/mysqld/mysqld.pid"; \
-           echo "socket         = /var/run/mysqld/mysqld.sock"; \
-           echo "datadir        = /var/mysql"; \
+           echo "datadir = /var/mysql"; \
            echo "symbolic-links = 0"; \
            echo ; \
            echo "[mysqldump]"; \
