@@ -42,7 +42,6 @@ RUN set -ex \
         perl-dev \
         pwgen \
         rpcgen \
-        wget \
     \
     && mkdir -p "/usr/src" \
     && curl -SL "https://cdn.mysql.com/Downloads/MySQL-${MYSQL_MAJOR_VERSION}/mysql-${MYSQL_FULL_VERSION}.tar.gz" -o mysql.tar.gz \
@@ -89,6 +88,8 @@ RUN set -ex \
         -DDOWNLOAD_BOOST=1 \
         -DWITH_BOOST=/usr/src/boost-src \
         \
+        -DWITH_EMBEDDED_SERVER=0 \
+        -DWITH_EMBEDDED_SHARED_LIBRARY=0 \
         -DCMAKE_INSTALL_PREFIX=/usr/local/mysql \
         -DDEFAULT_CHARSET=utf8mb4 \
         -DDEFAULT_COLLATION=utf8mb4_general_ci \
@@ -129,6 +130,8 @@ RUN set -ex \
            echo ; \
        } >> "${MYSQL_CONF_PATH}/mysql.conf.d/docker.cnf" \
     \
+    && rm -rf ${MYSQL_HOME}/bin/*test* \
+    \
     && { find . -type f -exec strip --strip-all {} + || true; } \
     \
     && MYSQL_RUNTIME_DEPS="$( \
@@ -150,3 +153,4 @@ ENTRYPOINT ["/usr/local/bin/mysql-entrypoint.sh"]
 ENV PATH $MYSQL_HOME/bin:$PATH
 WORKDIR /var/mysql
 EXPOSE 3306
+CMD ["mysql-daemon"]
