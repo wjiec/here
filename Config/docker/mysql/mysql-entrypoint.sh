@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-set -exo pipefail
+set -eo pipefail
 
 
 if [[ "$@" == "mysql-daemon" ]]; then
@@ -31,17 +31,17 @@ if [[ "$@" == "mysql-daemon" ]]; then
             fi
 
             echo 'MySQL init process in progress...'
-			sleep 1
+            sleep 1
         done
 
         mysql --protocol=socket -uroot -hlocalhost --socket="${SOCKET}" <<-EOF
-			SET @@SESSION.SQL_LOG_BIN=0;
-			SET PASSWORD FOR 'root'@'localhost'=PASSWORD('${MYSQL_ROOT_PASSWORD}');
-			GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
-			CREATE USER 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+            SET @@SESSION.SQL_LOG_BIN=0;
+            SET PASSWORD FOR 'root'@'localhost'=PASSWORD('${MYSQL_ROOT_PASSWORD}');
+            GRANT ALL ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+            CREATE USER 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
             GRANT ALL ON *.* TO 'root'@'%' WITH GRANT OPTION;
-			DROP DATABASE IF EXISTS test;
-			FLUSH PRIVILEGES;
+            DROP DATABASE IF EXISTS test;
+            FLUSH PRIVILEGES;
 EOF
 
         PID=`ps -ef | grep 'mysqld' | grep -v 'grep' | awk '{print $1}'`
