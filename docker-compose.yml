@@ -9,11 +9,11 @@ services:
     volumes:
       - ./var/redis:/var/redis
   mysql:
-    image: "mysql:5.7"
+    image: "shellboot/mysql"
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./var/mysql:/var/lib/mysql
+      - ./var/mysql:/var/mysql
       - ./Config/docker/mysql/conf:/etc/mysql
   php:
     image: "shellboot/php:redis"

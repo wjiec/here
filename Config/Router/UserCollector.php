@@ -39,10 +39,14 @@ final class UserCollector extends SysRouterCollector {
     final public function debug(): void {
         echo '<pre>';
 
-        $user = new User();
-        $user->name = 'Jayson Wang';
-        $user->email = 'shadowman@shellboot.com';
-        $user->persistent();
-        var_dump($user);
+//        $user = new User();
+//        $user->name = 'Jayson Wang';
+//        $user->email = 'shadowman@shellboot.com';
+//        $user->persistent();
+//        var_dump($user);
+
+        $connection = new \mysqli('mysql', 'root', 'root');
+        var_dump($connection);
+        var_dump($connection->get_server_info());
     }
 }
