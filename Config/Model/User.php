@@ -18,6 +18,7 @@ use Here\Lib\Database\Model\DatabaseModelBase;
 final class User extends DatabaseModelBase {
     /**
      * @var int
+     * @modelField
      * @fieldType serial
      * @fieldEmpty no
      * @fieldPrimary yes
@@ -27,6 +28,7 @@ final class User extends DatabaseModelBase {
 
     /**
      * @var string
+     * @modelField
      * @fieldType varchar
      * @fieldLength 64
      * @fieldEmpty no
@@ -36,6 +38,7 @@ final class User extends DatabaseModelBase {
 
     /**
      * @var string
+     * @modelField
      * @fieldType varchar
      * @fieldLength 64
      * @fieldEmpty no
@@ -44,6 +47,7 @@ final class User extends DatabaseModelBase {
 
     /**
      * @var string
+     * @modelField
      * @fieldType varchar
      * @fieldLength 64
      * @fieldEmpty yes
@@ -53,6 +57,7 @@ final class User extends DatabaseModelBase {
 
     /**
      * @var string
+     * @modelField
      * @fieldType varchar
      * @fieldLength 64
      * @fieldEmpty yes
@@ -62,6 +67,7 @@ final class User extends DatabaseModelBase {
 
     /**
      * @var string
+     * @modelField
      * @fieldType varchar
      * @fieldLength 128
      * @fieldEmpty yes
@@ -71,6 +77,7 @@ final class User extends DatabaseModelBase {
 
     /**
      * @var string
+     * @modelField
      * @fieldType text
      * @fieldEmpty yes
      * @fieldDefault null

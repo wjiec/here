@@ -11,6 +11,7 @@
 namespace Here\Config\Router;
 use Here\Config\Constant\UserEnvironment;
 use Here\Config\Model\User;
+use Here\Lib\Database\DatabaseHelper;
 use Here\Lib\Environment\EnvironmentOverrideError;
 use Here\Lib\Environment\GlobalEnvironment;
 use Here\Lib\Router\Collector\SysRouterCollector;
@@ -38,15 +39,12 @@ final class UserCollector extends SysRouterCollector {
      */
     final public function debug(): void {
         echo '<pre>';
+        /* @var User $user */
+        $user = DatabaseHelper::create_model(User::class);
+        var_dump($user);
 
-//        $user = new User();
-//        $user->name = 'Jayson Wang';
-//        $user->email = 'shadowman@shellboot.com';
-//        $user->persistent();
-//        var_dump($user);
-
-        $connection = new \mysqli('mysql', 'root', 'root');
-        var_dump($connection);
-        var_dump($connection->get_server_info());
+        $user->update_at = time();
+        $user->create_at = time();
+        var_dump($user);
     }
 }

@@ -18,32 +18,4 @@ use Here\Lib\Database\Model\Collection\DatabaseModelCollectionInterface;
  *
  * @package Here\Lib\Database\Model
  */
-interface DatabaseModelInterface {
-    /**
-     * DatabaseModelInterface constructor.
-     */
-    public function __construct();
-
-    /**
-     * @param DatabaseCriteriaInterface $criteria
-     * @return DatabaseModelInterface
-     */
-    public static function one(DatabaseCriteriaInterface $criteria): DatabaseModelInterface;
-
-    /**
-     * @param DatabaseCriteriaInterface $criteria
-     * @return DatabaseModelCollectionInterface
-     */
-    public static function all(DatabaseCriteriaInterface $criteria): DatabaseModelCollectionInterface;
-
-    /**
-     * @param DatabaseCriteriaInterface $criteria
-     * @return DatabaseModelCollectionInterface
-     */
-    public static function find(DatabaseCriteriaInterface $criteria): DatabaseModelCollectionInterface;
-
-    /**
-     * @return bool
-     */
-    public function persistent(): bool;
-}
+interface DatabaseModelInterface {}

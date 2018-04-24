@@ -52,6 +52,10 @@ final class OutputBuffer {
     final public static function clean_buffer(): string {
         // why not `ob_get_clean` ?
         // the function also "turns off output buffering", not just cleans it.
+        if (ob_get_level() === 0) {
+            self::startup();
+        }
+
         $contents = ob_get_contents();
         ob_clean();
 

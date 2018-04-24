@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Database\Adapter\MySQL;
+namespace Here\Lib\Database\Adapter\Mysql;
 use Here\Lib\Database\Adapter\DatabaseAdapterBase;
 
 

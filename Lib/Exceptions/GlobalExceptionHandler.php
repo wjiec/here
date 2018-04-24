@@ -11,6 +11,7 @@
 namespace Here\Lib\Exceptions;
 use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Stream\OStream\Client\OutputBuffer;
+use Here\Lib\Utils\Toolkit\StringToolkit;
 
 
 /**
@@ -156,13 +157,14 @@ final class GlobalExceptionHandler {
         echo '<pre>';
 
         var_dump($errno);
-        var_dump($error);
+        var_dump(StringToolkit::TEXT($error));
         var_dump($file);
         var_dump($line);
         var_dump($context);
 
         echo '</pre>';
         OutputBuffer::commit_buffer();
+        exit();
     }
 
     /**

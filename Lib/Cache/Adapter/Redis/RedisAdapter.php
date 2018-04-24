@@ -501,7 +501,7 @@ final class RedisAdapter implements CacheAdapterInterface {
             // connect to redis server
             $this->_connection->pconnect(
                 // host and port
-                $this->_server->get_host(), $this->_server->get_port(6379)
+                $this->_server->get_host(), $this->_server->get_port(6379), 1.0
             );
         }
     }

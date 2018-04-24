@@ -8,7 +8,8 @@
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Lib\Database\Config;
+namespace Here\Lib\Database\Adapter\Mysql;
+use Here\Lib\Database\Config\DatabaseServerConfigBase;
 
 
 /**

@@ -12,6 +12,10 @@ namespace Here\Lib\Database;
 use Here\Lib\Database\Adapter\DatabaseAdapterInterface;
 use Here\Lib\Database\Adapter\DatabaseAdapterNotFound;
 use Here\Lib\Database\Config\DatabaseServerConfigInterface;
+use Here\Lib\Database\Model\Collection\DatabaseModelCollectionInterface;
+use Here\Lib\Database\Model\DatabaseModelNotFound;
+use Here\Lib\Database\Model\Proxy\DatabaseModelProxy;
+use Here\Lib\Database\Model\Proxy\DatabaseModelProxyInterface;
 use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Loader\Autoloader;
 use Here\Lib\Utils\Toolkit\StringToolkit;
@@ -51,11 +55,28 @@ final class DatabaseHelper {
     }
 
     /**
-     * @param null|string $name
-     * @return DatabaseAdapterInterface
+     * @param string $model_class
+     * @return DatabaseModelProxyInterface
+     * @throws DatabaseModelNotFound
      */
-    final public static function get_adapter(?string $name = null): DatabaseAdapterInterface {
-        return self::$_adapter;
+    final public static function create_model(string $model_class): DatabaseModelProxyInterface {
+        if (!Autoloader::class_exists($model_class)) {
+            throw new DatabaseModelNotFound("cannot found model definition for '{$model_class}'");
+        }
+        return new DatabaseModelProxy(new $model_class());
+    }
+
+    /**
+     * @param CallbackObject $callback
+     */
+    final public static function create_transaction(CallbackObject $callback): void {
+    }
+
+    /**
+     * @param string $model_name
+     * @return DatabaseModelCollectionInterface
+     */
+    final public static function all(string $model_name): DatabaseModelCollectionInterface {
     }
 
     /**
@@ -88,11 +109,5 @@ final class DatabaseHelper {
      * @return int
      */
     final public static function delete(string $sql, ?array $params = null): int {
-    }
-
-    /**
-     * @param CallbackObject $callback
-     */
-    final public static function transaction(CallbackObject $callback): void {
     }
 }

@@ -14,7 +14,7 @@ use Here\Lib\Cache\Adapter\Redis\RedisServerConfig;
 use Here\Lib\Config\Parser\ConfigParserInterface;
 use Here\Lib\Config\Parser\Json\JsonParser;
 use Here\Lib\Config\Parser\Yaml\YamlParser;
-use Here\Lib\Database\Config\MysqlServerConfig;
+use Here\Lib\Database\Adapter\Mysql\MysqlServerConfig;
 use Here\Lib\Extension\Callback\CallbackObject;
 use Here\Lib\Stream\IStream\Local\FileReaderStream;
 use Here\Lib\Utils\Storage\MemoryStorageTrait;
