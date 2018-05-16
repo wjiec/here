@@ -9,12 +9,12 @@ services:
     volumes:
       - ./var/redis:/var/redis
   mysql:
-    image: "mysql:5.7"
+    image: "shellboot/rpi-mysql"
     environment:
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./var/mysql:/var/lib/mysql
-      - ./Config/docker/mysql/conf:/etc/mysql
+      - ./var/mysql:/var/mysql
+#      - ./Config/docker/mysql/conf:/usr/local/mysql/etc/conf.d
   php:
     image: "shellboot/rpi-php:redis"
     volumes:
