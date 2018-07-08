@@ -45,10 +45,12 @@ final class Autoloader {
             self::$_prefixes[$namespace] = array();
         }
 
-        if ($prepend) {
-            array_unshift(self::$_prefixes[$namespace], $base_dir);
-        } else {
-            self::$_prefixes[$namespace][] = $base_dir;
+        if (!in_array($base_dir, self::$_prefixes[$namespace])) {
+            if ($prepend) {
+                array_unshift(self::$_prefixes[$namespace], $base_dir);
+            } else {
+                self::$_prefixes[$namespace][] = $base_dir;
+            }
         }
     }
 
@@ -102,6 +104,9 @@ final class Autoloader {
             ));
 
             if (self::include_file($file_name, $just_check)) {
+                // create namespace cache
+                self::create_namespace_cache($namespace, $class, $file_name);
+
                 return true;
             }
         }
@@ -123,5 +128,17 @@ final class Autoloader {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @param string $parent
+     * @param string $child
+     * @param string $path
+     */
+    final private static function create_namespace_cache(string $parent, string $child, string $path): void {
+        $class = $parent . $child;
+        $namespace = substr($class, 0, strrpos($class, '\\') + 1);
+
+        self::add_namespace($namespace, dirname($path));
     }
 }
