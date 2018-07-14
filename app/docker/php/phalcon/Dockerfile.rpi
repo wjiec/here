@@ -1,0 +1,43 @@
+# from exists php images
+FROM shellboot/rpi-php:redis
+
+# author info
+MAINTAINER Wang <shadowman@shellboot.com>
+
+# install deps and fetch/compile/install php-redis ext
+# curl-dev: https://github.com/JJ/alpine-perl6/issues/3
+RUN set -x \
+    && apk update \
+    && apk add --virtual .build-deps \
+        autoconf \
+        bash \
+        ca-certificates \
+        coreutils \
+        curl \
+        curl-dev \
+        gcc \
+        git \
+        g++ \
+        libc-dev \
+        make \
+        pcre-dev \
+        re2c \
+    \
+    && mkdir -p "/usr/src" \
+    && cd "/usr/src" \
+    && git clone --depth=1 "https://github.com/phalcon/cphalcon.git" \
+    \
+    && cd "/usr/src/cphalcon/build" \
+    && ./install \
+    && cd "$PHP_HOME" \
+    \
+    && echo 'extension="phalcon.so"' >> "${PHP_HOME}/etc/php.ini" \
+    \
+    && curl -s http://getcomposer.org/installer | php \
+    && composer global require "phalcon/devtools" \
+    \
+    && apk del .build-deps \
+    \
+    && rm -rf /usr/src/* \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*

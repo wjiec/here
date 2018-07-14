@@ -1,0 +1,33 @@
+#
+# Here Application
+#
+
+version: '3'
+services:
+  redis:
+    image: "shellboot/redis"
+    volumes:
+      - /var/here/redis:/var/redis
+  mysql:
+    image: "shellboot/mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - /var/here/mysql:/var/mysql
+      - ./app/docker/mysql/conf:/usr/local/mysql/etc/conf.d
+  php:
+    image: "shellboot/php:phalcon"
+    volumes:
+      - .:/var/www
+    depends_on:
+      - mysql
+      - redis
+  nginx:
+    image: "shellboot/nginx"
+    depends_on:
+     - php
+    volumes:
+      - .:/var/www
+      - ./app/docker/nginx/conf:/usr/local/nginx/etc
+    ports:
+      - "80:80"
