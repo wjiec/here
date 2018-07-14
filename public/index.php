@@ -37,9 +37,6 @@ try {
     /* read services */
     include APPLICATION_ROOT . '/config/services.php';
 
-    /* get config service for use in inline setup below */
-    // $config = $di->getConfig();
-
     /* autoloader component */
     include APPLICATION_ROOT . '/config/loader.php';
 

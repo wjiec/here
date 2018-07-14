@@ -13,7 +13,7 @@ use Phalcon\Mvc\Router;
 
 /* @var Router $router */
 $router = Di::getDefault()->get('router');
-
+$router->setDefaultNamespace('Here\Controllers');
 
 /* route the incoming request */
 $router->handle();
