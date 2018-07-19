@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 /* namespace definition and use declaration */
 namespace Here;
+use Here\Backend\BackendModule;
+use Here\Frontend\FrontendModule;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Application;
 
@@ -21,7 +23,9 @@ error_reporting(E_ALL);
 
 /* application constant definition */
 define('DOCUMENT_ROOT', dirname(__DIR__));
-define('APPLICATION_ROOT', DOCUMENT_ROOT . '/app');
+define('APPLICATION_ROOT', DOCUMENT_ROOT . '/apps');
+define('FRONTEND_MODULE_ROOT', APPLICATION_ROOT . '/frontend');
+define('BACKEND_MODULE_ROOT', APPLICATION_ROOT . '/backend');
 
 
 try {
@@ -32,19 +36,32 @@ try {
     $di = new FactoryDefault();
 
     /* handle routes */
-    include APPLICATION_ROOT . '/config/router.php';
+    include APPLICATION_ROOT . '/configs/router.php';
 
     /* read services */
-    include APPLICATION_ROOT . '/config/services.php';
+    include APPLICATION_ROOT . '/configs/services.php';
 
     /* autoloader component */
-    include APPLICATION_ROOT . '/config/loader.php';
+    include APPLICATION_ROOT . '/configs/loader.php';
 
     /* handle the request */
     $application = new Application($di);
 
+    /* register modules */
+    $application->registerModules(array(
+        'frontend' => array(
+            'className' => FrontendModule::class,
+            'path' => FRONTEND_MODULE_ROOT . '/FrontendModule.php'
+        ),
+        'backend' => array(
+            'className' => BackendModule::class,
+            'path' => BACKEND_MODULE_ROOT . '/BackendModule.php'
+        )
+    ));
+
     /* return contents to client */
-    echo str_replace(["\n","\r","\t"], '', $application->handle()->getContent());
+    $response = $application->handle();
+    $response->send();
 } catch (\Exception $e) {
     echo $e->getMessage() . '<br>';
     echo '<pre>' . $e->getTraceAsString() . '</pre>';

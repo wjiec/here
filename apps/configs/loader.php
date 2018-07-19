@@ -18,8 +18,10 @@ $loader = new Loader();
 
 /* register namespace to loader */
 $loader->registerNamespaces(array(
-    'Here\Controllers' => $di->get('config')->application->controllers_root,
-    'Here\Models' => $di->get('config')->application->models_root
+    'Here\Libraries' => $di->get('config')->application->libraries_root,
+    'Here\Plugins' => $di->get('config')->application->plugins_root,
+    'Here\Models' => $di->get('config')->application->models_root,
+    'Here\Controllers' => $di->get('config')->application->controllers_root
 ));
 
 /* create an autoloader */
