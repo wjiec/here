@@ -16,6 +16,7 @@ $di = Di::getDefault();
 
 /* @var Router $router */
 $di->setShared('router', function() {
+    /* create an router and using custom route table */
     $router = new Router(false);
 
     /* index action */
