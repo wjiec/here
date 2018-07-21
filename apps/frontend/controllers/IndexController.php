@@ -19,10 +19,28 @@ use Here\Controllers\ControllerBase;
  * @package Here\Frontend\Controllers
  */
 final class IndexController extends ControllerBase {
+
     /**
      * index/home page action
      */
     final public function indexAction() {
-        return $this->response->setJsonContent(array('status' => true));
+        if (!$this->checkApplicationInstalled()) {
+            return $this->dispatcher->forward(array(
+                'module' => 'frontend',
+                'controller' => 'installer',
+                'action' => 'first'
+            ));
+        }
+        return $this->view;
     }
+
+
+    /**
+     * @return bool
+     */
+    final private function checkApplicationInstalled(): bool {
+        $config_root = $this->di->get('config')->application->configs_root;
+        return is_file($config_root . '/application_installed');
+    }
+
 }

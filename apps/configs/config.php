@@ -36,6 +36,7 @@ return new Config(array(
     ),
     'application' => array(
         'application_root' => APPLICATION_ROOT . '/',
+        'configs_root' => APPLICATION_ROOT . '/configs',
         'models_root' => APPLICATION_ROOT . '/models',
         'plugins_root' => APPLICATION_ROOT . '/plugins',
         'libraries_root' => APPLICATION_ROOT . '/libraries',

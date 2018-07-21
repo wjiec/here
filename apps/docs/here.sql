@@ -16,7 +16,7 @@ create table if not exists `here_users` (
   `password` varchar(128) not null,
   `email` varchar(64) not null,
   `nickname` varchar(64) default null,
-  `user_avator` text default null,
+  `user_avatar` text default null,
   `user_introduce` text default null,
   `create_time` datetime not null default now(),
   `last_login_time` datetime not null default now(),
@@ -138,4 +138,36 @@ create table if not exists `here_site_comments` (
   `user_agent` varchar(255) default null,
   `comment_contents` text not null,
   `status` enum('PENDING', 'SPAMMING', 'COMMENTED') not null default 'PENDING'
+) engine=Innodb default charset=utf8mb4 auto_increment=1;
+
+
+-- ----------------------------------------------
+
+
+--
+-- Table structure for table `here_article_analyses`
+--
+drop table if exists `here_article_analyses`;
+create table if not exists `here_article_analyses` (
+  `serial_id` serial not null primary key auto_increment,
+  `article_id` int not null,
+  `view_count` int not null default 0,
+  `like_count` int not null default 0,
+  `create_time` datetime not null default now()
+) engine=Innodb default charset=utf8mb4 auto_increment=1;
+
+
+-- ----------------------------------------------
+
+
+--
+-- Table structure for table `here_viewer_analyses`
+--
+drop table if exists `here_viewer_analyses`;
+create table if not exists `here_viewer_analyses` (
+  `serial_id` serial not null primary key auto_increment,
+  `viewer_ip_address` int not null default 0,
+  `viewer_user_agent` text default null,
+  `view_url` text not null,
+  `create_time` datetime not null default now()
 ) engine=Innodb default charset=utf8mb4 auto_increment=1;

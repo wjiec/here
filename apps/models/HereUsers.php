@@ -8,11 +8,17 @@
  */
 namespace Here\Models;
 
+
+use Phalcon\Mvc\Model;
 use Phalcon\Validation;
 use Phalcon\Validation\Validator\Email as EmailValidator;
 
-class HereUsers extends \Phalcon\Mvc\Model
-{
+
+/**
+ * Class HereUsers
+ * @package Here\Models
+ */
+final class HereUsers extends Model {
 
     /**
      *
@@ -48,7 +54,7 @@ class HereUsers extends \Phalcon\Mvc\Model
      *
      * @var string
      */
-    public $user_avator;
+    public $user_avatar;
 
     /**
      *
@@ -85,19 +91,13 @@ class HereUsers extends \Phalcon\Mvc\Model
      *
      * @return boolean
      */
-    public function validation()
-    {
+    final public function validation() {
         $validator = new Validation();
 
-        $validator->add(
-            'email',
-            new EmailValidator(
-                [
-                    'model'   => $this,
-                    'message' => 'Please enter a correct email address',
-                ]
-            )
-        );
+        $validator->add('email', new EmailValidator(array(
+            'model'   => $this,
+            'message' => 'Please enter a correct email address',
+        )));
 
         return $this->validate($validator);
     }
@@ -105,8 +105,7 @@ class HereUsers extends \Phalcon\Mvc\Model
     /**
      * Initialize method for model.
      */
-    public function initialize()
-    {
+    final public function initialize() {
         $this->setSchema("here");
         $this->setSource("here_users");
     }
@@ -116,8 +115,7 @@ class HereUsers extends \Phalcon\Mvc\Model
      *
      * @return string
      */
-    public function getSource()
-    {
+    final public function getSource() {
         return 'here_users';
     }
 
@@ -127,8 +125,7 @@ class HereUsers extends \Phalcon\Mvc\Model
      * @param mixed $parameters
      * @return HereUsers[]|HereUsers|\Phalcon\Mvc\Model\ResultSetInterface
      */
-    public static function find($parameters = null)
-    {
+    final public static function find($parameters = null) {
         return parent::find($parameters);
     }
 
@@ -138,8 +135,7 @@ class HereUsers extends \Phalcon\Mvc\Model
      * @param mixed $parameters
      * @return HereUsers|\Phalcon\Mvc\Model\ResultInterface
      */
-    public static function findFirst($parameters = null)
-    {
+    final public static function findFirst($parameters = null) {
         return parent::findFirst($parameters);
     }
 

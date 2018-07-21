@@ -23,23 +23,23 @@ use Phalcon\Mvc\ModuleDefinitionInterface;
  */
 final class FrontendModule implements ModuleDefinitionInterface {
     /**
-     * @param DiInterface|null $dependencyInjector
+     * @param DiInterface|null $di
      */
-    final public function registerAutoloaders(DiInterface $dependencyInjector = null) {
+    final public function registerAutoloaders(DiInterface $di = null) {
         $loader = new Loader();
 
         $loader->registerNamespaces(array(
-            'Here\Frontend\Controllers' => $dependencyInjector->get('config')->frontend->controllers_root,
-            'Here\Frontend\Models' => $dependencyInjector->get('config')->frontend->models_root
+            'Here\Frontend\Controllers' => $di->get('config')->frontend->controllers_root,
+            'Here\Frontend\Models' => $di->get('config')->frontend->models_root
         ))->register();
     }
 
     /**
-     * @param DiInterface $dependencyInjector
+     * @param DiInterface $di
      */
-    final public function registerServices(DiInterface $dependencyInjector) {
+    final public function registerServices(DiInterface $di) {
         /* register default dispatcher */
-        $dependencyInjector->set('dispatcher', function() {
+        $di->set('dispatcher', function() {
             $dispatcher = new Dispatcher();
             $dispatcher->setDefaultNamespace('Here\Frontend\Controllers');
 

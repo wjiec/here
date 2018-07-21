@@ -10,7 +10,6 @@ namespace Here\Config;
 
 
 use Phalcon\Di;
-use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Mvc\View;
@@ -46,7 +45,14 @@ $di->setShared('view', function() use ($di) {
     /* volt template engine */
     $view->registerEngines(array(
         '.volt' => function($view) {
-            return new VoltEngine($view, $this);
+            $volt = new VoltEngine($view, $this);
+
+            $volt->setOptions(array(
+                'compiledPath' =>  '/tmp/',
+                'compiledSeparator' => '_'
+            ));
+
+            return $volt;
         }
     ));
 
