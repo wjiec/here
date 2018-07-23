@@ -19,7 +19,7 @@ return new Config(array(
         'dbname'      => 'here',
         'charset'     => 'utf8mb4',
     ),
-    'redis' => array(
+    'cache' => array(
         'adapter'   => 'Redis',
         'host'      => 'redis',
     ),

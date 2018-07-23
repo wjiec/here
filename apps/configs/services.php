@@ -9,6 +9,8 @@
 namespace Here\Config;
 
 
+use Phalcon\Cache\Backend\Redis;
+use Phalcon\Config;
 use Phalcon\Di;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
@@ -22,7 +24,15 @@ $di = Di::getDefault();
 
 /* shared configuration service */
 $di->setShared('config', function() {
-    return include APPLICATION_ROOT . "/configs/config.php";
+    /* @var Config $config */
+    $config = include APPLICATION_ROOT . '/configs/config.php';
+
+    if (is_readable(APPLICATION_ROOT . '/configs/config.dev.php')) {
+        $override_config = include APPLICATION_ROOT . '/configs/config.dev.php';
+        $config->merge($override_config);
+    }
+
+    return $config;
 });
 
 /* the URL component is used to generate all kind of urls in the application */
@@ -61,6 +71,7 @@ $di->setShared('view', function() use ($di) {
 
 /* database connection is created based in the parameters defined in the configuration file */
 $di->setShared('db', function() use ($di) {
+    /* @var Config $config */
     $config = $di->get('config');
 
     // find database provider
@@ -79,6 +90,12 @@ $di->setShared('db', function() use ($di) {
     }
 
     return new $class($params);
+});
+
+/* cache service with redis */
+$di->setShared('cache', function() use ($di) {
+    /* @var Config $config */
+    $config = $di->get('config');
 });
 
 /* if the configuration specify the use of metadata adapter use it or use memory otherwise */
