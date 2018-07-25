@@ -24,10 +24,11 @@ final class IndexController extends ControllerBase {
      * index/home page action
      */
     final public function indexAction() {
-
+        $this->dispatcher->forward(array(
+            'module' => 'backend',
+            'controller' => 'analysis',
+            'action' => 'view'
+        ));
     }
-
-
-
 
 }

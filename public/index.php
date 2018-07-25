@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 /* namespace definition and use declaration */
 namespace Here;
+
+
 use Here\Backend\BackendModule;
 use Here\Frontend\FrontendModule;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Application;
+
 
 /* report all PHP errors */
 error_reporting(E_ALL);
@@ -48,19 +51,12 @@ try {
     $application = new Application($di);
 
     /* register modules */
-    $application->registerModules(array(
-        'frontend' => array(
-            'className' => FrontendModule::class,
-            'path' => FRONTEND_MODULE_ROOT . '/FrontendModule.php'
-        ),
-        'backend' => array(
-            'className' => BackendModule::class,
-            'path' => BACKEND_MODULE_ROOT . '/BackendModule.php'
-        )
-    ));
+    $application->registerModules($di->get('config')->modules->toArray());
 
-    /* return contents to client */
+    /* handle request */
     $response = $application->handle();
+
+    /* send response to client */
     $response->send();
 } catch (\Exception $e) {
     echo $e->getMessage() . '<br>';

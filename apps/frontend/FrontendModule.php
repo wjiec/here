@@ -26,12 +26,6 @@ final class FrontendModule implements ModuleDefinitionInterface {
      * @param DiInterface|null $di
      */
     final public function registerAutoloaders(DiInterface $di = null) {
-        $loader = new Loader();
-
-        $loader->registerNamespaces(array(
-            'Here\Frontend\Controllers' => $di->get('config')->frontend->controllers_root,
-            'Here\Frontend\Models' => $di->get('config')->frontend->models_root
-        ))->register();
     }
 
     /**
@@ -39,11 +33,11 @@ final class FrontendModule implements ModuleDefinitionInterface {
      */
     final public function registerServices(DiInterface $di) {
         /* register default dispatcher */
-        $di->set('dispatcher', function() {
-            $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace('Here\Frontend\Controllers');
-
-            return $dispatcher;
-        });
+//        $di->set('dispatcher', function() {
+//            $dispatcher = new Dispatcher();
+//            $dispatcher->setDefaultNamespace('Here\Frontend\Controllers');
+//
+//            return $dispatcher;
+//        });
     }
 }

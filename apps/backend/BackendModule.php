@@ -23,27 +23,21 @@ use Phalcon\Mvc\ModuleDefinitionInterface;
  */
 final class BackendModule implements ModuleDefinitionInterface {
     /**
-     * @param DiInterface|null $dependencyInjector
+     * @param DiInterface|null $di
      */
-    final public function registerAutoloaders(DiInterface $dependencyInjector = null) {
-        $loader = new Loader();
-
-        $loader->registerNamespaces(array(
-            'Here\Backend\Controllers' => $dependencyInjector->get('config')->backend->controllers_root,
-            'Here\Backend\Models' => $dependencyInjector->get('config')->backend->models_root
-        ))->register();
+    final public function registerAutoloaders(DiInterface $di = null) {
     }
 
     /**
-     * @param DiInterface $dependencyInjector
+     * @param DiInterface $di
      */
-    final public function registerServices(DiInterface $dependencyInjector) {
+    final public function registerServices(DiInterface $di) {
         /* register default dispatcher */
-        $dependencyInjector->set('dispatcher', function() {
-            $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace('Here\Backend\Controllers');
-
-            return $dispatcher;
-        });
+//        $dependencyInjector->set('dispatcher', function() {
+//            $dispatcher = new Dispatcher();
+//            $dispatcher->setDefaultNamespace('Here\Backend\Controllers');
+//
+//            return $dispatcher;
+//        });
     }
 }

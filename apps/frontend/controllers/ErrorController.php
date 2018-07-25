@@ -31,4 +31,13 @@ final class ErrorController extends ControllerBase {
         var_dump($error_message);
     }
 
+    /**
+     * http 4xx error
+     * @param null|string $message
+     */
+    final public function notFoundAction(?string $message) {
+        $this->response->setStatusCode(404);
+        var_dump($message);
+    }
+
 }
