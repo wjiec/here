@@ -18,8 +18,6 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Mvc\DispatcherInterface;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
-use Phalcon\Mvc\View;
-use Phalcon\Mvc\View\Engine\Volt as VoltEngine;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
 use \Phalcon\Mvc\Dispatcher\Exception as DispatcherException;
 
@@ -50,38 +48,6 @@ $di->setShared('url', function() use ($config) {
     $url->setBaseUri($config->application->base_uri);
 
     return $url;
-});
-
-/* setting up the view component */
-$di->setShared('view', function() use ($di, $config) {
-    /* view component */
-    $view = new View();
-    $view->setDI($di);
-    $view->setViewsDir($config->application->views_root);
-
-    /* volt template engine */
-    $view->registerEngines(array(
-        '.volt' => function($view) use ($config) {
-            $volt = new VoltEngine($view, $this);
-
-            $caches_root = '/tmp/';
-            if (isset($config->application->caches_root)) {
-                $config_caches_root = rtrim($config->application->caches_root) . '/';
-                if (is_writable($config_caches_root)) {
-                    $caches_root = $config_caches_root;
-                }
-            }
-
-            $volt->setOptions(array(
-                'compiledPath' =>  $caches_root,
-                'compiledSeparator' => '_'
-            ));
-
-            return $volt;
-        }
-    ));
-
-    return $view;
 });
 
 /* database connection is created based in the parameters defined in the configuration file */
@@ -169,7 +135,7 @@ $di->setShared('dispatcher', function() {
 
                 // check whether module contains meta data
                 $module_data = $config->modules->{$forward['module']};
-                if (!isset($module_data['metadata']) || !isset($module_data['metadata']['controllers_namespace'])) {
+                if (!isset($module_data['metadata']) || !isset($module_data->metadata->controllers_namespace)) {
                     // @todo think of something nice to automatically get controller dir from existing config?
                     throw new DispatcherException(sprintf('Module %s does not have meta data. ' .
                         'controllers_namespace must be specified', $forward['module']));

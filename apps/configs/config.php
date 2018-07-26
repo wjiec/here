@@ -36,12 +36,13 @@ return new Config(array(
         'module_root' => FRONTEND_MODULE_ROOT . '/',
         'controllers_root' => FRONTEND_MODULE_ROOT . '/controllers',
         'models_root' => FRONTEND_MODULE_ROOT . '/models',
-        'views_root' => FRONTEND_MODULE_ROOT . '/views'
+        'views_root' => APPLICATION_ROOT . '/views/frontend'
     ),
     'backend' => array(
         'module_root' => BACKEND_MODULE_ROOT . '/',
         'controllers_root' => BACKEND_MODULE_ROOT . '/controllers',
-        'models_root' => BACKEND_MODULE_ROOT . '/models'
+        'models_root' => BACKEND_MODULE_ROOT . '/models',
+        'views_root' => APPLICATION_ROOT . '/views/backend'
     ),
     'application' => array(
         'application_root' => APPLICATION_ROOT . '/',
@@ -49,9 +50,9 @@ return new Config(array(
         'models_root' => APPLICATION_ROOT . '/models',
         'plugins_root' => APPLICATION_ROOT . '/plugins',
         'libraries_root' => APPLICATION_ROOT . '/libraries',
-        'views_root' => APPLICATION_ROOT . '/views',
         'controllers_root' => APPLICATION_ROOT . '/controllers',
         'base_uri' => '/',
+        'compiled_templates_root' => APPLICATION_ROOT . '/caches/compiled_templates',
         'caches_root' => DOCUMENT_ROOT . '/caches',
         'logging_root' => DOCUMENT_ROOT . '/logs'
     ),

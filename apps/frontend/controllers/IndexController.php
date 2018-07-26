@@ -25,9 +25,9 @@ final class IndexController extends ControllerBase {
      */
     final public function indexAction() {
         $this->dispatcher->forward(array(
-            'module' => 'backend',
-            'controller' => 'analysis',
-            'action' => 'view'
+            'module' => 'frontend',
+            'controller' => 'installer',
+            'action' => 'first'
         ));
     }
 

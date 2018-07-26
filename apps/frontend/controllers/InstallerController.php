@@ -24,7 +24,6 @@ final class InstallerController extends ControllerBase {
      * first step of application
      */
     final public function firstAction() {
-        return $this->view;
     }
 
 }

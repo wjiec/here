@@ -12,6 +12,8 @@ namespace Here\Controllers;
 
 
 use Here\Frontend\Controllers\InstallerController;
+use Phalcon\Cache\Backend\Redis;
+use Phalcon\Config;
 use Phalcon\Dispatcher;
 use Phalcon\Mvc\Controller;
 
@@ -21,6 +23,26 @@ use Phalcon\Mvc\Controller;
  * @package Here\Controllers
  */
 abstract class ControllerBase extends Controller {
+
+    /**
+     * @var Config
+     */
+    protected $config;
+
+    /**
+     * @var Redis
+     */
+    protected $cache;
+
+    /**
+     * initializing controller first
+     */
+    final public function initialize() {
+        // configure object
+        $this->config = $this->di->get('config');
+        // redis cache backend
+        $this->cache = $this->di->get('cache');
+    }
 
     /**
      * @param Dispatcher $dispatcher
