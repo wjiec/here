@@ -13,4 +13,8 @@ node_modules
 .idea
 
 # develop config
-apps/configs/*.dev.*
+backend/configs/*.dev.php
+
+# https certificate
+docs/docker/nginx/conf/server*
+

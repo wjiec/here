@@ -1,22 +1,20 @@
 <?php
 /**
- * Simple Blogger <Here>
+ * entry for backend of here blogger
  *
- * @package   Here
- * @author    Jayson Wang <shadowman@shellboot.com>
- * @copyright Copyright (C) 2016-2018 Jayson Wang
+ * @package   here
+ * @author    ShadowMan <shadowman@shellboot.com>
+ * @copyright Copyright (C) 2016-2018 ShadowMan
  * @license   MIT License
- * @version   Develop: 0.0.1
- * @link      https://github.com/JJayson Wang/here
+ * @link      https://github.com/JShadowMan/here
  */
 declare(strict_types=1);
+
 
 /* namespace definition and use declaration */
 namespace Here;
 
 
-use Here\Backend\BackendModule;
-use Here\Frontend\FrontendModule;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Application;
 
@@ -26,10 +24,7 @@ error_reporting(E_ALL);
 
 /* application constant definition */
 define('DOCUMENT_ROOT', dirname(__DIR__));
-define('APPLICATION_ROOT', DOCUMENT_ROOT . '/apps');
-define('FRONTEND_MODULE_ROOT', APPLICATION_ROOT . '/frontend');
-define('BACKEND_MODULE_ROOT', APPLICATION_ROOT . '/backend');
-
+define('APPLICATION_ROOT', DOCUMENT_ROOT . '/backend');
 
 try {
     /**
@@ -50,8 +45,8 @@ try {
     /* handle the request */
     $application = new Application($di);
 
-    /* register modules */
-    $application->registerModules($di->get('config')->modules->toArray());
+    /* doesn't not using view services */
+    $application->useImplicitView(false);
 
     /* handle request */
     $response = $application->handle();

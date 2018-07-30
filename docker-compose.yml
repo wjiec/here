@@ -14,7 +14,7 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - /var/here/mysql:/var/mysql
-      - ./app/docker/mysql/conf:/usr/local/mysql/etc/conf.d
+      - ./docs/docker/mysql/conf:/usr/local/mysql/etc/conf.d
   php:
     image: "shellboot/php:phalcon"
     volumes:
@@ -28,6 +28,7 @@ services:
      - php
     volumes:
       - .:/var/www
-      - ./app/docker/nginx/conf:/usr/local/nginx/etc
+      - ./docs/docker/nginx/conf:/usr/local/nginx/etc
     ports:
       - "80:80"
+      - "443:443"
