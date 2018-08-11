@@ -1,0 +1,6 @@
+[mysqld]
+innodb_buffer_pool_size = 256M
+innodb_buffer_pool_instances = 1
+#log-error = /var/mysql/error.log
+
+[mysql]

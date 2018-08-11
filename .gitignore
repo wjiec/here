@@ -1,1 +1,24 @@
-.idea/
+# sass cache
+.sass-cache
+
+# zend studio
+.settings
+.buildpath
+.project
+
+# node
+node_modules
+
+# PHPStorm and WebStorm
+.idea
+
+# develop config
+backend/configs/*.dev.php
+
+# https certificate
+docs/docker/nginx/conf/server*
+
+# front compiled files
+public
+!public/index.php
+!public/.htaccess
