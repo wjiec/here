@@ -22,6 +22,9 @@ $config = $di->get('config');
 /* autoload collector */
 $loader = new Loader();
 
+/* !NOTE! do not check file exists to improve performance */
+$loader->setFileCheckingCallback(null);
+
 /* register namespace to loader */
 $loader->registerNamespaces(array(
     /* libraries and plugins */
