@@ -28,6 +28,12 @@ $di->setShared('router', function() {
         'action' => 'create'
     ))->via('PUT');
 
+    // get backend status
+    $router->add('/init', array(
+        'controller' => 'frontend',
+        'action' => 'init'
+    ))->via('GET');
+
 
     return $router;
 });
