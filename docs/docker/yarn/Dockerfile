@@ -17,7 +17,7 @@ ENV NODE_VERSION 8.11.4
 ENV YARN_VERSION latest
 
 # generic named for home folder
-ENV NODE_HOME /usr/local/php
+ENV NODE_HOME /usr/local/node
 ENV YARN_HOME /usr/local/yarn
 
 # install deps and fetch/compile/install node/yarn
@@ -47,9 +47,9 @@ RUN set -x \
     && mkdir -p "$NODE_HOME" \
     && mkdir -p "$YARN_HOME" \
     \
-    && cp -r /usr/src/yarn* "$YARN_HOME" \
+    && cp -r "$(ls -d /usr/src/yarn*)/." "$YARN_HOME" \
     \
-    && cd "/usr/src/vnode-v$NODE_VERSION" \
+    && cd "/usr/src/node-v$NODE_VERSION" \
     && ./configure \
         --prefix="$NODE_HOME" \
         \
@@ -66,7 +66,7 @@ RUN set -x \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
     \
     && nodeRuntimeDeps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive $PHP_HOME \
+        scanelf --needed --nobanner --format '%n#p' --recursive $NODE_HOME \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
