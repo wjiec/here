@@ -4,7 +4,7 @@ FROM alpine:3.6
 # author info
 MAINTAINER Wang <shadowman@shellboot.com>
 
-# China mirrors and create www-user
+# China mirrors
 RUN set -x \
     && country=`wget -T1 -q -O- google.com 2>&1 | sed -nr 's/.*(timed\ out).*/China/p'` \
     && if [ "$country" == "China" ]; then \
@@ -53,8 +53,6 @@ RUN set -x \
     && ./configure \
         --prefix="$NODE_HOME" \
         \
-        --fully-static \
-        \
         --without-npm \
     \
     && make -j "$(getconf _NPROCESSORS_ONLN)" \
@@ -71,7 +69,7 @@ RUN set -x \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )" \
-    && apk add --virtual .node-runtime-deps $nodeRuntimeDeps python \
+    && apk add --virtual .node-runtime-deps $nodeRuntimeDeps \
     && apk del .build-deps \
     \
     && rm -rf /var/cache/apk/* \
