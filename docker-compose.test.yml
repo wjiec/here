@@ -25,7 +25,7 @@ services:
      - php
     volumes:
       - .:/var/www
-      - ./docs/docker/nginx/conf:/usr/local/nginx/etc
+      - ./docs/docker/nginx/test-conf:/usr/local/nginx/etc
     ports:
       - "80:80"
       - "443:443"

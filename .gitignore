@@ -16,10 +16,14 @@ node_modules
 backend/configs/*.dev.php
 
 # https certificate
-docs/docker/nginx/conf/server*
+docs/docker/nginx/conf/cert
 
 # front compiled files
 public/*
 !public/index.php
 !public/.htaccess
 !public/error.html
+
+# something test files
+*.test.yml
+docs/docker/nginx/test-conf
