@@ -27,7 +27,7 @@ $loader->setFileCheckingCallback(null);
 
 /* register namespace to loader */
 $loader->registerNamespaces(array(
-    /* libraries and plugins */
+    /* Libraries and plugins */
     'Here\Libraries' => $config->application->libraries_root,
     'Here\Plugins' => $config->application->plugins_root,
     /* controllers and models */

@@ -13,7 +13,6 @@ namespace Here\Controllers;
 
 use Phalcon\Cache\Backend\Redis;
 use Phalcon\Config;
-use Phalcon\Dispatcher;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
 
@@ -45,24 +44,6 @@ abstract class ControllerBase extends Controller {
     }
 
     /**
-     * @param Dispatcher $dispatcher
-     */
-    final public function beforeExecuteRoute(Dispatcher $dispatcher) {
-        // avoid circulate reference
-//        if ($dispatcher->getHandlerClass() !== InstallerController::class) {
-//            // check application installed
-//            if (!$this->checkApplicationInstalled()) {
-//                // forward to installing
-//                $this->dispatcher->forward(array(
-//                    'module' => 'frontend',
-//                    'controller' => 'installer',
-//                    'action' => 'first'
-//                ));
-//            }
-//        }
-    }
-
-    /**
      * @param int $status
      * @param null|string $message
      * @param array|null $data
@@ -82,6 +63,7 @@ abstract class ControllerBase extends Controller {
         ), $extra ?? array());
 
         return $this->response
+            ->setHeader('Access-Control-Expose-Headers', 'X-Backend-Token')
             ->setHeader('X-Backend-Token', 'h-xx-xx-xxxxxxxx-xxxx')
             ->setJsonContent($response);
     }

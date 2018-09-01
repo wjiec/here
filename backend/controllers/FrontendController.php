@@ -1,6 +1,6 @@
 <?php
 /**
- * EnvironmentController.php
+ * FrontendController.php
  *
  * @package   here
  * @author    ShadowMan <shadowman@shellboot.com>
@@ -10,6 +10,8 @@
  */
 namespace Here\Controllers;
 
+
+use Here\Libraries\RSA\RSAGenerator;
 
 /**
  * Class EnvironmentController
@@ -23,12 +25,11 @@ final class FrontendController extends ControllerBase {
      */
     final public function initAction() {
         return $this->makeResponse(self::STATUS_OK, null, array(
-            'secret' => array(
-                'rsa' => 'public rsa key',
-                'random' => random_int(1000, 9999)
-            )
-        ), array(
-            'redirect' => '/installer/first'
+            'security' => array(
+                'rsa' => RSAGenerator::generate()->get(),
+                'mask' => random_int(1000, 9999)
+            ),
+            'install' => true
         ));
     }
 
