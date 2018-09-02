@@ -13,8 +13,9 @@ namespace Here\Controllers;
 
 use Here\Libraries\RSA\RSAGenerator;
 
+
 /**
- * Class EnvironmentController
+ * Class FrontendController
  * @package Here\Controllers
  */
 final class FrontendController extends ControllerBase {
