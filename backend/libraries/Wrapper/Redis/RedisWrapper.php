@@ -11,7 +11,7 @@
 namespace Here\Libraries\Wrapper\Redis;
 
 
-use Here\Libraries\Wrapper\WrapperInterface;
+use Here\Libraries\Wrapper\WrapperBase;
 use Phalcon\Cache\Backend\Redis;
 use Phalcon\Di;
 
@@ -20,7 +20,7 @@ use Phalcon\Di;
  * Class RedisWrapper
  * @package Here\Libraries\Wrapper\Redis
  */
-abstract class RedisWrapper implements WrapperInterface {
+abstract class RedisWrapper extends WrapperBase {
 
     /**
      * @var callable
@@ -38,6 +38,8 @@ abstract class RedisWrapper implements WrapperInterface {
      * @throws RedisWrapperError
      */
     final public function __construct($refresh_callback) {
+        parent::__construct();
+
         if (!is_callable($refresh_callback)) {
             throw new RedisWrapperError('refresh callback must be callable');
         }
@@ -45,16 +47,17 @@ abstract class RedisWrapper implements WrapperInterface {
     }
 
     /**
+     * @param bool $force
      * @return mixed
      */
-    final public function get() {
+    final public function get(bool $force = false) {
         if (!self::$redis) {
             self::$redis = Di::getDefault()->get('cache');
         }
 
         $result = self::$redis->get($this->getRedisKey());
-        if ($result === null) {
-            $result = call_user_func($this->refresh_callback);
+        if ($result === null || $force) {
+            $result = call_user_func_array($this->refresh_callback, array($this));
             self::$redis->save($this->getRedisKey(), $result, $this->getRedisExpire());
         }
 

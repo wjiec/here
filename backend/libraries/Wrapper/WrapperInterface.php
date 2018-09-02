@@ -18,8 +18,9 @@ namespace Here\Libraries\Wrapper;
 interface WrapperInterface {
 
     /**
+     * @param bool $force
      * @return mixed
      */
-    public function get();
+    public function get(bool $force = false);
 
 }

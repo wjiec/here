@@ -12,6 +12,7 @@ namespace Here\Controllers;
 
 
 use Here\Libraries\RSA\RSAGenerator;
+use Here\Models\Wrapper\Author;
 
 
 /**
@@ -25,12 +26,14 @@ final class FrontendController extends ControllerBase {
      * @throws \Exception
      */
     final public function initAction() {
+        $force = $this->request->getQuery('force', 'trim', 'false');
+
         return $this->makeResponse(self::STATUS_OK, null, array(
             'security' => array(
                 'rsa' => RSAGenerator::generate()->get(),
                 'mask' => random_int(1000, 9999)
             ),
-            'install' => true
+            'author' => Author::generate()->get($force === 'true')
         ));
     }
 
