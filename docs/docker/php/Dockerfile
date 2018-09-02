@@ -16,7 +16,7 @@ RUN set -x \
     && adduser -S -D -H -G www -u 82 www
 
 # environment for php7
-ENV PHP_VERSION 7.1.10
+ENV PHP_VERSION 7.2.9
 
 # generic named for home folder
 ENV PHP_HOME /usr/local/php
@@ -42,6 +42,7 @@ RUN set -x \
         libedit-dev \
         libmcrypt-dev \
         libxml2-dev \
+        libzip-dev \
         make \
         openssl-dev \
         pcre-dev \
@@ -95,10 +96,10 @@ RUN set -x \
         --with-curl \
         --with-gettext \
         --with-iconv \
-        --with-mcrypt \
+        --with-libzip \
         --with-mysqli \
         --with-openssl \
-        --with-pdo-mysql=shared,mysqlnd \
+        --with-pdo-mysql=mysqlnd \
         --with-zlib \
         \
         --enable-ftp \
@@ -107,7 +108,6 @@ RUN set -x \
         --enable-mysqlnd \
         --enable-opcache \
         --enable-sockets \
-        --enable-zip \
         \
         --disable-fileinfo \
     \

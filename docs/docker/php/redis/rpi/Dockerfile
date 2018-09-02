@@ -1,5 +1,5 @@
 # from exists php images
-FROM shellboot/php
+FROM shellboot/rpi-php
 
 # author info
 MAINTAINER Wang <shadowman@shellboot.com>
@@ -17,7 +17,6 @@ ENV PHP_REDIS_VERSION 4.1.1
 
 
 # install deps and fetch/compile/install php-redis ext
-# curl-dev: https://github.com/JJ/alpine-perl6/issues/3
 RUN set -x \
     && apk update \
     && apk add --virtual .build-deps \
@@ -51,6 +50,6 @@ RUN set -x \
     \
     && apk del .build-deps \
     \
-    && rm -rf /usr/src/* \
+    && rm -rf "/usr/src/*" \
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*
