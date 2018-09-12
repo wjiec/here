@@ -11,9 +11,12 @@
 namespace Here\Controllers;
 
 
-use Phalcon\Cache\Backend\Redis;
+use Here\Libraries\Language\Translator;
+use Here\Libraries\Signature\Context;
+use Here\plugins\AppRedisBackend;
 use Phalcon\Config;
 use Phalcon\Http\ResponseInterface;
+use Phalcon\Logger\Adapter;
 use Phalcon\Mvc\Controller;
 
 
@@ -29,9 +32,24 @@ abstract class ControllerBase extends Controller {
     protected $config;
 
     /**
-     * @var Redis
+     * @var AppRedisBackend
      */
     protected $cache;
+
+    /**
+     * @var Adapter
+     */
+    protected $logger;
+
+    /**
+     * @var Translator
+     */
+    protected $translator;
+
+    /**
+     * @var Context
+     */
+    private $signer_context;
 
     /**
      * initializing controller first
@@ -41,6 +59,15 @@ abstract class ControllerBase extends Controller {
         $this->config = $this->di->get('config');
         // redis cache backend
         $this->cache = $this->di->get('cache');
+        // logging service
+        $this->logger = $this->di->get('logging');
+        // translator plugin
+        $this->translator = new Translator($this->config->application->languages_dir);
+        // validate sign
+        if (!$this->checkSignature()) {
+            $this->makeResponse(self::STATUS_FATAL_ERROR, $this->translator->SYS_SIGNATURE_INVALID);
+            $this->terminal();
+        }
     }
 
     /**
@@ -52,7 +79,7 @@ abstract class ControllerBase extends Controller {
      */
     final protected function makeResponse(int $status, ?string $message = null,
                                           ?array $data = null, ?array $extra = null): ResponseInterface {
-        if ($status === self::STATUS_OK && $message === null) {
+        if ($status === self::STATUS_SUCCESS && $message === null) {
             $message = 'success';
         }
 
@@ -69,13 +96,25 @@ abstract class ControllerBase extends Controller {
     }
 
     /**
-     * @return bool
+     * terminal correct
      */
-    final private function checkApplicationInstalled(): bool {
-        $config_root = $this->di->get('config')->application->configs_root;
-        return is_file($config_root . '/application_installed');
+    final protected function terminal(): void {
+        $this->response->send();
+        exit(0);
     }
 
-    protected const STATUS_OK = 0;
+    /**
+     * @return bool
+     */
+    final private function checkSignature(): bool {
+        $this->signer_context = new Context();
+        return true;
+    }
+
+    protected const STATUS_SUCCESS = 0;
+
+    protected const STATUS_FAILURE = 1;
+
+    protected const STATUS_FATAL_ERROR = -1;
 
 }

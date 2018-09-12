@@ -45,6 +45,7 @@ return new Config(array(
         'controllers_root' => APPLICATION_ROOT . '/controllers',
         'controllers_namespace' => 'Here\Controllers',
         'base_uri' => '/',
-        'logging_root' => DOCUMENT_ROOT . '/logs'
+        'logging_root' => DOCUMENT_ROOT . '/logs',
+        'languages_dir' => APPLICATION_ROOT . '/configs/languages'
     )
 ));

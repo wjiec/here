@@ -28,12 +28,13 @@ final class FrontendController extends ControllerBase {
     final public function initAction() {
         $force = $this->request->getQuery('force', 'trim', 'false');
 
-        return $this->makeResponse(self::STATUS_OK, null, array(
+        return $this->makeResponse(self::STATUS_SUCCESS, null, array(
             'security' => array(
                 'rsa' => RSAGenerator::generate()->get(),
                 'mask' => random_int(1000, 9999)
             ),
-            'author' => Author::generate()->get($force === 'true')
+            'author' => Author::generate()->get($force === 'true'),
+            'lang' => $this->translator->getLang()
         ));
     }
 
