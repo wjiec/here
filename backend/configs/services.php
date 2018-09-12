@@ -18,6 +18,7 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
+use Phalcon\Logger\Adapter\File as FileLogger;
 
 
 /* default dependency management */
@@ -89,10 +90,15 @@ if (isset($config->cache)) {
     });
 }
 
-/* @todo logging service */
-//$di->setShared('logging', function() use ($config) {
-//
-//});
+/* logging service */
+$di->setShared('logging', function() use ($config) {
+    $logger_file = $config->application->logging_root . '/' . $config->logging->name;
+    if (!is_dir(dirname($logger_file)) || !is_writable(dirname($logger_file))) {
+        $logger_file = '/tmp/' . $config->logging->name;
+    }
+
+    return new FileLogger($logger_file);
+});
 
 /* default dispatcher service */
 $di->setShared('dispatcher', function() use ($config) {
