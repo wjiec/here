@@ -12,7 +12,6 @@ namespace Here\Controllers;
 
 
 use Here\Libraries\Language\Translator;
-use Here\Libraries\Signature\Context;
 use Here\plugins\AppRedisBackend;
 use Phalcon\Config;
 use Phalcon\Http\ResponseInterface;
@@ -47,14 +46,9 @@ abstract class ControllerBase extends Controller {
     protected $translator;
 
     /**
-     * @var Context
-     */
-    private $signer_context;
-
-    /**
      * initializing controller first
      */
-    final public function initialize() {
+    public function initialize() {
         // configure object
         $this->config = $this->di->get('config');
         // redis cache backend
@@ -63,11 +57,6 @@ abstract class ControllerBase extends Controller {
         $this->logger = $this->di->get('logging');
         // translator plugin
         $this->translator = new Translator($this->config->application->languages_dir);
-        // validate sign
-        if (!$this->checkSignature()) {
-            $this->makeResponse(self::STATUS_FATAL_ERROR, $this->translator->SYS_SIGNATURE_INVALID);
-            $this->terminal();
-        }
     }
 
     /**
@@ -77,7 +66,7 @@ abstract class ControllerBase extends Controller {
      * @param array|null $extra
      * @return ResponseInterface
      */
-    final protected function makeResponse(int $status, ?string $message = null,
+    protected function makeResponse(int $status, ?string $message = null,
                                           ?array $data = null, ?array $extra = null): ResponseInterface {
         if ($status === self::STATUS_SUCCESS && $message === null) {
             $message = 'success';
@@ -91,30 +80,24 @@ abstract class ControllerBase extends Controller {
 
         return $this->response
             ->setHeader('Access-Control-Expose-Headers', 'X-Backend-Token')
-            ->setHeader('X-Backend-Token', 'h-xx-xx-xxxxxxxx-xxxx')
             ->setJsonContent($response);
     }
 
     /**
      * terminal correct
+     * @param int $status_code
      */
-    final protected function terminal(): void {
-        $this->response->send();
+    final protected function terminal(int $status_code = 200): void {
+        $this->response
+            ->setStatusCode($status_code)
+            ->send();
         exit(0);
     }
 
-    /**
-     * @return bool
-     */
-    final private function checkSignature(): bool {
-        $this->signer_context = new Context();
-        return true;
-    }
+    protected const STATUS_SUCCESS = 0x0000;
 
-    protected const STATUS_SUCCESS = 0;
+    protected const STATUS_FAILURE = 0x0001;
 
-    protected const STATUS_FAILURE = 1;
-
-    protected const STATUS_FATAL_ERROR = -1;
+    protected const STATUS_FATAL_ERROR = 0xffff;
 
 }
