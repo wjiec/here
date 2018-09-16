@@ -8,6 +8,7 @@ services:
     image: "shellboot/redis"
     volumes:
       - /var/here/redis:/var/redis
+    restart: always
   mysql:
     image: "shellboot/mysql"
     environment:
@@ -15,6 +16,7 @@ services:
     volumes:
       - /var/here/mysql:/var/mysql
       - ./docs/docker/mysql/conf:/usr/local/mysql/etc/conf.d
+    restart: always
   php:
     image: "shellboot/php:phalcon"
     volumes:
@@ -22,6 +24,7 @@ services:
     depends_on:
       - mysql
       - redis
+    restart: always
   nginx:
     image: "shellboot/nginx"
     depends_on:
@@ -32,3 +35,4 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    restart: always
