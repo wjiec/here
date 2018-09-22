@@ -19,7 +19,7 @@ use Here\Models\Wrapper\Author;
  * Class FrontendController
  * @package Here\Controllers
  */
-final class FrontendController extends ControllerBase {
+final class FrontendController extends SecurityControllerBase {
 
     /**
      * initializing frontend environment

@@ -7,9 +7,10 @@
  * @copyright Copyright (C) 2016-2018 ShadowMan
  * @license   MIT License
  */
-namespace Here\controllers;
+namespace Here\Controllers;
 
 
+use Here\Libraries\RSA\RSAGenerator;
 use Here\Libraries\Signature\Context;
 
 
@@ -41,7 +42,8 @@ abstract class SecurityControllerBase extends ControllerBase {
      * @return bool
      */
     final private function checkSignature(): bool {
-        $this->signer_context = new Context();
+//        $this->signer_context = new Context();
+
         return true;
     }
 
