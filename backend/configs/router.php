@@ -26,13 +26,13 @@ $di->setShared('router', function() {
     $router->add('/init', array(
         'controller' => 'frontend',
         'action' => 'init'
-    ))->via('GET');
+    ))->via(array('GET'));
 
-    // create session
-    $router->add('/session', array(
-        'controller' => 'session',
+    // create blogger
+    $router->add('/blogger', array(
+        'controller' => 'blogger',
         'action' => 'create'
-    ))->via('PUT');
+    ))->via(array('PUT'));
 
     return $router;
 });

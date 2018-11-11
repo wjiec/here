@@ -195,8 +195,13 @@ final class RSAObject {
                                      ?TransformInterface $adapter): string {
         $results = array();
         foreach (self::splitSource($data, $this->key_bits) as $segment) {
-            $encrypt_status = openssl_private_encrypt($segment, $result,
-                $is_private ? $this->private_key : $this->public_key);
+            if ($is_private) {
+                $encrypt_status = openssl_private_encrypt($segment, $result,
+                    $this->private_key);
+            } else {
+                $encrypt_status = openssl_public_encrypt($segment, $result,
+                    $this->public_key);
+            }
 
             if (!$encrypt_status) {
                 throw new RSAError(openssl_error_string());
@@ -222,8 +227,13 @@ final class RSAObject {
         $results = array();
 
         foreach ($segments as $segment) {
-            $decrypt_status = openssl_public_decrypt($segment, $result,
-                $is_private ? $this->private_key : $this->public_key);
+            if ($is_private) {
+                $decrypt_status = openssl_private_decrypt($segment, $result,
+                    $this->private_key);
+            } else {
+                $decrypt_status = openssl_public_decrypt($segment, $result,
+                    $this->public_key);
+            }
 
             if (!$decrypt_status) {
                 throw new RSAError(openssl_error_string());

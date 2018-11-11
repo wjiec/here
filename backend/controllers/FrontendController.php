@@ -28,15 +28,8 @@ final class FrontendController extends SecurityControllerBase {
      * @throws \Exception
      */
     final public function initAction() {
-        /* @var RSAObject $rsa_object */
-        $rsa_object = (new RedisGetter())->get(RedisKeys::getRSAPrivateRedisKey(), function() {
-            return RSAObject::generate(1024);
-        }, RedisGetter::EXPIRE_ONE_DAY);
-        /* @var Users $author */
-        $author = (new RedisGetter())->get(RedisKeys::getBlogAuthorRedisKey(), function() {
-            $user = Users::findFirst();
-            return $user;
-        }, RedisGetter::NO_EXPIRE);
+        $rsa_object = $this->getCachedRSAObject();
+        $author = $this->getCachedAuthor();
 
         return $this->makeResponse(self::STATUS_SUCCESS, null, array(
             'security' => array(
