@@ -89,17 +89,25 @@ final class RSAObject {
     }
 
     /**
+     * @param bool $shorter
      * @return string
      */
-    final public function getPrivateKey(): string {
-        return $this->private_key;
+    final public function getPrivateKey(bool $shorter = false): string {
+        if (!$shorter) {
+            return $this->private_key;
+        }
+        return self::toShorter($this->private_key);
     }
 
     /**
+     * @param bool $shorter
      * @return string
      */
-    final public function getPublicKey(): string {
-        return $this->public_key;
+    final public function getPublicKey(bool $shorter = false): string {
+        if (!$shorter) {
+            return $this->public_key;
+        }
+        return self::toShorter($this->public_key);
     }
 
     /**
@@ -118,8 +126,10 @@ final class RSAObject {
      * @return string
      * @throws RSAError
      */
-    final public function encrypt(string $data, string $glue = '.', ?TransformInterface $adapter = null): string {
-        return $this->doEncrypt(self::USE_PUBLIC, $data, $glue, $adapter ?? new Base64Transform());
+    final public function encrypt(string $data, string $glue = '.',
+                                  ?TransformInterface $adapter = null): string {
+        return $this->doEncrypt(self::USE_PUBLIC, $data, $glue,
+            $adapter ?? new Base64Transform());
     }
 
     /**
@@ -131,9 +141,11 @@ final class RSAObject {
      * @return string|null
      * @throws RSAError
      */
-    final public function decrypt(string $data, string $glue = '.', ?TransformInterface $adapter = null): ?string {
+    final public function decrypt(string $data, string $glue = '.',
+                                  ?TransformInterface $adapter = null): ?string {
         if ($this->private_key) {
-            return $this->doDecrypt(self::USE_PRIVATE, $data, $glue, $adapter ?? new Base64Transform());
+            return $this->doDecrypt(self::USE_PRIVATE, $data, $glue,
+                $adapter ?? new Base64Transform());
         }
         return null;
     }
@@ -147,9 +159,11 @@ final class RSAObject {
      * @return string
      * @throws RSAError
      */
-    final public function signature(string $data, string $glue = '.', ?TransformInterface $adapter = null): ?string {
+    final public function signature(string $data, string $glue = '.',
+                                    ?TransformInterface $adapter = null): ?string {
         if ($this->private_key) {
-            return $this->doEncrypt(self::USE_PRIVATE, $data, $glue, $adapter ?? new Base64Transform());
+            return $this->doEncrypt(self::USE_PRIVATE, $data, $glue,
+                $adapter ?? new Base64Transform());
         }
         return null;
     }
@@ -163,8 +177,10 @@ final class RSAObject {
      * @return string
      * @throws RSAError
      */
-    final public function validate(string $data, string $glue = '.', ?TransformInterface $adapter = null): string {
-        return $this->doDecrypt(self::USE_PUBLIC, $data, $glue, $adapter ?? new Base64Transform());
+    final public function validate(string $data, string $glue = '.',
+                                   ?TransformInterface $adapter = null): string {
+        return $this->doDecrypt(self::USE_PUBLIC, $data, $glue,
+            $adapter ?? new Base64Transform());
     }
 
     /**
@@ -251,6 +267,17 @@ final class RSAObject {
         $segments[] = $data;
 
         return $segments;
+    }
+
+    /**
+     * @param string $string
+     * @return string
+     */
+    final private static function toShorter(string $string): string {
+        $normalize_string = str_replace(array("\r\n", "\r"), "\n", $string);
+
+        $segments = array_filter(explode("\n", $normalize_string));
+        return join('', array_splice($segments, 1, count($segments) - 2));
     }
 
     private const USE_PRIVATE = true;

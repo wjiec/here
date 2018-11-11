@@ -29,7 +29,7 @@ return new Config(array(
         ),
         'frontend' => array(
             'adapter' => 'Data',
-            'lifetime' => 5 * 60
+            'lifetime' => 3600
         )
     ),
     'logging' => array(

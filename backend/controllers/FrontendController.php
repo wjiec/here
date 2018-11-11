@@ -11,8 +11,10 @@
 namespace Here\Controllers;
 
 
-use Here\Libraries\RSA\RSAGenerator;
-use Here\Models\Wrapper\Author;
+use Here\Libraries\Redis\RedisGetter;
+use Here\Libraries\Redis\RedisKeys;
+use Here\Libraries\RSA\RSAObject;
+use Here\Models\Users;
 
 
 /**
@@ -26,16 +28,28 @@ final class FrontendController extends SecurityControllerBase {
      * @throws \Exception
      */
     final public function initAction() {
-        $force = $this->request->getQuery('force', 'trim', 'false');
+        /* @var RSAObject $rsa_object */
+        $rsa_object = (new RedisGetter())->get(RedisKeys::getRSAPrivateRedisKey(), function() {
+            return RSAObject::generate(1024);
+        }, RedisGetter::EXPIRE_ONE_DAY);
+        /* @var Users $author */
+        $author = (new RedisGetter())->get(RedisKeys::getBlogAuthorRedisKey(), function() {
+            $user = Users::findFirst();
+            return $user;
+        }, RedisGetter::NO_EXPIRE);
 
         return $this->makeResponse(self::STATUS_SUCCESS, null, array(
             'security' => array(
-                'rsa' => RSAGenerator::generate()->get(),
-                'mask' => random_int(1000, 9999)
+                'key' => $rsa_object->getPublicKey(true),
+                'mask' => random_int(self::SECURITY_MASK_RANGE_START, self::SECURITY_MASK_RANGE_END)
             ),
-            'author' => Author::generate()->get($force === 'true'),
+            'author' => $author ? $author->toArray() : null,
             'lang' => $this->translator->getLang()
         ));
     }
+
+    private const SECURITY_MASK_RANGE_START = 100000;
+
+    private const SECURITY_MASK_RANGE_END = 999999;
 
 }
