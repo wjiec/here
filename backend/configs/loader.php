@@ -3,7 +3,7 @@
  * autoloader
  *
  * @package   Here
- * @author    Jayson Wang <shadowman@shellboot.com>
+ * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  */
 namespace Here\Config;
@@ -27,7 +27,7 @@ $loader->setFileCheckingCallback(null);
 
 /* register namespace to loader */
 $loader->registerNamespaces(array(
-    /* Libraries and plugins */
+    /* libraries and plugins */
     'Here\Libraries' => $config->application->libraries_root,
     'Here\Plugins' => $config->application->plugins_root,
     /* controllers and models */

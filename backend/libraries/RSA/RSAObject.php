@@ -5,8 +5,8 @@
  * provide some rsa support
  *
  * @package   here
- * @author    ShadowMan <shadowman@shellboot.com>
- * @copyright Copyright (C) 2016-2018 ShadowMan
+ * @author    Jayson Wang <jayson@laboys.org>
+ * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */

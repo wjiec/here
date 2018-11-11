@@ -1,16 +1,16 @@
 <?php
 /**
- * RedisPlugin.php
+ * AppRedisBackend.php
  *
  * @package   here
- * @author    ShadowMan <shadowman@shellboot.com>
- * @copyright Copyright (C) 2016-2018 ShadowMan
+ * @author    Jayson Wang <jayson@laboys.org>
+ * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
  */
-namespace Here\plugins;
+namespace Here\Plugins;
 
 
-use Phalcon\Cache\Backend\Redis;
+use Phalcon\Cache\Backend\Redis as RedisAdapter;
 use \Redis as OriginalRedis;
 
 
@@ -18,7 +18,7 @@ use \Redis as OriginalRedis;
  * Class RedisPlugin
  * @package Here\plugins
  */
-final class AppRedisBackend extends Redis {
+final class AppRedisBackend extends RedisAdapter {
 
     /**
      * @return OriginalRedis

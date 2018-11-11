@@ -3,8 +3,8 @@
  * ControllerBase.php
  *
  * @package   here
- * @author    ShadowMan <shadowman@shellboot.com>
- * @copyright Copyright (C) 2016-2018 ShadowMan
+ * @author    Jayson Wang <jayson@laboys.org>
+ * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/JShadowMan/here
  */
@@ -36,6 +36,11 @@ abstract class ControllerBase extends Controller {
     protected $cache;
 
     /**
+     * @var \Redis
+     */
+    protected $redis;
+
+    /**
      * @var Adapter
      */
     protected $logger;
@@ -53,6 +58,8 @@ abstract class ControllerBase extends Controller {
         $this->config = $this->di->get('config');
         // redis cache backend
         $this->cache = $this->di->get('cache');
+        // original redis backend
+        $this->redis = $this->cache->getOriginalRedis();
         // logging service
         $this->logger = $this->di->get('logging');
         // translator plugin
@@ -67,20 +74,19 @@ abstract class ControllerBase extends Controller {
      * @return ResponseInterface
      */
     protected function makeResponse(int $status, ?string $message = null,
-                                          ?array $data = null, ?array $extra = null): ResponseInterface {
+                                    ?array $data = null, ?array $extra = null): ResponseInterface {
         if ($status === self::STATUS_SUCCESS && $message === null) {
             $message = 'success';
         }
 
-        $response = array_merge(array(
-            'status' => $status,
-            'message' => $message,
-            'data' => $data,
-        ), $extra ?? array());
-
         return $this->response
             ->setHeader('Access-Control-Expose-Headers', 'X-Backend-Token')
-            ->setJsonContent($response);
+            ->setJsonContent(array(
+                'status' => $status,
+                'message' => $message,
+                'data' => $data,
+                'extra' => $extra
+            ));
     }
 
     /**

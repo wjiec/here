@@ -3,7 +3,7 @@
  * error handler and report
  *
  * @package   Here
- * @author    Jayson Wang <shadowman@shellboot.com>
+ * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  */
 namespace Here\Controllers;

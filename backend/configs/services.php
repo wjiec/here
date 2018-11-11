@@ -3,13 +3,14 @@
  * services definition in here
  *
  * @package   Here
- * @author    Jayson Wang <shadowman@shellboot.com>
+ * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  */
 namespace Here\Config;
 
 
 use Exception;
+use Here\Plugins\AppRedisBackend;
 use Phalcon\Config;
 use Phalcon\Di;
 use Phalcon\Dispatcher;
@@ -85,7 +86,11 @@ if (isset($config->cache)) {
         $backend_adapter = $backend_config['adapter'];
         unset($backend_config['adapter']);
 
-        $backend_class = 'Phalcon\Cache\Backend\\' . $backend_adapter;
+        if ($backend_adapter === 'Redis') {
+            $backend_class = AppRedisBackend::class;
+        } else {
+            $backend_class = 'Phalcon\Cache\Backend\\' . $backend_adapter;
+        }
         return new $backend_class($frontend, $backend_config);
     });
 }
