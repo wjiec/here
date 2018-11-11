@@ -2,7 +2,7 @@
 FROM alpine:3.6
 
 # author
-MAINTAINER Wang <shadowman@shellboot.com>
+MAINTAINER Wang <jayson@laboys.org>
 
 # China mirrors and create redis user and group
 RUN set -x \

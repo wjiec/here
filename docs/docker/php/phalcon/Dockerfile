@@ -2,7 +2,7 @@
 FROM shellboot/php:redis
 
 # author info
-MAINTAINER Wang <shadowman@shellboot.com>
+MAINTAINER Wang <jayson@laboys.org>
 
 # install deps and fetch/compile/install php-redis ext
 # curl-dev: https://github.com/JJ/alpine-perl6/issues/3

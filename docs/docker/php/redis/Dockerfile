@@ -2,7 +2,7 @@
 FROM shellboot/php
 
 # author info
-MAINTAINER Wang <shadowman@shellboot.com>
+MAINTAINER Wang <jayson@laboys.org>
 
 # China mirrors and create www-user
 RUN set -x \
