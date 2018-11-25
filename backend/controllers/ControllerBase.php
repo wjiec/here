@@ -90,10 +90,22 @@ abstract class ControllerBase extends Controller {
     }
 
     /**
+     * @param int $status
+     * @param null|string $message
+     * @param array|null $data
+     * @param array|null $extra
+     */
+    final protected function terminalResponse(int $status, ?string $message = null,
+                                              ?array $data = null, ?array $extra = null): void {
+        $this->makeResponse($status, $message, $data, $extra)->send();
+        exit(0);
+    }
+
+    /**
      * terminal correct
      * @param int $status_code
      */
-    final protected function terminal(int $status_code = 200): void {
+    final protected function terminalByStatusCode(int $status_code = 200): void {
         $this->response
             ->setStatusCode($status_code)
             ->send();

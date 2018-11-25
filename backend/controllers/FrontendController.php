@@ -11,12 +11,6 @@
 namespace Here\Controllers;
 
 
-use Here\Libraries\Redis\RedisGetter;
-use Here\Libraries\Redis\RedisKeys;
-use Here\Libraries\RSA\RSAObject;
-use Here\Models\Users;
-
-
 /**
  * Class FrontendController
  * @package Here\Controllers

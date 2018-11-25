@@ -15,6 +15,8 @@ declare(strict_types=1);
 namespace Here;
 
 
+use Here\Libraries\Hunter\ErrorCatcher;
+use Here\Libraries\Stream\OutputBuffer;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Application;
 
@@ -25,6 +27,11 @@ error_reporting(E_ALL);
 /* application constant definition */
 define('DOCUMENT_ROOT', dirname(__DIR__));
 define('APPLICATION_ROOT', DOCUMENT_ROOT . '/backend');
+
+/* application environment */
+define('DEVELOPMENT_ENV', 'development');
+define('PRODUCTION_ENV', 'production');
+define('APPLICATION_ENV', getenv('APPLICATION_ENV') ?: DEVELOPMENT_ENV);
 
 try {
     /**
@@ -42,6 +49,12 @@ try {
     /* autoloader component */
     include APPLICATION_ROOT . '/configs/loader.php';
 
+    /* register output buffer */
+    OutputBuffer::startup();
+
+    /* prepare ErrorHunter */
+    ErrorCatcher::prepare();
+
     /* handle the request */
     $application = new Application($di);
 
@@ -54,6 +67,6 @@ try {
     /* send response to client */
     $response->send();
 } catch (\Exception $e) {
-    echo $e->getMessage() . '<br>';
-    echo '<pre>' . $e->getTraceAsString() . '</pre>';
+    /** @noinspection PhpUnhandledExceptionInspection */
+    throw $e; // throw again and catch by ErrorHunter
 }

@@ -33,8 +33,18 @@ return new Config(array(
         )
     ),
     'logging' => array(
-        'adapter' => 'File',
-        'name' => 'here.log'
+        'default_logger_name' => 'application',
+        'spare_logging_root' => '/tmp/here/log',
+        'loggers' => array(
+            'application' => array(
+                'adapter' => 'File',
+                'name' => 'application.log'
+            ),
+            'error' => array(
+                'adapter' => 'File',
+                'name' => 'error.log'
+            )
+        )
     ),
     'application' => array(
         'application_root' => APPLICATION_ROOT . '/',

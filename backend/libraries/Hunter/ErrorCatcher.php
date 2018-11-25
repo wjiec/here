@@ -11,6 +11,7 @@ namespace Here\Libraries\Hunter;
 
 
 use Here\Libraries\Stream\OutputBuffer;
+use Here\Plugins\AppLoggerProvider;
 use Phalcon\Logger\Adapter\File;
 
 
@@ -34,7 +35,7 @@ final class ErrorCatcher {
      * 准备错误捕捉器
      */
     final public static function prepare() {
-        self::$logger = new File(DOCUMENT_ROOT . '/logs/error.log');
+        self::$logger = (new AppLoggerProvider())->getLogger('error');
 
         // global exception handler
         set_exception_handler(function(\Throwable $exception) {

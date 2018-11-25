@@ -23,7 +23,7 @@ final class BloggerController extends SecurityControllerBase {
     final public function createAction() {
         // author created and terminal request
         if ($this->getCachedAuthor() !== null) {
-            $this->terminal(403);
+            $this->terminalByStatusCode(403);
         }
 
         $raw_params = $this->request->getRawBody();

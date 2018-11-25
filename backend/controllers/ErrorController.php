@@ -23,12 +23,20 @@ final class ErrorController extends ControllerBase {
      * when controller/action not found
      * @param Event $context
      * @param string $message
-     * @return \Phalcon\Http\ResponseInterface
      */
     final public function notFoundAction(Event $context, string $message) {
         /* @var Exception $exception */
         $exception = $context->getData();
-        return $this->makeResponse(-$exception->getCode(), $message);
+        $this->terminalResponse(-$exception->getCode(), $message);
+    }
+
+    /**
+     * when internal error occurs
+     * @param null|string $error
+     */
+    final public function internalAction(?string $error = null) {
+        $this->terminalResponse(self::STATUS_FATAL_ERROR,
+            APPLICATION_ENV === DEVELOPMENT_ENV ? $error : 'Server Internal Error');
     }
 
 }

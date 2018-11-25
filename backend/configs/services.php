@@ -9,7 +9,8 @@
 namespace Here\Config;
 
 
-use Exception;
+use Here\Libraries\Hunter\ErrorCatcher;
+use Here\Plugins\AppLoggerProvider;
 use Here\Plugins\AppRedisBackend;
 use Phalcon\Config;
 use Phalcon\Di;
@@ -19,7 +20,6 @@ use Phalcon\Events\Manager as EventsManager;
 use Phalcon\Mvc\Url as UrlResolver;
 use Phalcon\Mvc\Model\Metadata\Memory as MetaDataAdapter;
 use Phalcon\Session\Adapter\Files as SessionAdapter;
-use Phalcon\Logger\Adapter\File as FileLogger;
 
 
 /* default dependency management */
@@ -32,6 +32,7 @@ $di->setShared('config', function() {
 
     // check configure for develop exists
     if (is_readable(APPLICATION_ROOT . '/configs/config.dev.php')) {
+        /** @noinspection PhpIncludeInspection */
         $override_config = include APPLICATION_ROOT . '/configs/config.dev.php';
         $config->merge($override_config);
     }
@@ -97,12 +98,7 @@ if (isset($config->cache)) {
 
 /* logging service */
 $di->setShared('logging', function() use ($config) {
-    $logger_file = $config->application->logging_root . '/' . $config->logging->name;
-    if (!is_dir(dirname($logger_file)) || !is_writable(dirname($logger_file))) {
-        $logger_file = '/tmp/' . $config->logging->name;
-    }
-
-    return new FileLogger($logger_file);
+    return (new AppLoggerProvider())->getLogger('application');
 });
 
 /* default dispatcher service */
@@ -111,7 +107,7 @@ $di->setShared('dispatcher', function() use ($config) {
 
     // exceptions forward
     $events_manager->attach('dispatch:beforeException',
-        function(Event $event, Dispatcher $dispatcher, Exception $exception) {
+        function(Event $event, Dispatcher $dispatcher, \Throwable $exception) {
             switch ($exception->getCode()) {
                 case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
                 case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
@@ -134,6 +130,20 @@ $di->setShared('dispatcher', function() use ($config) {
     $dispatcher = new \Phalcon\Mvc\Dispatcher();
     $dispatcher->setEventsManager($events_manager);
     $dispatcher->setDefaultNamespace($config->application->controllers_namespace);
+
+    // add ErrorHunter listener
+    ErrorCatcher::registerListener(function(string $error) use ($dispatcher) {
+        // forward to internal-error
+        $dispatcher->forward(array(
+            'controller' => 'error',
+            'action' => 'internal',
+            'params' => array(
+                'error' => $error
+            )
+        ));
+        // dispatch again and make error message to client
+        $dispatcher->dispatch();
+    });
 
     return $dispatcher;
 });

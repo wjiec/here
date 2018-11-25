@@ -38,7 +38,7 @@ abstract class SecurityControllerBase extends ControllerBase {
         if (!$this->checkSignature()) {
             $this->makeResponse(self::STATUS_SIGNATURE_INVALID,
                 $this->translator->SYS_SIGNATURE_INVALID);
-            $this->terminal(403);
+            $this->terminalByStatusCode(403);
         }
     }
 
