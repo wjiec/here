@@ -24,7 +24,13 @@ final class Articles extends Model {
      *
      * @var integer
      */
-    public $serial_id;
+    public $article_id;
+
+    /**
+     *
+     * @var integer
+     */
+    public $author_id;
 
     /**
      *
@@ -40,27 +46,15 @@ final class Articles extends Model {
 
     /**
      *
-     * @var integer
-     */
-    public $author_id;
-
-    /**
-     *
-     * @var string
-     */
-    public $create_time;
-
-    /**
-     *
-     * @var string
-     */
-    public $update_time;
-
-    /**
-     *
      * @var string
      */
     public $article_contents;
+
+    /**
+     *
+     * @var integer
+     */
+    public $group_id;
 
     /**
      *
@@ -84,7 +78,7 @@ final class Articles extends Model {
      *
      * @var string
      */
-    public $password;
+    public $view_password;
 
     /**
      *
@@ -100,16 +94,21 @@ final class Articles extends Model {
 
     /**
      *
-     * @var integer
+     * @var string
      */
-    public $group_id;
+    public $create_time;
+
+    /**
+     *
+     * @var string
+     */
+    public $update_time;
 
     /**
      * Initialize method for model.
      */
     final public function initialize() {
-        $this->setSchema("here");
-        $this->setSource("articles");
+        $this->setSource('articles');
     }
 
     /**

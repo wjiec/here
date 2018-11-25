@@ -24,7 +24,7 @@ final class ArticleGroups extends Model {
      *
      * @var integer
      */
-    public $serial_id;
+    public $group_id;
 
     /**
      *
@@ -54,8 +54,7 @@ final class ArticleGroups extends Model {
      * Initialize method for model.
      */
     final public function initialize() {
-        $this->setSchema("here");
-        $this->setSource("article_groups");
+        $this->setSource('article_groups');
     }
 
     /**

@@ -24,7 +24,7 @@ final class ArticleCategories extends Model {
      *
      * @var integer
      */
-    public $serial_id;
+    public $category_id;
 
     /**
      *
@@ -54,8 +54,7 @@ final class ArticleCategories extends Model {
      * Initialize method for model.
      */
     final public function initialize() {
-        $this->setSchema("here");
-        $this->setSource("article_categories");
+        $this->setSource('article_categories');
     }
 
     /**

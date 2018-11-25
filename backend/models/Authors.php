@@ -20,13 +20,19 @@ use Phalcon\Validation\Validator\Email as EmailValidator;
  * Class Users
  * @package Here\Models
  */
-final class Users extends Model {
+final class Authors extends Model {
 
     /**
      *
      * @var integer
      */
-    public $serial_id;
+    public $author_id;
+
+    /**
+     *
+     * @var string
+     */
+    public $email;
 
     /**
      *
@@ -44,25 +50,19 @@ final class Users extends Model {
      *
      * @var string
      */
-    public $email;
-
-    /**
-     *
-     * @var string
-     */
     public $nickname;
 
     /**
      *
      * @var string
      */
-    public $user_avatar;
+    public $author_avatar;
 
     /**
      *
      * @var string
      */
-    public $user_introduction;
+    public $author_introduction;
 
     /**
      *
@@ -78,7 +78,7 @@ final class Users extends Model {
 
     /**
      *
-     * @var integer
+     * @var string
      */
     public $last_login_ip_address;
 
@@ -108,8 +108,7 @@ final class Users extends Model {
      * Initialize method for model.
      */
     final public function initialize() {
-        $this->setSchema("here");
-        $this->setSource("users");
+        $this->setSource('authors');
     }
 
     /**
@@ -118,14 +117,14 @@ final class Users extends Model {
      * @return string
      */
     final public function getSource() {
-        return 'users';
+        return 'authors';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Users[]|Users|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return Authors[]|Authors|\Phalcon\Mvc\Model\ResultSetInterface
      */
     final public static function find($parameters = null) {
         return parent::find($parameters);
@@ -135,7 +134,7 @@ final class Users extends Model {
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return Users|\Phalcon\Mvc\Model\ResultInterface
+     * @return Authors|\Phalcon\Mvc\Model\ResultInterface
      */
     final public static function findFirst($parameters = null) {
         return parent::findFirst($parameters);

@@ -26,7 +26,7 @@ final class ArticleComments extends Model {
      *
      * @var integer
      */
-    public $serial_id;
+    public $comment_id;
 
     /**
      *
@@ -49,12 +49,6 @@ final class ArticleComments extends Model {
     /**
      *
      * @var string
-     */
-    public $create_time;
-
-    /**
-     *
-     * @var integer
      */
     public $ip_address;
 
@@ -83,6 +77,12 @@ final class ArticleComments extends Model {
     public $parent_id;
 
     /**
+     *
+     * @var string
+     */
+    public $create_time;
+
+    /**
      * Validations and business logic
      *
      * @return boolean
@@ -102,8 +102,7 @@ final class ArticleComments extends Model {
      * Initialize method for model.
      */
     final public function initialize() {
-        $this->setSchema("here");
-        $this->setSource("article_comments");
+        $this->setSource('article_comments');
     }
 
     /**

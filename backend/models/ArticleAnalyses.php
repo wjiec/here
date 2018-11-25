@@ -23,7 +23,7 @@ final class ArticleAnalyses extends Model {
      *
      * @var integer
      */
-    public $serial_id;
+    public $analysis_id;
 
     /**
      *
@@ -53,8 +53,7 @@ final class ArticleAnalyses extends Model {
      * Initialize method for model.
      */
     final public function initialize() {
-        $this->setSchema("here");
-        $this->setSource("article_analyses");
+        $this->setSource('article_analyses');
     }
 
     /**

@@ -24,11 +24,11 @@ final class ViewerAnalyses extends Model {
      *
      * @var integer
      */
-    public $serial_id;
+    public $viewer_id;
 
     /**
      *
-     * @var integer
+     * @var string
      */
     public $viewer_ip_address;
 
@@ -42,7 +42,13 @@ final class ViewerAnalyses extends Model {
      *
      * @var string
      */
-    public $view_url;
+    public $viewer_view_page;
+
+    /**
+     *
+     * @var string
+     */
+    public $viewer_referer;
 
     /**
      *
@@ -54,8 +60,7 @@ final class ViewerAnalyses extends Model {
      * Initialize method for model.
      */
     final public function initialize() {
-        $this->setSchema("here");
-        $this->setSource("viewer_analyses");
+        $this->setSource('viewer_analyses');
     }
 
     /**

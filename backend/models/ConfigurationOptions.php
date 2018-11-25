@@ -1,6 +1,6 @@
 <?php
 /**
- * ArticleLicenses.php
+ * ConfigurationOptions.php
  *
  * @package   here
  * @author    Jayson Wang <jayson@laboys.org>
@@ -15,40 +15,40 @@ use \Phalcon\Mvc\Model;
 
 
 /**
- * Class ArticleLicenses
+ * Class ConfigurationOptions
  * @package Here\Models
  */
-final class ArticleLicenses extends Model {
+final class ConfigurationOptions extends Model {
 
     /**
      *
      * @var integer
      */
-    public $license_id;
+    public $option_id;
 
     /**
      *
      * @var string
      */
-    public $license_key;
+    public $option_name;
 
     /**
      *
      * @var string
      */
-    public $license_name;
+    public $option_value;
 
     /**
      *
      * @var string
      */
-    public $license_contents;
+    public $create_time;
 
     /**
      * Initialize method for model.
      */
     final public function initialize() {
-        $this->setSource('article_licenses');
+        $this->setSource('configuration_options');
     }
 
     /**
@@ -57,14 +57,14 @@ final class ArticleLicenses extends Model {
      * @return string
      */
     final public function getSource() {
-        return 'article_licenses';
+        return 'configuration_options';
     }
 
     /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters
-     * @return ArticleLicenses[]|ArticleLicenses|\Phalcon\Mvc\Model\ResultSetInterface
+     * @return ConfigurationOptions[]|ConfigurationOptions|\Phalcon\Mvc\Model\ResultSetInterface
      */
     final public static function find($parameters = null) {
         return parent::find($parameters);
@@ -74,7 +74,7 @@ final class ArticleLicenses extends Model {
      * Allows to query the first record that match the specified conditions
      *
      * @param mixed $parameters
-     * @return ArticleLicenses|\Phalcon\Mvc\Model\ResultInterface
+     * @return ConfigurationOptions|\Phalcon\Mvc\Model\ResultInterface
      */
     final public static function findFirst($parameters = null) {
         return parent::findFirst($parameters);
