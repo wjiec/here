@@ -82,7 +82,13 @@ final class RedisGetter {
      * @param null $default
      * @param int $expired
      */
-    final public function force(string $name, $default = null, int $expired = 0) {
+    final public function refresh(string $name, $default = null, int $expired = 0) {
+        if ($default !== null) {
+            if (is_callable($default)) {
+                $default = $default();
+            }
+            self::$cache->save($name, $default, $expired);
+        }
     }
 
     public const NO_EXPIRE = -1;

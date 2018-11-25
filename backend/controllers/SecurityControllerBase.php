@@ -14,7 +14,7 @@ use Here\Libraries\Redis\RedisGetter;
 use Here\Libraries\Redis\RedisKeys;
 use Here\Libraries\RSA\RSAObject;
 use Here\Libraries\Signature\Context;
-use Here\Models\Users;
+use Here\Models\Authors;
 
 
 /**
@@ -61,11 +61,11 @@ abstract class SecurityControllerBase extends ControllerBase {
     }
 
     /**
-     * @return Users|null
+     * @return Authors|null
      */
-    final protected function getCachedAuthor(): ?Users {
-        return (new RedisGetter())->get(RedisKeys::getBlogAuthorRedisKey(), function() {
-            $user = Users::findFirst();
+    final protected function getCachedAuthor(): ?Authors {
+        return (new RedisGetter())->get(RedisKeys::getAuthorRedisKey(), function() {
+            $user = Authors::findFirst();
             return $user ?: null;
         }, RedisGetter::NO_EXPIRE);
     }

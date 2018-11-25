@@ -29,8 +29,8 @@ $di->setShared('router', function() {
     ))->via(array('GET'));
 
     // create blogger
-    $router->add('/blogger', array(
-        'controller' => 'blogger',
+    $router->add('/author', array(
+        'controller' => 'author',
         'action' => 'create'
     ))->via(array('PUT'));
 

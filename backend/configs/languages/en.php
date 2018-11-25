@@ -18,5 +18,12 @@ return new Config(array(
         'signature' => array(
             'invalid' => 'invalid request'
         )
+    ),
+    'author' => array(
+        'register' => array(
+            'invalid' => 'register information invalid, please refresh and try again',
+            'incorrect' => 'register information incorrect, please re-enter and try again',
+            'welcome' => 'Register completed, Thanks for your support'
+        )
     )
 ));

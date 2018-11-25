@@ -121,6 +121,17 @@ final class Authors extends Model {
     }
 
     /**
+     * @return array
+     */
+    final public function getBaseInfo(): array {
+        return array(
+            'nickname' => $this->nickname,
+            'author_avatar' => $this->author_avatar,
+            'author_introduction' => $this->author_introduction,
+        );
+    }
+
+    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters

@@ -17,7 +17,10 @@ use Phalcon\Di;
 /**
  * Class Translator
  * @package Here\Libraries\Language
- * @property string SYS_SIGNATURE_INVALID
+ * @property string SYS_SIGNATURE_INVALID signature invalid error
+ * @property string AUTHOR_REGISTER_INVALID
+ * @property string AUTHOR_REGISTER_INCORRECT
+ * @property string AUTHOR_REGISTER_WELCOME
  */
 final class Translator {
 

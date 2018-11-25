@@ -30,7 +30,7 @@ final class FrontendController extends SecurityControllerBase {
                 'key' => $rsa_object->getPublicKey(true),
                 'mask' => random_int(self::SECURITY_MASK_RANGE_START, self::SECURITY_MASK_RANGE_END)
             ),
-            'author' => $author ? $author->toArray() : null,
+            'author' => $author ? $author->getBaseInfo() : null,
             'lang' => $this->translator->getLang()
         ));
     }

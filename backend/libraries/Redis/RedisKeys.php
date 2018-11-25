@@ -30,7 +30,7 @@ final class RedisKeys {
     /**
      * @return string
      */
-    final public static function getBlogAuthorRedisKey(): string {
+    final public static function getAuthorRedisKey(): string {
         return self::BLOG_AUTHOR_KEY;
     }
 
