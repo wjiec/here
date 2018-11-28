@@ -28,6 +28,8 @@ final class AuthorController extends SecurityControllerBase {
     final public function createAction() {
         // author created and terminal request
         if ($this->getCachedAuthor() !== null) {
+            $this->makeResponse(self::STATUS_FATAL_ERROR,
+                $this->translator->AUTHOR_REGISTER_FORBIDDEN);
             $this->terminalByStatusCode(403);
         }
 
@@ -95,7 +97,7 @@ final class AuthorController extends SecurityControllerBase {
         $author->username = $author_data['username'];
         $author->password = password_hash($author_data['password'], PASSWORD_DEFAULT);
         $author->nickname = $author_data['username'];
-        $author->last_login_ip_address = $this->request->getClientAddress();
+        $author->last_login_ip_address = $this->request->getClientAddress(true);
         return $author->save();
     }
 

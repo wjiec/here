@@ -21,9 +21,10 @@ return new Config(array(
     ),
     'author' => array(
         'register' => array(
-            'invalid' => 'register information invalid, please refresh and try again',
-            'incorrect' => 'register information incorrect, please re-enter and try again',
-            'welcome' => 'Register completed, Thanks for your support'
+            'invalid' => 'Register information invalid, please refresh and try again',
+            'incorrect' => 'Register information incorrect, please re-enter and try again',
+            'welcome' => 'Register completed, Thanks for your support',
+            'forbidden' => 'Prohibition of registration'
         )
     )
 ));

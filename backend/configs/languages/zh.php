@@ -23,7 +23,8 @@ return new Config(array(
         'register' => array(
             'invalid' => '注册信息无效, 请刷新重试',
             'incorrect' => '注册信息错误, 请重新输入',
-            'welcome' => '注册完成, 感谢您的使用'
+            'welcome' => '注册完成, 感谢您的使用',
+            'forbidden' => '禁止注册'
         )
     )
 ));

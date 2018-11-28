@@ -21,6 +21,7 @@ use Phalcon\Di;
  * @property string AUTHOR_REGISTER_INVALID
  * @property string AUTHOR_REGISTER_INCORRECT
  * @property string AUTHOR_REGISTER_WELCOME
+ * @property string AUTHOR_REGISTER_FORBIDDEN
  */
 final class Translator {
 
