@@ -55,10 +55,25 @@ final class AppLoggerProvider extends Injectable {
      */
     final private function getUsableLoggingRoot(): string {
         $default_root = $this->config->application->logging_root;
-        if (is_writable($default_root)) {
+        if (self::isWritableRoot($default_root)) {
             return rtrim($default_root, '/\\');
         }
         return rtrim($this->config->logging->spare_logging_root, '/\\');
+    }
+
+    /**
+     * @param string $root
+     * @return bool
+     */
+    final private static function isWritableRoot(string $root): bool {
+        if (!file_exists($root)) {
+            if (self::isWritableRoot(dirname($root))) {
+                mkdir($root, 0777, true);
+                return true;
+            }
+            return false;
+        }
+        return is_writeable($root);
     }
 
 }
