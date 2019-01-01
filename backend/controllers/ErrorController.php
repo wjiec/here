@@ -20,14 +20,10 @@ use Phalcon\Mvc\Dispatcher\Exception;
 final class ErrorController extends ControllerBase {
 
     /**
-     * when controller/action not found
      * @param Event $context
-     * @param string $message
+     * @param \Throwable $e
      */
-    final public function notFoundAction(Event $context, string $message) {
-        /* @var Exception $exception */
-        $exception = $context->getData();
-        $this->terminalResponse(-$exception->getCode(), $message);
+    final public function exceptionAction(Event $context, \Throwable $e) {
     }
 
     /**

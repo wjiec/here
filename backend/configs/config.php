@@ -13,28 +13,19 @@ use Phalcon\Config;
 
 
 return new Config(array(
-    'database' => array(
-        'adapter' => 'Mysql',
-        'host' => 'mysql',
-        'username' => 'root',
-        'password' => 'root',
-        'dbname' => 'here',
-        'charset' => 'utf8mb4',
-    ),
-    'cache' => array(
-        'backend' => array(
-            'adapter' => 'Redis',
-            'host' => 'redis',
-            'port' => '6379'
-        ),
-        'frontend' => array(
-            'adapter' => 'Data',
-            'lifetime' => 3600
-        )
+    'application' => array(
+        'configs_root' => APPLICATION_ROOT . '/configs',
+        'models_root' => APPLICATION_ROOT . '/models',
+        'plugins_root' => APPLICATION_ROOT . '/plugins',
+        'libraries_root' => APPLICATION_ROOT . '/libraries',
+        'controllers_root' => APPLICATION_ROOT . '/controllers',
+        'controllers_namespace' => 'Here\Controllers',
+        'languages_root' => APPLICATION_ROOT . '/configs/languages'
     ),
     'logging' => array(
-        'default_logger_name' => 'application',
-        'spare_logging_root' => '/tmp/here/log',
+        'default_logger' => 'application',
+        'logging_root' => DOCUMENT_ROOT . '/logs',
+        'spare_logging_root' => '/tmp/here/logs',
         'loggers' => array(
             'application' => array(
                 'adapter' => 'File',
@@ -46,16 +37,4 @@ return new Config(array(
             )
         )
     ),
-    'application' => array(
-        'application_root' => APPLICATION_ROOT . '/',
-        'configs_root' => APPLICATION_ROOT . '/configs',
-        'models_root' => APPLICATION_ROOT . '/models',
-        'plugins_root' => APPLICATION_ROOT . '/plugins',
-        'libraries_root' => APPLICATION_ROOT . '/libraries',
-        'controllers_root' => APPLICATION_ROOT . '/controllers',
-        'controllers_namespace' => 'Here\Controllers',
-        'base_uri' => '/',
-        'logging_root' => DOCUMENT_ROOT . '/logs',
-        'languages_dir' => APPLICATION_ROOT . '/configs/languages'
-    )
 ));

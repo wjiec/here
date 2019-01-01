@@ -29,9 +29,8 @@ define('DOCUMENT_ROOT', dirname(__DIR__));
 define('APPLICATION_ROOT', DOCUMENT_ROOT . '/backend');
 
 /* application environment */
-define('DEVELOPMENT_ENV', 'development');
-define('PRODUCTION_ENV', 'production');
-define('APPLICATION_ENV', getenv('APPLICATION_ENV') ?: DEVELOPMENT_ENV);
+include_once APPLICATION_ROOT . '/configs/constants.php';
+
 
 try {
     /**

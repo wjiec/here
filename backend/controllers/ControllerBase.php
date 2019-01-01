@@ -63,7 +63,7 @@ abstract class ControllerBase extends Controller {
         // logging service
         $this->logger = $this->di->get('logging');
         // translator plugin
-        $this->translator = new Translator($this->config->application->languages_dir);
+        $this->translator = new Translator($this->config->application->languages_root);
     }
 
     /**

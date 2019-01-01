@@ -2,7 +2,7 @@
 /**
  * ErrorCatcher.php
  *
- * @package   here
+ * @package   Here
  * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
@@ -12,7 +12,6 @@ namespace Here\Libraries\Hunter;
 
 use Here\Libraries\Stream\OutputBuffer;
 use Here\Plugins\AppLoggerProvider;
-use Phalcon\Logger\Adapter\File;
 
 
 /**
@@ -24,19 +23,12 @@ final class ErrorCatcher {
     /**
      * @var array|callable[]
      */
-    private static $listeners;
+    private static $listeners = array();
 
     /**
-     * @var File
-     */
-    private static $logger;
-
-    /**
-     * 准备错误捕捉器
+     * prepare error catcher
      */
     final public static function prepare() {
-        self::$logger = (new AppLoggerProvider())->getLogger('error');
-
         // global exception handler
         set_exception_handler(function(\Throwable $exception) {
             self::exceptionHandler($exception);
@@ -68,7 +60,8 @@ final class ErrorCatcher {
     }
 
     /**
-     * 注册一个错误的监听器, 用来增加错误日志后的钩子
+     * registers an error listener that is used to record
+     * after an error has occurred
      * @param callable $callback
      */
     final public static function registerListener($callback): void {
@@ -78,12 +71,10 @@ final class ErrorCatcher {
     }
 
     /**
-     * 触发一个异常日志
-     *
+     * trigger an exception without broadcasting
      * @param \Throwable $exception
      */
     final public static function triggerException(\Throwable $exception): void {
-        // 不触发错误广播
         self::exceptionHandler($exception, false);
     }
 
@@ -100,32 +91,31 @@ final class ErrorCatcher {
     }
 
     /**
-     * @param \Throwable $exception
+     * @param \Throwable $e
      * @param bool $broadcast
      */
-    final private static function exceptionHandler(\Throwable $exception, bool $broadcast = true): void {
-        $error_message = sprintf("%s\n[STACKTRACE]:\n%s\n",
-            $exception->getMessage(), $exception->getTraceAsString());
-        self::$logger->alert($error_message);
-
+    final private static function exceptionHandler(\Throwable $e, bool $broadcast = true): void {
+        $error_message = "{$e->getMessage()}\n[STACKTRACE]:\n{$e->getTraceAsString()}\n";
+        (new AppLoggerProvider())->getErrorLogger()->alert($error_message);
+        // broadcasting when enable
         if ($broadcast) {
-            self::triggerListener($exception->getMessage());
+            self::triggerListener($e->getMessage());
         }
     }
 
     /**
-     * @param int $error_code
+     * @param int $code
      * @param string $error
      * @param null|string $file
      * @param int|null $line
      * @param array|null $context
      */
-    final private static function errorHandler(int $error_code, string $error,
+    final private static function errorHandler(int $code, string $error,
                                                ?string $file = null, ?int $line = 0,
                                                ?array $context = null): void {
-        $error_message = sprintf("In `%s` at line `%s`: [ %s:%s ]\n[STACKTRACE]:\n%s",
-            $file, $line, $error_code, $error, self::getStackTrace());
-        self::$logger->error($error_message);
+        $error_message = "In `{$file}` at line `{$line}`: [ {$code}:{$error} ]\n[STACKTRACE]:\n%s\n\n%s\n";
+        (new AppLoggerProvider())->getErrorLogger()->error(
+            sprintf($error_message, self::getStackTrace(), json_encode($context)));
         self::triggerListener($error);
     }
 

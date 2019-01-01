@@ -12,7 +12,9 @@ namespace Here\Plugins;
 
 
 use Phalcon\Config;
+use Phalcon\Di;
 use Phalcon\Di\Injectable;
+use Phalcon\DiInterface;
 use Phalcon\Logger\AdapterInterface as LoggerAdapterInterface;
 use Phalcon\Logger\Factory as LoggerFactory;
 
@@ -25,40 +27,65 @@ use Phalcon\Logger\Factory as LoggerFactory;
 final class AppLoggerProvider extends Injectable {
 
     /**
+     * @var LoggerAdapterInterface[]
+     */
+    private static $cached_loggers = array();
+
+    /**
+     * AppLoggerProvider constructor.
+     * @param null|DiInterface $di
+     */
+    final public function __construct(?DiInterface $di = null) {
+        $this->setDI($di ?? Di::getDefault());
+    }
+
+    /**
+     * @return LoggerAdapterInterface
+     */
+    final public function getDefaultLogger(): LoggerAdapterInterface {
+        return $this->getLogger($this->config->logging->default_logger);
+    }
+
+    /**
+     * @return LoggerAdapterInterface
+     */
+    final public function getErrorLogger(): LoggerAdapterInterface {
+        return $this->getLogger('error');
+    }
+
+    /**
      * @param string $name
      * @return LoggerAdapterInterface
      */
     final public function getLogger(string $name): LoggerAdapterInterface {
-        // logging configure
-        $logging_config = $this->config->get('logging')->toArray();
-        if (!isset($logging_config[$name])) {
-            $name = $logging_config['default_logger_name'];
+        /** @noinspection PhpUndefinedFieldInspection */
+        $loggers_config = $this->config->logging->loggers->toArray();
+        if (!isset($loggers_config[$name])) {
+            /** @noinspection PhpUndefinedFieldInspection */
+            $name = $this->config->logging->default_logger;
         }
-        // logger definition
-        $logger = $logging_config['loggers'][$name];
-        $logger_path = join(DIRECTORY_SEPARATOR, array(
-            $this->getUsableLoggingRoot(), $logger['name'])
-        );
-        // check directory exists and created when not exists
-        if (!is_dir(dirname($logger_path))) {
-            mkdir(dirname($logger_path), 0777, true);
-        }
-        // generate adapter
-        return LoggerFactory::load(array(
-            'adapter' => $logger['adapter'],
-            'name' => $logger_path
-        ));
+        return self::getSpecifyLogger($loggers_config[$name]);
+    }
+
+    /**
+     * @param array $logger_config
+     * @return LoggerAdapterInterface
+     */
+    final private function getSpecifyLogger(array $logger_config): LoggerAdapterInterface {
+        return self::createLogger($this->getUsableLoggingRoot(), $logger_config);
     }
 
     /**
      * @return string
      */
     final private function getUsableLoggingRoot(): string {
-        $default_root = $this->config->application->logging_root;
-        if (self::isWritableRoot($default_root)) {
-            return rtrim($default_root, '/\\');
+        /** @noinspection PhpUndefinedFieldInspection */
+        $logging_root = $this->config->logging->logging_root;
+        if (!self::isWritableRoot($logging_root)) {
+            /** @noinspection PhpUndefinedFieldInspection */
+            $logging_root = $this->config->logging->spare_logging_root;
         }
-        return rtrim($this->config->logging->spare_logging_root, '/\\');
+        return rtrim($logging_root, '/\\');
     }
 
     /**
@@ -66,7 +93,7 @@ final class AppLoggerProvider extends Injectable {
      * @return bool
      */
     final private static function isWritableRoot(string $root): bool {
-        if (!file_exists($root)) {
+        if (!is_dir($root)) {
             if (self::isWritableRoot(dirname($root))) {
                 mkdir($root, 0777, true);
                 return true;
@@ -74,6 +101,31 @@ final class AppLoggerProvider extends Injectable {
             return false;
         }
         return is_writeable($root);
+    }
+
+    /**
+     * @param string $root
+     * @param array $logger
+     * @return LoggerAdapterInterface
+     */
+    final private static function createLogger(string $root, array $logger): LoggerAdapterInterface {
+        $path_segments = array($root, ltrim($logger['name'], '/\\'));
+
+        // logger file name
+        $logger_path = join(DIRECTORY_SEPARATOR, $path_segments);
+        // check directory exists and created when not exists
+        if (!is_dir(dirname($logger_path))) {
+            mkdir(dirname($logger_path), 0777, true);
+        }
+
+        // logger cached
+        if (!isset(self::$cached_loggers[$logger_path])) {
+            self::$cached_loggers[$logger_path] = LoggerFactory::load(array(
+                'adapter' => $logger['adapter'],
+                'name' => $logger_path
+            ));
+        }
+        return self::$cached_loggers[$logger_path];
     }
 
 }
