@@ -9,37 +9,19 @@
 namespace Here\Config;
 
 
+use Here\Plugins\AppRouter;
 use Phalcon\Di;
-use Phalcon\Mvc\Router;
 
 
 /* dependency management */
 $di = Di::getDefault();
 
-/* @var Router $router */
 $di->setShared('router', function() {
     /* create an router and using custom route table */
-    $router = new Router(false);
-
-//    // foreach all route definition and add to router
-//    array_map(function(string $pattern, array $forward, ?array $methods = null) {
-//
-//    }, array(
-//        // initializing frontend environment
-//        '/init', array('controller' => 'frontend', 'action' => 'init'), array('get')
-//    ));
-
-    // get backend status
-    $router->add('/init', array(
-        'controller' => 'frontend',
-        'action' => 'init'
-    ))->via(array('GET'));
-
-    // create blogger
-    $router->add('/author', array(
-        'controller' => 'author',
-        'action' => 'create'
-    ))->via(array('PUT'));
-
-    return $router;
+    return (new AppRouter())
+        // frontend initializing required
+        ->viaGet('/init', 'frontend', 'init')
+        // create new blogger
+        ->viaPut('/author', 'author', 'create')
+    ;
 });

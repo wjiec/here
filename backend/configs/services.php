@@ -10,6 +10,7 @@ namespace Here\Config;
 
 
 use Here\Libraries\Hunter\ErrorCatcher;
+use Here\Libraries\Session\SessionKeys;
 use Here\Plugins\AppEventsManager;
 use Here\Plugins\AppLoggerProvider;
 use Here\Plugins\AppRedisBackend;
@@ -149,7 +150,7 @@ $di->set('cookies', function () {
 $di->setShared('session', function () {
     $session = new SessionAdapter();
 
-    $session->setName('__h_id');
+    $session->setName(SessionKeys::SESSION_KEY_SESSION_IDENTIFIER);
     $session->start();
 
     return $session;

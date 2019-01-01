@@ -9,10 +9,6 @@
 namespace Here\Controllers;
 
 
-use Phalcon\Events\Event;
-use Phalcon\Mvc\Dispatcher\Exception;
-
-
 /**
  * Class errorController
  * @package Here\Controllers
@@ -20,10 +16,11 @@ use Phalcon\Mvc\Dispatcher\Exception;
 final class ErrorController extends ControllerBase {
 
     /**
-     * @param Event $context
      * @param \Throwable $e
      */
-    final public function exceptionAction(Event $context, \Throwable $e) {
+    final public function exceptionAction(\Throwable $e) {
+        $this->terminalResponse(self::STATUS_FATAL_ERROR,
+            APPLICATION_ENV === DEVELOPMENT_ENV ? $e->getMessage() : 'Not Found');
     }
 
     /**

@@ -23,7 +23,7 @@ $config = $di->get('config');
 $loader = new Loader();
 
 /* !NOTE! do not check file exists to improve performance */
-$loader->setFileCheckingCallback(null);
+//$loader->setFileCheckingCallback(null);
 
 /* register namespace to loader */
 $loader->registerNamespaces(array(

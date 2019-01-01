@@ -57,7 +57,7 @@ final class RSAObject {
 
         $details = openssl_pkey_get_details($key);
         if ($details === false) {
-            throw new RSAError(sprintf("Get detail of %s key error",
+            throw new RSAError(sprintf('Get detail of %s key error',
                 $is_private ? 'private' : 'public'));
         }
 
@@ -128,7 +128,7 @@ final class RSAObject {
      */
     final public function encrypt(string $data, string $glue = '.',
                                   ?TransformInterface $adapter = null): string {
-        return $this->doEncrypt(self::USE_PUBLIC, $data, $glue,
+        return $this->doEncrypt(self::USE_PUBLIC_KEY, $data, $glue,
             $adapter ?? new Base64Transform());
     }
 
@@ -144,7 +144,7 @@ final class RSAObject {
     final public function decrypt(string $data, string $glue = '.',
                                   ?TransformInterface $adapter = null): ?string {
         if ($this->private_key) {
-            return $this->doDecrypt(self::USE_PRIVATE, $data, $glue,
+            return $this->doDecrypt(self::USE_PRIVATE_KEY, $data, $glue,
                 $adapter ?? new Base64Transform());
         }
         return null;
@@ -162,7 +162,7 @@ final class RSAObject {
     final public function signature(string $data, string $glue = '.',
                                     ?TransformInterface $adapter = null): ?string {
         if ($this->private_key) {
-            return $this->doEncrypt(self::USE_PRIVATE, $data, $glue,
+            return $this->doEncrypt(self::USE_PRIVATE_KEY, $data, $glue,
                 $adapter ?? new Base64Transform());
         }
         return null;
@@ -179,7 +179,7 @@ final class RSAObject {
      */
     final public function validate(string $data, string $glue = '.',
                                    ?TransformInterface $adapter = null): string {
-        return $this->doDecrypt(self::USE_PUBLIC, $data, $glue,
+        return $this->doDecrypt(self::USE_PUBLIC_KEY, $data, $glue,
             $adapter ?? new Base64Transform());
     }
 
@@ -290,8 +290,14 @@ final class RSAObject {
         return join('', array_splice($segments, 1, count($segments) - 2));
     }
 
-    private const USE_PRIVATE = true;
+    /**
+     * use private key
+     */
+    private const USE_PRIVATE_KEY = true;
 
-    private const USE_PUBLIC = false;
+    /**
+     * use public key
+     */
+    private const USE_PUBLIC_KEY = false;
 
 }

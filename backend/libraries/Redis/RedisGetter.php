@@ -91,14 +91,19 @@ final class RedisGetter {
         }
     }
 
+    /**
+     * unlimited lifetime
+     */
     public const NO_EXPIRE = -1;
 
+    /**
+     * 1-hour lifetime
+     */
     public const EXPIRE_ONE_HOURS = 3600;
 
+    /**
+     * 1-day lifetime
+     */
     public const EXPIRE_ONE_DAY = 86400;
-
-    public const EXPIRE_ONE_WEEK = 604800;
-
-    public const EXPIRE_ONE_MONTH = 2592000;
 
 }

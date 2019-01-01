@@ -50,7 +50,7 @@ final class AppEventsManager extends EventsManager {
                 $dispatcher->forward(array(
                     'controller' => 'error',
                     'action' => 'exception',
-                    'params' => array($event, $exception)
+                    'params' => array($exception, $event)
                 ));
                 return false;
         }
