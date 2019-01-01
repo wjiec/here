@@ -26,10 +26,9 @@ final class AuthorController extends SecurityControllerBase {
      * initializing blogger account and blog info
      */
     final public function createAction() {
-        // author created and terminal request
-        if ($this->getCachedAuthor() !== null) {
-            $this->makeResponse(self::STATUS_FATAL_ERROR,
-                $this->translator->AUTHOR_REGISTER_FORBIDDEN);
+        // author exists and terminal create request
+        if ($this->getCachedAuthor()) {
+            $this->makeResponse(self::STATUS_FATAL_ERROR, $this->translator->AUTHOR_REGISTER_FORBIDDEN);
             $this->terminalByStatusCode(403);
         }
 

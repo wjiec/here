@@ -43,11 +43,16 @@ abstract class SecurityControllerBase extends ControllerBase {
     }
 
     /**
+     *
+     */
+    final protected function initRequestMask(): void {
+    }
+
+    /**
      * @return bool
      */
     final private function checkSignature(): bool {
 //        $this->signer_context = new Context();
-
         return true;
     }
 
