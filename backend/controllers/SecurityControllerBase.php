@@ -33,8 +33,7 @@ abstract class SecurityControllerBase extends ControllerBase {
      */
     public function initialize() {
         parent::initialize();
-
-        // validate sign
+        // validate signature correct
         if (!$this->checkSignature()) {
             $this->makeResponse(self::STATUS_SIGNATURE_INVALID,
                 $this->translator->SYS_SIGNATURE_INVALID);
@@ -70,11 +69,13 @@ abstract class SecurityControllerBase extends ControllerBase {
      */
     final protected function getCachedAuthor(): ?Authors {
         return (new RedisGetter())->get(RedisKeys::getAuthorRedisKey(), function() {
-            $user = Authors::findFirst();
-            return $user ?: null;
+            return Authors::findFirst() ?: null;
         }, RedisGetter::NO_EXPIRE);
     }
 
+    /**
+     * invalid request signature
+     */
     private const STATUS_SIGNATURE_INVALID = 0xff00;
 
 }
