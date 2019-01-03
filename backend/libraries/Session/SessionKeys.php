@@ -17,8 +17,8 @@ namespace Here\Libraries\Session;
 final class SessionKeys {
 
     /**
-     * session identifier
+     * request mask
      */
-    public const SESSION_KEY_SESSION_IDENTIFIER = '__h_id';
+    public const SESSION_KEY_REQUEST_MASK = 'security:request:mask';
 
 }

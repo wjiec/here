@@ -1,63 +1,67 @@
 <?php
 /**
- * Context.php
+ * Signature Context
+ *
+ * Format: xxxx-xxxxxx-xxxxxx-xxxxxx
+ *         ^^^^ 1
+ *              ^^^^^^ 2
+ *                     ^^^^^^ 3
+ *                            ^^^^^^ 4
+ * 1. mask with request timeline
+ * 2. md5 value for request body
+ * 3.
+ * 4.
+ *
  *
  * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
+ * @author    Jayson Wang <jayson@laboys.com>
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
  */
 namespace Here\Libraries\Signature;
 
 
-use Here\Libraries\RSA\RSAObject;
+use Here\Libraries\Session\SessionKeys;
+use Phalcon\Di;
+use Phalcon\Di\Injectable;
+use Phalcon\DiInterface;
 
 
 /**
  * Class Context
  * @package Here\Libraries\Signature
  */
-final class Context {
+final class Context extends Injectable {
 
     /**
      * @var int
      */
-    private $timestamp_mask;
-
-    /**
-     * @var RSAObject
-     */
-    private $private_key;
+    private $request_mask;
 
     /**
      * Context constructor.
-     * @param RSAObject $rsa
+     * @param null|DiInterface $di
      */
-    final public function __construct(RSAObject $rsa) {
-        $this->private_key = $rsa;
-        $this->timestamp_mask = self::generateTimestampMask();
+    final public function __construct(?DiInterface $di = null) {
+        $this->setDI($di ?? Di::getDefault());
+
+        // initializing signature context
+        if (!$this->session->has(SessionKeys::SESSION_KEY_REQUEST_MASK)) {
+            $this->session->set(SessionKeys::SESSION_KEY_REQUEST_MASK, self::initRequestMask());
+        }
+        $this->request_mask = $this->session->get(SessionKeys::SESSION_KEY_REQUEST_MASK);
     }
 
     /**
-     * @param int $mask
-     */
-    final public function setTimestampMask(int $mask) {
-        $this->timestamp_mask = $mask;
-    }
-
-    /**
+     * first 8-bits signature
      * @return int
      */
-    private static function generateTimestampMask(): int {
+    final private static function initRequestMask(): int {
         try {
-            return random_int(self::TIMESTAMP_MASK_START, self::TIMESTAMP_MASK_END);
+            return random_int(0x1111, 0xffff);
         } catch (\Exception $e) {
-            return (self::TIMESTAMP_MASK_START + self::TIMESTAMP_MASK_END) / 2;
+            return mt_rand(0x1111, 0xffff);
         }
     }
-
-    private const TIMESTAMP_MASK_START = 100000000;
-
-    private const TIMESTAMP_MASK_END = 999999998;
 
 }

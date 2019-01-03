@@ -13,7 +13,6 @@ namespace Here\Controllers;
 use Here\Libraries\Redis\RedisGetter;
 use Here\Libraries\Redis\RedisKeys;
 use Here\Libraries\RSA\RSAObject;
-use Here\Libraries\Signature\Context;
 use Here\Models\Authors;
 
 
@@ -24,35 +23,17 @@ use Here\Models\Authors;
 abstract class SecurityControllerBase extends ControllerBase {
 
     /**
-     * @var Context
-     */
-    private $signer_context;
-
-    /**
      * check request signature
      */
     public function initialize() {
+        // initializing property
         parent::initialize();
-        // validate signature correct
-        if (!$this->checkSignature()) {
-            $this->makeResponse(self::STATUS_SIGNATURE_INVALID,
-                $this->translator->SYS_SIGNATURE_INVALID);
-            $this->terminalByStatusCode(403);
-        }
-    }
-
-    /**
-     *
-     */
-    final protected function initRequestMask(): void {
-    }
-
-    /**
-     * @return bool
-     */
-    final private function checkSignature(): bool {
-//        $this->signer_context = new Context();
-        return true;
+        // validate signature is correct
+//        if (!$this->checkSignature()) {
+//            $this->makeResponse(self::STATUS_SIGNATURE_INVALID,
+//                $this->translator->SYS_SIGNATURE_INVALID);
+//            $this->terminalByStatusCode(403);
+//        }
     }
 
     /**

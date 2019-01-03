@@ -14,4 +14,11 @@ namespace Here\Libraries\Session;
  * Class CookieKeys
  * @package Here\Libraries\Session
  */
-final class CookieKeys {}
+final class CookieKeys {
+
+    /**
+     * session identifier
+     */
+    public const COOKIE_KEY_SESSION_IDENTIFIER = '__h_id';
+
+}
