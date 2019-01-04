@@ -46,7 +46,10 @@ final class RedisGetter {
                 if (is_callable($default)) {
                     $default = $default();
                 }
-                self::$cache->save($name, $default, $this->correctExpiredTime($expired));
+
+                try {
+                    self::$cache->save($name, $default, $this->correctExpiredTime($expired));
+                } catch (\Exception $e) {}
             }
             return $default;
         }
@@ -63,7 +66,9 @@ final class RedisGetter {
             if (is_callable($default)) {
                 $default = $default();
             }
-            self::$cache->save($name, $default, $this->correctExpiredTime($expired));
+            try {
+                self::$cache->save($name, $default, $this->correctExpiredTime($expired));
+            } catch (\Exception $e) {}
         }
     }
 
@@ -77,20 +82,5 @@ final class RedisGetter {
         }
         return $expired < 0 ? -1 : $expired;
     }
-
-    /**
-     * unlimited lifetime
-     */
-    public const NO_EXPIRE = -1;
-
-    /**
-     * 1-hour lifetime
-     */
-    public const EXPIRE_ONE_HOURS = 3600;
-
-    /**
-     * 1-day lifetime
-     */
-    public const EXPIRE_ONE_DAY = 86400;
 
 }

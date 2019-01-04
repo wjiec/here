@@ -1,6 +1,6 @@
 <?php
 /**
- * BloggerController.php
+ * AuthorController
  *
  * @package   here
  * @author    Jayson Wang <jayson@laboys.com>
@@ -10,9 +10,9 @@
 namespace Here\Controllers;
 
 
+use Here\Libraries\Redis\RedisExpireTime;
 use Here\Libraries\Redis\RedisGetter;
 use Here\Libraries\Redis\RedisKeys;
-use Here\Libraries\RSA\RSAError;
 use Here\Models\Authors;
 
 
@@ -26,41 +26,31 @@ final class AuthorController extends SecurityControllerBase {
      * initializing blogger account and blog info
      */
     final public function createAction() {
-        // author exists and terminal create request
+        // author exists and terminal request
         if ($this->getCachedAuthor()) {
             $this->makeResponse(self::STATUS_FATAL_ERROR, $this->translator->AUTHOR_REGISTER_FORBIDDEN);
             $this->terminalByStatusCode(403);
         }
 
-        $raw_params = $this->request->getRawBody();
-        // using rsa-object decrypt user-data
-        $rsa_object = $this->getCachedRSAObject();
-
         try {
-            // decrypt by private key
-            $author = json_decode($rsa_object->decrypt($raw_params), true);
-            // check author data invalid
-            if (!is_array($author) || !$this->checkAuthorInfo($author)) {
+            // check author request correct
+            if (!$this->checkAuthorInfo($this->request->getEncrypted())) {
                 throw new \Exception($this->translator->AUTHOR_REGISTER_INCORRECT);
             }
-
             // generate author info
-            if (!$this->generateAuthor($author)) {
+            if (!$this->generateAuthor($this->request->getEncrypted())) {
                 throw new \Exception($this->translator->AUTHOR_REGISTER_INCORRECT);
             }
 
             // refresh author cache
             (new RedisGetter())->refresh(RedisKeys::getAuthorRedisKey(), function() {
                 return Authors::findFirst();
-            }, RedisGetter::NO_EXPIRE);
+            }, RedisExpireTime::NO_EXPIRE);
 
             // completed
             return $this->makeResponse(self::STATUS_SUCCESS, null, array(
                 'welcome' => $this->translator->AUTHOR_REGISTER_WELCOME
             ));
-        } catch (RSAError $e) {
-            return $this->makeResponse(self::STATUS_AUTHOR_REGISTER_INVALID,
-                $this->translator->AUTHOR_REGISTER_INVALID);
         } catch (\Exception $e) {
             return $this->makeResponse(self::STATUS_AUTHOR_VALIDATE_ERROR, $e->getMessage());
         }
@@ -101,7 +91,5 @@ final class AuthorController extends SecurityControllerBase {
     }
 
     private const STATUS_AUTHOR_VALIDATE_ERROR = 0x1000;
-
-    private const STATUS_AUTHOR_REGISTER_INVALID = 0x1001;
 
 }

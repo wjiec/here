@@ -10,10 +10,13 @@ namespace Here\Config;
 
 
 use Here\Libraries\Hunter\ErrorCatcher;
+use Here\Libraries\Redis\RedisKeys;
+use Here\Libraries\RSA\RSAObject;
 use Here\Libraries\Session\CookieKeys;
 use Here\Plugins\AppEventsManager;
 use Here\Plugins\AppLoggerProvider;
 use Here\Plugins\AppRedisBackend;
+use Here\Plugins\AppRequest;
 use Phalcon\Config;
 use Phalcon\Di;
 use Phalcon\Http\Response\Cookies;
@@ -69,6 +72,11 @@ if (isset($config->database)) {
 
         return new $class($params);
     });
+} else {
+    // invalid environment configure for database
+    $di->setShared('db', function() {
+        throw new \Exception("environment invalid, please check environment configure");
+    });
 }
 
 /* cache service with redis */
@@ -96,6 +104,11 @@ if (isset($config->cache)) {
             $backend_class = 'Phalcon\Cache\Backend\\' . $backend_adapter;
         }
         return new $backend_class($frontend, $backend_config);
+    });
+} else {
+    // invalid environment configure for cache service
+    $di->setShared('cache', function() {
+        throw new \Exception("environment invalid, please check environment configure");
     });
 }
 
@@ -154,4 +167,27 @@ $di->setShared('session', function () {
     $session->start();
 
     return $session;
+});
+
+/* default rsa crypt object */
+$di->setShared('rsa', function() use ($di) {
+    /* @var AppRedisBackend $cache */
+    $cache = $di->getShared('cache');
+
+    // from cache getting rsa object
+    if (!$cache->exists(RedisKeys::getRSAPrivateRedisKey())) {
+        // regenerate rsa object
+        $cache->save(RedisKeys::getRSAPrivateRedisKey(), function() {
+            return RSAObject::generate(1024);
+        });
+    }
+    return $cache->get(RedisKeys::getRSAPrivateRedisKey());
+});
+
+/* override request service */
+$di->setShared('request', function() use ($di) {
+    $request = new AppRequest();
+    $request->setRsaObject($di->getShared('rsa'));
+
+    return $request;
 });

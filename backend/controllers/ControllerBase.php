@@ -13,6 +13,7 @@ namespace Here\Controllers;
 
 use Here\Libraries\Language\Translator;
 use Here\plugins\AppRedisBackend;
+use Here\Plugins\AppRequest;
 use Phalcon\Config;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Logger\Adapter;
@@ -22,6 +23,7 @@ use Phalcon\Mvc\Controller;
 /**
  * Class ControllerBase
  * @package Here\Controllers
+ * @property AppRequest $request
  */
 abstract class ControllerBase extends Controller {
 

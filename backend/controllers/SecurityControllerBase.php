@@ -10,6 +10,7 @@
 namespace Here\Controllers;
 
 
+use Here\Libraries\Redis\RedisExpireTime;
 use Here\Libraries\Redis\RedisGetter;
 use Here\Libraries\Redis\RedisKeys;
 use Here\Libraries\RSA\RSAObject;
@@ -42,7 +43,7 @@ abstract class SecurityControllerBase extends ControllerBase {
     final protected function getCachedRSAObject(): RSAObject {
         return (new RedisGetter())->get(RedisKeys::getRSAPrivateRedisKey(), function() {
             return RSAObject::generate(1024);
-        }, RedisGetter::EXPIRE_ONE_DAY);
+        }, RedisExpireTime::EXPIRE_ONE_DAY);
     }
 
     /**
@@ -51,7 +52,7 @@ abstract class SecurityControllerBase extends ControllerBase {
     final protected function getCachedAuthor(): ?Authors {
         return (new RedisGetter())->get(RedisKeys::getAuthorRedisKey(), function() {
             return Authors::findFirst() ?: null;
-        }, RedisGetter::NO_EXPIRE);
+        }, RedisExpireTime::NO_EXPIRE);
     }
 
     /**
