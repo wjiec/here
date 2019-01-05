@@ -10,18 +10,20 @@
 namespace Here\Controllers;
 
 
-use Here\Libraries\Redis\RedisExpireTime;
-use Here\Libraries\Redis\RedisGetter;
-use Here\Libraries\Redis\RedisKeys;
-use Here\Libraries\RSA\RSAObject;
-use Here\Models\Authors;
+use Here\Libraries\Signature\Context;
+use Here\Libraries\Signature\SignatureException;
 
 
 /**
  * Class SecurityControllerBase
  * @package Here\controllers
  */
-abstract class SecurityControllerBase extends ControllerBase {
+abstract class SecurityControllerBase extends AuthorControllerBase {
+
+    /**
+     * @var Context
+     */
+    private $context;
 
     /**
      * check request signature
@@ -29,30 +31,14 @@ abstract class SecurityControllerBase extends ControllerBase {
     public function initialize() {
         // initializing property
         parent::initialize();
-        // validate signature is correct
-//        if (!$this->checkSignature()) {
-//            $this->makeResponse(self::STATUS_SIGNATURE_INVALID,
-//                $this->translator->SYS_SIGNATURE_INVALID);
-//            $this->terminalByStatusCode(403);
-//        }
-    }
 
-    /**
-     * @return RSAObject
-     */
-    final protected function getCachedRSAObject(): RSAObject {
-        return (new RedisGetter())->get(RedisKeys::getRSAPrivateRedisKey(), function() {
-            return RSAObject::generate(1024);
-        }, RedisExpireTime::EXPIRE_ONE_DAY);
-    }
-
-    /**
-     * @return Authors|null
-     */
-    final protected function getCachedAuthor(): ?Authors {
-        return (new RedisGetter())->get(RedisKeys::getAuthorRedisKey(), function() {
-            return Authors::findFirst() ?: null;
-        }, RedisExpireTime::NO_EXPIRE);
+        // factory context from session
+        try {
+            $this->context = Context::factoryFromSession();
+        } catch (SignatureException $e) {
+            $this->makeResponse(self::STATUS_SIGNATURE_INVALID, $this->translator->SYS_SIGNATURE_INVALID);
+            $this->terminalByStatusCode(403);
+        }
     }
 
     /**

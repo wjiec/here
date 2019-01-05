@@ -1,42 +1,43 @@
 <?php
 /**
- * FrontendController.php
+ * FrontendController
  *
  * @package   here
  * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
- * @link      https://github.com/JShadowMan/here
  */
 namespace Here\Controllers;
+
+
+use Here\Libraries\RSA\RSAObject;
+use Here\Libraries\Signature\Context;
 
 
 /**
  * Class FrontendController
  * @package Here\Controllers
  */
-final class FrontendController extends SecurityControllerBase {
+final class FrontendController extends AuthorControllerBase {
 
     /**
      * initializing frontend environment
      * @throws \Exception
      */
     final public function initAction() {
-        $rsa_object = $this->getCachedRSAObject();
+        /* @var RSAObject $rsa_object */
+        $rsa_object = $this->di->getShared('rsa');
         $author = $this->getCachedAuthor();
 
+        $signature_context = Context::createContext();
         return $this->makeResponse(self::STATUS_SUCCESS, null, array(
             'security' => array(
                 'key' => $rsa_object->getPublicKey(true),
-                'mask' => random_int(self::SECURITY_MASK_RANGE_START, self::SECURITY_MASK_RANGE_END)
+                'mask' => $signature_context->getRequestMaskAsInt()
             ),
             'author' => $author ? $author->getBaseInfo() : null,
             'lang' => $this->translator->getLang()
         ));
     }
-
-    private const SECURITY_MASK_RANGE_START = 100000;
-
-    private const SECURITY_MASK_RANGE_END = 999999;
 
 }

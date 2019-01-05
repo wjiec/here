@@ -22,9 +22,11 @@ namespace Here\Libraries\Signature;
 
 
 use Here\Libraries\Session\SessionKeys;
+use Here\Libraries\Signature\Component\RequestMask;
 use Phalcon\Di;
 use Phalcon\Di\Injectable;
 use Phalcon\DiInterface;
+use Phalcon\Session\AdapterInterface;
 
 
 /**
@@ -34,7 +36,7 @@ use Phalcon\DiInterface;
 final class Context extends Injectable {
 
     /**
-     * @var int
+     * @var RequestMask
      */
     private $request_mask;
 
@@ -42,26 +44,48 @@ final class Context extends Injectable {
      * Context constructor.
      * @param null|DiInterface $di
      */
-    final public function __construct(?DiInterface $di = null) {
+    final private function __construct(?DiInterface $di = null) {
         $this->setDI($di ?? Di::getDefault());
-
-        // initializing signature context
-        if (!$this->session->has(SessionKeys::SESSION_KEY_REQUEST_MASK)) {
-            $this->session->set(SessionKeys::SESSION_KEY_REQUEST_MASK, self::initRequestMask());
-        }
-        $this->request_mask = $this->session->get(SessionKeys::SESSION_KEY_REQUEST_MASK);
     }
 
     /**
-     * first 8-bits signature
+     * @return Context
+     * @throws SignatureException
+     */
+    final public static function factoryFromSession(): self {
+        /* @var AdapterInterface $session */
+        $session = Di::getDefault()->getShared('session');
+
+        if (!$session->has(SessionKeys::SESSION_KEY_REQUEST_MASK)) {
+            throw new SignatureException("Invalid signature context");
+        }
+        return new static();
+    }
+
+    /**
+     * @return Context
+     */
+    final public static function createContext(): self {
+        $context = new static();
+        return $context->setRequestMask(new RequestMask());
+    }
+
+    /**
      * @return int
      */
-    final private static function initRequestMask(): int {
-        try {
-            return random_int(0x1111, 0xffff);
-        } catch (\Exception $e) {
-            return mt_rand(0x1111, 0xffff);
-        }
+    final public function getRequestMaskAsInt(): int {
+        return $this->request_mask->getValue();
+    }
+
+    /**
+     * @param RequestMask $mask
+     * @return Context
+     */
+    final private function setRequestMask(RequestMask $mask): self {
+        $this->request_mask = $mask;
+        $this->session->set(SessionKeys::SESSION_KEY_REQUEST_MASK, $mask);
+
+        return $this;
     }
 
 }
