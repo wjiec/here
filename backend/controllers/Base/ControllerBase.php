@@ -1,28 +1,27 @@
 <?php
 /**
- * ControllerBase.php
+ * ControllerBase
  *
  * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
+ * @author    Jayson Wang <jayson@laboys.com>
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
- * @link      https://github.com/JShadowMan/here
  */
-namespace Here\Controllers;
+namespace Here\Controllers\Base;
 
 
 use Here\Libraries\Language\Translator;
-use Here\plugins\AppRedisBackend;
+use Here\Plugins\AppRedisBackend;
 use Here\Plugins\AppRequest;
 use Phalcon\Config;
 use Phalcon\Http\ResponseInterface;
-use Phalcon\Logger\Adapter;
+use Phalcon\Logger\AdapterInterface as LoggerAdapterInterface;
 use Phalcon\Mvc\Controller;
 
 
 /**
  * Class ControllerBase
- * @package Here\Controllers
+ * @package Here\Controllers\Base
  * @property AppRequest $request
  */
 abstract class ControllerBase extends Controller {
@@ -43,14 +42,14 @@ abstract class ControllerBase extends Controller {
     protected $redis;
 
     /**
-     * @var Adapter
+     * @var LoggerAdapterInterface
      */
     protected $logger;
 
     /**
      * @var Translator
      */
-    protected $translator;
+    protected $t;
 
     /**
      * initializing controller first
@@ -65,7 +64,7 @@ abstract class ControllerBase extends Controller {
         // logging service
         $this->logger = $this->di->get('logging');
         // translator plugin
-        $this->translator = new Translator($this->config->application->languages_root);
+        $this->t = new Translator($this->config->application->languages_root);
     }
 
     /**

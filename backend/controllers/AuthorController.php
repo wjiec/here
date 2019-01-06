@@ -10,6 +10,7 @@
 namespace Here\Controllers;
 
 
+use Here\Controllers\Base\SecurityControllerBase;
 use Here\Libraries\Redis\RedisExpireTime;
 use Here\Libraries\Redis\RedisGetter;
 use Here\Libraries\Redis\RedisKeys;
@@ -28,18 +29,18 @@ final class AuthorController extends SecurityControllerBase {
     final public function createAction() {
         // author exists and terminal request
         if ($this->getCachedAuthor()) {
-            $this->makeResponse(self::STATUS_FATAL_ERROR, $this->translator->AUTHOR_REGISTER_FORBIDDEN);
+            $this->makeResponse(self::STATUS_FATAL_ERROR, $this->t->_('register_closed'));
             $this->terminalByStatusCode(403);
         }
 
         try {
             // check author request correct
             if (!$this->checkAuthorInfo($this->request->getEncrypted())) {
-                throw new \Exception($this->translator->AUTHOR_REGISTER_INCORRECT);
+                throw new \Exception($this->t->_('register_info_incorrect'));
             }
             // generate author info
             if (!$this->generateAuthor($this->request->getEncrypted())) {
-                throw new \Exception($this->translator->AUTHOR_REGISTER_INCORRECT);
+                throw new \Exception($this->t->_('register_info_incorrect'));
             }
 
             // refresh author cache
@@ -49,7 +50,7 @@ final class AuthorController extends SecurityControllerBase {
 
             // completed
             return $this->makeResponse(self::STATUS_SUCCESS, null, array(
-                'welcome' => $this->translator->AUTHOR_REGISTER_WELCOME
+                'welcome' => $this->t->_('register_complete')
             ));
         } catch (\Exception $e) {
             return $this->makeResponse(self::STATUS_AUTHOR_VALIDATE_ERROR, $e->getMessage());

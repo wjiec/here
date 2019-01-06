@@ -10,21 +10,13 @@
 namespace Here\Config\Languages;
 
 
-use Phalcon\Config;
-
-
-return new Config(array(
-    'sys' => array(
-        'signature' => array(
-            'invalid' => 'invalid request'
-        )
-    ),
-    'author' => array(
-        'register' => array(
-            'invalid' => 'Register information invalid, please refresh and try again',
-            'incorrect' => 'Register information incorrect, please re-enter and try again',
-            'welcome' => 'Register completed, Thanks for your support',
-            'forbidden' => 'Prohibition of registration'
-        )
-    )
-));
+/**
+ * English language pack
+ */
+return array(
+    'signature_invalid' => 'invalid request signature',
+    'register_info_invalid' => 'Register information invalid, please refresh and try again',
+    'register_info_incorrect' => 'Register information incorrect, please re-enter and try again',
+    'register_complete' => 'Register completed, Thanks for your support',
+    'register_closed' => 'Prohibition of registration'
+);

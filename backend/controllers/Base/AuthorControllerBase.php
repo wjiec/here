@@ -7,7 +7,7 @@
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
  */
-namespace Here\Controllers;
+namespace Here\Controllers\Base;
 
 
 use Here\Libraries\Redis\RedisExpireTime;

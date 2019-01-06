@@ -1,6 +1,6 @@
 <?php
 /**
- * en_US languages package
+ * zh_CN languages package
  *
  * @package   here
  * @author    Jayson Wang <jayson@laboys.org>
@@ -10,21 +10,13 @@
 namespace Here\Config\Languages;
 
 
-use Phalcon\Config;
-
-
-return new Config(array(
-    'sys' => array(
-        'signature' => array(
-            'invalid' => '无效的请求'
-        )
-    ),
-    'author' => array(
-        'register' => array(
-            'invalid' => '注册信息无效, 请刷新重试',
-            'incorrect' => '注册信息错误, 请重新输入',
-            'welcome' => '注册完成, 感谢您的使用',
-            'forbidden' => '禁止注册'
-        )
-    )
-));
+/**
+ * Chinese language pack
+ */
+return array(
+    'signature_invalid' => '无效的请求',
+    'register_info_invalid' => '注册信息无效, 请刷新重试',
+    'register_info_incorrect' => '注册信息错误, 请重新输入再试',
+    'register_complete' => '注册完成, 感谢您的使用',
+    'register_closed' => '注册已关闭',
+);

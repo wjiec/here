@@ -18,7 +18,7 @@ $di = Di::getDefault();
 
 $di->setShared('router', function() {
     /* create an router and using custom route table */
-    return (new AppRouter())
+    return (new AppRouter(true))
         // frontend initializing required
         ->viaGet('/init', 'frontend', 'init')
         // create new blogger

@@ -10,6 +10,7 @@
 namespace Here\Controllers;
 
 
+use Here\Controllers\Base\AuthorControllerBase;
 use Here\Libraries\RSA\RSAObject;
 use Here\Libraries\Signature\Context;
 
@@ -36,7 +37,7 @@ final class FrontendController extends AuthorControllerBase {
                 'mask' => $signature_context->getRequestMaskAsInt()
             ),
             'author' => $author ? $author->getBaseInfo() : null,
-            'lang' => $this->translator->getLang()
+            'lang' => $this->t->getLang()
         ));
     }
 

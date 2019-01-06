@@ -7,7 +7,7 @@
  * @copyright Copyright (C) 2016-2018 Jayson Wang
  * @license   MIT License
  */
-namespace Here\Controllers;
+namespace Here\Controllers\Base;
 
 
 use Here\Libraries\Signature\Context;
@@ -36,7 +36,7 @@ abstract class SecurityControllerBase extends AuthorControllerBase {
         try {
             $this->context = Context::factoryFromSession();
         } catch (SignatureException $e) {
-            $this->makeResponse(self::STATUS_SIGNATURE_INVALID, $this->translator->SYS_SIGNATURE_INVALID);
+            $this->makeResponse(self::STATUS_SIGNATURE_INVALID, $this->t->_('signature_invalid'));
             $this->terminalByStatusCode(403);
         }
     }

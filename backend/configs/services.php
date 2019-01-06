@@ -132,7 +132,7 @@ $di->setShared('dispatcher', function() use ($config) {
             // forward to internal-error
             $dispatcher->forward(array(
                 'controller' => 'error',
-                'action' => 'internal',
+                'action' => 'exception',
                 'params' => array(
                     'error' => $error
                 )

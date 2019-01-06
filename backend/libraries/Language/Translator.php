@@ -10,20 +10,15 @@
 namespace Here\Libraries\Language;
 
 
-use Phalcon\Config;
 use Phalcon\Di;
+use Phalcon\Translate\Adapter\NativeArray as NativeArrayTranslator;
 
 
 /**
  * Class Translator
  * @package Here\Libraries\Language
- * @property string SYS_SIGNATURE_INVALID signature invalid error
- * @property string AUTHOR_REGISTER_INVALID
- * @property string AUTHOR_REGISTER_INCORRECT
- * @property string AUTHOR_REGISTER_WELCOME
- * @property string AUTHOR_REGISTER_FORBIDDEN
  */
-final class Translator {
+final class Translator extends NativeArrayTranslator {
 
     /**
      * @var string
@@ -31,34 +26,27 @@ final class Translator {
     private $lang_name;
 
     /**
-     * @var Config
-     */
-    private $lang_config;
-
-    /**
      * Translator constructor.
-     * @param null|string $lang_dir
-     * @param string $force_lang
+     * @param string $lang_root
+     * @param null|string $lang
      */
-    final public function __construct(string $lang_dir, ?string $force_lang = null) {
-        if ($force_lang !== null) {
-            $force_lang_file = rtrim($lang_dir) . '/' . $force_lang . '.php';
-            if (is_file($force_lang_file) && is_readable($force_lang_file)) {
-                $this->lang_name = $force_lang;
-                /** @noinspection PhpIncludeInspection */
-                $this->lang_config = include $force_lang_file;
+    final public function __construct(string $lang_root, ?string $lang = null) {
+        if ($lang !== null) {
+            $contents = $this->getLangContents($lang_root, $lang);
+            if ($contents) {
+                parent::__construct(array('content' => $contents));
+            }
+        } else {
+            $lang = strtolower(Di::getDefault()->get('request')->getBestLanguage());
+            if (!empty($lang)) {
+                $contents = self::getLangContents($lang_root, substr($lang, 0, 2));
+                if ($contents) {
+                    parent::__construct(array('content' => $contents));
+                }
+            } else {
+                parent::__construct(array('content' => $this->getLangContents($lang_root, 'en')));
             }
         }
-
-        $best_lang = strtolower(Di::getDefault()->get('request')->getBestLanguage());
-        if (!empty($best_lang)) {
-            $best_lang = substr($best_lang, 0, 2);
-        }
-
-        $this->lang_name = $best_lang ? $best_lang : 'en';
-        $lang_file = rtrim($lang_dir) . '/' . $this->lang_name . '.php';
-        /** @noinspection PhpIncludeInspection */
-        $this->lang_config = include $lang_file;
     }
 
     /**
@@ -69,25 +57,21 @@ final class Translator {
     }
 
     /**
-     * @param string $path
-     * @return string
+     * @param string $lang_root
+     * @param string $lang
+     * @return array|null
      */
-    final public function __get(string $path): string {
-        $segments = array_map('strtolower', explode('_', $path));
-
-        $current_config = &$this->lang_config;
-        foreach ($segments as $segment) {
-            if (isset($current_config->{$segment})) {
-                $current_config = &$current_config->{$segment};
-            } else {
-                break;
+    final private function getLangContents(string $lang_root, string $lang): ?array {
+        $lang_file = rtrim($lang_root) . '/' . $lang . '.php';
+        if (is_file($lang_file) && is_readable($lang_file)) {
+            /** @noinspection PhpIncludeInspection */
+            $contents = include $lang_file;
+            if (is_array($contents)) {
+                $this->lang_name = $lang;
+                return $contents;
             }
         }
-
-        if (!is_string($current_config)) {
-            return '';
-        }
-        return $current_config;
+        return null;
     }
 
 }

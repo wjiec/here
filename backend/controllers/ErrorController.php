@@ -9,6 +9,9 @@
 namespace Here\Controllers;
 
 
+use Here\Controllers\Base\ControllerBase;
+
+
 /**
  * Class errorController
  * @package Here\Controllers
@@ -16,11 +19,11 @@ namespace Here\Controllers;
 final class ErrorController extends ControllerBase {
 
     /**
-     * @param \Throwable $e
+     * @param string $error
      */
-    final public function exceptionAction(\Throwable $e) {
+    final public function exceptionAction(string $error) {
         $this->terminalResponse(self::STATUS_FATAL_ERROR,
-            APPLICATION_ENV === DEVELOPMENT_ENV ? $e->getMessage() : 'Not Found');
+            APPLICATION_ENV === DEVELOPMENT_ENV ? $error : 'Not Found');
     }
 
     /**
