@@ -31,7 +31,8 @@ services:
      - php
     volumes:
       - .:/var/www
-      - ./docs/docker/nginx/conf:/usr/local/nginx/etc
+      - ./docs/conf/nginx/vhost:/usr/local/nginx/conf/vhost
+      - ./docs/conf/nginx/extra:/usr/local/nginx/conf/extra
     ports:
       - "80:80"
       - "443:443"

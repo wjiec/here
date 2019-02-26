@@ -13,7 +13,7 @@ node_modules
 backend/configs/*.dev.php
 
 # https certificate
-docs/docker/nginx/conf/cert
+docs/conf/nginx/vhost/cert
 
 # front compiled files
 public/*
@@ -22,5 +22,5 @@ public/*
 !public/error.html
 
 # something test files
-*.test.yml
-docs/docker/nginx/test-conf
+*.test.*
+docs/conf/*-test
