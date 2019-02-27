@@ -2,7 +2,7 @@
 FROM alpine:3.6
 
 # author
-MAINTAINER Wang <jayson@laboys.org>
+MAINTAINER Jayson Wang <jayson@laboys.org>
 
 # environments for nginx
 ENV NGINX_VERSION 1.12.2
@@ -89,9 +89,17 @@ RUN set -ex \
     && rm -rf /tmp/*
 
 
+# override configure by default
 COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 
+# executeable path
 ENV PATH "${NGINX_HOME}/bin:${PATH}"
+
+# expose port number
 EXPOSE 80
+
+# workshop
 WORKDIR /var/www
+
+# start nginx server
 CMD ["nginx"]
