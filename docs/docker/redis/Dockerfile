@@ -2,26 +2,19 @@
 FROM alpine:3.6
 
 # author
-MAINTAINER Wang <jayson@laboys.org>
-
-# China mirrors and create redis user and group
-RUN set -x \
-    && country=`wget -T1 -q -O- google.com 2>&1 | sed -nr 's/.*(timed\ out).*/China/p'` \
-    && if [ "$country" == "China" ]; then \
-           echo 'http://mirrors.ustc.edu.cn/alpine/v3.6/main' > /etc/apk/repositories; \
-           echo 'http://mirrors.ustc.edu.cn/alpine/v3.6/community' >> /etc/apk/repositories; \
-       fi; \
-    \
-    addgroup -S redis \
-    && adduser -S -G redis redis
+MAINTAINER Jayson Wang <jayson@laboys.org>
 
 # environments for redis
 ENV REDIS_VERSION 4.0.7
 ENV REDIS_HOME /usr/local/redis
 ENV REDIS_DATA_DIR /var/redis
 
+
 # install build deps and fetch/build/install redis
 RUN set -ex \
+    && addgroup -S redis \
+    && adduser -S -G redis redis \
+    \
     && apk update \
     && apk add --virtual .build-deps \
         curl \
@@ -31,13 +24,13 @@ RUN set -ex \
         make \
     \
     && mkdir -p "/usr/src" \
-    && curl -SLo redis.tar.gz "http://download.redis.io/releases/redis-$REDIS_VERSION.tar.gz" \
+    && curl -SL "http://download.redis.io/releases/redis-${REDIS_VERSION}.tar.gz" -o redis.tar.gz \
     \
     && tar xvf redis.tar.gz -C /usr/src \
     && rm -rf redis.tar.gz* \
     \
-    && cd "/usr/src/redis-$REDIS_VERSION" \
-    && export PREFIX="$REDIS_HOME" \
+    && cd "/usr/src/redis-${REDIS_VERSION}" \
+    && export PREFIX="${REDIS_HOME}" \
     \
     && grep -q '^#define CONFIG_DEFAULT_PROTECTED_MODE 1$' ./src/server.h \
     && sed -ri 's/^(#define CONFIG_DEFAULT_PROTECTED_MODE) 1$/\1 0/' ./src/server.h \
@@ -47,28 +40,29 @@ RUN set -ex \
     && make install \
     && make clean \
     \
-    && cd "$REDIS_HOME" \
+    && cd "${REDIS_HOME}" \
     && rm -rf /usr/src/* \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
-    && redisRuntimeDeps="$( \
+    && REDIS_RUNTIME_DEPS="$( \
             scanelf --needed --nobanner --format '%n#p' --recursive $REDIS_HOME \
                 | tr ',' '\n' \
                 | sort -u \
                 | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
        )" \
-    && apk add --virtual .redis-runtime-deps $redisRuntimeDeps \
+    && apk add --virtual .redis-runtime-deps $REDIS_RUNTIME_DEPS \
     && apk del .build-deps \
     \
+    && unset PREFIX \
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*
 
 # make data folder and new configure
-RUN mkdir -p "$REDIS_DATA_DIR" \
-    && chown -R redis:redis "$REDIS_DATA_DIR"
+RUN mkdir -p "${REDIS_DATA_DIR}" \
+    && chown -R redis:redis "${REDIS_DATA_DIR}"
 
 # executeable path
-ENV PATH $REDIS_HOME/bin:$PATH
+ENV PATH "${REDIS_HOME}/bin:${PATH}"
 
 # data volume
 VOLUME /var/redis
@@ -79,5 +73,5 @@ WORKDIR /var/redis
 # expose port number
 EXPOSE 6379
 
-# start server
+# start redis server
 CMD ["redis-server"]
