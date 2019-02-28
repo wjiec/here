@@ -45,7 +45,7 @@ RUN set -ex \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
     && REDIS_RUNTIME_DEPS="$( \
-            scanelf --needed --nobanner --format '%n#p' --recursive $REDIS_HOME \
+            scanelf --needed --nobanner --format '%n#p' --recursive ${REDIS_HOME} \
                 | tr ',' '\n' \
                 | sort -u \
                 | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \

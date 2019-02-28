@@ -2,28 +2,22 @@
 FROM alpine:3.6
 
 # author info
-MAINTAINER Wang <jayson@laboys.org>
+MAINTAINER Jayson Wang <jayson@laboys.org>
 
-# China mirrors and create www-user
-RUN set -x \
-    && country=`wget -T1 -q -O- google.com 2>&1 | sed -nr 's/.*(timed\ out).*/China/p'` \
-    && if [ "$country" == "China" ]; then \
-           echo 'http://mirrors.ustc.edu.cn/alpine/v3.6/main' > /etc/apk/repositories; \
-           echo 'http://mirrors.ustc.edu.cn/alpine/v3.6/community' >> /etc/apk/repositories; \
-       fi; \
-    \
-    addgroup -S -g 82 www \
-    && adduser -S -D -H -G www -u 82 www
 
 # environment for php7
 ENV PHP_VERSION 7.2.9
 
 # generic named for home folder
-ENV PHP_HOME /usr/local/php
-ENV PHP_CONF_PATH /usr/local/php/etc
+ENV PHP_HOME "/usr/local/php"
+ENV PHP_CONF_PATH "${PHP_HOME}/conf"
+ENV PHP_EXTRA_CONF_PATH "${PHP_CONF_PATH}/conf.d"
 
 # install deps and fetch/compile/install php
 RUN set -x \
+    && addgroup -S -g 82 www \
+    && adduser -S -D -H -G www -u 82 www \
+    \
     && apk update \
     && apk add --virtual .build-deps \
         autoconf \
@@ -51,21 +45,14 @@ RUN set -x \
         tar \
         xz \
     \
-    && country=`wget -T1 -q -O- google.com 2>&1 | sed -nr 's/.*(timed\ out).*/China/p'` \
-    && if [ "$country" == "China" ]; then \
-           curl -SL "http://cn2.php.net/get/php-$PHP_VERSION.tar.gz/from/this/mirror" -o php.tar.gz; \
-       else \
-           curl -SL "http://php.net/get/php-$PHP_VERSION.tar.gz/from/this/mirror" -o php.tar.gz; \
-       fi; \
-    unset country \
-    \
     && mkdir -p "/usr/src" \
+    && curl -SL "http://php.net/get/php-${PHP_VERSION}.tar.gz/from/this/mirror" -o php.tar.gz; \
     \
     && tar xvf php.tar.gz -C /usr/src \
     && rm -rf php.tar.gz* \
     \
-    && mkdir -p "$PHP_HOME" \
-    && mkdir -p "$PHP_CONF_PATH/conf.d" \
+    && mkdir -p "${PHP_HOME}" \
+    && mkdir -p "${PHP_EXTRA_CONF_PATH}" \
     \
     && export CFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
     && export CPPFLAGS="-fstack-protector-strong -fpic -fpie -O2" \
@@ -75,20 +62,20 @@ RUN set -x \
         ca-certificates \
         openssl \
     \
-    && cd "/usr/src/php-$PHP_VERSION" \
+    && cd "/usr/src/php-${PHP_VERSION}" \
     && ./configure \
         --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
-        --prefix="$PHP_HOME" \
-        --with-config-file-path="$PHP_CONF_PATH" \
-        --with-config-file-scan-dir="$PHP_CONF_PATH/conf.d" \
+        --prefix="${PHP_HOME}" \
+        --with-config-file-path="${PHP_CONF_PATH}" \
+        --with-config-file-scan-dir="${PHP_EXTRA_CONF_PATH}" \
         \
         --with-fpm-user=www \
         --with-fpm-group=www \
         \
-        --bindir="$PHP_HOME/bin" \
-        --sbindir="$PHP_HOME/sbin" \
-        --includedir="$PHP_HOME/include" \
-        --libdir="$PHP_HOME/lib" \
+        --bindir="${PHP_HOME}/bin" \
+        --sbindir="${PHP_HOME}/sbin" \
+        --includedir="${PHP_HOME}/include" \
+        --libdir="${PHP_HOME}/lib" \
         \
         --enable-fpm \
         --disable-cgi \
@@ -115,18 +102,18 @@ RUN set -x \
     && make install \
     && make clean \
     \
-    && cd "$PHP_HOME" \
+    && cd "${PHP_HOME}" \
     && rm -rf /usr/src/* \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
     \
-    && phpRuntimeDeps="$( \
-        scanelf --needed --nobanner --format '%n#p' --recursive $PHP_HOME \
+    && PHP_RUNTIME_DEPS="$( \
+        scanelf --needed --nobanner --format '%n#p' --recursive ${PHP_HOME} \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )" \
-    && apk add --virtual .php-runtime-deps $phpRuntimeDeps \
+    && apk add --virtual .php-runtime-deps $PHP_RUNTIME_DEPS \
     && apk del .build-deps \
     \
     && rm -rf /var/cache/apk/* \
@@ -134,7 +121,7 @@ RUN set -x \
 
 # configure for php-fpm
 RUN set -ex \
-    && cd $PHP_CONF_PATH \
+    && cd "${PHP_CONF_PATH}" \
     && if [ -d php-fpm.d ]; then \
            cp php-fpm.conf.default php-fpm.conf; \
            cp php-fpm.d/www.conf.default php-fpm.d/www.conf; \
@@ -143,7 +130,7 @@ RUN set -ex \
            cp php-fpm.conf.default php-fpm.d/www.conf; \
            { \
                echo '[global]'; \
-           	   echo 'include=etc/php-fpm.d/*.conf'; \
+           	   echo 'include=conf/php-fpm.d/*.conf'; \
            } | tee php-fpm.conf; \
        fi; \
     \
