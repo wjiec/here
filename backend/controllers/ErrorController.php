@@ -19,20 +19,14 @@ use Here\Controllers\Base\ControllerBase;
 final class ErrorController extends ControllerBase {
 
     /**
-     * @param string $error
-     */
-    final public function exceptionAction(string $error) {
-        $this->terminalResponse(self::STATUS_FATAL_ERROR,
-            APPLICATION_ENV === DEVELOPMENT_ENV ? $error : 'Not Found');
-    }
-
-    /**
      * when internal error occurs
      * @param null|string $error
+     * @param int|null $error_code
      */
-    final public function internalAction(?string $error = null) {
-        $this->terminalResponse(self::STATUS_FATAL_ERROR,
-            APPLICATION_ENV === DEVELOPMENT_ENV ? $error : 'Server Internal Error');
+    final public function internalAction(?string $error = null, ?int $error_code = null) {
+        $this->makeResponse(self::STATUS_FATAL_ERROR,
+            APPLICATION_ENV === DEVELOPMENT_ENV ? $error : 'Server Internal Error / Resource Not Exists');
+        $this->terminalByStatusCode($error_code ?? 500);
     }
 
 }

@@ -49,8 +49,8 @@ final class AppEventsManager extends EventsManager {
                 // report an error to client
                 $dispatcher->forward(array(
                     'controller' => 'error',
-                    'action' => 'exception',
-                    'params' => array($exception, $event)
+                    'action' => 'internal',
+                    'params' => array($exception->getMessage(), 404)
                 ));
                 return false;
         }

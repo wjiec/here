@@ -132,10 +132,8 @@ $di->setShared('dispatcher', function() use ($config) {
             // forward to internal-error
             $dispatcher->forward(array(
                 'controller' => 'error',
-                'action' => 'exception',
-                'params' => array(
-                    'error' => $error
-                )
+                'action' => 'internal',
+                'params' => array($error, 500)
             ));
             // dispatch again and make error message to client
             $dispatcher->dispatch();

@@ -21,7 +21,7 @@ use Phalcon\Di\FactoryDefault;
 use Phalcon\Mvc\Application;
 
 
-/* report all PHP errors */
+/* report all errors */
 error_reporting(E_ALL);
 
 /* application constant definition */
