@@ -1,8 +1,4 @@
-Here
-----
-
-Simple blogger with named `'Here'`
-
+### Here
 
 #### How to install(deploy)
 

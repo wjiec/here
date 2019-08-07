@@ -22,5 +22,5 @@ public/*
 !public/error.html
 
 # something test files
-*.test.*
-docs/conf/*-test
+*.dev.*
+docs/conf/*-dev
