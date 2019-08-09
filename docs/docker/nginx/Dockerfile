@@ -10,8 +10,8 @@ ENV NGINX_EXTRA_CONF_PATH "${NGINX_CONF_PATH}/extra"
 
 
 RUN set -ex \
-    && addgroup -S -g 82 nginx \
-    && adduser -S -D -H -G nginx -u 82 nginx \
+    && addgroup -S nginx \
+    && adduser -S -D -H -G nginx nginx \
     \
     && apk update \
     && apk add --virtual .build-deps \
@@ -86,18 +86,12 @@ RUN set -ex \
     && rm -rf /tmp/*
 
 
-# override configure by default
 COPY nginx.conf "${NGINX_CONF_PATH}/nginx.conf"
-
-# executeable path
 ENV PATH "${NGINX_HOME}/sbin:${PATH}"
+VOLUME ["/var/www"]
 
-# expose port number
 EXPOSE 80
 EXPOSE 443
 
-# workshop
 WORKDIR /var/www
-
-# start nginx server
 CMD ["nginx"]
