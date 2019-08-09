@@ -59,7 +59,7 @@ RUN mkdir -p "${REDIS_DATA_DIR}" \
 
 
 ENV PATH "${REDIS_HOME}/bin:${PATH}"
-VOLUME /var/redis
+VOLUME ["/var/redis"]
 
 EXPOSE 6379
 
