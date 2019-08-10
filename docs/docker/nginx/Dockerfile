@@ -48,7 +48,6 @@ RUN set -ex \
         --error-log-path=/proc/self/fd/2 \
         \
         --with-threads \
-        --with-file-aio \
         --with-poll_module \
         --with-http_ssl_module \
         --with-http_v2_module \
