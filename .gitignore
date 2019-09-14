@@ -15,12 +15,6 @@ backend/configs/*.dev.php
 # https certificate
 docs/conf/nginx/vhost/cert
 
-# front compiled files
-public/*
-!public/index.php
-!public/.htaccess
-!public/error.html
-
 # something test files
 *.dev.*
 docs/conf/*-dev

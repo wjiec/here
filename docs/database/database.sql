@@ -4,18 +4,19 @@
 drop table if exists `authors`;
 create table if not exists `authors` (
   `author_id` serial not null primary key auto_increment,
-  `email` varchar(64) not null,
-  `username` varchar(64) not null,
-  `password` varchar(128) not null,
-  `nickname` varchar(64) not null default '',
+  `author_email` varchar(64) not null default '',
+  `author_username` varchar(64) not null default '',
+  `author_password` varchar(128) not null default '',
+  `author_nickname` varchar(64) not null default '',
   `author_avatar` varchar(255) not null default '',
   `author_introduction` varchar(255) not null default '',
-  `create_time` datetime not null default now(),
-  `last_login_time` datetime not null default now(),
-  `last_login_ip_address` varchar(64) not null default '',
   `two_factor_auth` bool not null default false,
+  `author_create_time` datetime not null default now(),
+  `last_login_time` datetime not null default now(),
+  `last_login_address` varchar(64) not null default '',
 
-  unique key (`username`)
+  index (`author_email`),
+  unique key (`author_username`)
 ) engine=Innodb default charset=utf8mb4 auto_increment=1;
 
 
