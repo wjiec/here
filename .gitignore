@@ -3,18 +3,14 @@
 .buildpath
 .project
 
-# node
-node_modules
-
 # PHPStorm and WebStorm
 .idea
 
-# develop config
-backend/configs/*.dev.php
+# composer
+/vendor/
 
-# https certificate
-docs/conf/nginx/vhost/cert
+# environment
+.env
 
-# something test files
+# docker-composer
 *.dev.*
-docs/conf/*-dev

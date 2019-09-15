@@ -1,0 +1,24 @@
+{
+    "name": "nosjay/here",
+    "description": "Blog application",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jayson",
+            "email": "jayson@laboys.org"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "vlucas/phpdotenv": "^3.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Here\\": "app/libraries",
+            "Here\\Models\\": "app/models",
+            "Here\\Plugins\\": "app/plugins",
+            "Here\\Providers\\": "app/providers"
+        }
+    }
+}
