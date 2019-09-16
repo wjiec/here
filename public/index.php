@@ -10,12 +10,11 @@
  */
 declare(strict_types=1);
 
-
-use Here\Bootstrap;
+use Here\Libraries\Bootstrap;
 
 
 // register the application bootstrap
 require_once __DIR__ . '/../app/bootstrap.php';
 
 // execute bootstrap and output response
-(new Bootstrap())->run()->output();
+echo (new Bootstrap())->run();

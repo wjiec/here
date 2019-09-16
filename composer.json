@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Here\\": "app/libraries",
+            "Here\\Libraries\\": "app/libraries",
             "Here\\Models\\": "app/models",
             "Here\\Plugins\\": "app/plugins",
             "Here\\Providers\\": "app/providers"

@@ -12,6 +12,8 @@
 
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
+use Phalcon\Di;
+use Phalcon\DiInterface;
 
 
 /**
@@ -124,5 +126,21 @@ if (!function_exists('env')) {
                 return '';
         }
         return $value;
+    }
+}
+
+if (!function_exists('container')) {
+    /**
+     * Calls the default Dependency Injection container
+     *
+     * @param mixed ...$args
+     * @return mixed|DiInterface
+     */
+    function container(...$args) {
+        $di = Di::getDefault();
+        if (empty($args)) {
+            return $di;
+        }
+        return call_user_func_array(array($di, 'get'), $args);
     }
 }
