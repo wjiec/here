@@ -11,6 +11,7 @@
 namespace Here\Libraries;
 
 use Here\Providers\Environment\ServiceProvider as EnvironmentServiceProvider;
+use Here\Providers\ErrorHandler\ServiceProvider as ErrorHandlerServiceProvider;
 use Here\Providers\EventsManager\ServiceProvider as EventsManagerServiceProvider;
 use Here\Providers\ServiceProviderInterface;
 use Phalcon\Application;
@@ -58,6 +59,21 @@ final class Bootstrap {
 
         $this->setupEnvironment();
         $this->setupServiceProvider(new EventsManagerServiceProvider($this->di));
+        $this->setupServiceProvider(new ErrorHandlerServiceProvider($this->di));
+
+        /** @noinspection PhpIncludeInspection */
+        $providers = include config_path('providers.php');
+        if (is_array($providers)) {
+            $this->setupServiceProviders($providers);
+        }
+
+        $this->app->setEventsManager(container('eventsManager'));
+
+        /** @noinspection PhpIncludeInspection */
+        $services = include config_path('services.php');
+        if (is_array($services)) {
+            $this->setupServices($services);
+        }
     }
 
     /**
@@ -94,6 +110,34 @@ final class Bootstrap {
      */
     final private function setupServiceProvider(ServiceProviderInterface $provider) {
         $provider->register();
+        $provider->initialize();
+
+        return $this;
+    }
+
+    /**
+     * Initializing the service providers.
+     *
+     * @param array $providers
+     * @return $this
+     */
+    final private function setupServiceProviders(array $providers) {
+        foreach ($providers as $provider) {
+            $this->setupServiceProvider(new $provider($this->di));
+        }
+        return $this;
+    }
+
+    /**
+     * Initializing the services
+     *
+     * @param array $services
+     * @return Bootstrap
+     */
+    final private function setupServices(array $services) {
+        foreach ($services as $name => $service) {
+            $this->di->setShared($name, $services);
+        }
         return $this;
     }
 

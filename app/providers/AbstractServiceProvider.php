@@ -53,4 +53,9 @@ abstract class AbstractServiceProvider extends Component implements ServiceProvi
      */
     public function register() {}
 
+    /**
+     * @inheritDoc
+     */
+    public function initialize() {}
+
 }

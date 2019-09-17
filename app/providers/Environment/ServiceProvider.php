@@ -10,6 +10,7 @@
  */
 namespace Here\Providers\Environment;
 
+use Here\Libraries\Bootstrap;
 use Here\Providers\AbstractServiceProvider;
 
 
@@ -30,8 +31,10 @@ final class ServiceProvider extends AbstractServiceProvider {
      * @inheritDoc
      */
     final public function register() {
-        $this->di->set($this->service_name, function(...$args) {
-            $environment = $this->di->getShared('bootstrap')->getEnvironment();
+        /* @var $bootstrap Bootstrap */
+        $bootstrap = $this->di->getShared('bootstrap');
+        $this->di->set($this->service_name, function(...$args) use ($bootstrap) {
+            $environment = $bootstrap->getEnvironment();
             if (!empty($args)) {
                 foreach ($args as $arg) {
                     if ($arg === $environment) {

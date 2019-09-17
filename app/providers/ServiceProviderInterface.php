@@ -31,4 +31,11 @@ interface  ServiceProviderInterface {
      */
     public function register();
 
+    /**
+     * Initializing the service
+     *
+     * @return void
+     */
+    public function initialize();
+
 }
