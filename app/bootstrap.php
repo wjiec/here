@@ -53,6 +53,18 @@ if (!function_exists('app_path')) {
     }
 }
 
+if (!function_exists('module_path')) {
+    /**
+     * Get the module path
+     *
+     * @param string $module
+     * @return string
+     */
+    function module_path(string $module): string {
+        return app_path('modules') . ($module ? "/{$module}" : '');
+    }
+}
+
 if (!function_exists('storage_path')) {
     /**
      * Get the storage path
@@ -157,6 +169,6 @@ if (!function_exists('environment')) {
         if (empty($args)) {
             return container('environment');
         }
-        return container('environment', $args);
+        return container('environment', ...$args);
     }
 }

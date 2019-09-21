@@ -32,7 +32,11 @@ final class ServiceProvider extends AbstractServiceProvider {
      * @var array
      */
     protected $configs = array(
-        'config'
+        'cache',
+        'config',
+        'database',
+        'logger',
+        'session',
     );
 
     /**
