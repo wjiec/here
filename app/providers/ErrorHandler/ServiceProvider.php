@@ -38,7 +38,7 @@ final class ServiceProvider extends AbstractServiceProvider {
             $run = new Run();
             $run->appendHandler(container("{$service_name}.loggerHandler"));
 
-            if (env('APP_DEBUG', false)) {
+            if (env('BLOG_DEBUG', false)) {
                 $run->appendHandler(container("{$service_name}.prettyPageHandler"));
             } else {
                 $run->appendHandler(container("{$service_name}.errorPageHandler"));

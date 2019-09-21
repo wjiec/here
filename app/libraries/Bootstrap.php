@@ -74,6 +74,8 @@ final class Bootstrap {
         if (is_array($services)) {
             $this->setupServices($services);
         }
+
+        container('config');
     }
 
     /**
@@ -98,7 +100,7 @@ final class Bootstrap {
      * Setup the application environment
      */
     final private function setupEnvironment() {
-        $this->environment = env('APP_ENV', 'development');
+        $this->environment = env('BLOG_ENV', 'development');
         return $this->setupServiceProvider(new EnvironmentServiceProvider($this->di));
     }
 

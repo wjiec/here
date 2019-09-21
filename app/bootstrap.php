@@ -73,7 +73,7 @@ if (!function_exists('cache_path')) {
      * @return string
      */
     function cache_path(string $path = ''): string {
-        return storage_path('cache') . ($path ? "/{$path}" : '');
+        return storage_path('caches') . ($path ? "/{$path}" : '');
     }
 }
 
@@ -133,14 +133,30 @@ if (!function_exists('container')) {
     /**
      * Calls the default Dependency Injection container
      *
+     * @param string $service
      * @param mixed ...$args
      * @return mixed|DiInterface
      */
-    function container(...$args) {
+    function container(string $service = '', ...$args) {
         $di = Di::getDefault();
-        if (empty($args)) {
+        if (!$service && empty($args)) {
             return $di;
         }
-        return call_user_func_array(array($di, 'get'), $args);
+        return call_user_func_array(array($di, 'get'), array($service, $args));
+    }
+}
+
+if (!function_exists('environment')) {
+    /**
+     * Get or check the current application environment
+     *
+     * @param string ...$args
+     * @return mixed|DiInterface
+     */
+    function environment(...$args) {
+        if (empty($args)) {
+            return container('environment');
+        }
+        return container('environment', $args);
     }
 }

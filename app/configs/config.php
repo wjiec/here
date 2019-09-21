@@ -9,6 +9,8 @@
  * @link      https://github.com/nosjay/here
  */
 return array(
-    Here\Providers\Config\ServiceProvider::class,
-    Here\Providers\FileSystem\ServiceProvider::class
+    'blog' => array(
+        'name' => env('BLOG_NAME'),
+        'url' => env('BLOG_URL'),
+    )
 );
