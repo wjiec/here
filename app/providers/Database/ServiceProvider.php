@@ -8,16 +8,16 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Providers\Session;
+namespace Here\Providers\Database;
 
+use Here\Libraries\Listener\Database;
 use Here\Providers\AbstractServiceProvider;
-use Phalcon\Config;
-use Phalcon\Session\AdapterInterface;
+use Phalcon\Db\Adapter;
 
 
 /**
  * Class ServiceProvider
- * @package Here\Providers\Session
+ * @package Here\Providers\Database
  */
 final class ServiceProvider extends AbstractServiceProvider {
 
@@ -26,27 +26,23 @@ final class ServiceProvider extends AbstractServiceProvider {
      *
      * @var string
      */
-    protected $service_name = 'session';
+    protected $service_name = 'db';
 
     /**
      * @inheritDoc
      */
     final public function register() {
         $this->di->setShared($this->service_name, function() {
-            $config = container('config')->session;
-            /* @var Config $driver_config */
+            $config = container('config')->database;
             $driver_config = $config->drivers->{$config->default};
             $driver = $driver_config->adapter;
 
-            /* @var AdapterInterface $session */
-            $session = new $driver(array_merge($driver_config->toArray(), array(
-                'prefix' => $config->prefix,
-                'uniqueId' => $config->uniqueId,
-                'lifetime' => $config->lifetime
-            )));
-            $session->start();
+            /* @var Adapter $connection */
+            $connection = new $driver($driver_config);
+            $connection->setEventsManager(container('eventsManager'));
+            container('eventsManager')->attach('db', new Database());
 
-            return $session;
+            return $connection;
         });
     }
 
