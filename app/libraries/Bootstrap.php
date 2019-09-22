@@ -14,6 +14,7 @@ use Here\Providers\Environment\ServiceProvider as EnvironmentServiceProvider;
 use Here\Providers\ErrorHandler\ServiceProvider as ErrorHandlerServiceProvider;
 use Here\Providers\EventsManager\ServiceProvider as EventsManagerServiceProvider;
 use Here\Providers\ServiceProviderInterface;
+use Here\Providers\Setup;
 use Phalcon\Application;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
@@ -75,7 +76,7 @@ final class Bootstrap {
             $this->setupServices($services);
         }
 
-        container('config');
+
     }
 
     /**
@@ -111,8 +112,7 @@ final class Bootstrap {
      * @return Bootstrap
      */
     final private function setupServiceProvider(ServiceProviderInterface $provider) {
-        $provider->register();
-        $provider->initialize();
+        Setup::install($provider);
 
         return $this;
     }
