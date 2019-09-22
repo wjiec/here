@@ -9,8 +9,9 @@
  * @link      https://github.com/nosjay/here
  */
 
-use Phalcon\Cache\Backend\Libmemcached;
-use Phalcon\Cache\Backend\Redis;
+use Phalcon\Session\Adapter\Libmemcached;
+use Phalcon\Session\Adapter\Redis;
+
 
 return array(
     'default' => env('SESSION_DRIVER', 'redis'),
