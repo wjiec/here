@@ -34,6 +34,9 @@ define('APP_DOCUMENT_ROOT', dirname(__DIR__));
 // register composer autoloader
 require_once APP_DOCUMENT_ROOT . '/vendor/autoload.php';
 
+// all errors reported
+error_reporting(E_ALL);
+
 // load environment
 try {
     Dotenv::create(APP_DOCUMENT_ROOT)->load();

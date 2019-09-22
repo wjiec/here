@@ -15,4 +15,5 @@ return array(
     Here\Providers\Session\ServiceProvider::class,
     Here\Providers\Database\ServiceProvider::class,
     Here\Providers\Router\ServiceProvider::class,
+    Here\Providers\Timezone\ServiceProvider::class,
 );
