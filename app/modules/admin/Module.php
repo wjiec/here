@@ -8,9 +8,10 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Modules\Admin;
+namespace Here\Admin;
 
 use Phalcon\DiInterface;
+use Phalcon\Loader;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 
 
@@ -24,8 +25,13 @@ final class Module implements ModuleDefinitionInterface {
      * Registers an autoloader related to the module
      *
      * @param DiInterface $dependencyInjector
+     * @return Loader
      */
     final public function registerAutoloaders(DiInterface $dependencyInjector = null) {
+        return (new Loader())->registerNamespaces(array(
+            'Here\Admin\Controllers\\' => __DIR__ . '/controllers',
+            'Here\Admin\Providers\\' => __DIR__ . '/providers',
+        ));
     }
 
     /**

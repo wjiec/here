@@ -13,8 +13,8 @@ namespace Here\Libraries;
 use Here\Providers\Environment\ServiceProvider as EnvironmentServiceProvider;
 use Here\Providers\ErrorHandler\ServiceProvider as ErrorHandlerServiceProvider;
 use Here\Providers\EventsManager\ServiceProvider as EventsManagerServiceProvider;
+use Here\Providers\Installer;
 use Here\Providers\ServiceProviderInterface;
-use Here\Providers\Setup;
 use Phalcon\Application;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
@@ -29,17 +29,21 @@ use Phalcon\Mvc\Application as MvcApplication;
 final class Bootstrap {
 
     /**
+     * Application instance
+     *
      * @var Application
      */
     private $app;
 
     /**
+     * Dependency injection manager
+     *
      * @var DiInterface
      */
     private $di;
 
     /**
-     *
+     * Application environment
      *
      * @var string
      */
@@ -76,7 +80,11 @@ final class Bootstrap {
             $this->setupServices($services);
         }
 
-
+        /** @noinspection PhpIncludeInspection */
+        $modules = include config_path('modules.php');
+        if (is_array($modules)) {
+            $this->setupModules($modules);
+        }
     }
 
     /**
@@ -112,8 +120,7 @@ final class Bootstrap {
      * @return Bootstrap
      */
     final private function setupServiceProvider(ServiceProviderInterface $provider) {
-        Setup::install($provider);
-
+        Installer::setup($provider);
         return $this;
     }
 
@@ -140,6 +147,17 @@ final class Bootstrap {
         foreach ($services as $name => $service) {
             $this->di->setShared($name, $services);
         }
+        return $this;
+    }
+
+    /**
+     * Initializing the modules
+     *
+     * @param array $modules
+     * @return Bootstrap
+     */
+    final private function setupModules(array $modules) {
+        $this->app->registerModules($modules);
         return $this;
     }
 

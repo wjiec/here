@@ -14,12 +14,18 @@ use Phalcon\Mvc\Router;
 
 $router = new Router(false);
 
+/**
+ * Homepage
+ */
 $router->add('/', array(
     'module' => 'stage',
     'controller' => 'discussions',
     'action' => 'index'
 ))->setName('discussions-index');
 
+/**
+ * Admin group
+ */
 $admin_prefix = env('ADMIN_PREFIX', 'admin');
 $router->add("/{$admin_prefix}/:controller/:action/:params", array(
     'module' => 'admin',

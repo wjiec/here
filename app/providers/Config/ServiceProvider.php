@@ -36,6 +36,7 @@ final class ServiceProvider extends AbstractServiceProvider {
         'config',
         'database',
         'logger',
+        'modules',
         'session',
         'timezone'
     );

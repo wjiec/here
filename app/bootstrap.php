@@ -31,6 +31,11 @@ define('APP_START_MEMORY', memory_get_usage());
  */
 define('APP_DOCUMENT_ROOT', dirname(__DIR__));
 
+/**
+ * @const APP_MODULES_ROOT The root path of the modules
+ */
+define('APP_MODULES_ROOT', __DIR__ . '/modules');
+
 // register composer autoloader
 require_once APP_DOCUMENT_ROOT . '/vendor/autoload.php';
 

@@ -14,16 +14,14 @@
         "ext-pdo": "*",
         "vlucas/phpdotenv": "^3.6",
         "filp/whoops": "^2.5",
-        "league/flysystem": "^1.0",
+        "league/flysystem": "^1.0"
     },
     "autoload": {
         "psr-4": {
             "Here\\Libraries\\": "app/libraries",
             "Here\\Models\\": "app/models",
             "Here\\Plugins\\": "app/plugins",
-            "Here\\Providers\\": "app/providers",
-            "Here\\Modules\\Admin\\": "app/modules/admin",
-            "Here\\Modules\\Stage\\": "app/modules/stage"
+            "Here\\Providers\\": "app/providers"
         }
     }
 }

@@ -12,15 +12,17 @@ namespace Here\Providers;
 
 
 /**
- * Class Setup
+ * Class Installer
  * @package Here\Providers
  */
-final class Setup {
+final class Installer {
 
     /**
+     * Install and setup provider
+     *
      * @param ServiceProviderInterface $provider
      */
-    final public static function install(ServiceProviderInterface $provider) {
+    final public static function setup(ServiceProviderInterface $provider) {
         $provider->register();
         $provider->initialize();
     }

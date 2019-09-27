@@ -11,6 +11,7 @@
 return array(
     Here\Providers\Config\ServiceProvider::class,
     Here\Providers\FileSystem\ServiceProvider::class,
+    Here\Providers\ModuleMeta\ServiceProvider::class,
     Here\Providers\UrlResolver\ServiceProvider::class,
     Here\Providers\Session\ServiceProvider::class,
     Here\Providers\Database\ServiceProvider::class,
