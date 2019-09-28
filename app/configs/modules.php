@@ -22,6 +22,9 @@ return array(
     'stage' => array(
         'className' => Module::class,
         'path' => APP_MODULES_ROOT . '/stage/Module.php',
-        'meta' => array()
+        'meta' => array(
+            'viewDir' => APP_MODULES_ROOT . '/stage/views',
+            'layoutDir' => APP_DOCUMENT_ROOT . '/app/layouts/'
+        )
     )
 );

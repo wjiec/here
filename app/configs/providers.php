@@ -17,4 +17,5 @@ return array(
     Here\Providers\Database\ServiceProvider::class,
     Here\Providers\Router\ServiceProvider::class,
     Here\Providers\Timezone\ServiceProvider::class,
+    Here\Providers\Volt\ServiceProvider::class,
 );

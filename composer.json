@@ -12,6 +12,7 @@
     "require": {
         "php": ">=7.1",
         "ext-pdo": "*",
+        "ext-mbstring": "*",
         "vlucas/phpdotenv": "^3.6",
         "filp/whoops": "^2.5",
         "league/flysystem": "^1.0"
