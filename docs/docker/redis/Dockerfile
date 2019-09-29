@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.10
 
 MAINTAINER Jayson Wang <jayson@laboys.org>
 
@@ -41,11 +41,11 @@ RUN set -ex \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
     && REDIS_RUNTIME_DEPS="$( \
-            scanelf --needed --nobanner --format '%n#p' --recursive ${REDIS_HOME} \
-                | tr ',' '\n' \
-                | sort -u \
-                | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
-       )" \
+        scanelf --needed --nobanner --format '%n#p' --recursive ${REDIS_HOME} \
+            | tr ',' '\n' \
+            | sort -u \
+            | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
+        )" \
     && apk add --virtual .redis-runtime-deps $REDIS_RUNTIME_DEPS \
     && apk del .build-deps \
     \
@@ -54,7 +54,8 @@ RUN set -ex \
     && rm -rf /tmp/*
 
 
-RUN mkdir -p "${REDIS_DATA_DIR}" \
+RUN set -ex \
+    && mkdir -p "${REDIS_DATA_DIR}" \
     && chown -R redis:redis "${REDIS_DATA_DIR}"
 
 

@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.10
 
 MAINTAINER Jayson Wang <jayson@laboys.org>
 
@@ -17,13 +17,16 @@ RUN set -ex \
     && apk add --virtual .build-deps \
         ca-certificates \
         curl \
+        dpkg \
+        dpkg-dev \
         gcc \
+        g++ \
         make \
         libc-dev \
         expat-dev \
         pcre-dev \
         openssl-dev \
-        perl-dev \
+        zlib-dev \
     \
     && mkdir -p "/usr/src" \
     && curl -SL "http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz" -o nginx.tar.gz \
@@ -47,8 +50,10 @@ RUN set -ex \
         --http-log-path=/proc/self/fd/1 \
         --error-log-path=/proc/self/fd/2 \
         \
-        --with-threads \
+        --without-select_module \
         --with-poll_module \
+        --with-threads \
+        \
         --with-http_ssl_module \
         --with-http_v2_module \
         --with-http_realip_module \
@@ -57,8 +62,9 @@ RUN set -ex \
         --with-http_dav_module \
         --with-http_stub_status_module \
         --with-http_gzip_static_module \
-        --with-http_perl_module \
         --with-pcre-jit \
+        \
+        --with-cc-opt=-Wno-error \
     \
     && make \
     && make install \
@@ -77,7 +83,7 @@ RUN set -ex \
             | tr ',' '\n' \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
-       )" \
+        )" \
     && apk add --virtual .nginx-runtime-deps $NGINX_RUNTIME_DEPS \
     && apk del .build-deps \
     \
