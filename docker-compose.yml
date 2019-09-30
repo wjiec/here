@@ -1,32 +1,27 @@
-#
-# Here Application
-#
-
 version: '3'
 services:
   redis:
-    image: "shellboot/redis"
+    image: "jaynos/redis"
     volumes:
-      - /var/here/redis:/var/redis
+      - ./storage/var/redis:/var/redis
     restart: always
-  mysql:
-    image: "shellboot/mysql"
+  pgsql:
+    image: "jaynos/pgsql"
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      PGSQL_ROOT_PASSWORD: root
     volumes:
-      - /var/here/mysql:/var/mysql
-      - ./docs/docker/mysql/conf:/usr/local/mysql/etc/conf.d
+      - ./storage/var/pgsql:/var/pgsql
     restart: always
   php:
-    image: "shellboot/php:phalcon"
+    image: "jaynos/phalcon"
     volumes:
       - .:/var/www
     depends_on:
-      - mysql
+      - pgsql
       - redis
     restart: always
   nginx:
-    image: "shellboot/nginx"
+    image: "jaynos/nginx"
     depends_on:
      - php
     volumes:
