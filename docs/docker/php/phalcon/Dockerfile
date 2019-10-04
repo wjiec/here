@@ -58,9 +58,6 @@ RUN set -ex \
     && ./install \
     && echo 'extension=phalcon' >> "${PHP_CONF_PATH}/php.ini" \
     \
-    && cd "${PHP_HOME}" \
-    && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
-    \
     && apk del .build-deps \
     && rm -rf /usr/src/* \
     && rm -rf /var/cache/apk/* \
