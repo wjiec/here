@@ -73,7 +73,10 @@ RUN set -ex \
     && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
     && php composer-setup.php --install-dir=/usr/bin --filename=composer \
     && php -r "unlink('composer-setup.php');" \
-    && { find /usr/bin/ -type f -perm +0111 -exec strip --strip-all {} + || true; }
+    \
+    && rm -rf /usr/src/* \
+    && rm -rf /var/cache/apk/* \
+    && rm -rf /tmp/*
 
 
 #RUN set -ex \
