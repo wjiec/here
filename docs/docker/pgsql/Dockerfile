@@ -1,4 +1,4 @@
-FROM alpine:3.6
+FROM alpine:3.10
 
 MAINTAINER Jayson Wang <jayson@laboys.org>
 
