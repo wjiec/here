@@ -8,11 +8,11 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Libraries\Exceptions;
+namespace Here\Libraries\Exception;
 
 
 /**
- * Interface HereException
- * @package Here
+ * Interface BlogException
+ * @package Here\Libraries\Exception
  */
-interface HereException {}
+interface BlogException {}

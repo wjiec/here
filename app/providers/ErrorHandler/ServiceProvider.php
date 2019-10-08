@@ -10,8 +10,8 @@
  */
 namespace Here\Providers\ErrorHandler;
 
-use Here\Libraries\Exceptions\Handlers\ErrorPageHandler;
-use Here\Libraries\Exceptions\Handlers\LoggerHandler;
+use Here\Libraries\Exception\Handler\ErrorPageHandler;
+use Here\Libraries\Exception\Handler\LoggerHandler;
 use Here\Providers\AbstractServiceProvider;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;

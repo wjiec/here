@@ -8,19 +8,20 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Libraries\Exceptions\Handlers;
+namespace Here\Libraries\Exception\Handler;
 
 use Whoops\Handler\Handler;
 
 
 /**
- * Class LoggerHandler
- * @package Here\Libraries\Exceptions\Handlers
+ * Class ErrorPageHandler
+ * @package Here\Libraries\Exception\Handler
  */
-final class LoggerHandler extends Handler {
+final class ErrorPageHandler extends Handler {
 
     /**
      * @inheritDoc
+     * @return int|void|null
      */
     final public function handle() {
         return self::DONE;
