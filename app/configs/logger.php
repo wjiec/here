@@ -10,9 +10,9 @@
  */
 return array(
     'root'      => cache_path('logs'),
-    'format'    => env('LOGGER_FORMAT', "%date%\t - %type% : %message%"),
+    'format'    => env('LOGGER_FORMAT', "[%date%]\t - [%type%] : [%message%]"),
     'date'      => env('LOGGER_DATE', 'Y-m-d H:i:s'),
     'level'     => env('LOGGER_LEVEL', 'INFO'),
-    'filename'  => env('LOGGER_FILENAME', 'here'),
+    'filename'  => env('LOGGER_FILENAME', 'blog'),
     'rotate'    => env('LOGGER_ROTATE', true)
 );
