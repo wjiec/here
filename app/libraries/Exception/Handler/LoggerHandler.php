@@ -11,6 +11,7 @@
 namespace Here\Libraries\Exception\Handler;
 
 use Phalcon\Logger\AdapterInterface as LoggerInterface;
+use Whoops\Exception\Frame;
 use Whoops\Handler\Handler;
 
 
@@ -64,10 +65,26 @@ final class LoggerHandler extends Handler {
      */
     final private function getStackTrace(): string {
         $frames = $this->getInspector()->getFrames();
-//        return array_reduce(, function() {
-//
-//        }, 0);
-        return '';
+
+        $stacktrace = '';
+        foreach ($frames as $index => $frame) {
+            /* @var Frame $frame */
+            $stacktrace .= sprintf("%3d.\t(%s:%d)\t%s::%s()\n%s",
+                $index, $frame->getFile(), $frame->getLine(), $frame->getClass(), $frame->getFunction(),
+                $this->getFunctionArgs($frame)
+            );
+        }
+        return $stacktrace;
+    }
+
+    /**
+     * Get the arguments of function in the frame
+     *
+     * @param Frame $frame
+     * @return string
+     */
+    final private function getFunctionArgs(Frame $frame): string {
+        return preg_replace('/^/m', '|', print_r($frame->getArgs(), true));
     }
 
 }

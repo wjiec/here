@@ -21,4 +21,9 @@ return array(
         'baseUri'       => env('BLOG_BASE_URI'),
         'staticUri'     => env('BLOG_STATIC_URL')
     ),
+
+    'error' => array(
+        'controller'    => 'error',
+        'action'        => 'serverInternalError'
+    )
 );
