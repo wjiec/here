@@ -45,9 +45,9 @@ final class ServiceProvider extends AbstractServiceProvider {
      * @inheritDoc
      */
     final public function register() {
-        $components = $this->configs;
-        $this->di->setShared($this->service_name, function() use ($components) {
-            return Factory::create($components);
+        $configs = $this->configs;
+        $this->di->setShared($this->service_name, function() use ($configs) {
+            return Factory::create($configs);
         });
     }
 
