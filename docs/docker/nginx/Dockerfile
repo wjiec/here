@@ -5,8 +5,6 @@ MAINTAINER Jayson Wang <jayson@laboys.org>
 ENV NGINX_VERSION 1.12.2
 ENV NGINX_HOME "/usr/local/nginx"
 ENV NGINX_CONF_PATH "${NGINX_HOME}/conf"
-ENV NGINX_VHOST_CONF_PATH "${NGINX_CONF_PATH}/vhost"
-ENV NGINX_EXTRA_CONF_PATH "${NGINX_CONF_PATH}/extra"
 
 
 RUN set -ex \
@@ -73,8 +71,6 @@ RUN set -ex \
     && cd "${NGINX_HOME}" \
     && rm -rf /usr/src/* \
     \
-    && mkdir -p "${NGINX_VHOST_CONF_PATH}" \
-    && mkdir -p "${NGINX_EXTRA_CONF_PATH}" \
     && chown -R nginx:nginx /usr/local/nginx \
     \
     && { find . -type f -perm +0111 -exec strip --strip-all {} + || true; } \
@@ -91,7 +87,6 @@ RUN set -ex \
     && rm -rf /tmp/*
 
 
-COPY nginx.conf "${NGINX_CONF_PATH}/nginx.conf"
 ENV PATH "${NGINX_HOME}/sbin:${PATH}"
 VOLUME ["/var/www"]
 
