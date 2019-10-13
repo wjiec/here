@@ -2,31 +2,28 @@ FROM alpine:3.10
 
 MAINTAINER Jayson Wang <jayson@laboys.org>
 
+ENV LANG en_US.utf8
 ENV PGSQL_VERSION 11.5
 ENV PGSQL_HOME /usr/local/pgsql
 ENV PGSQL_CONF_PATH /usr/local/pgsql/etc
-ENV PGSQL_DATA_PATH /usr/local/pgsql/data
+ENV PGSQL_DATA_PATH /var/pgsql/data
+ENV PGSQL_RUN_PATH /var/run/pgsql
 
 
 RUN set -ex \
-    && addgroup -S pgsql \
-    && adduser -S -D -H -G pgsql pgsql \
-    \
     && apk update \
     && apk add --virtual .build-deps \
         bison \
         coreutils \
         curl \
-        flex \
-        dpkg \
         dpkg-dev \
+        flex \
         gcc \
         icu-dev \
         make \
         libc-dev \
         libedit-dev \
         libxml2-dev \
-        libxslt-dev \
         linux-headers \
         openssl-dev \
         util-linux-dev \
@@ -40,11 +37,10 @@ RUN set -ex \
     \
     && mkdir -p "${PGSQL_HOME}" \
     && mkdir -p "${PGSQL_CONF_PATH}" \
-    && mkdir -p "${PGSQL_DATA_PATH}" \
     \
     && cd "/usr/src/postgresql-${PGSQL_VERSION}" \
     && awk '$1 == "#define" && $2 == "DEFAULT_PGSOCKET_DIR" && $3 == "\"/tmp\"" { $3 = "\"/var/run/pgsql\""; print; next } { print }' src/include/pg_config_manual.h > src/include/pg_config_manual.h.new \
-    && grep '/var/run/pgsql' src/include/pg_config_manual.h.new \
+    && grep "${PGSQL_RUN_PATH}" src/include/pg_config_manual.h.new \
     && mv src/include/pg_config_manual.h.new src/include/pg_config_manual.h \
     \
     && wget -O config/config.guess 'https://git.savannah.gnu.org/cgit/config.git/plain/config.guess?id=7d3d27baf8107b630586c962c057e22149653deb' \
@@ -52,22 +48,18 @@ RUN set -ex \
     \
     && ./configure \
         \
-        --build="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)" \
         --prefix="${PGSQL_HOME}" \
         --sysconfdir="${PGSQL_CONF_PATH}" \
-        --datarootdir="${PGSQL_DATA_PATH}" \
         --with-system-tzdata=/usr/share/zoneinfo \
         \
-        --enable-integer-datetimes \
         --enable-thread-safety \
-        \
         --disable-rpath \
+        \
         --with-uuid=e2fs \
         --with-gnu-ld \
         \
         --with-openssl \
         --with-libxml \
-        --with-libxslt \
         --with-icu \
         \
     && make -j "$(nproc)"\
@@ -84,11 +76,37 @@ RUN set -ex \
             | sort -u \
             | awk 'system("[ -e /usr/local/lib" $1 " ]") == 0 { next } { print "so:" $1 }' \
     )" \
-    && apk add --virtual .php-runtime-deps $PGSQL_RUNTIME_DEPS \
+    && apk add --virtual .pgsql-runtime-deps $PGSQL_RUNTIME_DEPS bash su-exec \
     && apk del .build-deps \
     \
+    && find /usr/local -name '*.a' -delete \
     && rm -rf /usr/local/share/doc \
     && rm -rf /usr/local/share/man \
     && rm -rf /var/cache/apk/* \
-    && rm -rf /tmp/* \
-    && find /usr/local -name '*.a' -delete
+    && rm -rf /tmp/*
+
+RUN set -ex \
+    && mkdir -p "${PGSQL_RUN_PATH}" \
+    && chown -R postgres:postgres ${PGSQL_RUN_PATH} \
+    && chmod 2777 ${PGSQL_RUN_PATH}
+
+RUN set -ex \
+    && mkdir -p "${PGSQL_DATA_PATH}" \
+    && chown -R postgres:postgres "${PGSQL_DATA_PATH}" \
+    && chmod 777 "${PGSQL_DATA_PATH}"
+
+RUN set -ex \
+    && sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" "${PGSQL_HOME}/share/postgresql.conf.sample"
+
+COPY pgsql.sh /usr/local/bin/
+RUN set -ex && chmod +x /usr/local/bin/pgsql.sh
+ENV PATH "${PGSQL_HOME}/bin:${PATH}"
+ENV PGDATA "${PGSQL_DATA_PATH}"
+
+VOLUME /var/pgsql/data
+WORKDIR /var/pgsql/data
+
+EXPOSE 5432
+
+ENTRYPOINT ["pgsql.sh"]
+CMD ["postgres"]
