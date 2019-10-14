@@ -13,3 +13,13 @@
 
 # done
 ```
+
+
+#### for redis
+```shell
+# WARNING overcommit_memory is set to 0! Background save may fail under low memory condition.
+sysctl vm.overcommit_memory=1
+
+# WARNING: The TCP backlog setting of 511 cannot be enforced
+sysctl net.core.somaxconn=1024
+```

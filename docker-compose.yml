@@ -4,14 +4,19 @@ services:
     image: "jaynos/redis"
     volumes:
       - ./storage/var/redis:/var/redis
+    privileged: true
+    sysctls:
+#      - vm.overcommit_memory=1
+      - net.core.somaxconn=1024
     restart: always
   pgsql:
     image: "jaynos/pgsql"
     environment:
-      PGSQL_ROOT_PASSWORD: root
+      POSTGRES_PASSWORD: postgres
     volumes:
-      - ./storage/var/pgsql:/var/pgsql
-    restart: always
+      - ./storage/var/pgsql:/var/pgsql/data
+      - ./docs/schemas:/var/pgsql/initdb.d
+#    restart: always
   php:
     image: "jaynos/phalcon"
     volumes:
@@ -26,6 +31,7 @@ services:
      - php
     volumes:
       - .:/var/www
+      - ./docs/conf/nginx/nginx.conf:/usr/local/nginx/conf/nginx.conf
       - ./docs/conf/nginx/vhost:/usr/local/nginx/conf/vhost
       - ./docs/conf/nginx/extra:/usr/local/nginx/conf/extra
     ports:
