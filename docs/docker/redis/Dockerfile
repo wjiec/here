@@ -53,10 +53,19 @@ RUN set -ex \
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*
 
-
 RUN set -ex \
     && mkdir -p "${REDIS_DATA_DIR}" \
     && chown -R redis:redis "${REDIS_DATA_DIR}"
+
+RUN set -ex \
+    && { \
+           echo; \
+           echo '# WARNING overcommit_memory is set to 0! Background save may fail under low memory condition.'; \
+           echo 'vm.overcommit_memory = 1'; \
+           echo; \
+           echo '# WARNING: The TCP backlog setting of 511 cannot be enforced'; \
+           echo 'net.core.somaxconn = 1024'; \
+       } >> /etc/sysctl.conf
 
 
 ENV PATH "${REDIS_HOME}/bin:${PATH}"
