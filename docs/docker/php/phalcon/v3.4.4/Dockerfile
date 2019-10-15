@@ -5,7 +5,7 @@ MAINTAINER Jayson Wang <jayson@laboys.org>
 ENV PHP_HOME /usr/local/php
 ENV PHP_CONF_PATH /usr/local/php/etc
 ENV PHP_REDIS_VERSION 5.0.2
-ENV PHP_PHALCON_VERSION "4.0.0-rc1"
+ENV PHP_PHALCON_VERSION 3.4.4
 
 
 RUN set -ex \
@@ -53,8 +53,9 @@ RUN set -ex \
     && echo 'extension=redis' >> "${PHP_CONF_PATH}/php.ini" \
     \
     && cd "/usr/src" \
-    && git clone --depth=1 "https://github.com/phalcon/cphalcon.git" \
-    && cd "/usr/src/cphalcon/build" \
+    && curl -SL "http://codeload.github.com/phalcon/cphalcon/tar.gz/v${PHP_PHALCON_VERSION}" -o phalcon.tar.gz \
+    && tar xvf phalcon.tar.gz -C /usr/src \
+    && cd "/usr/src/cphalcon-${PHP_PHALCON_VERSION}/build" \
     && ./install \
     && echo 'extension=phalcon' >> "${PHP_CONF_PATH}/php.ini" \
     \
