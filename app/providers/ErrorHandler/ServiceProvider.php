@@ -23,6 +23,11 @@ use Whoops\Run;
  */
 final class ServiceProvider extends AbstractServiceProvider {
 
+    /**
+     * Name of the service
+     *
+     * @var string
+     */
     protected $service_name = 'errorHandler';
 
     /**

@@ -22,7 +22,7 @@ use League\Flysystem\Filesystem;
 final class ServiceProvider extends AbstractServiceProvider {
 
     /**
-     * Name of service
+     * Name of the service
      *
      * @var string
      */

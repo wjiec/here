@@ -10,7 +10,7 @@
  */
 namespace Here\Stage;
 
-use Here\Providers\Installer;
+use Here\Providers\ServiceProviderInstaller;
 use Here\Stage\Providers\Dispatcher\ServiceProvider as DispatcherServiceProvider;
 use Here\Stage\Providers\View\ServiceProvider as ViewServiceProviderAlias;
 use Phalcon\DiInterface;
@@ -43,8 +43,8 @@ final class Module implements ModuleDefinitionInterface {
      * @param DiInterface $di
      */
     final public function registerServices(DiInterface $di) {
-        Installer::setup(new DispatcherServiceProvider($di));
-        Installer::setup(new ViewServiceProviderAlias($di));
+        ServiceProviderInstaller::setup(new DispatcherServiceProvider($di));
+        ServiceProviderInstaller::setup(new ViewServiceProviderAlias($di));
     }
 
 }

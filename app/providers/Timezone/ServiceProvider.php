@@ -20,7 +20,7 @@ use Here\Providers\AbstractServiceProvider;
 final class ServiceProvider extends AbstractServiceProvider {
 
     /**
-     * Name of service
+     * Name of the service
      *
      * @var string
      */

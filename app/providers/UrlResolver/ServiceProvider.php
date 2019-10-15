@@ -21,7 +21,7 @@ use Phalcon\Mvc\Url;
 final class ServiceProvider extends AbstractServiceProvider {
 
     /**
-     * Name of service
+     * Name of the service
      *
      * @var string
      */

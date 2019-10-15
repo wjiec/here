@@ -23,7 +23,7 @@ use Phalcon\Logger\Formatter\Line as LineFormatter;
 final class ServiceProvider extends AbstractServiceProvider {
 
     /**
-     * Name of service
+     * Name of the service
      *
      * @var string
      */

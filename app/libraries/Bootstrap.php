@@ -13,7 +13,7 @@ namespace Here\Libraries;
 use Here\Providers\Environment\ServiceProvider as EnvironmentServiceProvider;
 use Here\Providers\ErrorHandler\ServiceProvider as ErrorHandlerServiceProvider;
 use Here\Providers\EventsManager\ServiceProvider as EventsManagerServiceProvider;
-use Here\Providers\Installer;
+use Here\Providers\ServiceProviderInstaller;
 use Here\Providers\ServiceProviderInterface;
 use Phalcon\Application;
 use Phalcon\Di;
@@ -120,7 +120,7 @@ final class Bootstrap {
      * @return Bootstrap
      */
     final private function setupServiceProvider(ServiceProviderInterface $provider) {
-        Installer::setup($provider);
+        ServiceProviderInstaller::setup($provider);
         return $this;
     }
 

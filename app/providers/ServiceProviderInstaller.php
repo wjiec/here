@@ -12,10 +12,10 @@ namespace Here\Providers;
 
 
 /**
- * Class Installer
+ * Class ServiceProviderInstaller
  * @package Here\Providers
  */
-final class Installer {
+final class ServiceProviderInstaller {
 
     /**
      * Install and setup provider
