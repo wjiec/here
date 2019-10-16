@@ -23,7 +23,7 @@ final class LoggerHandler extends Handler {
 
     /**
      * @inheritDoc
-     * @return int|void|null
+     * @return int|null
      */
     final public function handle() {
         if ($logger = $this->getLogger()) {

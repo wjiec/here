@@ -10,6 +10,8 @@
  */
 namespace Here\Stage\Controllers;
 
+use Here\Models\Article;
+
 
 /**
  * Class DiscussionsController
@@ -22,18 +24,7 @@ final class DiscussionsController extends ControllerBase {
      */
     final public function indexAction() {
         $this->tag->setTitle("Homepage");
-        $this->view->setVars(array(
-            'articles' => array(
-                array(
-                    'title' => 'article title 1',
-                    'description' => 'article description 1',
-                ),
-                array(
-                    'title' => 'article title 2',
-                    'description' => 'article description 2',
-                )
-            )
-        ));
+        $this->view->setVar('articles', Article::find());
     }
 
 }

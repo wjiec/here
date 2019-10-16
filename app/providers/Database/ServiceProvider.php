@@ -12,6 +12,7 @@ namespace Here\Providers\Database;
 
 use Here\Libraries\Listener\Database;
 use Here\Providers\AbstractServiceProvider;
+use Phalcon\Config;
 use Phalcon\Db\Adapter;
 
 
@@ -34,8 +35,12 @@ final class ServiceProvider extends AbstractServiceProvider {
     final public function register() {
         $this->di->setShared($this->service_name, function() {
             $config = container('config')->database;
+            /* @var $driver_config Config */
             $driver_config = $config->drivers->{$config->default};
             $driver = $driver_config->adapter;
+
+            $driver_config = $driver_config->toArray();
+            unset($driver_config['adapter']);
 
             /* @var Adapter $connection */
             $connection = new $driver($driver_config);

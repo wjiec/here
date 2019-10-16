@@ -10,13 +10,14 @@
  */
 return array(
     Here\Providers\Config\ServiceProvider::class,
+    Here\Providers\Database\ServiceProvider::class,
+    Here\Providers\Field\ServiceProvider::class,
     Here\Providers\FileSystem\ServiceProvider::class,
     Here\Providers\Logger\ServiceProvider::class,
     Here\Providers\ModuleMeta\ServiceProvider::class,
-    Here\Providers\UrlResolver\ServiceProvider::class,
-    Here\Providers\Session\ServiceProvider::class,
-    Here\Providers\Database\ServiceProvider::class,
     Here\Providers\Router\ServiceProvider::class,
+    Here\Providers\Session\ServiceProvider::class,
     Here\Providers\Timezone\ServiceProvider::class,
+    Here\Providers\UrlResolver\ServiceProvider::class,
     Here\Providers\Volt\ServiceProvider::class,
 );

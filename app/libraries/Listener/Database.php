@@ -34,7 +34,7 @@ final class Database {
 
         $logger = container('logger', 'db');
         $logger->debug(sprintf("BeforeQuery:\nStatement: %s\nVariables:%s",
-        $statement, join(', ', $variables)));
+            $statement, join(', ', $variables ?? array())));
 
         return true;
     }

@@ -41,7 +41,6 @@ final class ServiceProvider extends AbstractServiceProvider {
             $view->setViewsDir($config->viewDir);
             if (isset($config->layoutDir)) {
                 $view->setLayoutsDir($config->layoutDir);
-                $view->setTemplateAfter('stage');
             }
 
             $view->registerEngines(array(

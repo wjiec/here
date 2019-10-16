@@ -30,7 +30,7 @@ create table public.article (
   "article_body" text not null default '',
   "article_public" bool not null default false,
   "article_publish" bool not null default false,
-  "article_commentable" bool not null default true,
+  "article_allow_comment" bool not null default true,
   "article_lock" public.lock_status not null default 'never'::public.lock_status,
   "article_password" varchar(128) not null default '',
   "article_like" integer not null default 0,

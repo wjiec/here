@@ -9,7 +9,7 @@
  * @link      https://github.com/nosjay/here
  */
 return array(
-    'root'      => cache_path('logs'),
+    'root'      => storage_path('logs'),
     'format'    => env('LOGGER_FORMAT', "[%date%]\t - [%type%] : [%message%]"),
     'date'      => env('LOGGER_DATE', 'Y-m-d H:i:s'),
     'level'     => env('LOGGER_LEVEL', 'INFO'),
