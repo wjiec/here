@@ -4,7 +4,7 @@ MAINTAINER Jayson Wang <jayson@laboys.org>
 
 ENV PHP_HOME /usr/local/php
 ENV PHP_CONF_PATH /usr/local/php/etc
-ENV PHP_REDIS_VERSION 5.0.2
+ENV PHP_REDIS_VERSION 4.3.0
 ENV PHP_PHALCON_VERSION 3.4.4
 
 
