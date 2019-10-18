@@ -37,6 +37,7 @@ final class ServiceProvider extends AbstractServiceProvider {
             $config = container('config')->database;
             /* @var $driver_config Config */
             $driver_config = $config->drivers->{$config->default};
+            /** @noinspection PhpUndefinedFieldInspection */
             $driver = $driver_config->adapter;
 
             $driver_config = $driver_config->toArray();
