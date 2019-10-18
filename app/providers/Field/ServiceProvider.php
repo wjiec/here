@@ -10,6 +10,10 @@
  */
 namespace Here\Providers\Field;
 
+use Here\Libraries\Field\Store\Adapter\Cache;
+use Here\Libraries\Field\Store\Adapter\Database;
+use Here\Libraries\Field\Store\Adapter\Memory;
+use Here\Libraries\Field\Store\Adapter\Mixed;
 use Here\Providers\AbstractServiceProvider;
 
 
@@ -30,8 +34,12 @@ final class ServiceProvider extends AbstractServiceProvider {
      * @inheritdoc
      */
     final public function register() {
-        $this->di->set($this->service_name, function(string $field) {
-            return new Store($field);
+        $this->di->set($this->service_name, function() {
+            return new Mixed(
+                new Memory(),
+                new Cache(),
+                new Database()
+            );
         });
     }
 

@@ -9,6 +9,7 @@
  * @link      https://github.com/nosjay/here
  */
 return array(
+    Here\Providers\Cache\ServiceProvider::class,
     Here\Providers\Config\ServiceProvider::class,
     Here\Providers\Database\ServiceProvider::class,
     Here\Providers\Field\ServiceProvider::class,

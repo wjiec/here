@@ -225,6 +225,34 @@ final class Field extends AbstractModel {
     }
 
     /**
+     * Query field by column name, returns null when field
+     * not exists.
+     *
+     * @param string $column
+     * @return Field|null
+     */
+    final public static function findByColumn(string $column): ?self {
+        return static::findFirst(array(
+            'conditions' => 'field_column = ?0',
+            'bind' => array($column)
+        )) ?: null;
+    }
+
+    /**
+     * Create a field but does't inserted into the database
+     *
+     * @param string $column
+     * @param null|string $key
+     * @return Field
+     */
+    final public static function factory(string $column, ?string $key = null): self {
+        $field = new static();
+        $field->setFieldKey($key ?? md5($column));
+
+        return $field;
+    }
+
+    /**
      * Field type: string
      */
     public const FIELD_VALUE_TYPE_STRING = 'string';
