@@ -16,7 +16,7 @@ services:
     volumes:
       - ./storage/var/pgsql:/var/pgsql/data
       - ./docs/schemas/postgres.sql:/var/pgsql/initdb.d/
-#    restart: always
+    restart: always
   php:
     image: "jaynos/phalcon:3.4.4"
     volumes:
@@ -33,7 +33,6 @@ services:
       - .:/var/www
       - ./docs/conf/nginx/nginx.conf:/usr/local/nginx/conf/nginx.conf
       - ./docs/conf/nginx/vhost:/usr/local/nginx/conf/vhost
-      - ./docs/conf/nginx/extra:/usr/local/nginx/conf/extra
     ports:
       - "80:80"
       - "443:443"
