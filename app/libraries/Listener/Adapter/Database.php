@@ -8,11 +8,11 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Libraries\Listener;
-
+namespace Here\Libraries\Listener\Adapter;
 
 use Phalcon\Db\Adapter\Pdo;
 use Phalcon\Events\Event;
+
 
 /**
  * Class Database

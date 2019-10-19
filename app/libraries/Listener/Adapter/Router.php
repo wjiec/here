@@ -12,29 +12,25 @@ namespace Here\Libraries\Listener\Adapter;
 
 use Here\Libraries\Listener\AbstractListener;
 use Phalcon\Events\Event;
-use Phalcon\Mvc\ViewBaseInterface;
+use Phalcon\Mvc\Router as MvcRouter;
+use Phalcon\Mvc\Router\Route;
 
 
 /**
- * Class View
+ * Class Router
  * @package Here\Libraries\Listener\Adapter
  */
-final class View extends AbstractListener {
+final class Router extends AbstractListener {
 
     /**
-     * Notify about not found views
+     * Any route is not matched
      *
-     * @noinspection PhpUnused
      * @param Event $event
-     * @param ViewBaseInterface $view
-     * @param string $engine_path
-     *
+     * @param MvcRouter $router
+     * @param Route $route
      */
-    final public function notFoundView(Event $event, ViewBaseInterface $view, string $engine_path) {
-        // @TODO logger on not found
-        if ($event->isCancelable()) {
-            $event->stop();
-        }
+    final public function notMatchedRoute(Event $event, MvcRouter $router, Route $route) {
+        /* @TODO forward to module error page */
     }
 
 }
