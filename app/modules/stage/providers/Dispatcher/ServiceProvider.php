@@ -10,6 +10,7 @@
  */
 namespace Here\Stage\Providers\Dispatcher;
 
+use Here\Libraries\Listener\Adapter\Dispatcher as DispatcherListener;
 use Here\Providers\AbstractServiceProvider;
 use Phalcon\Mvc\Dispatcher as MvcDispatcher;
 
@@ -36,6 +37,7 @@ final class ServiceProvider extends AbstractServiceProvider {
 
             $dispatcher->setDefaultNamespace('Here\Stage\Controllers');
             $dispatcher->setEventsManager(container('eventsManager'));
+            container('eventsManager')->attach('dispatch', new DispatcherListener());
 
             return $dispatcher;
         });

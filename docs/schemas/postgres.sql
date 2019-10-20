@@ -1,5 +1,5 @@
 --
--- Here Blog
+-- Here Framework
 --
 
 drop database if exists here;
@@ -26,6 +26,7 @@ create table public.article (
   "article_id" serial4 not null primary key,
   "author_id" integer not null default 0,
   "article_title" varchar(128) not null default '',
+  "article_abbr" varchar(255) not null default '',
   "article_outline" text not null default '',
   "article_body" text not null default '',
   "article_public" bool not null default false,
@@ -43,6 +44,7 @@ create table public.article (
 alter table public.article owner to postgres;
 create index idx_author_id on public.article using btree (author_id);
 create index idx_article_title on public.article using btree (article_title);
+create index idx_article_abbr on public.article using btree (article_abbr);
 
 
 --

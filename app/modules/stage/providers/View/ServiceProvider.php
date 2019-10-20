@@ -10,10 +10,8 @@
  */
 namespace Here\Stage\Providers\View;
 
-use Here\Libraries\Listener\View as ViewListener;
+use Here\Libraries\Listener\Adapter\View as ViewListener;
 use Here\Providers\AbstractServiceProvider;
-use Phalcon\Config;
-use Phalcon\Dispatcher;
 use Phalcon\Mvc\View;
 
 

@@ -13,7 +13,8 @@ return array(
         'name'          => env('BLOG_NAME'),
         'url'           => env('BLOG_URL'),
         'keywords'      => env('BLOG_KEYWORDS'),
-        'description'   => env('BLOG_DESCRIPTION')
+        'description'   => env('BLOG_DESCRIPTION'),
+        'robots'        => env('BLOG_ROBOTS')
     ),
 
     'application' => array(

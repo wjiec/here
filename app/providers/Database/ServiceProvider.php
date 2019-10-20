@@ -10,7 +10,7 @@
  */
 namespace Here\Providers\Database;
 
-use Here\Libraries\Listener\Database;
+use Here\Libraries\Listener\Adapter\Database as DatabaseListener;
 use Here\Providers\AbstractServiceProvider;
 use Phalcon\Config;
 use Phalcon\Db\Adapter;
@@ -46,7 +46,7 @@ final class ServiceProvider extends AbstractServiceProvider {
             /* @var Adapter $connection */
             $connection = new $driver($driver_config);
             $connection->setEventsManager(container('eventsManager'));
-            container('eventsManager')->attach('db', new Database());
+            container('eventsManager')->attach('db', new DatabaseListener());
 
             return $connection;
         });

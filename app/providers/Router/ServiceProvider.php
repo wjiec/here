@@ -10,6 +10,7 @@
  */
 namespace Here\Providers\Router;
 
+use Here\Libraries\Listener\Adapter\Router as RouterListener;
 use Here\Providers\AbstractServiceProvider;
 use Phalcon\Mvc\Router;
 
@@ -42,11 +43,7 @@ final class ServiceProvider extends AbstractServiceProvider {
 
             $router->removeExtraSlashes(true);
             $router->setEventsManager(container('eventsManager'));
-            $router->notFound(array(
-                'module' => 'stage',
-                'controller' => 'error',
-                'action' => 'error404'
-            ));
+            container('eventsManager')->attach('router', new RouterListener());
 
             return $router;
         });
