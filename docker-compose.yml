@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: postgres
     volumes:
       - ./storage/var/pgsql:/var/pgsql/data
-      - ./docs/schemas/postgres.sql:/var/pgsql/initdb.d/
+      - ./docs/schemas/postgres.sql:/var/pgsql/initdb.d/postgres.sql
     restart: always
   php:
     image: "jaynos/phalcon:3.4.4"

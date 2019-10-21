@@ -8,8 +8,6 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-
-
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use Phalcon\Di;
@@ -30,11 +28,6 @@ define('APP_START_MEMORY', memory_get_usage());
  * @const APP_DOCUMENT_ROOT The document root of the application
  */
 define('APP_DOCUMENT_ROOT', dirname(__DIR__));
-
-/**
- * @const APP_MODULES_ROOT The root path of the modules
- */
-define('APP_MODULES_ROOT', __DIR__ . '/modules');
 
 // register composer autoloader
 require_once APP_DOCUMENT_ROOT . '/vendor/autoload.php';
@@ -69,7 +62,7 @@ if (!function_exists('module_path')) {
      * @return string
      */
     function module_path(string $module): string {
-        return app_path('modules') . ($module ? "/{$module}" : '');
+        return app_path('module') . ($module ? "/{$module}" : '');
     }
 }
 
@@ -93,7 +86,7 @@ if (!function_exists('cache_path')) {
      * @return string
      */
     function cache_path(string $path = ''): string {
-        return storage_path('caches') . ($path ? "/{$path}" : '');
+        return storage_path('cache') . ($path ? "/{$path}" : '');
     }
 }
 
@@ -105,7 +98,7 @@ if (!function_exists('config_path')) {
      * @return string
      */
     function config_path(string $path = ''): string {
-        return app_path('configs') . ($path ? "/{$path}" : '');
+        return app_path('config') . ($path ? "/{$path}" : '');
     }
 }
 

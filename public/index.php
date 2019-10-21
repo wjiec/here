@@ -10,7 +10,7 @@
  */
 declare(strict_types=1);
 
-use Here\Libraries\Bootstrap;
+use Here\Library\Bootstrap;
 
 
 // register the application bootstrap

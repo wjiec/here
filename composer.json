@@ -19,10 +19,10 @@
     },
     "autoload": {
         "psr-4": {
-            "Here\\Libraries\\": "app/libraries",
-            "Here\\Models\\": "app/models",
-            "Here\\Plugins\\": "app/plugins",
-            "Here\\Providers\\": "app/providers"
+            "Here\\Library\\": "app/library",
+            "Here\\Model\\": "app/model",
+            "Here\\Plugin\\": "app/plugin",
+            "Here\\Provider\\": "app/provider"
         }
     }
 }
