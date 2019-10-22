@@ -10,6 +10,7 @@
  */
 namespace Here\Admin\Controller;
 
+use Here\Provider\Field\Store\Adapter\Mixed;
 use Phalcon\Mvc\Controller;
 
 
@@ -22,6 +23,11 @@ final class DashboardController extends Controller {
     /**
      * Shows the dashboard to the admin of blog
      */
-    final public function indexAction() {}
+    final public function indexAction() {
+        /* @var Mixed $field */
+        $field = container('field');
+        var_dump($field->get('admin.prefix'));
+        var_dump($field); die();
+    }
 
 }

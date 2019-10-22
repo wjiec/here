@@ -8,12 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Library\Field\Store;
+namespace Here\Provider\Field\Store;
 
 
 /**
  * Class AbstractStore
- * @package Here\Library\Field\Store
+ * @package Here\Provider\Field\Store
  */
 abstract class AbstractStore implements StoreInterface {
 

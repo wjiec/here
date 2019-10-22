@@ -8,15 +8,15 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Library\Field\Store\Adapter;
+namespace Here\Provider\Field\Store\Adapter;
 
-use Here\Library\Field\Store\AbstractStore;
-use Here\Library\Field\Store\StoreInterface;
+use Here\Provider\Field\Store\AbstractStore;
+use Here\Provider\Field\Store\StoreInterface;
 
 
 /**
  * Class Mixed
- * @package Here\Library\Field\Store\Adapter
+ * @package Here\Provider\Field\Store\Adapter
  */
 final class Mixed extends AbstractStore {
 

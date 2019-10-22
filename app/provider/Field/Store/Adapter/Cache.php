@@ -8,18 +8,38 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Library\Field\Store\Adapter;
+namespace Here\Provider\Field\Store\Adapter;
 
-use Here\Library\Field\Store\AbstractStore;
-use Here\Library\Field\Store\StoreInterface;
-use Here\Model\Field;
+use Here\Provider\Field\Store\AbstractStore;
+use Here\Provider\Field\Store\StoreInterface;
+use Phalcon\Cache\BackendInterface;
 
 
 /**
- * Class Database
- * @package Here\Library\Field\Store\Adapter
+ * Class Cache
+ * @package Here\Provider\Field\Store\Adapter
  */
-final class Database extends AbstractStore {
+final class Cache extends AbstractStore {
+
+    /**
+     * @var BackendInterface
+     */
+    private $cache;
+
+    /**
+     * @var int
+     */
+    private $lifetime;
+
+    /**
+     * Cache constructor.
+     *
+     * @param int $lifetime
+     */
+    final public function __construct(int $lifetime = 3600) {
+        $this->cache = container('cache');
+        $this->lifetime = $lifetime;
+    }
 
     /**
      * Returns the specify key whether is in the store
@@ -28,7 +48,7 @@ final class Database extends AbstractStore {
      * @return bool
      */
     final public function exists(string $key): bool {
-        return Field::findByKey($key) !== null;
+        return $this->cache->exists($key);
     }
 
     /**
@@ -40,10 +60,8 @@ final class Database extends AbstractStore {
      * @return mixed
      */
     final public function get(string $key, $default = null) {
-        if ($field = Field::findByKey($key)) {
-            return $field->getRealFieldValue();
-        }
-        return $default;
+        // deserialize by phalcon cache frontend
+        return $this->cache->get($key) ?: $default;
     }
 
     /**
@@ -54,10 +72,8 @@ final class Database extends AbstractStore {
      * @return StoreInterface
      */
     final public function setString(string $key, string $value): StoreInterface {
-        $field = Field::findByKey($key) ?? Field::factory($key);
-        $field->setStringField($key, $value);
-        $field->save();
-
+        // serialize by phalcon cache frontend
+        $this->cache->save($key, $value, $this->lifetime);
         return $this;
     }
 
@@ -69,10 +85,7 @@ final class Database extends AbstractStore {
      * @return StoreInterface
      */
     final public function setInteger(string $key, int $value): StoreInterface {
-        $field = Field::findByKey($key) ?? Field::factory($key);
-        $field->setIntegerField($key, $value);
-        $field->save();
-
+        $this->cache->save($key, $value, $this->lifetime);
         return $this;
     }
 
@@ -84,10 +97,7 @@ final class Database extends AbstractStore {
      * @return StoreInterface
      */
     final public function setFloat(string $key, int $value): StoreInterface {
-        $field = Field::findByKey($key) ?? Field::factory($key);
-        $field->setFloatField($key, $value);
-        $field->save();
-
+        $this->cache->save($key, $value, $this->lifetime);
         return $this;
     }
 
@@ -99,10 +109,7 @@ final class Database extends AbstractStore {
      * @return StoreInterface
      */
     final public function setBoolean(string $key, bool $value): StoreInterface {
-        $field = Field::findByKey($key) ?? Field::factory($key);
-        $field->setBooleanField($key, $value);
-        $field->save();
-
+        $this->cache->save($key, $value, $this->lifetime);
         return $this;
     }
 

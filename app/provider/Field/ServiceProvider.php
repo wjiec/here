@@ -10,10 +10,10 @@
  */
 namespace Here\Provider\Field;
 
-use Here\Library\Field\Store\Adapter\Cache;
-use Here\Library\Field\Store\Adapter\Database;
-use Here\Library\Field\Store\Adapter\Memory;
-use Here\Library\Field\Store\Adapter\Mixed;
+use Here\Provider\Field\Store\Adapter\Cache;
+use Here\Provider\Field\Store\Adapter\Database;
+use Here\Provider\Field\Store\Adapter\Memory;
+use Here\Provider\Field\Store\Adapter\Mixed;
 use Here\Provider\AbstractServiceProvider;
 
 

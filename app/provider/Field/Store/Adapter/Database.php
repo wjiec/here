@@ -8,38 +8,18 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Library\Field\Store\Adapter;
+namespace Here\Provider\Field\Store\Adapter;
 
-use Here\Library\Field\Store\AbstractStore;
-use Here\Library\Field\Store\StoreInterface;
-use Phalcon\Cache\BackendInterface;
+use Here\Provider\Field\Store\AbstractStore;
+use Here\Provider\Field\Store\StoreInterface;
+use Here\Model\Field;
 
 
 /**
- * Class Cache
- * @package Here\Library\Field\Store\Adapter
+ * Class Database
+ * @package Here\Provider\Field\Store\Adapter
  */
-final class Cache extends AbstractStore {
-
-    /**
-     * @var BackendInterface
-     */
-    private $cache;
-
-    /**
-     * @var int
-     */
-    private $lifetime;
-
-    /**
-     * Cache constructor.
-     *
-     * @param int $lifetime
-     */
-    final public function __construct(int $lifetime = 3600) {
-        $this->cache = container('cache');
-        $this->lifetime = 3600;
-    }
+final class Database extends AbstractStore {
 
     /**
      * Returns the specify key whether is in the store
@@ -48,7 +28,7 @@ final class Cache extends AbstractStore {
      * @return bool
      */
     final public function exists(string $key): bool {
-        return $this->cache->exists($key);
+        return Field::findByKey($key) !== null;
     }
 
     /**
@@ -60,7 +40,10 @@ final class Cache extends AbstractStore {
      * @return mixed
      */
     final public function get(string $key, $default = null) {
-        return unserialize($this->cache->get($key)) ?: $default;
+        if ($field = Field::findByKey($key)) {
+            return $field->getRealFieldValue();
+        }
+        return $default;
     }
 
     /**
@@ -71,7 +54,11 @@ final class Cache extends AbstractStore {
      * @return StoreInterface
      */
     final public function setString(string $key, string $value): StoreInterface {
-        return $this->save($key, $value);
+        $field = Field::findByKey($key) ?? Field::factory($key);
+        $field->setStringField($key, $value);
+        $field->save();
+
+        return $this;
     }
 
     /**
@@ -82,7 +69,11 @@ final class Cache extends AbstractStore {
      * @return StoreInterface
      */
     final public function setInteger(string $key, int $value): StoreInterface {
-        return $this->save($key, $value);
+        $field = Field::findByKey($key) ?? Field::factory($key);
+        $field->setIntegerField($key, $value);
+        $field->save();
+
+        return $this;
     }
 
     /**
@@ -93,7 +84,11 @@ final class Cache extends AbstractStore {
      * @return StoreInterface
      */
     final public function setFloat(string $key, int $value): StoreInterface {
-        return $this->save($key, $value);
+        $field = Field::findByKey($key) ?? Field::factory($key);
+        $field->setFloatField($key, $value);
+        $field->save();
+
+        return $this;
     }
 
     /**
@@ -104,18 +99,10 @@ final class Cache extends AbstractStore {
      * @return StoreInterface
      */
     final public function setBoolean(string $key, bool $value): StoreInterface {
-        return $this->save($key, $value);
-    }
+        $field = Field::findByKey($key) ?? Field::factory($key);
+        $field->setBooleanField($key, $value);
+        $field->save();
 
-    /**
-     * Save a key-value pair to cache backend
-     *
-     * @param string $key
-     * @param $value
-     * @return StoreInterface
-     */
-    final private function save(string $key, $value): StoreInterface {
-        $this->cache->save($key, serialize($value), $this->lifetime);
         return $this;
     }
 
