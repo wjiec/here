@@ -12,7 +12,7 @@ namespace Here\Provider\Router;
 
 use Here\Library\Listener\Adapter\Router as RouterListener;
 use Here\Provider\AbstractServiceProvider;
-use Phalcon\Mvc\Router;
+use Here\Provider\Router\Group\Admin;
 
 
 /**
@@ -33,10 +33,7 @@ final class ServiceProvider extends AbstractServiceProvider {
      */
     final public function register() {
         $this->di->setShared($this->service_name, function() {
-            /** @noinspection PhpIncludeInspection */
-            $router = include config_path('routes.php');
-
-            /* @var Router $router */
+            $router = new Router();
             if (!isset($_GET['_url'])) {
                 $router->setUriSource(Router::URI_SOURCE_SERVER_REQUEST_URI);
             }
@@ -44,6 +41,8 @@ final class ServiceProvider extends AbstractServiceProvider {
             $router->removeExtraSlashes(true);
             $router->setEventsManager(container('eventsManager'));
             container('eventsManager')->attach('router', new RouterListener());
+
+            $router->mount(new Admin());
 
             return $router;
         });
