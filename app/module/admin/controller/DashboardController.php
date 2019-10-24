@@ -10,24 +10,24 @@
  */
 namespace Here\Admin\Controller;
 
-use Phalcon\Mvc\Controller;
+use Here\Admin\Library\Mvc\Controller\AbstractController;
 
 
 /**
  * Class DashboardController
  * @package Here\Admin\Controller
  */
-final class DashboardController extends Controller {
+final class DashboardController extends AbstractController {
 
     /**
      * Initializing the states of dashboard
      */
     final public function initialize() {
-        $this->tag->setTitle("Dashboard");
+        $this->tag::setTitle("Dashboard");
     }
 
     /**
-     * Shows the dashboard to the admin of blog
+     * Shows something states or something to do
      */
     final public function indexAction() {}
 

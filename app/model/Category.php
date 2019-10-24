@@ -10,7 +10,7 @@
  */
 namespace Here\Model;
 
-use Here\Library\Model\AbstractModel;
+use Here\Library\Mvc\Model\AbstractModel;
 
 
 /**

@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Library\Model;
+namespace Here\Library\Mvc\Model;
 
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\ResultsetInterface;

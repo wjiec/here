@@ -20,7 +20,7 @@ use Phalcon\Mvc\Router\Group as RouteGroup;
 final class Admin extends RouteGroup {
 
     /**
-     * Route group of admin module,
+     * Route group of admin module
      */
     final public function initialize() {
         $this->setPaths(array('module' => 'admin'));
@@ -31,7 +31,7 @@ final class Admin extends RouteGroup {
 
     /**
      * The purpose of these rules is shows something states
-     * or something to do, like review comments.
+     * or something to do, like review comments and so on
      */
     final private function addDashboard() {
         $this->addGet('[/]{0,1}(dashboard){0,1}', array('controller' => 'dashboard'))

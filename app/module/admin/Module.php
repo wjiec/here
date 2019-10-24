@@ -33,6 +33,7 @@ final class Module implements ModuleDefinitionInterface {
         (new Loader())->registerNamespaces(array(
             'Here\Admin' => __DIR__,
             'Here\Admin\Controller' => __DIR__ . DIRECTORY_SEPARATOR . 'controller',
+            'Here\Admin\Library' => __DIR__ . DIRECTORY_SEPARATOR . 'library',
             'Here\Admin\Provider' => __DIR__ . DIRECTORY_SEPARATOR . 'provider'
         ))->register();
     }
