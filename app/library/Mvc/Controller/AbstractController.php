@@ -10,13 +10,19 @@
  */
 namespace Here\Library\Mvc\Controller;
 
+use Here\Library\Mvc\Component\Token;
 use Phalcon\Mvc\Controller;
-use Phalcon\Tag;
 
 
 /**
  * Class AbstractController
  * @package Here\Library\Mvc\Controller
- * @property Tag $tag
  */
-abstract class AbstractController extends Controller {}
+abstract class AbstractController extends Controller {
+
+    /**
+     * Component of csrf generator/validator
+     */
+    use Token;
+
+}

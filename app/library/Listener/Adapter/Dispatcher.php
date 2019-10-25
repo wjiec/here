@@ -30,7 +30,7 @@ final class Dispatcher extends AbstractListener {
      * @param Throwable $exception
      */
     final public function beforeException(Event $event, MvcDispatcher $dispatcher, Throwable $exception) {
-        var_dump($exception); die();
+        var_dump(__CLASS__, $exception); die();
     }
 
 }
