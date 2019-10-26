@@ -11,6 +11,7 @@
 return array(
     Here\Provider\Cache\ServiceProvider::class,
     Here\Provider\Config\ServiceProvider::class,
+    Here\Provider\Csrf\ServiceProvider::class,
     Here\Provider\Database\ServiceProvider::class,
     Here\Provider\Field\ServiceProvider::class,
     Here\Provider\FileSystem\ServiceProvider::class,
