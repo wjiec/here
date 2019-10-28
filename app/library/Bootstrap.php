@@ -10,16 +10,15 @@
  */
 namespace Here\Library;
 
+use Here\Provider\Application\Application;
 use Here\Provider\Environment\ServiceProvider as EnvironmentServiceProvider;
 use Here\Provider\ErrorHandler\ServiceProvider as ErrorHandlerServiceProvider;
 use Here\Provider\EventsManager\ServiceProvider as EventsManagerServiceProvider;
 use Here\Provider\ServiceProviderInstaller;
 use Here\Provider\ServiceProviderInterface;
-use Phalcon\Application;
 use Phalcon\Di;
 use Phalcon\Di\FactoryDefault;
 use Phalcon\DiInterface;
-use Phalcon\Mvc\Application as MvcApplication;
 
 
 /**
@@ -55,11 +54,6 @@ final class Bootstrap {
     final public function __construct() {
         $this->di = new FactoryDefault();
         Di::setDefault($this->di);
-
-        $this->app = new MvcApplication($this->di);
-        $this->app->setDI($this->di);
-
-        $this->di->setShared('app', $this->app);
         $this->di->setShared('bootstrap', $this);
 
         $this->setupEnvironment();
@@ -71,19 +65,12 @@ final class Bootstrap {
         if (is_array($providers)) {
             $this->setupServiceProviders($providers);
         }
-
-        $this->app->setEventsManager(container('eventsManager'));
+        $this->app = container('app');
 
         /** @noinspection PhpIncludeInspection */
         $services = include config_path('services.php');
         if (is_array($services)) {
             $this->setupServices($services);
-        }
-
-        /** @noinspection PhpIncludeInspection */
-        $modules = include config_path('modules.php');
-        if (is_array($modules)) {
-            $this->setupModules($modules);
         }
     }
 
@@ -147,19 +134,6 @@ final class Bootstrap {
         foreach ($services as $name => $service) {
             $this->di->setShared($name, $services);
         }
-        return $this;
-    }
-
-    /**
-     * Initializing the modules
-     *
-     * @param array $modules
-     * @return Bootstrap
-     */
-    final private function setupModules(array $modules) {
-        $this->app->registerModules(array_map(function(array $module) {
-            return array_merge($module, array('className' => $module['class']));
-        }, $modules));
         return $this;
     }
 

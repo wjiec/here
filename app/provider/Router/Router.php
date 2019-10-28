@@ -17,4 +17,13 @@ use Phalcon\Mvc\Router as MvcRouter;
  * Class Router
  * @package Here\Provider\Router
  */
-final class Router extends MvcRouter {}
+final class Router extends MvcRouter {
+
+    /**
+     * Router constructor.
+     */
+    final public function __construct() {
+        parent::__construct(false);
+    }
+
+}

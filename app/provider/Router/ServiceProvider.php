@@ -13,6 +13,7 @@ namespace Here\Provider\Router;
 use Here\Library\Listener\Adapter\Router as RouterListener;
 use Here\Provider\AbstractServiceProvider;
 use Here\Provider\Router\Group\Admin;
+use Here\Provider\Router\Group\Tinder;
 
 
 /**
@@ -43,6 +44,7 @@ final class ServiceProvider extends AbstractServiceProvider {
             container('eventsManager')->attach('router', new RouterListener());
 
             $router->mount(new Admin());
+            $router->mount(new Tinder());
 
             return $router;
         });

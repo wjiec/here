@@ -8,14 +8,14 @@
  * @license   MIT License
  * @link      https://github.com/nosjay/here
  */
-namespace Here\Provider\Config;
+namespace Here\Provider\Application;
 
 use Here\Provider\AbstractServiceProvider;
 
 
 /**
  * Class ServiceProvider
- * @package Here\Provider\Config
+ * @package Here\Provider\Application
  */
 final class ServiceProvider extends AbstractServiceProvider {
 
@@ -24,29 +24,14 @@ final class ServiceProvider extends AbstractServiceProvider {
      *
      * @var string
      */
-    protected $service_name = 'config';
+    protected $service_name = 'app';
 
     /**
-     * Components of configure
-     *
-     * @var array
-     */
-    protected $configs = array(
-        'cache',
-        'config',
-        'database',
-        'logger',
-        'session',
-        'timezone'
-    );
-
-    /**
-     * @inheritDoc
+     * @inheritdoc
      */
     final public function register() {
-        $configs = $this->configs;
-        $this->di->setShared($this->service_name, function() use ($configs) {
-            return Factory::create($configs);
+        $this->di->setShared($this->service_name, function() {
+            return new Application();
         });
     }
 
