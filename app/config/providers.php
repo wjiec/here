@@ -23,4 +23,5 @@ return array(
     Here\Provider\Timezone\ServiceProvider::class,
     Here\Provider\UrlResolver\ServiceProvider::class,
     Here\Provider\Volt\ServiceProvider::class,
+    Here\Provider\Wizard\ServiceProvider::class,
 );

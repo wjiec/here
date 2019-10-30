@@ -1,13 +1,24 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html {
-    line-height: 1.15;
-    -webkit-text-size-adjust: 100%;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  background: #fff;
+}
+
+.h-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.h-header {
+  height: 66px;
+  background: #f8f8f8;
+  box-shadow: 0 0 1px rgba(0, 0, 0, .25);
 }

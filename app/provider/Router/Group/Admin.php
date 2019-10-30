@@ -27,6 +27,7 @@ final class Admin extends RouteGroup {
         $this->setPrefix(env('ADMIN_PREFIX', '/admin'));
 
         $this->addDashboard();
+        $this->addSetupWizard();
     }
 
     /**
@@ -36,6 +37,15 @@ final class Admin extends RouteGroup {
     final private function addDashboard() {
         $this->addGet('[/]{0,1}(dashboard){0,1}', array('controller' => 'dashboard'))
             ->setName('dashboard');
+    }
+
+    /**
+     * The purpose of these rules is create new administrator
+     * and initializing something default fields
+     */
+    final private function addSetupWizard() {
+        $this->addGet('/setup', array('controller' => 'setup'))
+            ->setName('setup-wizard');
     }
 
 }
