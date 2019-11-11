@@ -86,6 +86,10 @@ RUN set -ex \
     && rm -rf /var/cache/apk/* \
     && rm -rf /tmp/*
 
+RUN set -ex \
+    && mkdir -p "/var/log/nginx" \
+    && mkdir -p "/var/run/nginx"
+
 
 ENV PATH "${NGINX_HOME}/sbin:${PATH}"
 VOLUME ["/var/www"]

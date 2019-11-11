@@ -32,7 +32,9 @@ services:
     volumes:
       - .:/var/www
       - ./docs/conf/nginx/nginx.conf:/usr/local/nginx/conf/nginx.conf
+      - ./docs/conf/nginx/ssl:/usr/local/nginx/conf/ssl
       - ./docs/conf/nginx/vhost:/usr/local/nginx/conf/vhost
+      - ./storage/log/nginx:/var/log/nginx
     ports:
       - "80:80"
       - "443:443"

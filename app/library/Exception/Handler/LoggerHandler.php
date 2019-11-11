@@ -93,7 +93,7 @@ final class LoggerHandler extends Handler {
                 case is_null($arg):     return "null{null}";
                 case is_object($arg):   return sprintf('object{%s}', get_class($arg));
             }
-            return 'UNKNOWN';
+            return '???{???}';
         }, $frame->getArgs()));
     }
 
