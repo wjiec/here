@@ -29,7 +29,7 @@ final class Memory extends AbstractStore {
      * Memory constructor.
      */
     final public function __construct() {
-        $this->store = array();
+        $this->store = [];
     }
 
     /**

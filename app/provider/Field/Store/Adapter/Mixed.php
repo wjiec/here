@@ -57,7 +57,7 @@ final class Mixed extends AbstractStore {
      * @return string|integer|float|bool|null
      */
     final public function get(string $key, $default = null) {
-        $missing_stores = array();
+        $missing_stores = [];
         foreach ($this->stores as $store) {
             $value = $store->get($key, $default);
             if ($value !== $default) {

@@ -30,12 +30,12 @@ final class Module implements ModuleDefinitionInterface {
      * @param DiInterface $di
      */
     final public function registerAutoloaders(DiInterface $di = null) {
-        (new Loader())->registerNamespaces(array(
+        (new Loader())->registerNamespaces([
             'Here\Admin' => __DIR__,
             'Here\Admin\Controller' => __DIR__ . DIRECTORY_SEPARATOR . 'controller',
             'Here\Admin\Library' => __DIR__ . DIRECTORY_SEPARATOR . 'library',
             'Here\Admin\Provider' => __DIR__ . DIRECTORY_SEPARATOR . 'provider'
-        ))->register();
+        ])->register();
     }
 
     /**

@@ -26,7 +26,7 @@ final class Factory {
      * @param array $configs
      * @return Config
      */
-    final public static function create(array $configs = array()): Config {
+    final public static function create(array $configs = []): Config {
         $config = new Config();
 
         /* @var $filesystem Filesystem */

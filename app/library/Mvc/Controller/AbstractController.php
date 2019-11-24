@@ -13,6 +13,7 @@ namespace Here\Library\Mvc\Controller;
 use Here\Library\Mvc\Component\Token;
 use Phalcon\Cache\BackendInterface;
 use Phalcon\Mvc\Controller;
+use Phalcon\Translate\Adapter;
 
 
 /**
@@ -28,8 +29,15 @@ abstract class AbstractController extends Controller {
     use Token;
 
     /**
+     * @var Adapter
+     */
+    protected $translator;
+
+    /**
      * The controller setup was here
      */
-    public function initialize() {}
+    public function initialize() {
+        $this->translator = container('translator');
+    }
 
 }

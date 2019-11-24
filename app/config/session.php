@@ -11,20 +11,20 @@
 use Phalcon\Session\Adapter\Redis;
 
 
-return array(
+return [
     'default' => env('SESSION_DRIVER', 'redis'),
 
-    'drivers' => array(
-        'redis' => array(
+    'drivers' => [
+        'redis' => [
             'adapter'       => Redis::class,
             'host'          => env('REDIS_HOST', 'localhost'),
             'port'          => env('REDIS_PORT', 6379),
             'index'         => env('REDIS_INDEX', 0),
             'persistent'    => true,
-        )
-    ),
+        ]
+    ],
 
-    'prefix' => env('SESSION_PREFIX', 'here_session_'),
-    'uniqueId' => env('SESSION_UNIQUE_ID', 'here_'),
-    'lifetime' => env('SESSION_LIFETIME', 3600),
-);
+    'prefix'    => env('SESSION_PREFIX', 'here_session_'),
+    'uniqueId'  => env('SESSION_UNIQUE_ID', 'here_'),
+    'lifetime'  => env('SESSION_LIFETIME', 3600),
+];

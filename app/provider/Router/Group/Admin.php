@@ -23,7 +23,7 @@ final class Admin extends RouteGroup {
      * Route group of admin module
      */
     final public function initialize() {
-        $this->setPaths(array('module' => 'admin'));
+        $this->setPaths(['module' => 'admin']);
         $this->setPrefix(env('ADMIN_PREFIX', '/admin'));
 
         $this->addDashboard();
@@ -35,7 +35,7 @@ final class Admin extends RouteGroup {
      * or something to do, like review comments and so on
      */
     final private function addDashboard() {
-        $this->addGet('[/]{0,1}(dashboard){0,1}', array('controller' => 'dashboard'))
+        $this->addGet('[/]{0,1}(dashboard){0,1}', ['controller' => 'dashboard'])
             ->setName('dashboard');
     }
 
@@ -44,7 +44,7 @@ final class Admin extends RouteGroup {
      * and initializing something default fields
      */
     final private function addSetupWizard() {
-        $this->addGet('/setup', array('controller' => 'setup'))
+        $this->addGet('/setup', ['controller' => 'setup'])
             ->setName('setup-wizard');
     }
 

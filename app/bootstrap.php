@@ -155,7 +155,7 @@ if (!function_exists('container')) {
         if (!$service && empty($args)) {
             return $di;
         }
-        return call_user_func_array(array($di, 'get'), array($service, $args));
+        return call_user_func_array([$di, 'get'], [$service, $args]);
     }
 }
 

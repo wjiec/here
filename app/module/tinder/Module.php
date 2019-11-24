@@ -30,12 +30,12 @@ final class Module implements ModuleDefinitionInterface {
      * @param DiInterface|null $di
      */
     final public function registerAutoloaders(DiInterface $di = null) {
-        (new Loader())->registerNamespaces(array(
+        (new Loader())->registerNamespaces([
             'Here\Tinder' => __DIR__,
             'Here\Tinder\Controller' => __DIR__ . DIRECTORY_SEPARATOR . 'controller',
             'Here\Tinder\Library' => __DIR__ . DIRECTORY_SEPARATOR . 'library',
             'Here\Tinder\Provider' => __DIR__ . DIRECTORY_SEPARATOR . 'provider'
-        ))->register();
+        ])->register();
     }
 
     /**

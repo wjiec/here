@@ -6,16 +6,17 @@
  * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2019 Jayson Wang
  * @license   MIT License
- * @link      https://github.com/lsalio/here
+ * @link      https://github.com/nosjay/here
  */
-namespace Here\Provider\ModuleMeta;
+namespace Here\Provider\Translator;
 
 use Here\Provider\AbstractServiceProvider;
+use Phalcon\Translate\Adapter\NativeArray;
 
 
 /**
  * Class ServiceProvider
- * @package Here\Provider\ModuleMeta
+ * @package Here\Provider\Translator
  */
 final class ServiceProvider extends AbstractServiceProvider {
 
@@ -24,19 +25,18 @@ final class ServiceProvider extends AbstractServiceProvider {
      *
      * @var string
      */
-    protected $service_name = 'moduleMeta';
+    protected $service_name = 'translator';
 
     /**
      * @inheritDoc
      */
     final public function register() {
-        $this->di->set($this->service_name, function(string $module) {
-            $config = container('config')->modules;
-
-            if (!isset($config->{$module}->meta)) {
-                return array();
+        $this->di->set($this->service_name, function(string $language = '', ...$args) {
+            $translator = Factory::factory($language);
+            if (empty($args)) {
+                return $translator;
             }
-            return $config->{$module}->meta;
+            return $translator->query(...$args);
         });
     }
 

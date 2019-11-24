@@ -36,14 +36,15 @@ final class ServiceProvider extends AbstractServiceProvider {
             $config = container('config')->session;
             /* @var Config $driver_config */
             $driver_config = $config->drivers->{$config->default};
+            /** @noinspection PhpUndefinedFieldInspection */
             $driver = $driver_config->adapter;
 
             /* @var AdapterInterface $session */
-            $session = new $driver(array_merge($driver_config->toArray(), array(
+            $session = new $driver(array_merge($driver_config->toArray(), [
                 'prefix' => $config->prefix,
                 'uniqueId' => $config->uniqueId,
                 'lifetime' => $config->lifetime
-            )));
+            ]));
             $session->start();
 
             return $session;

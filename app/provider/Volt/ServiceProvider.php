@@ -36,11 +36,11 @@ final class ServiceProvider extends AbstractServiceProvider {
         $this->di->set($this->service_name, function(ViewBaseInterface $view, DiInterface $di = null) {
             $volt = new Volt($view, $di ?? container());
 
-            $volt->setOptions(array(
+            $volt->setOptions([
                 'compileAlways' => env('development') || env('HERE_DEBUG', false),
                 'compiledPath' => function(string $path): string {
                     $relative_path = trim(mb_substr($path, mb_strlen(dirname(app_path()))), '\\/');
-                    $basename = basename(str_replace(array('\\', '/'), '_', $relative_path), '.volt');
+                    $basename = basename(str_replace(['\\', '/'], '_', $relative_path), '.volt');
 
                     $cache_dir = cache_path('volt');
                     if (!is_dir($cache_dir)) {
@@ -49,7 +49,7 @@ final class ServiceProvider extends AbstractServiceProvider {
 
                     return $cache_dir . DIRECTORY_SEPARATOR . $basename . '.php';
                 },
-            ));
+            ]);
             $volt->getCompiler()->addExtension(new Functions());
 
             return $volt;

@@ -8,6 +8,6 @@
  * @license   MIT License
  * @link      https://github.com/lsalio/here
  */
-return array(
+return [
     'default' => env('TIMEZONE_DEFAULT', 'UTC')
-);
+];

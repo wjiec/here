@@ -39,11 +39,9 @@ final class ServiceProvider extends AbstractServiceProvider {
 
             /** @noinspection PhpUndefinedFieldInspection */
             $driver = $driver_config->adapter;
-            $driver_config = array_merge($driver_config->toArray(), array('prefix' => $config->prefix));
+            $driver_config = array_merge($driver_config->toArray(), ['prefix' => $config->prefix]);
 
-            return new $driver(new Data(array(
-                'lifetime' => $config->lifetime
-            )), $driver_config);
+            return new $driver(new Data(['lifetime' => $config->lifetime]), $driver_config);
         });
     }
 

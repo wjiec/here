@@ -31,14 +31,15 @@ final class ServiceProvider extends AbstractServiceProvider {
      *
      * @var array
      */
-    protected $configs = array(
+    protected $configs = [
         'cache',
         'config',
         'database',
+        'locale',
         'logger',
         'session',
         'timezone'
-    );
+    ];
 
     /**
      * @inheritDoc

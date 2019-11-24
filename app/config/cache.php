@@ -11,18 +11,18 @@
 use Phalcon\Cache\Backend\Redis;
 
 
-return array(
+return [
     'default' => env('CACHE_DRIVER', 'redis'),
 
-    'drivers' => array(
-        'redis' => array(
+    'drivers' => [
+        'redis' => [
             'adapter'   => Redis::class,
             'host'      => env('REDIS_HOST', 'localhost'),
             'port'      => env('REDIS_PORT', 6379),
             'index'     => env('REDIS_INDEX', 0),
-        )
-    ),
+        ]
+    ],
 
     'prefix' => env('CACHE_PREFIX', 'here_cache_'),
     'lifetime' => env('CACHE_LIFETIME', 86400)
-);
+];

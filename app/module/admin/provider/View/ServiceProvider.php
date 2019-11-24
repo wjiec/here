@@ -36,9 +36,9 @@ final class ServiceProvider extends AbstractServiceProvider {
             $view = new MvcView();
 
             $view->setViewsDir(module_path('admin/view'));
-            $view->registerEngines(array(
+            $view->registerEngines([
                 '.volt' => container('volt', $view, $this)
-            ));
+            ]);
 
             $view->setEventsManager(container('eventsManager'));
             container('eventsManager')->attach('view', new ViewListener());

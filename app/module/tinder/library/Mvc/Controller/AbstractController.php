@@ -29,7 +29,7 @@ abstract class AbstractController extends MvcAbstractController {
     public function initialize() {
         // Redirect to initializing page when administrator not loaded
         if (!container('wizard')->isInitialized()) {
-            return $this->response->redirect(array('for' => 'setup-wizard'));
+            return $this->response->redirect(['for' => 'setup-wizard']);
         }
     }
 

@@ -8,23 +8,23 @@
  * @license   MIT License
  * @link      https://github.com/lsalio/here
  */
-return array(
-    'blog' => array(
+return [
+    'blog' => [
         'name'          => env('HERE_NAME'),
         'url'           => env('HERE_URL'),
         'keywords'      => env('HERE_KEYWORDS'),
         'description'   => env('HERE_DESCRIPTION'),
         'robots'        => env('HERE_ALLOW_SPIDER')
-    ),
+    ],
 
-    'application' => array(
+    'application' => [
         'debug'         => env('HERE_DEBUG'),
         'baseUri'       => env('HERE_BASE_URI'),
         'staticUri'     => env('HERE_STATIC_URL')
-    ),
+    ],
 
-    'error' => array(
+    'error' => [
         'controller'    => 'error',
         'action'        => 'serverInternalError'
-    )
-);
+    ]
+];

@@ -27,7 +27,7 @@ final class Tinder extends RouteGroup {
      *  - and so on
      */
     final public function initialize() {
-        $this->setPaths(array('module' => 'tinder'));
+        $this->setPaths(['module' => 'tinder']);
         $this->setPrefix('/');
 
         $this->addHomepage();
@@ -38,7 +38,7 @@ final class Tinder extends RouteGroup {
      * list to viewer
      */
     final public function addHomepage() {
-        $this->addGet('[/]{0,1}', array('controller' => 'discussion'))
+        $this->addGet('[/]{0,1}', ['controller' => 'discussion'])
             ->setName('discussion');
     }
 

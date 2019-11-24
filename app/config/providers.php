@@ -8,7 +8,7 @@
  * @license   MIT License
  * @link      https://github.com/lsalio/here
  */
-return array(
+return [
     Here\Provider\Application\ServiceProvider::class,
     Here\Provider\Cache\ServiceProvider::class,
     Here\Provider\Config\ServiceProvider::class,
@@ -17,11 +17,11 @@ return array(
     Here\Provider\Field\ServiceProvider::class,
     Here\Provider\FileSystem\ServiceProvider::class,
     Here\Provider\Logger\ServiceProvider::class,
-    Here\Provider\ModuleMeta\ServiceProvider::class,
     Here\Provider\Router\ServiceProvider::class,
     Here\Provider\Session\ServiceProvider::class,
     Here\Provider\Timezone\ServiceProvider::class,
+    Here\Provider\Translator\ServiceProvider::class,
     Here\Provider\UrlResolver\ServiceProvider::class,
     Here\Provider\Volt\ServiceProvider::class,
     Here\Provider\Wizard\ServiceProvider::class,
-);
+];

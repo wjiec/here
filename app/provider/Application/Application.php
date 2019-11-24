@@ -38,16 +38,16 @@ final class Application extends MvcApplication {
      * to the application
      */
     final private function setupModules() {
-        $this->registerModules(array(
-            'admin' => array(
+        $this->registerModules([
+            'admin' => [
                 'path' => module_path('admin/Module.php'),
                 'className' => AdminModule::class
-            ),
-            'tinder' => array(
+            ],
+            'tinder' => [
                 'path' => module_path('tinder/Module.php'),
                 'className' => TinderModule::class
-            )
-        ));
+            ]
+        ]);
         $this->setDefaultModule('tinder');
     }
 

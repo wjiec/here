@@ -217,10 +217,10 @@ final class Field extends AbstractModel {
      * @return Field|null
      */
     final public static function findByKey(string $key): ?self {
-        return static::findFirst(array(
+        return static::findFirst([
             'conditions' => 'field_key = ?0',
-            'bind' => array($key)
-        )) ?: null;
+            'bind' => [$key]
+        ]) ?: null;
     }
 
     /**

@@ -25,9 +25,9 @@ final class SetupController extends AbstractController {
     final public function initialize() {
         parent::initialize();
 
-        $this->tag::setTitle('SetupWizard');
+        $this->tag::setTitle($this->translator->_('setup_wizard'));
         if (container('wizard')->isInitialized()) {
-            return $this->response->redirect(array('for' => 'discussion'));
+            return $this->response->redirect(['for' => 'discussion']);
         }
     }
 

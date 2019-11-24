@@ -36,6 +36,8 @@ final class Token {
     protected $csrf_overflow_count = 4;
 
     /**
+     * The instance of the session
+     *
      * @var SessionInterface
      */
     protected $session;
@@ -56,7 +58,7 @@ final class Token {
      * @throws Exception
      */
     final public function issueToken(): string {
-        $tokens = $this->session->get($this->csrf_token_key, array());
+        $tokens = $this->session->get($this->csrf_token_key, []);
         if (count($tokens) > $this->csrf_overflow_count) {
             array_shift($tokens);
         }
@@ -76,7 +78,7 @@ final class Token {
      */
     final public function verifyToken(string $token, bool $once = true): bool {
         $valid_token_index = -1;
-        $valid_tokens = $this->session->get($this->csrf_token_key, array());
+        $valid_tokens = $this->session->get($this->csrf_token_key, []);
         foreach ($valid_tokens as $index => $valid_token) {
             if ($token === $valid_token) {
                 $valid_token_index = $index;

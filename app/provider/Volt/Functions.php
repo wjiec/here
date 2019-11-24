@@ -29,11 +29,12 @@ final class Functions {
         switch ($name) {
             case 'join':
                 return "join(',', {$arguments})";
+            case '_t':
+                return "container('translator')->t({$arguments})";
             default:
                 return null;
         }
     }
-
 
     /**
      * Compile some filters

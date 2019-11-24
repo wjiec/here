@@ -12,11 +12,11 @@ use Phalcon\Db\Adapter\Pdo\Mysql;
 use Phalcon\Db\Adapter\Pdo\Postgresql;
 
 
-return array(
-    'default' => env('DB_DRIVER', 'postgresql'),
+return [
+    'default' => env('DB_DRIVER', 'postgres'),
 
-    'drivers' => array(
-        'mysql' => array(
+    'drivers' => [
+        'mysql' => [
             'adapter'       => Mysql::class,
             'host'          => env('DB_HOST', 'localhost'),
             'port'          => env('DB_PORT', 3306),
@@ -24,13 +24,13 @@ return array(
             'password'      => env('DB_PASSWORD', 'root'),
             'dbname'        => env('DB_DATABASE', 'here'),
             'charset'       => env('DB_CHARSET', 'utf8'),
-            'options'       => array(
+            'options'       => [
                 PDO::FETCH_ASSOC            => true,
                 PDO::ATTR_EMULATE_PREPARES  => false,
                 PDO::ATTR_STRINGIFY_FETCHES => false,
-            )
-        ),
-        'postgresql' => array(
+            ]
+        ],
+        'postgres' => [
             'adapter'       => Postgresql::class,
             'host'          => env('DB_HOST', 'localhost'),
             'port'          => env('DB_PORT', 5432),
@@ -38,6 +38,6 @@ return array(
             'password'      => env('DB_PASSWORD', 'root'),
             'dbname'        => env('DB_DATABASE', 'here'),
             'schema'        => env('DB_SCHEMA', 'public'),
-        )
-    )
-);
+        ]
+    ]
+];
