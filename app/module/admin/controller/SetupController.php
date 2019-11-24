@@ -37,6 +37,14 @@ final class SetupController extends AbstractController {
     /**
      * Setups the administrator
      */
-    final public function indexAction() {}
+    final public function indexAction() {
+//        $this->view->cache(['key' => 'setup-wizard']);
+    }
+
+    /**
+     * Completed the administrator register
+     */
+    final public function completeAction() {
+    }
 
 }

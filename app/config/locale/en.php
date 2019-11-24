@@ -9,5 +9,7 @@
  * @link      https://github.com/nosjay/here
  */
 return [
-    'setup_wizard' => 'Setup wizard'
+    'setup_wizard' => 'Setup wizard',
+    'setup_wizard_tips' => '',
+    'setup_wizard_title' => ''
 ];

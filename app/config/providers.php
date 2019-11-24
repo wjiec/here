@@ -23,5 +23,6 @@ return [
     Here\Provider\Timezone\ServiceProvider::class,
     Here\Provider\Translator\ServiceProvider::class,
     Here\Provider\UrlResolver\ServiceProvider::class,
+    Here\Provider\ViewCache\ServiceProvider::class,
     Here\Provider\Volt\ServiceProvider::class,
 ];

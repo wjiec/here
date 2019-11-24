@@ -1,0 +1,22 @@
+.h-setup-header-container {
+  max-width: 1050px;
+  height: 100%;
+}
+
+.h-setup-header-tips {
+  color: #bbb;
+  font-size: 12px;
+}
+
+.h-setup-header-title {
+  margin-bottom: 5px;
+}
+
+.h-setup-container {
+  max-width: 1100px;
+  margin-top: 50px;
+}
+
+.h-form {
+  width: 100%;
+}

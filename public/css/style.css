@@ -9,16 +9,75 @@ html {
 
 body {
   margin: 0;
-  background: #fff;
+  background: #fafafa;
+}
+
+p {
+  margin: 0;
 }
 
 .h-container {
   display: flex;
+  flex: 1;
+  margin: 0 auto;
+  flex-basis: auto;
+}
+
+.h-is-vertical {
   flex-direction: column;
+}
+
+.h-is-horizontal {
+  flex-direction: row;
+}
+
+.h-middle-center {
+  justify-content: center;
+  align-items: center;
 }
 
 .h-header {
   height: 66px;
-  background: #f8f8f8;
+  background: #f0f0f0;
   box-shadow: 0 0 1px rgba(0, 0, 0, .25);
+}
+
+.h-footer {
+  color: #ccc;
+}
+
+.h-form-item {
+  margin-bottom: 20px;
+}
+
+.h-form-label {
+  text-align: right;
+  vertical-align: middle;
+  font-size: 14px;
+  float: left;
+  color: #606266;
+  width: 80px;
+  line-height: 40px;
+  padding: 0 12px 0 0;
+}
+
+.h-form-input {
+  position: relative;
+  display: inline-block;
+  line-height: 40px;
+  width: 300px;
+}
+
+.h-form-input input {
+  height: 40px;
+  line-height: 40px;
+  -webkit-appearance: none;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: inherit;
+  outline: none;
+  padding: 0 15px;
+  width: 100%;
 }
