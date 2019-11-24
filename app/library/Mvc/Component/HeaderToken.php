@@ -18,7 +18,7 @@ use Phalcon\Di\Injectable;
  * @package Here\Library\Mvc\Component
  * @mixin Injectable
  */
-trait Token {
+trait HeaderToken {
 
     /**
      * Name of the csrf token in the header
@@ -41,7 +41,7 @@ trait Token {
      * @param bool $once
      * @return bool
      */
-    final protected function verifyTokenFromHeader(bool $once): bool {
+    final protected function verifyTokenFromHeader(bool $once = true): bool {
         if (!$this->request->hasHeader($this->csrf_header_name)) {
             return false;
         }

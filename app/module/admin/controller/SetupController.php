@@ -11,6 +11,7 @@
 namespace Here\Admin\Controller;
 
 use Here\Admin\Library\Mvc\Controller\AbstractController;
+use Phalcon\Http\ResponseInterface;
 
 
 /**
@@ -21,12 +22,14 @@ final class SetupController extends AbstractController {
 
     /**
      * Sets the title of the setup-wizard
+     *
+     * @return ResponseInterface|void
      */
     final public function initialize() {
         parent::initialize();
 
         $this->tag::setTitle($this->translator->_('setup_wizard'));
-        if (container('wizard')->isInitialized()) {
+        if (container('administrator')->exists()) {
             return $this->response->redirect(['for' => 'discussion']);
         }
     }

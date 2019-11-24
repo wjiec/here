@@ -10,8 +10,9 @@
  */
 namespace Here\Library\Mvc\Controller;
 
-use Here\Library\Mvc\Component\Token;
+use Here\Library\Mvc\Component\HeaderToken;
 use Phalcon\Cache\BackendInterface;
+use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
 use Phalcon\Translate\Adapter;
 
@@ -26,7 +27,7 @@ abstract class AbstractController extends Controller {
     /**
      * Component of csrf generator/validator
      */
-    use Token;
+    use HeaderToken;
 
     /**
      * @var Adapter
@@ -34,10 +35,19 @@ abstract class AbstractController extends Controller {
     protected $translator;
 
     /**
-     * The controller setup was here
+     * Setups the administrator for application when
+     * administrator has not loaded
+     *
+     * @return ResponseInterface|void
      */
     public function initialize() {
         $this->translator = container('translator');
+        // Redirect to setup page when administrator not loaded
+        if (!container('administrator')->exists()) {
+            if ($this->router->getMatchedRoute()->getName() !== 'setup-wizard') {
+                return $this->response->redirect(['for' => 'setup-wizard']);
+            }
+        }
     }
 
 }

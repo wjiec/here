@@ -32,6 +32,11 @@ final class Cache extends AbstractStore {
     private $lifetime;
 
     /**
+     * @var string
+     */
+    private $prefix = ':field:';
+
+    /**
      * Cache constructor.
      *
      * @param int $lifetime
@@ -48,7 +53,7 @@ final class Cache extends AbstractStore {
      * @return bool
      */
     final public function exists(string $key): bool {
-        return $this->cache->exists($key);
+        return $this->cache->exists($this->prefix . $key);
     }
 
     /**
@@ -61,7 +66,7 @@ final class Cache extends AbstractStore {
      */
     final public function get(string $key, $default = null) {
         // deserialize by phalcon cache frontend
-        return $this->cache->get($key) ?: $default;
+        return $this->cache->get($this->prefix . $key) ?: $default;
     }
 
     /**
@@ -73,7 +78,7 @@ final class Cache extends AbstractStore {
      */
     final public function setString(string $key, string $value): StoreInterface {
         // serialize by phalcon cache frontend
-        $this->cache->save($key, $value, $this->lifetime);
+        $this->cache->save($this->prefix . $key, $value, $this->lifetime);
         return $this;
     }
 
@@ -85,7 +90,7 @@ final class Cache extends AbstractStore {
      * @return StoreInterface
      */
     final public function setInteger(string $key, int $value): StoreInterface {
-        $this->cache->save($key, $value, $this->lifetime);
+        $this->cache->save($this->prefix . $key, $value, $this->lifetime);
         return $this;
     }
 
@@ -97,7 +102,7 @@ final class Cache extends AbstractStore {
      * @return StoreInterface
      */
     final public function setFloat(string $key, int $value): StoreInterface {
-        $this->cache->save($key, $value, $this->lifetime);
+        $this->cache->save($this->prefix . $key, $value, $this->lifetime);
         return $this;
     }
 
@@ -109,7 +114,7 @@ final class Cache extends AbstractStore {
      * @return StoreInterface
      */
     final public function setBoolean(string $key, bool $value): StoreInterface {
-        $this->cache->save($key, $value, $this->lifetime);
+        $this->cache->save($this->prefix . $key, $value, $this->lifetime);
         return $this;
     }
 

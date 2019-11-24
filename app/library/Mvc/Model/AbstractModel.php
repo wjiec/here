@@ -37,7 +37,7 @@ abstract class AbstractModel extends Model {
      * @return Model|$this|null
      */
     public static function findFirst($parameters = null) {
-        return parent::findFirst($parameters);
+        return parent::findFirst($parameters) ?: null;
     }
 
     /**

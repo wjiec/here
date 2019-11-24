@@ -9,6 +9,7 @@
  * @link      https://github.com/lsalio/here
  */
 return [
+    Here\Provider\Administrator\ServiceProvider::class,
     Here\Provider\Application\ServiceProvider::class,
     Here\Provider\Cache\ServiceProvider::class,
     Here\Provider\Config\ServiceProvider::class,
@@ -23,5 +24,4 @@ return [
     Here\Provider\Translator\ServiceProvider::class,
     Here\Provider\UrlResolver\ServiceProvider::class,
     Here\Provider\Volt\ServiceProvider::class,
-    Here\Provider\Wizard\ServiceProvider::class,
 ];

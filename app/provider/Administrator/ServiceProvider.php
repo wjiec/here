@@ -6,16 +6,16 @@
  * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2019 Jayson Wang
  * @license   MIT License
- * @link      https://github.com/lsalio/here
+ * @link      https://github.com/nosjay/here
  */
-namespace Here\Provider\Wizard;
+namespace Here\Provider\Administrator;
 
 use Here\Provider\AbstractServiceProvider;
 
 
 /**
  * Class ServiceProvider
- * @package Here\Provider\Wizard
+ * @package Here\Provider\Administrator
  */
 final class ServiceProvider extends AbstractServiceProvider {
 
@@ -24,14 +24,14 @@ final class ServiceProvider extends AbstractServiceProvider {
      *
      * @var string
      */
-    protected $service_name = 'wizard';
+    protected $service_name = 'administrator';
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     final public function register() {
         $this->di->setShared($this->service_name, function() {
-            return new SetupWizard();
+            return new Administrator();
         });
     }
 
