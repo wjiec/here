@@ -45,6 +45,7 @@ final class ServiceProvider extends AbstractServiceProvider {
                 'uniqueId' => $config->uniqueId,
                 'lifetime' => $config->lifetime
             ]));
+            $session->setName($config->name);
             $session->start();
 
             return $session;

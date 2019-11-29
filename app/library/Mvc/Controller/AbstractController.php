@@ -10,7 +10,6 @@
  */
 namespace Here\Library\Mvc\Controller;
 
-use Here\Library\Mvc\Component\HeaderToken;
 use Phalcon\Cache\BackendInterface;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
@@ -23,11 +22,6 @@ use Phalcon\Translate\Adapter;
  * @property BackendInterface $cache
  */
 abstract class AbstractController extends Controller {
-
-    /**
-     * Component of csrf generator/validator
-     */
-    use HeaderToken;
 
     /**
      * @var Adapter

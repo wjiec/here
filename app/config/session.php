@@ -27,4 +27,5 @@ return [
     'prefix'    => env('SESSION_PREFIX', 'here_session_'),
     'uniqueId'  => env('SESSION_UNIQUE_ID', 'here_'),
     'lifetime'  => env('SESSION_LIFETIME', 3600),
+    'name'      => env('SESSION_NAME', 'hs'),
 ];
