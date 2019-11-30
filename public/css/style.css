@@ -37,10 +37,8 @@ footer {
   flex: 1;
   margin: 0 auto;
   flex-basis: auto;
-}
-
-.h-is-vertical {
   flex-direction: column;
+  padding: 0 20px;
 }
 
 .h-is-horizontal {
@@ -52,38 +50,80 @@ footer {
   align-items: center;
 }
 
+/* Form styles */
+form {
+  width: 100%;
+  font-size: 14px;
+}
+
 .h-form-item {
+  position: relative;
   margin-bottom: 20px;
 }
 
 .h-form-label {
   text-align: right;
   vertical-align: middle;
+  position: absolute;
   font-size: 14px;
   float: left;
   color: #606266;
   width: 80px;
-  line-height: 40px;
+  line-height: 36px;
   padding: 0 12px 0 0;
 }
 
-.h-form-input {
-  position: relative;
-  display: inline-block;
-  line-height: 40px;
-  width: 300px;
+.h-form-item[data-required] .h-form-label:after {
+  content: '*';
+  color: #ff6238;
 }
 
-.h-form-input input {
-  height: 40px;
-  line-height: 40px;
+.h-form-control {
+  position: relative;
+  display: inline-block;
+  line-height: 36px;
+  width: 320px;
+  margin-left: 80px;
+}
+
+.h-form-control input {
+  height: 36px;
+  line-height: 36px;
   -webkit-appearance: none;
   background-color: #fff;
-  border: 1px solid #aaa;
-  border-radius: 4px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
   display: inline-block;
   font-size: inherit;
   outline: none;
   padding: 0 15px;
   width: 100%;
+  transition: all .25s ease-in-out;
+}
+
+.h-form-control input:hover, .h-form-control input:focus {
+  background: #fafafa;
+  border: 1px solid #aaa;
+}
+
+/* Buttons styles */
+button {
+  display: inline-block;
+  padding: 7px 12px;
+  white-space: nowrap;
+  -webkit-appearance: none;
+  text-align: center;
+  font-weight: 500;
+  background: #fff;
+  border: 1px solid #ccc;
+  outline: none;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all .25s ease-in-out;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+}
+
+button:hover {
+  border: 1px solid #aaa;
+  background: #fafafa;
 }
