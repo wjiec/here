@@ -33,12 +33,36 @@ final class Administrator {
     }
 
     /**
+     * @param string $username
+     * @param string $password
+     * @param string $email
+     * @return AuthorModel
+     */
+    public function create(string $username, string $password, string $email): AuthorModel {
+        $author = AuthorModel::factory($username, $password);
+        $author->setAuthorEmail($email);
+        $author->refreshAfterSave();
+
+        return $this->rebuild();
+    }
+
+    /**
      * Returns true when author exists, false otherwise
      *
      * @return bool
      */
     public function exists(): bool {
         return $this->author !== null;
+    }
+
+    /**
+     * Rebuild the authors and returns it
+     *
+     * @return AuthorModel
+     */
+    public function rebuild(): AuthorModel {
+        $this->author = Author::findFist(true);
+        return $this->author;
     }
 
 }

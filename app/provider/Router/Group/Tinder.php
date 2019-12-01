@@ -38,8 +38,8 @@ final class Tinder extends RouteGroup {
      * list to viewer
      */
     final public function addHomepage() {
-        $this->addGet('[/]{0,1}', ['controller' => 'discussion'])
-            ->setName('discussion');
+        $this->addGet('[/]{0,1}', ['controller' => 'explore'])
+            ->setName('explore');
     }
 
 }

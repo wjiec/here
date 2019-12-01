@@ -10,6 +10,7 @@
  */
 return [
     'setup_wizard' => '设置向导',
+    'setup_complete' => '完成设置',
     'setup_wizard_tips' => '输入管理员用户名及密码，开启属于你的博客之旅',
     'setup_wizard_title' => '配置博客管理员',
     'setup_wizard_welcome' => '欢迎使用我的小小博客程序，我将之命名为<em>Here</em>',

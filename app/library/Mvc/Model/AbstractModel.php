@@ -21,6 +21,15 @@ use Phalcon\Mvc\Model\ResultsetInterface;
 abstract class AbstractModel extends Model {
 
     /**
+     * Returns the save and refresh succeed both
+     *
+     * @return bool
+     */
+    public function refreshAfterSave(): bool {
+        return $this->save() && $this->refresh();
+    }
+
+    /**
      * Allows to query a set of records that match the specified conditions
      *
      * @param mixed $parameters

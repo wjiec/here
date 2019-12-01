@@ -330,4 +330,20 @@ final class Author extends AbstractModel {
         return 'author';
     }
 
+    /**
+     * Create new author by username and password
+     *
+     * @param string $username
+     * @param string $password
+     * @return $this
+     */
+    final public static function factory(string $username, string $password): self {
+        $author = new static();
+        $author->setAuthorUsername($username);
+        $author->setAuthorNickname($username);
+        $author->setAuthorPassword(password_hash($password, PASSWORD_DEFAULT));
+
+        return $author;
+    }
+
 }

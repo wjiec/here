@@ -38,7 +38,7 @@ abstract class AbstractController extends Controller {
         $this->translator = container('translator');
         // Redirect to setup page when administrator not loaded
         if (!container('administrator')->exists()) {
-            if ($this->router->getMatchedRoute()->getName() !== 'setup-wizard') {
+            if ($this->dispatcher->getControllerName() !== 'setup') {
                 return $this->response->redirect(['for' => 'setup-wizard']);
             }
         }

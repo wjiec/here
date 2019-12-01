@@ -39,10 +39,11 @@ class Cache implements MiddlewareInterface {
      * @param string $name
      * @param $value
      * @param int $ttl
+     * @param bool $force
      * @return mixed|null
      */
-    public function setDefault(string $name, $value = null, ?int $ttl = null) {
-        if (!$this->cache->exists($name)) {
+    public function setDefault(string $name, $value = null, ?int $ttl = null, bool $force = false) {
+        if (!$this->cache->exists($name) || $force) {
             $data = value_of($value);
             if ($data) {
                 $this->cache->save($name, $value, $ttl);

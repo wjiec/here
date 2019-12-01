@@ -14,10 +14,10 @@ use Here\Tinder\Library\Mvc\Controller\AbstractController;
 
 
 /**
- * Class DiscussionController
+ * Class ExploreController
  * @package Here\Tinder\Controller
  */
-final class DiscussionController extends AbstractController {
+final class ExploreController extends AbstractController {
 
     /**
      * Shows the author info and hot article to views

@@ -28,6 +28,7 @@ final class Admin extends RouteGroup {
 
         $this->addDashboard();
         $this->addSetupWizard();
+        $this->addSetupComplete();
     }
 
     /**
@@ -41,11 +42,19 @@ final class Admin extends RouteGroup {
 
     /**
      * The purpose of these rules is create new administrator
-     * and initializing something default fields
      */
     final private function addSetupWizard() {
         $this->addGet('/setup', ['controller' => 'setup'])
             ->setName('setup-wizard');
+    }
+
+    /**
+     * The rules is register the administrator and
+     * initializing something default fields
+     */
+    final private function addSetupComplete() {
+        $this->addPost('/setup/complete', ['controller' => 'setup', 'action' => 'complete'])
+            ->setName('setup-complete');
     }
 
 }

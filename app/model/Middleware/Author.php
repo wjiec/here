@@ -24,12 +24,13 @@ class Author {
      * Returns the author from cache and database when
      * cache not found anything
      *
+     * @param bool $force
      * @return AuthorModel|null
      */
-    public static function findFist(): ?AuthorModel {
+    public static function findFist(bool $force = false): ?AuthorModel {
         return (new Cache())->setDefault(":model:author:FIRST", function() {
             return AuthorModel::findFirst();
-        });
+        }, null, $force);
     }
 
 }
