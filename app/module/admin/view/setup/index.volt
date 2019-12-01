@@ -51,3 +51,11 @@
     </section>
   </div>
 </main>
+
+<script>
+  document.querySelector('form').addEventListener('submit', (e) => {
+    if (!new Validator(e.target).validate()) {
+      e.preventDefault();
+    }
+  }, true);
+</script>

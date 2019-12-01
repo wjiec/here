@@ -106,6 +106,16 @@ form {
   border: 1px solid #aaa;
 }
 
+/* Validator */
+.h-validate-success input {
+  border: 1px solid #70b991;
+}
+
+.h-validate-failure input {
+  border: 1px solid #ff6238;
+}
+
+
 /* Buttons styles */
 button {
   display: inline-block;

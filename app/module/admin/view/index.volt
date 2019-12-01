@@ -7,6 +7,7 @@
   <title>{{ get_title(false) ~ ' - ' ~ config.blog.name }}</title>
   <link rel="stylesheet" href="{{ static_url('css/style.css') }}">
   <link rel="stylesheet" href="{{ static_url('css/admin.css') }}">
+  <script src="{{ static_url('js/lib.js') }}"></script>
 </head>
 <body>
 
