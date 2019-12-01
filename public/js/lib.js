@@ -1,6 +1,9 @@
 class Validator {
   constructor(form) {
-    this.form = form
+    this.form = form;
+    this.form.addEventListener('input', () => {
+      this.validate();
+    })
   }
 
   validate() {
@@ -13,7 +16,7 @@ class Validator {
           if (!fieldStatus && validate) {
             validate = fieldStatus;
           }
-          Validator.addStatusClass(control, fieldStatus);
+          Validator._addStatusClass(control, fieldStatus);
         }
       })
     });
@@ -21,10 +24,10 @@ class Validator {
   }
 
   _required(control, _) {
-    return Validator.getValue(control).length !== 0;
+    return Validator._getValue(control).length !== 0;
   }
 
-  static getValue(control) {
+  static _getValue(control) {
     const input = control.querySelector('input');
     if (input) {
       return input.value
@@ -32,10 +35,13 @@ class Validator {
     return "";
   }
 
-  static addStatusClass(control, status) {
-    const statusClass = `h-validate-${status ? 'success' : 'failure'}`;
-    if (!control.classList.contains('statusClass')) {
-      control.classList.add(statusClass);
+  static _addStatusClass(control, status) {
+    const classes = {false: 'h-validate-failure', true: 'h-validate-success'};
+    if (control.classList.contains(classes[!status])) {
+      control.classList.remove(classes[!status])
+    }
+    if (!control.classList.contains(classes[status])) {
+      control.classList.add(classes[status])
     }
   }
 }
