@@ -40,7 +40,9 @@ final class SetupController extends AbstractController {
      */
     final public function indexAction() {
         $this->tag::setTitle($this->translator->_('setup_wizard'));
-//        $this->view->cache(['key' => 'setup-wizard']);
+        if (container('environment', 'production')) {
+            $this->view->cache(['key' => 'setup-wizard']);
+        }
     }
 
     /**

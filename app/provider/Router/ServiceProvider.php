@@ -14,6 +14,7 @@ use Here\Library\Listener\Adapter\Router as RouterListener;
 use Here\Provider\AbstractServiceProvider;
 use Here\Provider\Router\Group\Admin;
 use Here\Provider\Router\Group\Tinder;
+use Here\Provider\Router\Hook\Hook;
 
 
 /**
@@ -45,6 +46,7 @@ final class ServiceProvider extends AbstractServiceProvider {
 
             $router->mount(new Admin());
             $router->mount(new Tinder());
+            Hook::hook($router);
 
             return $router;
         });

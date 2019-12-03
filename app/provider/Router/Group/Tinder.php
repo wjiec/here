@@ -30,15 +30,15 @@ final class Tinder extends RouteGroup {
         $this->setPaths(['module' => 'tinder']);
         $this->setPrefix('/');
 
-        $this->addHomepage();
+        $this->addExplore();
     }
 
     /**
      * Homepage shows the author info and article
      * list to viewer
      */
-    final public function addHomepage() {
-        $this->addGet('[/]{0,1}', ['controller' => 'explore'])
+    final public function addExplore() {
+        $this->addGet('', ['controller' => 'explore'])
             ->setName('explore');
     }
 

@@ -46,7 +46,7 @@ class Cache implements MiddlewareInterface {
         if (!$this->cache->exists($name) || $force) {
             $data = value_of($value);
             if ($data) {
-                $this->cache->save($name, $value, $ttl);
+                $this->cache->save($name, $data, $ttl);
             }
             return $data;
         }
