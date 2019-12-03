@@ -55,6 +55,7 @@ final class SetupController extends AbstractController {
         }
 
         try {
+            $this->db->begin();
             /** @var Administrator $administrator */
             $administrator = container('administrator');
 
@@ -63,8 +64,10 @@ final class SetupController extends AbstractController {
             $email = $this->request->getPost('email', 'trim');
             $author = $administrator->create($username, $password, $email);
 
-            return $this->response->redirect(['for' => 'explorer']);
+            $this->db->commit();
+            return $this->response->redirect(['for' => 'explore']);
         } catch (Throwable $e) {
+            $this->db->rollback();
             $this->view->setVar('error_message', $e->getMessage());
         }
     }
