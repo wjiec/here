@@ -143,4 +143,17 @@ final class Category extends AbstractModel {
         return 'category';
     }
 
+    /**
+     * Factory new category
+     *
+     * @param string $name
+     * @return static
+     */
+    final public static function factory(string $name): self {
+        $category = new static();
+        $category->setCategoryName($name);
+
+        return $category;
+    }
+
 }

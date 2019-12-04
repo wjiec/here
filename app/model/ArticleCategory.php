@@ -103,4 +103,19 @@ final class ArticleCategory extends AbstractModel {
         return 'article_category';
     }
 
+    /**
+     * Factory new relation of article and category
+     *
+     * @param int $article_id
+     * @param int $category_id
+     * @return static
+     */
+    final public static function factory(int $article_id, int $category_id): self {
+        $relation = new static();
+        $relation->setArticleId($article_id);
+        $relation->setCategoryId($category_id);
+
+        return $relation;
+    }
+
 }

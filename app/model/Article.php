@@ -476,6 +476,21 @@ final class Article extends AbstractModel {
     }
 
     /**
+     * Creates new article model
+     *
+     * @param int $author_id
+     * @param string $title
+     * @return static
+     */
+    final public static function factory(int $author_id, string $title): self {
+        $article = new static();
+        $article->setAuthorId($author_id);
+        $article->setArticleTitle($title);
+
+        return $article;
+    }
+
+    /**
      * Lock article never
      */
     public const ARTICLE_LOCK_NEVER = 'never';

@@ -10,6 +10,7 @@
  */
 namespace Here\Provider\Administrator;
 
+use Here\Library\Exception\Mvc\ModelSaveException;
 use Here\Model\Author as AuthorModel;
 use Here\Model\Middleware\Author;
 
@@ -37,11 +38,12 @@ final class Administrator {
      * @param string $password
      * @param string $email
      * @return AuthorModel
+     * @throws ModelSaveException
      */
     public function create(string $username, string $password, string $email): AuthorModel {
         $author = AuthorModel::factory($username, $password);
         $author->setAuthorEmail($email);
-        $author->refreshAfterSave();
+        $author->save();
 
         return $this->rebuild();
     }

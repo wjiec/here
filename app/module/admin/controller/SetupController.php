@@ -11,6 +11,8 @@
 namespace Here\Admin\Controller;
 
 use Here\Admin\Library\Mvc\Controller\AbstractController;
+use Here\Library\Article\Factory;
+use Here\Model\Category;
 use Here\Provider\Administrator\Administrator;
 use Phalcon\Http\ResponseInterface;
 use Throwable;
@@ -59,10 +61,23 @@ final class SetupController extends AbstractController {
             /** @var Administrator $administrator */
             $administrator = container('administrator');
 
+            // Create author
             $username = $this->request->getPost('username', 'trim');
             $password = $this->request->getPost('password', 'trim');
             $email = $this->request->getPost('email', 'trim');
             $author = $administrator->create($username, $password, $email);
+
+            // Create default category
+            $category = Category::factory('Default');
+            $category->save();
+
+            // Create draft of article and save
+            $draft = (new Factory($author))->createFromFile(docs_path('/template/initial.md'));
+            $draft->setTitle('Hello World');
+            $draft->addCategory($category);
+            $draft->save();
+
+            /* comments */
 
             $this->db->commit();
             return $this->response->redirect(['for' => 'explore']);

@@ -10,8 +10,10 @@
  */
 namespace Here\Library\Mvc\Model;
 
+use Here\Library\Exception\Mvc\ModelSaveException;
 use Phalcon\Mvc\Model;
 use Phalcon\Mvc\Model\ResultsetInterface;
+use Throwable;
 
 
 /**
@@ -23,10 +25,20 @@ abstract class AbstractModel extends Model {
     /**
      * Returns the save and refresh succeed both
      *
+     * @param null $data
+     * @param null $whiteList
      * @return bool
+     * @throws ModelSaveException
      */
-    public function refreshAfterSave(): bool {
-        return $this->save() && $this->refresh();
+    public function save($data = null, $whiteList = null) {
+        try {
+            if (parent::save($data, $whiteList) && $this->refresh()) {
+                return true;
+            }
+            throw new ModelSaveException(join('|', $this->getMessages()));
+        } catch (Throwable $e) {
+            throw new ModelSaveException($e->getMessage());
+        }
     }
 
     /**
