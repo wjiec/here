@@ -13,6 +13,8 @@ namespace Here\Provider\Administrator;
 use Here\Library\Exception\Mvc\ModelSaveException;
 use Here\Model\Author as AuthorModel;
 use Here\Model\Middleware\Author;
+use Phalcon\Http\Request;
+use function Here\Library\Xet\current_date;
 
 
 /**
@@ -41,9 +43,9 @@ final class Administrator {
      * @throws ModelSaveException
      */
     public function create(string $username, string $password, string $email): AuthorModel {
-        $author = AuthorModel::factory($username, $password);
-        $author->setAuthorEmail($email);
-        $author->save();
+        $this->author = AuthorModel::factory($username, $password);
+        $this->author->setAuthorEmail($email);
+        $this->saveLoginInfo();
 
         return $this->rebuild();
     }
@@ -65,6 +67,21 @@ final class Administrator {
     public function rebuild(): AuthorModel {
         $this->author = Author::findFist(true);
         return $this->author;
+    }
+
+    /**
+     * Save the information for current login
+     *
+     * @return bool
+     * @throws ModelSaveException
+     */
+    protected function saveLoginInfo(): bool {
+        /* @var Request $request */
+        $request = container('request');
+
+        $this->author->setLastLoginIp($request->getClientAddress(true));
+        $this->author->setLastLoginTime(current_date());
+        return $this->author->save();
     }
 
 }

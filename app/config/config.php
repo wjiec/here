@@ -26,5 +26,9 @@ return [
     'error' => [
         'controller'    => 'error',
         'action'        => 'serverInternalError'
+    ],
+
+    'source' => [
+        'github' => 'https://github.com/lsalio/here'
     ]
 ];

@@ -6,7 +6,7 @@
 </header>
 
 <main class="h-setup-main">
-  <div class="h-container h-setup-container">
+  <div class="h-setup-container h-container">
     <!-- Section of setup description -->
     <section class="h-setup-description">
       <p>{{ _t('setup_wizard_welcome') }}</p>

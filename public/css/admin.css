@@ -34,3 +34,24 @@
 .h-setup-form {
   margin: 0 20px;
 }
+
+.h-setup-error-reason {
+  width: 100%;
+  margin: 0 20px 20px;
+}
+
+.h-setup-error-stacktrace {
+  overflow-x: scroll;
+  padding: 5px;
+  border: 1px solid rgba(0, 0, 0, .25);
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .15);
+}
+
+.h-setup-retry {
+  width: 90%;
+}
+
+.h-setup-retry a {
+  float: right;
+}

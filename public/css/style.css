@@ -11,10 +11,34 @@ html {
 body {
   margin: 0;
   background: #fafafa;
+  font-family: gotham, helvetica, arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 p {
   margin: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  height: 7px;
+  width: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(43, 43, 43, .025);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(43, 43, 43, 0.2);
+  transition: background .75s linear;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active {
+  background: rgba(43, 43, 43, .25);
 }
 
 /* Layout styles with container */
@@ -25,6 +49,7 @@ header {
 }
 
 main {
+  display: block;
 }
 
 footer {
@@ -54,6 +79,13 @@ footer {
 form {
   width: 100%;
   font-size: 14px;
+}
+
+input, button {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
 }
 
 .h-form-item {
@@ -119,6 +151,7 @@ form {
 button {
   display: inline-block;
   padding: 7px 12px;
+  font-size: 14px;
   white-space: nowrap;
   -webkit-appearance: none;
   text-align: center;

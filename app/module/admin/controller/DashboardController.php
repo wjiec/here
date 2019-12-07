@@ -11,6 +11,7 @@
 namespace Here\Admin\Controller;
 
 use Here\Admin\Library\Mvc\Controller\AbstractController;
+use Phalcon\Tag;
 
 
 /**
@@ -23,7 +24,7 @@ final class DashboardController extends AbstractController {
      * Initializing the states of dashboard
      */
     final public function initialize() {
-        $this->tag::setTitle("Dashboard");
+        Tag::setTitle("Dashboard");
     }
 
     /**

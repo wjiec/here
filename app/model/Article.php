@@ -10,6 +10,7 @@
  */
 namespace Here\Model;
 
+use Here\Library\Exception\Mvc\ModelSaveException;
 use Here\Library\Mvc\Model\AbstractModel;
 
 
@@ -473,6 +474,16 @@ final class Article extends AbstractModel {
      */
     final public function getSource() {
         return 'article';
+    }
+
+    /**
+     * Publish the article
+     *
+     * @return bool
+     * @throws ModelSaveException
+     */
+    final public function publish(): bool {
+        return $this->markArticlePublish()->save();
     }
 
     /**

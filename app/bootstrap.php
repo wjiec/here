@@ -12,6 +12,7 @@ use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use Phalcon\Di;
 use Phalcon\DiInterface;
+use Phalcon\Loader;
 
 
 /**
@@ -54,14 +55,14 @@ if (!function_exists('app_path')) {
     }
 }
 
-if (!function_exists('docs_path')) {
+if (!function_exists('doc_path')) {
     /**
      * Get the docs path
      *
      * @param string $path
      * @return string
      */
-    function docs_path(string $path = ''): string {
+    function doc_path(string $path = ''): string {
         return APP_DOCUMENT_ROOT . '/docs' . ($path ? "/{$path}" : '');
     }
 }
@@ -185,3 +186,8 @@ if (!function_exists('environment')) {
         return container('environment', ...$args);
     }
 }
+
+// Load the utility functions
+(new Loader())->registerFiles([
+    app_path('library/Xet/functions.php')
+])->register();

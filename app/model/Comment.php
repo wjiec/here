@@ -35,25 +35,25 @@ final class Comment extends AbstractModel {
      *
      * @var string
      */
-    protected $comment_author;
+    protected $commentator_nickname;
 
     /**
      *
      * @var string
      */
-    protected $comment_author_email;
+    protected $commentator_email;
 
     /**
      *
      * @var string
      */
-    protected $comment_author_ip;
+    protected $commentator_ip;
 
     /**
      *
      * @var string
      */
-    protected $comment_author_agent;
+    protected $commentator_browser;
 
     /**
      *
@@ -93,44 +93,44 @@ final class Comment extends AbstractModel {
     /**
      * Method to set the value of field comment_author
      *
-     * @param string $comment_author
+     * @param string $commentator_nickname
      * @return $this
      */
-    final public function setCommentAuthor(string $comment_author) {
-        $this->comment_author = $comment_author;
+    final public function setCommentatorNickname(string $commentator_nickname) {
+        $this->commentator_nickname = $commentator_nickname;
         return $this;
     }
 
     /**
      * Method to set the value of field comment_author_email
      *
-     * @param string $comment_author_email
+     * @param string $commentator_email
      * @return $this
      */
-    final public function setCommentAuthorEmail(string $comment_author_email) {
-        $this->comment_author_email = $comment_author_email;
+    final public function setCommentatorEmail(string $commentator_email) {
+        $this->commentator_email = $commentator_email;
         return $this;
     }
 
     /**
      * Method to set the value of field comment_author_ip
      *
-     * @param string $comment_author_ip
+     * @param string $commentator_ip
      * @return $this
      */
-    final public function setCommentAuthorIp(string $comment_author_ip) {
-        $this->comment_author_ip = $comment_author_ip;
+    final public function setCommentatorIp(string $commentator_ip) {
+        $this->commentator_ip = $commentator_ip;
         return $this;
     }
 
     /**
      * Method to set the value of field comment_author_agent
      *
-     * @param string $comment_author_agent
+     * @param string $commentator_browser
      * @return $this
      */
-    final public function setCommentAuthorAgent(string $comment_author_agent) {
-        $this->comment_author_agent = $comment_author_agent;
+    final public function setCommentatorBrowser(string $commentator_browser) {
+        $this->commentator_browser = $commentator_browser;
         return $this;
     }
 
@@ -219,8 +219,8 @@ final class Comment extends AbstractModel {
      *
      * @return string
      */
-    final public function getCommentAuthor(): ?string {
-        return $this->comment_author;
+    final public function getCommentatorNickname(): ?string {
+        return $this->commentator_nickname;
     }
 
     /**
@@ -228,8 +228,8 @@ final class Comment extends AbstractModel {
      *
      * @return string
      */
-    final public function getCommentAuthorEmail(): ?string {
-        return $this->comment_author_email;
+    final public function getCommentatorEmail(): ?string {
+        return $this->commentator_email;
     }
 
     /**
@@ -237,8 +237,8 @@ final class Comment extends AbstractModel {
      *
      * @return string
      */
-    final public function getCommentAuthorIp(): ?string {
-        return $this->comment_author_ip;
+    final public function getCommentatorIp(): ?string {
+        return $this->commentator_ip;
     }
 
     /**
@@ -246,8 +246,8 @@ final class Comment extends AbstractModel {
      *
      * @return string
      */
-    final public function getCommentAuthorAgent(): ?string {
-        return $this->comment_author_agent;
+    final public function getCommentatorBrowser(): ?string {
+        return $this->commentator_browser;
     }
 
     /**
@@ -327,6 +327,21 @@ final class Comment extends AbstractModel {
      */
     final public function getSource() {
         return 'comment';
+    }
+
+    /**
+     * Factory new comment for an article
+     *
+     * @param int $article_id
+     * @param string $nickname
+     * @return static
+     */
+    final public static function factory(int $article_id, string $nickname): self {
+        $comment = new Comment();
+        $comment->setArticleId($article_id);
+        $comment->setCommentatorNickname($nickname);
+
+        return $comment;
     }
 
     /**

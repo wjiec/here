@@ -23,7 +23,6 @@ class ErrorController extends AbstractController {
      * Hooks on the anything found on router
      */
     public function notFoundAction() {
-        $this->tag::setTitle($this->translator->_('error_not_found'));
         $this->response->setStatusCode(404);
     }
 

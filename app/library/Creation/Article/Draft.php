@@ -8,13 +8,12 @@
  * @license   MIT License
  * @link      https://github.com/lsalio/here
  */
-namespace Here\Library\Article;
+namespace Here\Library\Creation\Article;
 
 use Here\Model\Article;
 use Here\Model\ArticleCategory;
 use Here\Model\Author;
 use Here\Model\Category;
-use Here\Model\Comment;
 use Throwable;
 
 
@@ -44,13 +43,24 @@ final class Draft {
     /**
      * Article constructor.
      * @param Author $author
+     * @param Article|null $article
      */
-    public function __construct(Author $author) {
+    public function __construct(Author $author, ?Article $article = null) {
         $this->author = $author;
-
-        $translator = container('translator');
-        $this->article = Article::factory($author->getAuthorId(), $translator->_('untitled_article'));
+        $this->article = $article;
         $this->categories = [];
+
+        if (!$this->article) {
+            $translator = container('translator');
+            $this->article = Article::factory($author->getAuthorId(), $translator->_('untitled_article'));
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getArticleId(): int {
+        return $this->article->getArticleId();
     }
 
     /**
@@ -91,11 +101,11 @@ final class Draft {
      *
      * @return bool
      */
-    public function save(): bool {
+    public function publish(): bool {
         try {
             container('db')->begin();
 
-            $this->article->save();
+            $this->article->publish();
             foreach ($this->categories as $category_id) {
                 ArticleCategory::factory($this->article->getArticleId(), $category_id)->save();
             }

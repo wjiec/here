@@ -25,7 +25,7 @@ class Hook {
      * @param Router $router
      */
     public static function hook(Router $router) {
-        $router->notFound(['controller' => 'error', 'action' => 'notFound']);
+        $router->notFound(['module' => 'tinder', 'controller' => 'error', 'action' => 'notFound']);
     }
 
 }

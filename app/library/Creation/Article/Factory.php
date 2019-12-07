@@ -8,16 +8,17 @@
  * @license   MIT License
  * @link      https://github.com/lsalio/here
  */
-namespace Here\Library\Article;
+namespace Here\Library\Creation\Article;
 
+use Here\Model\Article;
 use Here\Model\Author;
 
 
 /**
  * Class Factory
- * @package Here\Library\Article
+ * @package Here\Library\Creation\Article
  */
-final class Factory {
+class Factory {
 
     /**
      * The author of the article
@@ -55,6 +56,16 @@ final class Factory {
             return null;
         }
         return $this->create(file_get_contents($filename));
+    }
+
+    /**
+     * Load article from database
+     *
+     * @param Article $article
+     * @return Draft
+     */
+    final public function load(Article $article): Draft {
+        return new Draft($this->author, $article);
     }
 
 }

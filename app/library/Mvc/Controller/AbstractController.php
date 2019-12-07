@@ -13,6 +13,9 @@ namespace Here\Library\Mvc\Controller;
 use Phalcon\Cache\BackendInterface;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
+use Phalcon\Mvc\Dispatcher;
+use Phalcon\Tag;
+use Phalcon\Text;
 use Phalcon\Translate\Adapter;
 
 
@@ -41,6 +44,27 @@ abstract class AbstractController extends Controller {
             if ($this->dispatcher->getControllerName() !== 'setup') {
                 return $this->response->redirect(['for' => 'setup-wizard']);
             }
+        }
+        // Match title for each action automatic
+        $this->matchActionTitle($this->dispatcher);
+    }
+
+    /**
+     * Sets the title for action by default `title_{module}_{controller}_{action}`
+     * on the i18n
+     *
+     * @param Dispatcher $dispatcher
+     */
+    private function matchActionTitle(Dispatcher $dispatcher) {
+        $title_key = join('_', [
+            /* prefix */'title',
+            Text::uncamelize($dispatcher->getModuleName()),
+            Text::uncamelize($dispatcher->getControllerName()),
+            Text::uncamelize($dispatcher->getActionName())
+        ]);
+
+        if ($this->translator->exists($title_key)) {
+            Tag::setTitle($this->translator->_($title_key));
         }
     }
 
