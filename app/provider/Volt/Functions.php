@@ -30,7 +30,7 @@ final class Functions {
             case 'join':
                 return "join(',', {$arguments})";
             case '_t':
-                return "container('translator')->t({$arguments})";
+                return sprintf('$this->translator->t(%s)', $arguments);
             default:
                 return null;
         }
@@ -45,7 +45,14 @@ final class Functions {
      * @return string|null
      */
     final public function compileFilter(string $name, $arguments): ?string {
-        return null;
+        switch ($name) {
+            case 'markdown':
+                return sprintf('$this->markdown->text(%s)', $arguments);
+            case 'date':
+                return sprintf('date("F d, Y", strtotime(%s))', $arguments);
+            default:
+                return null;
+        }
     }
 
 }

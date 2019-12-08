@@ -10,6 +10,7 @@
  */
 namespace Here\Tinder\Controller;
 
+use Here\Model\Article;
 use Here\Tinder\Library\Mvc\Controller\AbstractController;
 
 
@@ -22,6 +23,8 @@ final class ExploreController extends AbstractController {
     /**
      * Shows the author info and hot article to views
      */
-    final public function indexAction() {}
+    final public function indexAction() {
+        $this->view->setVar('articles', Article::find());
+    }
 
 }

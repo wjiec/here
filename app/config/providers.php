@@ -17,6 +17,7 @@ return [
     Here\Provider\Field\ServiceProvider::class,
     Here\Provider\FileSystem\ServiceProvider::class,
     Here\Provider\Logger\ServiceProvider::class,
+    Here\Provider\Markdown\ServiceProvider::class,
     Here\Provider\Router\ServiceProvider::class,
     Here\Provider\Session\ServiceProvider::class,
     Here\Provider\Timezone\ServiceProvider::class,
