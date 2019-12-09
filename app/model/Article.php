@@ -39,6 +39,11 @@ final class Article extends AbstractModel {
     protected $article_title;
 
     /**
+     * @var string
+     */
+    protected $article_abbr;
+
+    /**
      *
      * @var string
      */
@@ -129,6 +134,22 @@ final class Article extends AbstractModel {
      */
     final public function setArticleTitle(string $article_title) {
         $this->article_title = $article_title;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArticleAbbr(): ?string {
+        return $this->article_abbr;
+    }
+
+    /**
+     * @param string $article_abbr
+     * @return Article
+     */
+    public function setArticleAbbr(string $article_abbr) {
+        $this->article_abbr = $article_abbr;
         return $this;
     }
 
@@ -490,13 +511,11 @@ final class Article extends AbstractModel {
      * Creates new article model
      *
      * @param int $author_id
-     * @param string $title
      * @return static
      */
-    final public static function factory(int $author_id, string $title): self {
+    final public static function factory(int $author_id): self {
         $article = new static();
         $article->setAuthorId($author_id);
-        $article->setArticleTitle($title);
 
         return $article;
     }

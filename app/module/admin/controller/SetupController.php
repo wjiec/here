@@ -69,7 +69,6 @@ final class SetupController extends AbstractController {
 
             // Create draft of article and save
             $draft = (new Factory($author))->createFromFile(doc_path('/template/initial.md'));
-            $draft->setTitle('Hello World');
             $draft->addCategory($category);
             $draft->publish();
 

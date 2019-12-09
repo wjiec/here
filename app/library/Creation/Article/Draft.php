@@ -10,8 +10,9 @@
  */
 namespace Here\Library\Creation\Article;
 
+use Here\Library\Creation\Article\Metadata\Parser;
+use Here\Library\Exception\Metadata\MetadataParseException;
 use Here\Library\Exception\Mvc\ModelSaveException;
-use Here\Library\Utils\Text;
 use Here\Model\Article;
 use Here\Model\ArticleCategory;
 use Here\Model\Author;
@@ -52,8 +53,7 @@ final class Draft {
         $this->categories = [];
 
         if (!$this->article) {
-            $translator = container('translator');
-            $this->article = Article::factory($author->getAuthorId(), $translator->_('untitled_article'));
+            $this->article = Article::factory($author->getAuthorId());
         }
     }
 
@@ -102,9 +102,10 @@ final class Draft {
      *
      * @return bool
      * @throws ModelSaveException
+     * @throws MetadataParseException
      */
     public function publish(): bool {
-        $this->ensureArticleBody();
+        $this->ensureArticleMetadata();
         $this->article->publish();
 
         foreach ($this->categories as $category_id) {
@@ -118,15 +119,29 @@ final class Draft {
      * Ensure the body of article normalize
      *  * end of lf
      *  * tail blank
+     *
+     * @throws MetadataParseException
      */
-    private function ensureArticleBody() {
-        $this->article->setArticleBody(Text::normalize($this->article->getArticleBody()));
-        $this->article->setArticleOutline(Text::normalize($this->article->getArticleOutline()));
+    private function ensureArticleMetadata() {
+        $metadata = Parser::parse($this->article->getArticleBody());
+        if (empty($this->article->getArticleOutline()) && $metadata->outline) {
+            $this->article->setArticleOutline($metadata->outline);
+        }
+        if (empty($this->article->getArticleTitle() && $metadata->title)) {
+            $this->article->setArticleTitle($metadata->title);
+        }
+        if (empty($this->article->getArticleAbbr()) && $metadata->abbr) {
+            $this->article->setArticleAbbr($metadata->abbr);
+        }
+        if (empty($this->article->getArticlePassword()) && $metadata->password) {
+            $this->article->lockArticleWithoutOwner($metadata->password);
+        }
+        if ($metadata->private) {
+            $this->article->markArticlePrivate();
+        }
+        if ($metadata->disallow_comment) {
+            $this->article->markArticleDisallowComment();
+        }
     }
-
-    /**
-     * @const OUTLINE_MAX_LINES
-     */
-    protected const OUTLINE_MAX_LINES = 8;
 
 }
