@@ -10,11 +10,12 @@
  */
 namespace Here\Library\Creation\Article;
 
+use Here\Library\Exception\Mvc\ModelSaveException;
+use Here\Library\Utils\Text;
 use Here\Model\Article;
 use Here\Model\ArticleCategory;
 use Here\Model\Author;
 use Here\Model\Category;
-use Throwable;
 
 
 /**
@@ -100,22 +101,32 @@ final class Draft {
      * Saves the article and other related contents into database
      *
      * @return bool
+     * @throws ModelSaveException
      */
     public function publish(): bool {
-        try {
-            container('db')->begin();
+        $this->ensureArticleBody();
+        $this->article->publish();
 
-            $this->article->publish();
-            foreach ($this->categories as $category_id) {
-                ArticleCategory::factory($this->article->getArticleId(), $category_id)->save();
-            }
-
-            return container('db')->commit();
-        } catch (Throwable $e) {
-            container('db')->rollback();
-            container('logger')->error("Saves draft error: {$e->getMessage()}");
-            return false;
+        foreach ($this->categories as $category_id) {
+            ArticleCategory::factory($this->article->getArticleId(), $category_id)->save();
         }
+
+        return true;
     }
+
+    /**
+     * Ensure the body of article normalize
+     *  * end of lf
+     *  * tail blank
+     */
+    private function ensureArticleBody() {
+        $this->article->setArticleBody(Text::normalize($this->article->getArticleBody()));
+        $this->article->setArticleOutline(Text::normalize($this->article->getArticleOutline()));
+    }
+
+    /**
+     * @const OUTLINE_MAX_LINES
+     */
+    protected const OUTLINE_MAX_LINES = 8;
 
 }

@@ -1,5 +1,13 @@
-Hello World
------------
+///----------------------------------------------------
+//@title Hello World
+//@abbr hello-world
+//@outline Congratulations, when you saw this article,
+// you had finished installing.
+//@public
+//@comment allow
+//@password
+///----------------------------------------------------
+
 
 Congratulations, when you saw this article, you had finished installing.
 
