@@ -1,16 +1,20 @@
 .h-explore-articles {
-  max-width: 1100px;
+  max-width: 850px;
+  margin-top: 5vh;
 }
 
-.h-explore-article {
-  padding: 20px;
-}
 .h-explore-article-header {
   text-align: center;
 }
 
 .h-explore-article-title {
+  color: #53787d;
+  font-size: 20px;
   line-height: 40px;
+}
+
+.h-explore-article-title a {
+  color: inherit;
 }
 
 .h-explore-article-create-time {

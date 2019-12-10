@@ -19,7 +19,7 @@ use Here\Provider\Field\Store\Adapter\Mixed;
  * @property string $title
  * @property string $abbr
  * @property string $outline
- * @property bool $private
+ * @property bool $access_private
  * @property bool $disallow_comment
  * @property string $password
  * @property string $body
@@ -31,7 +31,7 @@ class Metadata {
      *  - title
      *  - abbr
      *  - outline
-     *  - private
+     *  - access_private
      *  - disallow_comment
      *  - password
      *  - body
@@ -46,7 +46,8 @@ class Metadata {
      */
     public function __construct(array $data) {
         $this->data = array_merge([
-            'private' => false,
+            'title' => 'untitled article',
+            'access_private' => false,
             'disallow_comment' => false
         ], $data);
     }

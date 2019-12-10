@@ -124,24 +124,25 @@ final class Draft {
      */
     private function ensureArticleMetadata() {
         $metadata = Parser::parse($this->article->getArticleBody());
-        if (empty($this->article->getArticleOutline()) && $metadata->outline) {
-            $this->article->setArticleOutline($metadata->outline);
-        }
         if (empty($this->article->getArticleTitle() && $metadata->title)) {
             $this->article->setArticleTitle($metadata->title);
+        }
+        if (empty($this->article->getArticleOutline()) && $metadata->outline) {
+            $this->article->setArticleOutline($metadata->outline);
         }
         if (empty($this->article->getArticleAbbr()) && $metadata->abbr) {
             $this->article->setArticleAbbr($metadata->abbr);
         }
         if (empty($this->article->getArticlePassword()) && $metadata->password) {
-            $this->article->lockArticleWithoutOwner($metadata->password);
+            $this->article->setArticlePassword($metadata->password);
         }
-        if ($metadata->private) {
+        if ($metadata->access_private) {
             $this->article->markArticlePrivate();
         }
         if ($metadata->disallow_comment) {
             $this->article->markArticleDisallowComment();
         }
+        $this->article->setArticleBody($metadata->body);
     }
 
 }

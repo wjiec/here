@@ -1,5 +1,5 @@
 --
--- Here Framework
+-- Here Structure of Database
 --
 
 drop database if exists here;
@@ -7,16 +7,6 @@ create database here with encoding = 'UTF8';
 alter database here owner to postgres;
 
 \connect here;
-
-
---
--- Type for type `lock_status`
---
-create type public.lock_status as enum (
-  'never', 'owner', 'always'
-);
-
-alter type public.lock_status owner to postgres;
 
 
 --
@@ -32,7 +22,6 @@ create table public.article (
   "article_public" bool not null default false,
   "article_publish" bool not null default false,
   "article_allow_comment" bool not null default true,
-  "article_lock" public.lock_status not null default 'never'::public.lock_status,
   "article_password" varchar(128) not null default '',
   "article_like" integer not null default 0,
   "article_comments" integer not null default 0,

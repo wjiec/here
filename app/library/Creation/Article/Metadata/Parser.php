@@ -41,26 +41,26 @@ class Parser {
      * @throws MetadataParseException
      */
     public static function parse(string $content): Metadata {
-        $lines = array_filter(Text::lines($content));
+        $lines = Text::lines($content);
         return (new static(array_values($lines)))->metadata();
     }
 
     /**
      * Parse and make metadata returns
      *
+     * @param int $index
      * @return Metadata
      * @throws MetadataParseException
      */
-    public function metadata(): Metadata {
+    public function metadata(int $index = 0): Metadata {
         $metadata = null;
-
-        $index = 0;
         // Check metadata exists
         for (; $index < count($this->lines); ++$index) {
             if (!static::isBlank($this->lines[$index])) {
                 if (static::isMetadataIdentify($this->lines[$index])) {
                     $metadata = $this->fromMetadataBlock($index + 1, $index);
                 }
+                break;
             }
         }
         // When metadata empty, Checks title of section
@@ -68,7 +68,7 @@ class Parser {
             $metadata = $this->fromRawMarkdown($index, $index);
         }
 
-        return $metadata->setBody(Text::concat(array_splice($this->lines, $index)));
+        return $metadata->setBody(trim(Text::concat(array_splice($this->lines, $index))));
     }
 
     /**
@@ -84,7 +84,7 @@ class Parser {
         for ($last = null; $offset < count($this->lines); ++$offset) {
             switch (true) {
                 case static::isMetadataIdentify($this->lines[$offset]):
-                    $index = $offset;
+                    $index = $offset + 1;
                     return new Metadata($metadata);
                 case ($pair = static::isMetadataPair($this->lines[$offset])):
                     list($last, $value) = $pair;
@@ -102,7 +102,7 @@ class Parser {
                     throw new MetadataParseException("invalid metadata `{$this->lines[$offset]}`");
             }
         }
-        return new Metadata($metadata);
+        throw new MetadataParseException("The end token missing of metadata");
     }
 
     /**

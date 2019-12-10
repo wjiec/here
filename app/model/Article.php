@@ -77,12 +77,6 @@ final class Article extends AbstractModel {
      *
      * @var string
      */
-    protected $article_lock;
-
-    /**
-     *
-     * @var string
-     */
     protected $article_password;
 
     /**
@@ -236,36 +230,12 @@ final class Article extends AbstractModel {
     }
 
     /**
-     * Method to set the article unlock
-     *
-     * @return $this
-     */
-    final public function unlockArticle() {
-        $this->article_lock = self::ARTICLE_LOCK_NEVER;
-        $this->article_password = '';
-        return $this;
-    }
-
-    /**
-     * Method to lock the article for everybody without owner
+     * Method to set the article password
      *
      * @param string $password
      * @return $this
      */
-    final public function lockArticleWithoutOwner(string $password) {
-        $this->article_lock = self::ARTICLE_LOCK_OWNER;
-        $this->article_password = $password;
-        return $this;
-    }
-
-    /**
-     * Method to lock the article for everybody
-     *
-     * @param string $password
-     * @return $this
-     */
-    final public function lockArticleEverybody(string $password) {
-        $this->article_lock = self::ARTICLE_LOCK_ALWAYS;
+    final public function setArticlePassword(string $password) {
         $this->article_password = $password;
         return $this;
     }
@@ -400,34 +370,6 @@ final class Article extends AbstractModel {
     }
 
     /**
-     * Returns the article lock status equals to never
-     *
-     * @return bool
-     */
-    final public function isArticleUnlocked(): bool {
-        return is_null($this->article_lock) ||
-            $this->article_lock === self::ARTICLE_LOCK_NEVER;
-    }
-
-    /**
-     * Returns the article lock status equals to owner
-     *
-     * @return bool
-     */
-    final public function isArticleLockWithoutOwner(): bool {
-        return $this->article_lock === self::ARTICLE_LOCK_OWNER;
-    }
-
-    /**
-     * Returns the article lock status equals to always
-     *
-     * @return bool
-     */
-    final public function isArticleLocked(): bool {
-        return $this->article_lock === self::ARTICLE_LOCK_ALWAYS;
-    }
-
-    /**
      * Returns the value of field article_password
      *
      * @return string
@@ -519,20 +461,5 @@ final class Article extends AbstractModel {
 
         return $article;
     }
-
-    /**
-     * Lock article never
-     */
-    public const ARTICLE_LOCK_NEVER = 'never';
-
-    /**
-     * Lock article and view by owner only
-     */
-    public const ARTICLE_LOCK_OWNER = 'owner';
-
-    /**
-     * Lock article for everybody
-     */
-    public const ARTICLE_LOCK_ALWAYS = 'always';
 
 }
