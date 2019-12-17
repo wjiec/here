@@ -18,12 +18,23 @@
           </p>
         </div>
       </div>
-      <!-- Article footer -->
+      <!-- Article Body -->
       <div class="h-explore-article-outline">
         {{ article.article_outline | markdown }}
       </div>
+      <!-- Article Footer -->
       <div class="h-explore-article-footer">
-
+        <div class="h-container h-is-horizontal">
+          <p class="h-explore-article-like">
+            <i class="h-icon-like"></i><span>{{ article.article_like }}</span>
+          </p>
+          <p class="h-explore-article-comment">
+            <i class="h-icon-comment"></i><span>0</span>
+          </p>
+          <p class="h-explore-article-category">
+            <i class="h-icon-category"></i><span>0</span>
+          </p>
+        </div>
       </div>
     </article>
     {% endfor %}

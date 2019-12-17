@@ -24,7 +24,6 @@ create table public.article (
   "article_allow_comment" bool not null default true,
   "article_password" varchar(128) not null default '',
   "article_like" integer not null default 0,
-  "article_comments" integer not null default 0,
   "article_views" integer not null default 0,
   "create_time" timestamp without time zone not null default now(),
   "update_time" timestamp without time zone not null default now()

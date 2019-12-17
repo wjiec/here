@@ -89,12 +89,6 @@ final class Article extends AbstractModel {
      *
      * @var integer
      */
-    protected $article_comments;
-
-    /**
-     *
-     * @var integer
-     */
     protected $article_views;
 
     /**
@@ -251,16 +245,6 @@ final class Article extends AbstractModel {
     }
 
     /**
-     * Method to increment comments count for the article
-     *
-     * @return $this
-     */
-    final public function incrArticleCommentCount() {
-        $this->article_comments = (int)$this->article_comments + 1;
-        return $this;
-    }
-
-    /**
      * Method to increment viewers count for the article
      *
      * @return $this
@@ -385,15 +369,6 @@ final class Article extends AbstractModel {
      */
     final public function getArticleLike(): int {
         return (int)$this->article_like;
-    }
-
-    /**
-     * Returns the value of field article_comments
-     *
-     * @return integer
-     */
-    final public function getArticleComments(): int {
-        return (int)$this->article_comments;
     }
 
     /**
