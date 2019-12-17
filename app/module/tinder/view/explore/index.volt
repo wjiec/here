@@ -26,13 +26,16 @@
       <div class="h-explore-article-footer">
         <div class="h-container h-is-horizontal">
           <p class="h-explore-article-like">
-            <i class="h-icon-like"></i><span>{{ article.article_like }}</span>
+            <i class="h-icon h-icon-like"></i><span>{{ article.article_like }}</span>
           </p>
           <p class="h-explore-article-comment">
-            <i class="h-icon-comment"></i><span>0</span>
+            <i class="h-icon h-icon-comment"></i><span>0</span>
           </p>
           <p class="h-explore-article-category">
-            <i class="h-icon-category"></i><span>0</span>
+            <i class="h-icon h-icon-category"></i>
+            <span>
+              <a href="{{ url('category/0') }}">Category</a>
+            </span>
           </p>
         </div>
       </div>

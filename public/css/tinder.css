@@ -3,6 +3,10 @@
   margin-top: 5vh;
 }
 
+.h-explore-article {
+  margin-bottom: 50px;
+}
+
 .h-explore-article-header {
   text-align: center;
 }
@@ -30,6 +34,14 @@
   border-bottom: 1px dashed rgba(0, 0, 0, .25);
 }
 
+.h-explore-article-footer {
+  color: #aaa;
+}
+
 .h-explore-article-footer p {
-  margin-right: 10px;
+  margin-right: 20px;
+}
+
+.h-explore-article-footer p .h-icon {
+  margin-right: 5px;
 }

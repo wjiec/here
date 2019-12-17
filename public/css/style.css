@@ -24,7 +24,7 @@ p {
 }
 
 a {
-  color: #444;
+  color: inherit;
   cursor: pointer;
   text-decoration: none;
 }
@@ -182,4 +182,35 @@ button {
 button:hover {
   border: 1px solid #aaa;
   background: #fafafa;
+}
+
+/* Icon */
+@font-face {
+  font-family: "iconfont";
+  src: url('icon/iconfont.eot?t=1576598196780');
+  src: url('icon/iconfont.eot?t=1576598196780#iefix') format('embedded-opentype'),
+  url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAPMAAsAAAAACCQAAAN/AAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHEIGVgCDDAqDdIM4ATYCJAMQCwoABCAFhG0HQxsVB8iOwnGvuVniD38F8fhbOY9kLXAVU2UrYsp914WLuU0Qv076kLC4hFnyPPmJ/e73WILMdQiJlvjj3ukfJT7fdZ7LHFs/dQHGAQU01qboixZI4AlhDsRbl3kYAhjSkAupVGV7UCpojFECSK/unqlUUgZ0TbkQRgiWLNTIHAKEranWDWC2/3l5QwEJg0VAYRxVr8vMUYaeeEq5vksr5eKOZwO4ZaCAXIAGaVbqaIAeJnKhMEqiQBZYVy8BT/k+eOIKVvuXBwoLAQlilDoAFEJSgSe2IFZakOMrFUQnfpAGIAwYYB1wAUOVis7WWOj4Bj8oXvp4yWJiRj54cHj48Mj3cd37j9VHj07N36eip6efdE8YE+7e0kzbguVuTWwfPp1WRbf1NodOiaw6VaRMxjjyBVW6pfZwtoePz4WkDY1ZvFgkusg4C5Ykbvxa2N6ZtilJk88mYzbsSKaX7rTjb96dUi3b1WnBFuNM2xbdbsdMX9rY3TIfP9HRnr41nSp3Uv19rjeaXLffST3w19/9OQ5UnF4vWaNenm3Hyx+voG1P7iUP2eQnRWwVt2JtB+ciLtxTgBMscJiUYIjyz3BBrpM/BmeI1G/1WGhnQOI056PTOjQ6r6X11xsqqpHfOUHZAcZrlaltVkUG3Rm+rFiDYv8ag3mtR53nb2m1OO/cb+GBzufkQR9ZMzlT2xZxZsYlDXHnG29TnLgkO0Uc0hAnBbrTDwXwT6uzqjyGX1P7VAEAdUYl+q/fIdjj8Oa2cUt9C9sagGdpUx6A3z+t6VdEGAtaC/+isGWdVsWGUWtZYgs0p6ZCYjQWYDCAj+FJwKsxXIkhtglhXgiwCJEaFGEyoZqaCwLYFIIgYcqCISdVl9skZAA6oiNADiYSEOKxGyzicBoU8biJaupLCJCEdxAknigwNJGEG9pkke6m4gA0BR2wHhDYlLqWWWpB+Q69S2xyUuzTTsh5EIZ+nnzZ9AJT5DGm5FdvIOKCy5TAnByHcUyQMYVoS8cXyYxu3i5lL+rYlCg1KsIgJgLiAHTgAdAdGyLFdZsLtdz7dyAeF2JMuIZQ4TyBMDlB+0B+8pCvBbpQpK0I1/LMQK54DBiE4AJ0gSESgCrEhsRmggD6lfcLQWyEDt16xDIM8lKNurRVdOZXJU+4BTAY3bRYokRLgNChdUswlUKv7hFWOh58nkf8UBQA') format('woff2'),
+  url('icon/iconfont.woff?t=1576598196780') format('woff'),
+  url('icon/iconfont.ttf?t=1576598196780') format('truetype'),
+  url('icon/iconfont.svg?t=1576598196780#iconfont') format('svg');
+}
+
+.h-icon {
+  font-family: "iconfont", sans-serif !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.h-icon-category:before {
+  content: "\e001";
+}
+
+.h-icon-like:before {
+  content: "\e002";
+}
+
+.h-icon-comment:before {
+  content: "\e003";
 }
