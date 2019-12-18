@@ -36,5 +36,7 @@ return [
     'button_retry' => '重试',
     'button_issue_new' => '提交错误',
 
+    'link_read_more' => '查看详情...',
+
     'category_default_name' => '默认分类'
 ];

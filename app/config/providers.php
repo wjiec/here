@@ -12,6 +12,7 @@ return [
     Here\Provider\Administrator\ServiceProvider::class,
     Here\Provider\Application\ServiceProvider::class,
     Here\Provider\Cache\ServiceProvider::class,
+    Here\Provider\Color\ServiceProvider::class,
     Here\Provider\Config\ServiceProvider::class,
     Here\Provider\Database\ServiceProvider::class,
     Here\Provider\Field\ServiceProvider::class,

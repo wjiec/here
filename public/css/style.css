@@ -11,7 +11,9 @@ html {
 body {
   margin: 0;
   background: #fafafa;
-  font-family: gotham, helvetica, arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,
+    Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -27,6 +29,10 @@ a {
   color: inherit;
   cursor: pointer;
   text-decoration: none;
+}
+
+a:hover {
+  border-bottom: 1px solid rgba(45, 45, 45, .75);
 }
 
 pre {

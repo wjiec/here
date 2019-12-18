@@ -36,6 +36,15 @@ final class Administrator {
     }
 
     /**
+     * Returns model of the author
+     *
+     * @return AuthorModel
+     */
+    public function model(): AuthorModel {
+        return $this->author;
+    }
+
+    /**
      * @param string $username
      * @param string $password
      * @param string $email

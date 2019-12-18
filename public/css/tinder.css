@@ -1,19 +1,30 @@
+.h-explore-header {
+  background: #fff;
+  height: 150px;
+}
+
+.h-explore-author {
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.h-explore-author-nickname {
+  line-height: 40px;
+}
+
 .h-explore-articles {
   max-width: 850px;
-  margin-top: 5vh;
+  margin-top: 50px;
 }
 
 .h-explore-article {
-  margin-bottom: 50px;
-}
-
-.h-explore-article-header {
-  text-align: center;
+  margin-bottom: 60px;
 }
 
 .h-explore-article-title {
-  color: #53787d;
-  font-size: 20px;
+  color: #293846;
+  font-size: 22px;
   line-height: 40px;
 }
 
@@ -21,13 +32,14 @@
   color: inherit;
 }
 
-.h-explore-article-create-time {
+.h-explore-article-metadata {
+  font-size: 14px;
   color: #aaa;
   font-family: "Fira Code Light", sans-serif;
 }
 
 .h-explore-article-outline {
-  margin: 10px 20px;
+  margin: 10px 20px 30px 20px;
 }
 
 .h-explore-article-outline a {
@@ -35,7 +47,7 @@
 }
 
 .h-explore-article-footer {
-  color: #aaa;
+  justify-content: space-between;
 }
 
 .h-explore-article-footer p {

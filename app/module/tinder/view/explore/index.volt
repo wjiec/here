@@ -1,43 +1,30 @@
 <header class="h-explore-header">
-  <div class="h-container"></div>
+  <div class="h-explore-author h-container">
+    <h2 class="h-explore-author-nickname" style="color: {{ color.random() }}">
+      {{ administrator.model().author_nickname | capitalize }}
+    </h2>
+    {% if administrator.model().author_introduction %}
+      <p class="h-explore-author-introduction">{{ administrator.model().author_introduction }}</p>
+    {% endif %}
+  </div>
 </header>
 
 <main class="h-explore-body">
   <section class="h-explore-articles h-container">
     {% for article in articles %}
     <article class="h-explore-article">
-      <!-- Article header -->
-      <div class="h-explore-article-header">
+      <div class="h-explore-article-header h-container">
         <h4 class="h-explore-article-title">
           <a href="{{ url('/article/' ~ article.article_abbr) }}">{{ article.article_title }}</a>
         </h4>
-        <!-- Article outline/content -->
         <div class="h-explore-article-metadata">
           <p class="h-explore-article-create-time">
             {{ article.create_time | date }}
           </p>
         </div>
       </div>
-      <!-- Article Body -->
       <div class="h-explore-article-outline">
         {{ article.article_outline | markdown }}
-      </div>
-      <!-- Article Footer -->
-      <div class="h-explore-article-footer">
-        <div class="h-container h-is-horizontal">
-          <p class="h-explore-article-like">
-            <i class="h-icon h-icon-like"></i><span>{{ article.article_like }}</span>
-          </p>
-          <p class="h-explore-article-comment">
-            <i class="h-icon h-icon-comment"></i><span>0</span>
-          </p>
-          <p class="h-explore-article-category">
-            <i class="h-icon h-icon-category"></i>
-            <span>
-              <a href="{{ url('category/0') }}">Category</a>
-            </span>
-          </p>
-        </div>
       </div>
     </article>
     {% endfor %}
