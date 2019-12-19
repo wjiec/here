@@ -62,6 +62,10 @@
   font-size: 12px;
   max-width: 850px;
   margin: 0 auto 50px;
+}
+
+.h-common-footer div {
+  line-height: 20px;
   justify-content: center;
 }
 
