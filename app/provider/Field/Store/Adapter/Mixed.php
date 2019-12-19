@@ -57,19 +57,22 @@ final class Mixed extends AbstractStore {
      * @return string|integer|float|bool|null
      */
     final public function get(string $key, $default = null) {
-        $missing_stores = [];
-        foreach ($this->stores as $store) {
-            $value = $store->get($key, $default);
-            if ($value !== $default) {
-                /* @var StoreInterface $missing_store */
-                foreach ($missing_stores as $missing_store) {
-                    $missing_store->set($key, $value);
+        $values = array_reduce($this->stores, function(array $carry, StoreInterface $store) use ($key) {
+            if (!isset($carry['hit'])) {
+                if ($store->exists($key)) {
+                    $carry['hit'] = $store->get($key);
+                } else {
+                    $carry['missing'][] = $store;
                 }
-                return $value;
             }
-            $missing_stores[] = $store;
+            return $carry;
+        }, ['missing' => []]);
+
+        /* @var StoreInterface $store */
+        foreach ($values['missing'] as $store) {
+            $store->set($key, $values['hit']);
         }
-        return $default;
+        return $values['hit'];
     }
 
     /**

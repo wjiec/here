@@ -10,6 +10,7 @@
  */
 namespace Here\Provider\Field\Store\Adapter;
 
+use Here\Library\Exception\Mvc\ModelSaveException;
 use Here\Provider\Field\Store\AbstractStore;
 use Here\Provider\Field\Store\StoreInterface;
 use Here\Model\Field;
@@ -52,6 +53,7 @@ final class Database extends AbstractStore {
      * @param string $key
      * @param string $value
      * @return StoreInterface
+     * @throws ModelSaveException
      */
     final public function setString(string $key, string $value): StoreInterface {
         $field = Field::findByKey($key) ?? Field::factory($key);
@@ -67,6 +69,7 @@ final class Database extends AbstractStore {
      * @param string $key
      * @param int $value
      * @return StoreInterface
+     * @throws ModelSaveException
      */
     final public function setInteger(string $key, int $value): StoreInterface {
         $field = Field::findByKey($key) ?? Field::factory($key);
@@ -82,6 +85,7 @@ final class Database extends AbstractStore {
      * @param string $key
      * @param int $value
      * @return StoreInterface
+     * @throws ModelSaveException
      */
     final public function setFloat(string $key, int $value): StoreInterface {
         $field = Field::findByKey($key) ?? Field::factory($key);
@@ -97,6 +101,7 @@ final class Database extends AbstractStore {
      * @param string $key
      * @param bool $value
      * @return StoreInterface
+     * @throws ModelSaveException
      */
     final public function setBoolean(string $key, bool $value): StoreInterface {
         $field = Field::findByKey($key) ?? Field::factory($key);
