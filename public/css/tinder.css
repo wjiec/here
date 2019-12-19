@@ -57,3 +57,14 @@
 .h-explore-article-footer p .h-icon {
   margin-right: 5px;
 }
+
+.h-common-footer {
+  font-size: 12px;
+  max-width: 850px;
+  margin: 0 auto 50px;
+  justify-content: center;
+}
+
+.h-footer-copyright {
+  margin-right: 20px;
+}
