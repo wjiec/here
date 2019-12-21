@@ -1,7 +1,7 @@
 {% if field.get('layout.footer.show', true) %}
   <footer class="h-common-footer">
     <div class="h-container h-is-horizontal">
-      <div class="h-footer-copyright">
+      <div class="h-common-footer-copyright">
         <p>Isle power by <a href="{{ config.source.github }}" target="_blank">Here</a></p>
       </div>
       <div class="h-footer-best">

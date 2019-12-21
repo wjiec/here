@@ -1,16 +1,86 @@
-.h-explore-header {
+/* common components */
+.h-common-header {
   background: #fff;
   height: 150px;
 }
 
-.h-explore-author {
+.h-common-header-author {
   height: 100%;
   justify-content: center;
   align-items: center;
 }
 
-.h-explore-author-nickname {
+.h-common-header-author-nickname {
   line-height: 40px;
+}
+
+.h-common-footer {
+  font-size: 12px;
+  max-width: 850px;
+  margin: 0 auto 50px;
+}
+
+.h-common-footer div {
+  line-height: 20px;
+  justify-content: center;
+}
+
+.h-common-footer-copyright {
+  margin-right: 20px;
+}
+
+/* sidebar component */
+.h-sidebar-control {
+  position: fixed;
+  left: 40px;
+  top: 20px;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+}
+
+.h-sidebar-control:after {
+  content: '';
+  width: 20px;
+  height: 15px;
+  display: inline-block;
+  background: linear-gradient(to bottom, #555, #555 20%, #fff 20%, #fff 40%, #555 40%, #555 60%, #fff 60%, #fff 80%, #555 80%, #555 100%);
+}
+
+.h-sidebar-toggle .h-sidebar-control {
+  background: #555;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, .55) inset;
+}
+
+.h-sidebar-toggle .h-sidebar-control:after {
+  background: linear-gradient(to bottom, #fff, #fff 20%, #555 20%, #555 40%, #fff 40%, #fff 60%, #555 60%, #555 80%, #fff 80%, #fff 100%);
+}
+
+.h-common-sidebar {
+  width: 300px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  background: #d8e3e7;
+  z-index: 99;
+  box-shadow: 0 0 3px rgba(0, 0, 0, .25);
+  transform: translateX(-300px);
+  transition: transform .25s ease-in-out;
+}
+
+.h-common-sidebar.h-sidebar-toggle {
+  transform: translateX(0);
+}
+
+/* explore page */
+.h-common-wrapper {
+  transform: translateX(0);
+  transition: transform .25s ease-in-out;
+}
+
+.h-common-wrapper.h-sidebar-toggle {
+  transform: translateX(300px);
 }
 
 .h-explore-articles {
@@ -44,31 +114,4 @@
 
 .h-explore-article-outline a {
   border-bottom: 1px dashed rgba(0, 0, 0, .25);
-}
-
-.h-explore-article-footer {
-  justify-content: space-between;
-}
-
-.h-explore-article-footer p {
-  margin-right: 20px;
-}
-
-.h-explore-article-footer p .h-icon {
-  margin-right: 5px;
-}
-
-.h-common-footer {
-  font-size: 12px;
-  max-width: 850px;
-  margin: 0 auto 50px;
-}
-
-.h-common-footer div {
-  line-height: 20px;
-  justify-content: center;
-}
-
-.h-footer-copyright {
-  margin-right: 20px;
 }
