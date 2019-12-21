@@ -1,5 +1,5 @@
 <aside class="h-common-aside">
-  <div class="h-common-sidebar h-container h-sidebar-toggle">
+  <div class="h-common-sidebar h-container">
     <section class="h-common-sidebar-author">
       <p>{{ administrator.model().author_nickname | capitalize }}</p>
     </section>
