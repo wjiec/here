@@ -20,7 +20,7 @@ use Here\Model\Field;
  * Class Database
  * @package Here\Provider\Field\Store\Adapter
  */
-final class Database extends AbstractStore {
+class Database extends AbstractStore {
 
     /**
      * Returns the specify key whether is in the store
@@ -28,23 +28,8 @@ final class Database extends AbstractStore {
      * @param string $key
      * @return bool
      */
-    final public function exists(string $key): bool {
+    public function exists(string $key): bool {
         return Field::findByKey($key) !== null;
-    }
-
-    /**
-     * Get the value of specify key in the store. Returns
-     * default when the key not exists
-     *
-     * @param string $key
-     * @param null $default
-     * @return mixed
-     */
-    final public function get(string $key, $default = null) {
-        if ($field = Field::findByKey($key)) {
-            return $field->getRealFieldValue();
-        }
-        return $default;
     }
 
     /**
@@ -55,7 +40,7 @@ final class Database extends AbstractStore {
      * @return StoreInterface
      * @throws ModelSaveException
      */
-    final public function setString(string $key, string $value): StoreInterface {
+    public function setString(string $key, string $value): StoreInterface {
         $field = Field::findByKey($key) ?? Field::factory($key);
         $field->setStringField($key, $value);
         $field->save();
@@ -71,7 +56,7 @@ final class Database extends AbstractStore {
      * @return StoreInterface
      * @throws ModelSaveException
      */
-    final public function setInteger(string $key, int $value): StoreInterface {
+    public function setInteger(string $key, int $value): StoreInterface {
         $field = Field::findByKey($key) ?? Field::factory($key);
         $field->setIntegerField($key, $value);
         $field->save();
@@ -87,7 +72,7 @@ final class Database extends AbstractStore {
      * @return StoreInterface
      * @throws ModelSaveException
      */
-    final public function setFloat(string $key, int $value): StoreInterface {
+    public function setFloat(string $key, int $value): StoreInterface {
         $field = Field::findByKey($key) ?? Field::factory($key);
         $field->setFloatField($key, $value);
         $field->save();
@@ -103,12 +88,25 @@ final class Database extends AbstractStore {
      * @return StoreInterface
      * @throws ModelSaveException
      */
-    final public function setBoolean(string $key, bool $value): StoreInterface {
+    public function setBoolean(string $key, bool $value): StoreInterface {
         $field = Field::findByKey($key) ?? Field::factory($key);
         $field->setBooleanField($key, $value);
         $field->save();
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     * @param string $key
+     * @param null $default
+     * @return mixed|void
+     */
+    protected function doGet(string $key, $default = null) {
+        if ($field = Field::findByKey($key)) {
+            return $field->getRealFieldValue();
+        }
+        return $default;
     }
 
 }

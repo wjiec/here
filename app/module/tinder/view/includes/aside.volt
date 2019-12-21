@@ -1,5 +1,25 @@
 <aside class="h-common-aside">
-  <div class="h-common-sidebar h-container">
-    123213612638
+  <div class="h-common-sidebar h-container h-sidebar-toggle">
+    <section class="h-common-sidebar-author">
+      <p>{{ administrator.model().author_nickname | capitalize }}</p>
+    </section>
+    <section class="h-common-sidebar-links">
+      <p><a href="{{ url('/') }}">{{ _t('sidebar_link_blog') }}</a></p>
+      {% for link in field.get('sidebar.links', []) %}
+        <p><a href="{{ link['url'] }}" target="{{ link['target'] }}">{{ link['name'] }}</a></p>
+      {% endfor %}
+      {% if field.get('sidebar.link.github', '') %}
+        <p><a href="{{ field.get('sidebar.link.github') }}" target="_blank">{{ _t('sidebar_link_github') }}</a></p>
+      {% endif %}
+      <p><a href="{{ url('/') }}">{{ _t('sidebar_link_rss') }}</a></p>
+    </section>
+    <section class="h-common-sidebar-license">
+      <p>
+        {{ _t('sidebar_license_cc_notice') }}
+        <a href="{{ field.get('content.license.url', config.license.url) }}" target="_blank">
+          {{ field.get('content.license.name', config.license.name) }}
+        </a>
+      </p>
+    </section>
   </div>
 </aside>

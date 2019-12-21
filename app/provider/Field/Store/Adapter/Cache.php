@@ -19,7 +19,7 @@ use Phalcon\Cache\BackendInterface;
  * Class Cache
  * @package Here\Provider\Field\Store\Adapter
  */
-final class Cache extends AbstractStore {
+class Cache extends AbstractStore {
 
     /**
      * @var BackendInterface
@@ -41,7 +41,7 @@ final class Cache extends AbstractStore {
      *
      * @param int $lifetime
      */
-    final public function __construct(int $lifetime = 3600) {
+    public function __construct(int $lifetime = 3600) {
         $this->cache = container('cache');
         $this->lifetime = $lifetime;
     }
@@ -52,21 +52,8 @@ final class Cache extends AbstractStore {
      * @param string $key
      * @return bool
      */
-    final public function exists(string $key): bool {
+    public function exists(string $key): bool {
         return $this->cache->exists($this->prefix . $key);
-    }
-
-    /**
-     * Get the value of specify key in the store. Returns
-     * default when the key not exists
-     *
-     * @param string $key
-     * @param null $default
-     * @return mixed
-     */
-    final public function get(string $key, $default = null) {
-        // deserialize by phalcon cache frontend
-        return $this->cache->get($this->prefix . $key) ?: $default;
     }
 
     /**
@@ -76,7 +63,7 @@ final class Cache extends AbstractStore {
      * @param string $value
      * @return StoreInterface
      */
-    final public function setString(string $key, string $value): StoreInterface {
+    public function setString(string $key, string $value): StoreInterface {
         // serialize by phalcon cache frontend
         $this->cache->save($this->prefix . $key, $value, $this->lifetime);
         return $this;
@@ -89,7 +76,7 @@ final class Cache extends AbstractStore {
      * @param int $value
      * @return StoreInterface
      */
-    final public function setInteger(string $key, int $value): StoreInterface {
+    public function setInteger(string $key, int $value): StoreInterface {
         $this->cache->save($this->prefix . $key, $value, $this->lifetime);
         return $this;
     }
@@ -101,7 +88,7 @@ final class Cache extends AbstractStore {
      * @param int $value
      * @return StoreInterface
      */
-    final public function setFloat(string $key, int $value): StoreInterface {
+    public function setFloat(string $key, int $value): StoreInterface {
         $this->cache->save($this->prefix . $key, $value, $this->lifetime);
         return $this;
     }
@@ -113,9 +100,20 @@ final class Cache extends AbstractStore {
      * @param bool $value
      * @return StoreInterface
      */
-    final public function setBoolean(string $key, bool $value): StoreInterface {
+    public function setBoolean(string $key, bool $value): StoreInterface {
         $this->cache->save($this->prefix . $key, $value, $this->lifetime);
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     * @param string $key
+     * @param null $default
+     * @return mixed|void
+     */
+    protected function doGet(string $key, $default = null) {
+        // deserialize by phalcon cache frontend
+        return $this->cache->get($this->prefix . $key) ?: $default;
     }
 
 }

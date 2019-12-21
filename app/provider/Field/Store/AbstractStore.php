@@ -11,6 +11,8 @@
 namespace Here\Provider\Field\Store;
 
 
+use Throwable;
+
 /**
  * Class AbstractStore
  * @package Here\Provider\Field\Store
@@ -36,6 +38,42 @@ abstract class AbstractStore implements StoreInterface {
                 return $this->setBoolean($key, $value);
             default:
                 return $this->setString($key, serialize($value));
+        }
+    }
+
+    /**
+     * @inheritDoc
+     * @param string $key
+     * @param null $default
+     * @return mixed|void
+     */
+    public function get(string $key, $default = null) {
+        $value = $this->doGet($key, $default);
+        return is_string($value) ? self::decodeString($value) : $value;
+    }
+
+    /**
+     * Gets the raw value from store
+     *
+     * @param string $key
+     * @param null $default
+     * @return mixed
+     */
+    protected function doGet(string $key, $default = null) {
+        return $default;
+    }
+
+    /**
+     * Returns the real-value when serialized, raw string otherwise
+     *
+     * @param string $value
+     * @return mixed|string
+     */
+    protected static function decodeString(string $value) {
+        try {
+            return unserialize($value);
+        } catch (Throwable $e) {
+            return $value;
         }
     }
 

@@ -22,6 +22,11 @@ return [
     'setup_error_tips' => '初始化过程中出现了一些错误, 你可以向我们提交这些错误',
     'setup_error_reason_title' => '错误信息',
 
+    'sidebar_link_blog' => '博客',
+    'sidebar_link_github' => 'Github',
+    'sidebar_link_rss' => 'RSS',
+    'sidebar_license_cc_notice' => '如果没有特殊说明，网站的内容共享协议为',
+
     'title_tinder_explore_index' => '首页',
     'title_tinder_error_not_found' => '找不到页面',
 
@@ -38,5 +43,5 @@ return [
 
     'link_read_more' => '查看详情...',
 
-    'category_default_name' => '默认分类'
+    'category_default_name' => '默认分类',
 ];
