@@ -31,6 +31,7 @@ final class Tinder extends RouteGroup {
         $this->setPrefix('/');
 
         $this->addExplore();
+        $this->addFeed();
     }
 
     /**
@@ -40,6 +41,14 @@ final class Tinder extends RouteGroup {
     final public function addExplore() {
         $this->addGet('', ['controller' => 'explore'])
             ->setName('explore');
+    }
+
+    /**
+     * RSS/feed subscribe
+     */
+    final public function addFeed() {
+        $this->addGet('feed', ['controller' => 'feed'])
+            ->setName('feed');
     }
 
 }

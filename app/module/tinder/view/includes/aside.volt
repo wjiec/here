@@ -11,7 +11,7 @@
       {% if field.get('sidebar.link.github', '') %}
         <p><a href="{{ field.get('sidebar.link.github') }}" target="_blank">{{ _t('sidebar_link_github') }}</a></p>
       {% endif %}
-      <p><a href="{{ url('/') }}">{{ _t('sidebar_link_rss') }}</a></p>
+      <p><a href="{{ url('/feed') }}">{{ _t('sidebar_link_feed') }}</a></p>
     </section>
     <section class="h-common-sidebar-license">
       <p>

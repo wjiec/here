@@ -141,9 +141,6 @@
 }
 
 .h-explore-article-outline {
+  line-height: 1.5;
   margin: 10px 20px 30px 20px;
-}
-
-.h-explore-article-outline a {
-  border-bottom: 1px dashed rgba(0, 0, 0, .25);
 }
