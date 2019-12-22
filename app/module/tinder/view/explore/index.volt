@@ -28,4 +28,5 @@
   {% include 'includes/footer.volt' %}
 </div>
 
+{% include 'includes/widgets/back-to-top.volt' %}
 <script>new Sidebar(_$('.h-common-wrapper')).init();</script>
