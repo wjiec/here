@@ -25,8 +25,14 @@
     </section>
   </main>
 
+  {% include 'includes/widgets/pager' with ['render': pager] %}
+  {% include 'includes/widgets/pager' with ['render': pager] %}
   {% include 'includes/footer.volt' %}
 </div>
 
 {% include 'includes/widgets/back-to-top.volt' %}
-<script>new Sidebar(_$('.h-common-wrapper')).init();</script>
+
+<script>
+  new Sidebar(_$('.h-common-wrapper')).init();
+  new BackToTop(300, 500).init();
+</script>

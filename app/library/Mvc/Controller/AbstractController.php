@@ -10,6 +10,7 @@
  */
 namespace Here\Library\Mvc\Controller;
 
+use Here\Provider\Field\Store\StoreInterface;
 use Phalcon\Cache\BackendInterface;
 use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
@@ -23,6 +24,7 @@ use Phalcon\Translate\Adapter;
  * Class AbstractController
  * @package Here\Library\Mvc\Controller
  * @property BackendInterface $cache
+ * @property StoreInterface $field
  */
 abstract class AbstractController extends Controller {
 
@@ -47,6 +49,26 @@ abstract class AbstractController extends Controller {
         }
         // Match title for each action automatic
         $this->matchActionTitle($this->dispatcher);
+    }
+
+    /**
+     * Returns the number of the pagination
+     *
+     * @param int $default
+     * @return int
+     */
+    protected function getPaginationNumber(int $default = 1): int {
+        return abs($this->request->getQuery('page', 'int!', $default));
+    }
+
+    /**
+     * Returns the offset matches the pagination number
+     *
+     * @param int $size
+     * @return int
+     */
+    protected function getPaginationOffset(int $size): int {
+        return (int)(($this->getPaginationNumber() - 1) * $size);
     }
 
     /**
