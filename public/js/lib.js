@@ -22,7 +22,6 @@ class Validator {
     this.form = form;
     _$on(this.form, 'input', () => this.validate());
   }
-
   validate() {
     let validate = true;
     _$$(this.form, '.h-form-item').forEach((control) => {
@@ -39,16 +38,13 @@ class Validator {
     });
     return validate;
   }
-
   $required(control, _) {
     return Validator._getValue(control).length !== 0;
   }
-
   static _getValue(control) {
     const input = _$(control, 'input');
     return input ? input.value : '';
   }
-
   static _addStatusClass(control, status) {
     const classes = {false: 'h-validate-failure', true: 'h-validate-success'};
     if (control.classList.contains(classes[!status])) {
@@ -69,14 +65,17 @@ class Sidebar {
   }
   init() {
     _$on(this.control, 'click', () => {
-      this._toggle();
+      this.$toggle();
     });
 
-    _$on('.h-common-sidebar', 'click', () => {
-      this._toggle();
+    _$on('.h-common-sidebar', 'click', (e) => {
+      if (e.target.tagName.toLowerCase() !== 'a') {
+        this.$toggle();
+      }
     });
   }
-  _toggle() {
+  $toggle() {
+    this.control.style.animation = '';
     if (!this.sidebar.classList.contains(this.toggleClass)) {
       this.sidebar.classList.toggle(this.toggleClass);
       setTimeout(() => this.wrapper.classList.toggle(this.toggleClass), 75)

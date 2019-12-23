@@ -44,4 +44,6 @@ return [
     'link_read_more' => '查看详情...',
 
     'category_default_name' => '默认分类',
+
+    'error_not_found_title' => '似乎到了岛上的荒漠，这里啥都没有，去左边路牌上找个地方看看吧',
 ];

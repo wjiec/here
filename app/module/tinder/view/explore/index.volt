@@ -22,6 +22,10 @@
         </div>
       </article>
       {% endfor %}
+
+      {% if articles.count() == 0 %}
+        {% include 'includes/error/404.volt' %}
+      {% endif %}
     </section>
   </main>
 

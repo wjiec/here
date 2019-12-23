@@ -192,7 +192,6 @@
   color: #10aec2;
 }
 
-
 /* explore page */
 .h-common-wrapper {
   transform: translateX(0);
@@ -231,4 +230,28 @@
 .h-explore-article-outline {
   line-height: 1.5;
   margin: 10px 20px 30px 20px;
+}
+
+/* error */
+.h-error-title {
+  text-align: center;
+}
+
+/* animation */
+@keyframes float {
+  50% {
+    transform: translate(0, 20px);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    transform: rotateY(45deg);
+  }
+  50% {
+    transform: rotateY(-45deg);
+  }
+  100% {
+    transform: rotateY(45deg);
+  }
 }
