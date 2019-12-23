@@ -171,7 +171,7 @@ class Pager {
      * @return int
      */
     public function getPagerIteratorStart(): int {
-        return max($this->current - self::PREV_PAGER_COUNT, 1);
+        return min(max($this->current - self::PREV_PAGER_COUNT, 1), $this->getTotal());
     }
 
     /**

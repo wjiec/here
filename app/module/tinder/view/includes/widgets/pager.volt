@@ -1,4 +1,4 @@
-{% if state is defined and state.getTotal() != 1 %}
+{% if state is defined and state.getTotal() != 1 and state.getCurrent() <= state.getTotal() %}
   <div class="h-widget-pager">
     <div class="h-container h-is-horizontal h-content-box">
       <div class="h-pager-item h-pager-prev {{ !state.hasPrev() ? 'h-pager-disabled' : '' }}">
