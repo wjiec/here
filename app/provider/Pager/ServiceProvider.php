@@ -30,8 +30,8 @@ class ServiceProvider extends AbstractServiceProvider {
      * @inheritDoc
      */
     public function register() {
-        $this->di->set($this->service_name, function(int $size, int $total) {
-            return new Pager($size, $total);
+        $this->di->set($this->service_name, function(int $current, int $size, int $total) {
+            return new Pager($current, $size, $total);
         });
     }
 

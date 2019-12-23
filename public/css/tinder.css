@@ -17,7 +17,7 @@
 .h-common-footer {
   font-size: 12px;
   max-width: 850px;
-  margin: 0 auto 50px;
+  margin: 50px auto 50px;
 }
 
 .h-common-footer div {
@@ -154,6 +154,44 @@
   transform: rotate(45deg);
   transform-origin: 0 0;
 }
+
+/* widget: pager */
+.h-widget-pager .h-container {
+  line-height: 40px;
+  justify-content: center;
+}
+
+.h-pager-item {
+  margin-right: 20px;
+}
+
+.h-pager-item a {
+  font-size: 16px;
+  border-bottom: none;
+}
+
+.h-pager-prev a:before {
+  content: '<';
+}
+
+.h-pager-next a:after {
+  content: '>';
+}
+
+.h-pager-turn a:after {
+  content: '...';
+}
+
+.h-pager-disabled a {
+  cursor: default;
+  color: #aaa;
+}
+
+.h-pager-activated a {
+  cursor: default;
+  color: #10aec2;
+}
+
 
 /* explore page */
 .h-common-wrapper {

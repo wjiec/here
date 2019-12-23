@@ -25,8 +25,7 @@
     </section>
   </main>
 
-  {% include 'includes/widgets/pager' with ['render': pager] %}
-  {% include 'includes/widgets/pager' with ['render': pager] %}
+  {% include 'includes/widgets/pager' with ['state': pager] %}
   {% include 'includes/footer.volt' %}
 </div>
 

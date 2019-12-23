@@ -96,6 +96,10 @@ footer {
   align-items: center;
 }
 
+.h-content-box {
+  max-width: 850px;
+}
+
 /* Form styles */
 form {
   width: 100%;

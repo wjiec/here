@@ -24,16 +24,17 @@ final class ExploreController extends AbstractController {
      * Shows the author info and hot article to views
      */
     final public function indexAction() {
+        $current = $this->getPaginationNumber();
         $page_size = $this->field->get('pagination.article.size', self::ARTICLES_IN_PAGE);
         $article_builder = $this->modelsManager->createBuilder()
             ->from(Article::class)
             ->orderBy('article_id desc')
             ->limit($page_size, $this->getPaginationOffset($page_size));
 
+        $template = sprintf('%s?page={:page:}', $this->url->get(['for' => 'explore']));
         $this->view->setVars([
             'articles' => $article_builder->getQuery()->execute(),
-            'pager' => container('pager', $page_size, Article::count())
-                ->setTemplate(sprintf('%s?page={:page}', $this->url->get(['for' => 'explore'])))
+            'pager' => container('pager', $current, $page_size, Article::count())->setTemplate($template)
         ]);
     }
 
