@@ -47,7 +47,7 @@ final class Functions {
     final public function compileFilter(string $name, $arguments): ?string {
         switch ($name) {
             case 'markdown':
-                return sprintf('$this->markdown->text(%s)', $arguments);
+                return sprintf('$this->markdown->parse(%s)', $arguments);
             case 'date':
                 return sprintf('date("F d, Y", strtotime(%s))', $arguments);
             default:

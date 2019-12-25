@@ -32,6 +32,7 @@ final class Tinder extends RouteGroup {
 
         $this->addExplore();
         $this->addFeed();
+        $this->addArticle();
     }
 
     /**
@@ -49,6 +50,14 @@ final class Tinder extends RouteGroup {
     final public function addFeed() {
         $this->addGet('feed', ['controller' => 'feed'])
             ->setName('feed');
+    }
+
+    /**
+     * Articles viewer
+     */
+    final public function addArticle() {
+        $this->addGet('article/{name:.+}', ['controller' => 'article'])
+            ->setName('article');
     }
 
 }

@@ -30,6 +30,7 @@ return [
 
     'title_tinder_explore_index' => '首页',
     'title_tinder_error_not_found' => '找不到页面',
+    'title_tinder_article_index' => '查看文章内容',
 
     'form_label_username' => '用户名',
     'form_placeholder_username' => '请输入用户名',
