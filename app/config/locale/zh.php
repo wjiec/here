@@ -24,6 +24,7 @@ return [
 
     'sidebar_link_blog' => '博客',
     'sidebar_link_github' => 'Github',
+    'sidebar_link_search' => 'Search',
     'sidebar_link_feed' => 'Feed',
     'sidebar_license_cc_notice' => '如果没有特殊说明，博客的内容共享协议为',
 
