@@ -258,6 +258,10 @@
 }
 
 /* error */
+.h-error {
+  margin: 60px auto;
+}
+
 .h-error-title {
   text-align: center;
 }
