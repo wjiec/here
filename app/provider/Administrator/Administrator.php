@@ -56,7 +56,7 @@ final class Administrator {
         $this->author->setAuthorEmail($email);
         $this->saveLoginInfo();
 
-        return $this->rebuild();
+        return $this->author;
     }
 
     /**

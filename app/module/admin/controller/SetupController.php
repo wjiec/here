@@ -77,6 +77,7 @@ final class SetupController extends AbstractController {
             (new Commentator('Parrot'))->comment($draft->getArticleId(), 'The same to above');
 
             $this->db->commit();
+            $administrator->rebuild();
             return $this->response->redirect(['for' => 'explore']);
         } catch (Throwable $e) {
             $this->db->rollback();

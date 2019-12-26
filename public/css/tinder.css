@@ -238,7 +238,7 @@
 }
 
 .h-article-header {
-  margin: 20px 0 70px 0;
+  margin: 20px 0 50px 0;
   text-align: center;
 }
 
@@ -255,6 +255,10 @@
 
 .h-article-content {
   line-height: 1.5;
+}
+
+.h-article-content a {
+  border-bottom: 1px dashed rgba(0, 0, 0, .25);
 }
 
 /* error */

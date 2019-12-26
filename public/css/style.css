@@ -33,7 +33,7 @@ a {
 }
 
 a:hover {
-  border-bottom: 1px solid rgba(45, 45, 45, .75);
+  border-bottom: 1px dashed rgba(0, 0, 0, .25);
 }
 
 pre {
