@@ -16,8 +16,11 @@ use Here\Library\Mvc\Model\AbstractModel;
 /**
  * Class ArticleCategory
  * @package Here\Model
+ *
+ * @property Article $article
+ * @property Category $category
  */
-final class ArticleCategory extends AbstractModel {
+class ArticleCategory extends AbstractModel {
 
     /**
      *
@@ -38,12 +41,38 @@ final class ArticleCategory extends AbstractModel {
     protected $category_id;
 
     /**
+     * Initialize method for model.
+     */
+    public function initialize() {
+        $this->setSource('article_category');
+
+        $this->belongsTo('article_id', Article::class, 'article_id', [
+            'alias' => 'article',
+            'reusable' => true
+        ]);
+
+        $this->belongsTo('category_id', Category::class, 'category_id', [
+            'alias' => 'category',
+            'reusable' => true
+        ]);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource() {
+        return 'article_category';
+    }
+
+    /**
      * Method to set the value of field article_id
      *
      * @param integer $article_id
      * @return $this
      */
-    final public function setArticleId(int $article_id) {
+    public function setArticleId(int $article_id) {
         $this->article_id = $article_id;
         return $this;
     }
@@ -54,7 +83,7 @@ final class ArticleCategory extends AbstractModel {
      * @param integer $category_id
      * @return $this
      */
-    final public function setCategoryId(int $category_id) {
+    public function setCategoryId(int $category_id) {
         $this->category_id = $category_id;
 
         return $this;
@@ -65,7 +94,7 @@ final class ArticleCategory extends AbstractModel {
      *
      * @return integer
      */
-    final public function getRelationId(): int {
+    public function getRelationId(): int {
         return (int)$this->relation_id;
     }
 
@@ -74,7 +103,7 @@ final class ArticleCategory extends AbstractModel {
      *
      * @return integer
      */
-    final public function getArticleId(): int {
+    public function getArticleId(): int {
         return (int)$this->article_id;
     }
 
@@ -83,24 +112,8 @@ final class ArticleCategory extends AbstractModel {
      *
      * @return integer
      */
-    final public function getCategoryId(): int {
+    public function getCategoryId(): int {
         return (int)$this->category_id;
-    }
-
-    /**
-     * Initialize method for model.
-     */
-    final public function initialize() {
-        $this->setSource('article_category');
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    final public function getSource() {
-        return 'article_category';
     }
 
     /**
@@ -110,7 +123,7 @@ final class ArticleCategory extends AbstractModel {
      * @param int $category_id
      * @return static
      */
-    final public static function factory(int $article_id, int $category_id): self {
+    public static function factory(int $article_id, int $category_id): self {
         $relation = new static();
         $relation->setArticleId($article_id);
         $relation->setCategoryId($category_id);

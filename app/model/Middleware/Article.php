@@ -27,7 +27,7 @@ class Article {
      * @return ArticleModel|null
      */
     public static function findByAbbr(string $name): ?ArticleModel {
-        return (new Cache())->setDefault("article:name:{$name}", function() use ($name) {
+        return (new Cache())->setDefault("article:abbr:{$name}", function() use ($name) {
             return ArticleModel::findFirst([
                 'conditions' => 'article_abbr = ?0',
                 'bind' => [$name]

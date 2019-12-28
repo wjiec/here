@@ -23,6 +23,11 @@ use Throwable;
 abstract class AbstractModel extends Model {
 
     /**
+     * Sets up the model
+     */
+    public function initialize() {}
+
+    /**
      * Returns the save and refresh succeed both
      *
      * @param null $data
@@ -59,6 +64,30 @@ abstract class AbstractModel extends Model {
      */
     public static function findFirst($parameters = null) {
         return parent::findFirst($parameters) ?: null;
+    }
+
+    /**
+     * Execute the dql statement and returns number of affected rows
+     *
+     * @param string $sql
+     * @param mixed ...$args
+     * @return int
+     */
+    protected function dml(string $sql, ...$args): int {
+        $db = container('db');
+
+        $db->execute($this->prepareSql($sql), $args);
+        return $db->affectedRows();
+    }
+
+    /**
+     * Returns string of the sql replaced
+     *
+     * @param string $sql
+     * @return string
+     */
+    private function prepareSql(string $sql): string {
+        return mb_ereg_replace('__table__', $this->getSource(), $sql);
     }
 
     /**

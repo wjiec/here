@@ -239,7 +239,6 @@
 
 .h-article-header {
   margin: 20px 0 50px 0;
-  text-align: center;
 }
 
 .h-article-title {
@@ -250,7 +249,13 @@
   font-size: 14px;
   color: #aaa;
   line-height: 24px;
+  display: flex;
+  flex-direction: row;
   font-family: "Fira Code Light", sans-serif;
+}
+
+.h-article-metadata p {
+  margin-right: 20px;
 }
 
 .h-article-content {

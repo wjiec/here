@@ -12,13 +12,17 @@ namespace Here\Model;
 
 use Here\Library\Exception\Mvc\ModelSaveException;
 use Here\Library\Mvc\Model\AbstractModel;
+use Phalcon\Mvc\Model\Resultset\Simple;
 
 
 /**
  * Class Article
  * @package Here\Model
+ *
+ * @property Simple $categoryRelation
+ * @method Simple getCategoryRelation($parameters = null)
  */
-final class Article extends AbstractModel {
+class Article extends AbstractModel {
 
     /**
      *
@@ -109,7 +113,7 @@ final class Article extends AbstractModel {
      * @param integer $author_id
      * @return $this
      */
-    final public function setAuthorId(int $author_id) {
+    public function setAuthorId(int $author_id) {
         $this->author_id = $author_id;
         return $this;
     }
@@ -120,7 +124,7 @@ final class Article extends AbstractModel {
      * @param string $article_title
      * @return $this
      */
-    final public function setArticleTitle(string $article_title) {
+    public function setArticleTitle(string $article_title) {
         $this->article_title = $article_title;
         return $this;
     }
@@ -147,7 +151,7 @@ final class Article extends AbstractModel {
      * @param string $article_outline
      * @return $this
      */
-    final public function setArticleOutline(string $article_outline) {
+    public function setArticleOutline(string $article_outline) {
         $this->article_outline = $article_outline;
         return $this;
     }
@@ -158,7 +162,7 @@ final class Article extends AbstractModel {
      * @param string $article_body
      * @return $this
      */
-    final public function setArticleBody(string $article_body) {
+    public function setArticleBody(string $article_body) {
         $this->article_body = $article_body;
         return $this;
     }
@@ -168,7 +172,7 @@ final class Article extends AbstractModel {
      *
      * @return $this
      */
-    final public function markArticlePublic() {
+    public function markArticlePublic() {
         $this->article_public = self::BOOLEAN_TRUE;
         return $this;
     }
@@ -178,7 +182,7 @@ final class Article extends AbstractModel {
      *
      * @return $this
      */
-    final public function markArticlePrivate() {
+    public function markArticlePrivate() {
         $this->article_public = self::BOOLEAN_FALSE;
         return $this;
     }
@@ -188,7 +192,7 @@ final class Article extends AbstractModel {
      *
      * @return $this
      */
-    final public function markArticlePublish() {
+    public function markArticlePublish() {
         $this->article_publish = self::BOOLEAN_TRUE;
         return $this;
     }
@@ -198,7 +202,7 @@ final class Article extends AbstractModel {
      *
      * @return $this
      */
-    final public function markArticleDraft() {
+    public function markArticleDraft() {
         $this->article_publish = self::BOOLEAN_FALSE;
         return $this;
     }
@@ -208,7 +212,7 @@ final class Article extends AbstractModel {
      *
      * @return $this
      */
-    final public function markArticleAllowComment() {
+    public function markArticleAllowComment() {
         $this->article_allow_comment = self::BOOLEAN_TRUE;
         return $this;
     }
@@ -218,7 +222,7 @@ final class Article extends AbstractModel {
      *
      * @return $this
      */
-    final public function markArticleDisallowComment() {
+    public function markArticleDisallowComment() {
         $this->article_allow_comment = self::BOOLEAN_FALSE;
         return $this;
     }
@@ -229,7 +233,7 @@ final class Article extends AbstractModel {
      * @param string $password
      * @return $this
      */
-    final public function setArticlePassword(string $password) {
+    public function setArticlePassword(string $password) {
         $this->article_password = $password;
         return $this;
     }
@@ -239,8 +243,8 @@ final class Article extends AbstractModel {
      *
      * @return $this
      */
-    final public function incrArticleLikeCount() {
-        $this->article_like = (int)$this->article_like + 1;
+    public function incrArticleLikeCount() {
+        $this->dml(/* @lang text */'update __table__ set ');
         return $this;
     }
 
@@ -249,8 +253,8 @@ final class Article extends AbstractModel {
      *
      * @return $this
      */
-    final public function incrArticleViewerCount() {
-        $this->article_views = (int)$this->article_views + 1;
+    public function incrArticleViewerCount() {
+        $this->article_views = $this->getArticleViews() + 1;
         return $this;
     }
 
@@ -259,7 +263,7 @@ final class Article extends AbstractModel {
      *
      * @return integer
      */
-    final public function getArticleId(): int {
+    public function getArticleId(): int {
         return (int)$this->article_id;
     }
 
@@ -268,7 +272,7 @@ final class Article extends AbstractModel {
      *
      * @return integer
      */
-    final public function getAuthorId() {
+    public function getAuthorId() {
         return (int)$this->author_id;
     }
 
@@ -277,7 +281,7 @@ final class Article extends AbstractModel {
      *
      * @return string
      */
-    final public function getArticleTitle(): ?string {
+    public function getArticleTitle(): ?string {
         return $this->article_title;
     }
 
@@ -286,7 +290,7 @@ final class Article extends AbstractModel {
      *
      * @return string
      */
-    final public function getArticleOutline(): ?string {
+    public function getArticleOutline(): ?string {
         return $this->article_outline;
     }
 
@@ -295,7 +299,7 @@ final class Article extends AbstractModel {
      *
      * @return string
      */
-    final public function getArticleBody(): ?string {
+    public function getArticleBody(): ?string {
         return $this->article_body;
     }
 
@@ -304,7 +308,7 @@ final class Article extends AbstractModel {
      *
      * @return bool
      */
-    final public function isArticlePublic(): bool {
+    public function isArticlePublic(): bool {
         return (int)$this->article_public === self::BOOLEAN_TRUE;
     }
 
@@ -313,7 +317,7 @@ final class Article extends AbstractModel {
      *
      * @return bool
      */
-    final public function isArticlePrivate(): bool {
+    public function isArticlePrivate(): bool {
         return (int)$this->article_public === self::BOOLEAN_FALSE;
     }
 
@@ -322,7 +326,7 @@ final class Article extends AbstractModel {
      *
      * @return bool
      */
-    final public function isArticlePublished(): bool {
+    public function isArticlePublished(): bool {
         return (int)$this->article_publish === self::BOOLEAN_TRUE;
     }
 
@@ -331,7 +335,7 @@ final class Article extends AbstractModel {
      *
      * @return bool
      */
-    final public function isArticleDrafted(): bool {
+    public function isArticleDrafted(): bool {
         return (int)$this->article_publish === self::BOOLEAN_FALSE;
     }
 
@@ -340,7 +344,7 @@ final class Article extends AbstractModel {
      *
      * @return bool
      */
-    final public function isArticleAllowComment(): bool {
+    public function isArticleAllowComment(): bool {
         return (int)$this->article_allow_comment === self::BOOLEAN_TRUE;
     }
 
@@ -349,7 +353,7 @@ final class Article extends AbstractModel {
      *
      * @return bool
      */
-    final public function isArticleDisallowComment(): bool {
+    public function isArticleDisallowComment(): bool {
         return (int)$this->article_allow_comment === self::BOOLEAN_FALSE;
     }
 
@@ -358,7 +362,7 @@ final class Article extends AbstractModel {
      *
      * @return string
      */
-    final public function getArticlePassword(): ?string {
+    public function getArticlePassword(): ?string {
         return $this->article_password;
     }
 
@@ -367,7 +371,7 @@ final class Article extends AbstractModel {
      *
      * @return integer
      */
-    final public function getArticleLike(): int {
+    public function getArticleLike(): int {
         return (int)$this->article_like;
     }
 
@@ -376,7 +380,7 @@ final class Article extends AbstractModel {
      *
      * @return integer
      */
-    final public function getArticleViews(): int {
+    public function getArticleViews(): int {
         return (int)$this->article_views;
     }
 
@@ -385,7 +389,7 @@ final class Article extends AbstractModel {
      *
      * @return string
      */
-    final public function getCreateTime(): ?string {
+    public function getCreateTime(): ?string {
         return $this->create_time;
     }
 
@@ -394,15 +398,19 @@ final class Article extends AbstractModel {
      *
      * @return string
      */
-    final public function getUpdateTime(): ?string {
+    public function getUpdateTime(): ?string {
         return $this->update_time;
     }
 
     /**
      * Initialize method for model.
      */
-    final public function initialize() {
+    public function initialize() {
         $this->setSource('article');
+
+        $this->hasMany('article_id', ArticleCategory::class, 'article_id', [
+            'alias' => 'categoryRelation',
+        ]);
     }
 
     /**
@@ -410,7 +418,7 @@ final class Article extends AbstractModel {
      *
      * @return string
      */
-    final public function getSource() {
+    public function getSource() {
         return 'article';
     }
 
@@ -420,7 +428,7 @@ final class Article extends AbstractModel {
      * @return bool
      * @throws ModelSaveException
      */
-    final public function publish(): bool {
+    public function publish(): bool {
         return $this->markArticlePublish()->save();
     }
 
@@ -430,7 +438,7 @@ final class Article extends AbstractModel {
      * @param int $author_id
      * @return static
      */
-    final public static function factory(int $author_id): self {
+    public static function factory(int $author_id): self {
         $article = new static();
         $article->setAuthorId($author_id);
 

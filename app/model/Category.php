@@ -29,6 +29,12 @@ final class Category extends AbstractModel {
      *
      * @var string
      */
+    protected $category_abbr;
+
+    /**
+     *
+     * @var string
+     */
     protected $category_name;
 
     /**
@@ -48,6 +54,17 @@ final class Category extends AbstractModel {
      * @var string
      */
     protected $create_time;
+
+    /**
+     * Method to set the value of field category_name
+     *
+     * @param string $category_abbr
+     * @return $this
+     */
+    final public function setCategoryAbbr(string $category_abbr) {
+        $this->category_abbr = $category_abbr;
+        return $this;
+    }
 
     /**
      * Method to set the value of field category_name
@@ -89,6 +106,15 @@ final class Category extends AbstractModel {
      */
     final public function getCategoryId(): int {
         return (int)$this->category_id;
+    }
+
+    /**
+     * Returns the value of field category_abbr
+     *
+     * @return string
+     */
+    final public function getCategoryAbbr(): ?string {
+        return $this->category_abbr;
     }
 
     /**

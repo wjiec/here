@@ -24,7 +24,7 @@ create table public.article (
   "article_allow_comment" bool not null default true,
   "article_password" varchar(128) not null default '',
   "article_like" integer not null default 0,
-  "article_views" integer not null default 0,
+  "article_view" integer not null default 0,
   "create_time" timestamp without time zone not null default now(),
   "update_time" timestamp without time zone not null default now()
 );
@@ -88,6 +88,7 @@ create index idx_field_key on public.field (field_key);
 --
 create table public.category (
   "category_id" serial4 not null primary key,
+  "category_abbr" varchar(64) not null default '',
   "category_name" varchar(64) not null default '',
   "category_introduction" text not null default '',
   "category_parent" integer not null default 0,
@@ -95,6 +96,7 @@ create table public.category (
 );
 
 alter table public.category owner to postgres;
+create index idx_category_abbr on public.category (category_abbr);
 create index idx_category_name on public.category (category_name);
 create index idx_category_parent on public.category (category_parent);
 
