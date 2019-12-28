@@ -93,7 +93,7 @@ class Article extends AbstractModel {
      *
      * @var integer
      */
-    protected $article_views;
+    protected $article_view;
 
     /**
      *
@@ -106,6 +106,26 @@ class Article extends AbstractModel {
      * @var string
      */
     protected $update_time;
+
+    /**
+     * Initialize method for model.
+     */
+    public function initialize() {
+        $this->setSource('article');
+
+        $this->hasMany('article_id', ArticleCategory::class, 'article_id', [
+            'alias' => 'categoryRelation',
+        ]);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    public function getSource() {
+        return 'article';
+    }
 
     /**
      * Method to set the value of field author_id
@@ -244,7 +264,7 @@ class Article extends AbstractModel {
      * @return $this
      */
     public function incrArticleLikeCount() {
-        $this->dml(/* @lang text */'update __table__ set ');
+        $this->dml(/* @lang text */'update __table__ set article_like = article_like + 1');
         return $this;
     }
 
@@ -254,7 +274,7 @@ class Article extends AbstractModel {
      * @return $this
      */
     public function incrArticleViewerCount() {
-        $this->article_views = $this->getArticleViews() + 1;
+        $this->dml(/* @lang text */'update __table__ set article_view = article_view + 1');
         return $this;
     }
 
@@ -381,7 +401,7 @@ class Article extends AbstractModel {
      * @return integer
      */
     public function getArticleViews(): int {
-        return (int)$this->article_views;
+        return (int)$this->article_view;
     }
 
     /**
@@ -400,26 +420,6 @@ class Article extends AbstractModel {
      */
     public function getUpdateTime(): ?string {
         return $this->update_time;
-    }
-
-    /**
-     * Initialize method for model.
-     */
-    public function initialize() {
-        $this->setSource('article');
-
-        $this->hasMany('article_id', ArticleCategory::class, 'article_id', [
-            'alias' => 'categoryRelation',
-        ]);
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    public function getSource() {
-        return 'article';
     }
 
     /**

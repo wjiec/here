@@ -18,16 +18,14 @@
               {% endfor %}
             </p>
             <p class="h-article-data">
-              <span class="h-article-data-view">{{ article.article_views }}</span>
               <span class="h-article-data-like">{{ article.article_like }}</span>
+              /
+              <span class="h-article-data-view">{{ article.article_views }}</span>
             </p>
           </div>
         </div>
         <div class="h-article-content line-numbers">
           {{ article.article_body | markdown }}
-        </div>
-        <div class="h-article-metadata">
-
         </div>
       </article>
     {% else %}

@@ -27,12 +27,10 @@ class Article {
      * @return ArticleModel|null
      */
     public static function findByAbbr(string $name): ?ArticleModel {
-        return (new Cache())->setDefault("article:abbr:{$name}", function() use ($name) {
-            return ArticleModel::findFirst([
-                'conditions' => 'article_abbr = ?0',
-                'bind' => [$name]
-            ]);
-        }, 3600);
+        return ArticleModel::findFirst([
+            'conditions' => 'article_abbr = ?0',
+            'bind' => [$name]
+        ]);
     }
 
     /**
@@ -42,9 +40,7 @@ class Article {
      * @return ArticleModel|null
      */
     public static function findById(int $id): ?ArticleModel {
-        return (new Cache())->setDefault("article:id:{$id}", function() use ($id) {
-            return ArticleModel::findFirst($id);
-        });
+        return ArticleModel::findFirst($id);
     }
 
 }
