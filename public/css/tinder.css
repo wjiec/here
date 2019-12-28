@@ -234,7 +234,7 @@
 
 /* article */
 .h-article-container {
-  margin-top: 50px;
+  margin: 50px auto;
 }
 
 .h-article-header {
@@ -264,6 +264,10 @@
 
 .h-article-content a {
   border-bottom: 1px dashed rgba(0, 0, 0, .25);
+}
+
+.h-article-operator {
+  margin: 100px auto;
 }
 
 /* error */

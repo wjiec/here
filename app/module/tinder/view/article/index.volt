@@ -24,9 +24,15 @@
             </p>
           </div>
         </div>
-        <div class="h-article-content line-numbers">
+        <section class="h-article-content line-numbers">
           {{ article.article_body | markdown }}
-        </div>
+        </section>
+        <section class="h-article-operator">
+          like
+        </section>
+        <section class="h-article-comment">
+          comments
+        </section>
       </article>
     {% else %}
       {% include 'includes/error/404.volt' %}
