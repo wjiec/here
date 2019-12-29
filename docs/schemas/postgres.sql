@@ -62,7 +62,7 @@ create index idx_author_username on public.author (author_username);
 -- Type for type `field_type`
 --
 create type public.field_type as enum (
-  'string', 'integer', 'float', 'boolean'
+  'string', 'integer', 'float', 'boolean', 'serialized'
 );
 
 alter type public.field_type owner to postgres;

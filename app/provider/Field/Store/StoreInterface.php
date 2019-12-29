@@ -82,4 +82,13 @@ interface StoreInterface {
      */
     public function setBoolean(string $key, bool $value): StoreInterface;
 
+    /**
+     * Add a serialized value to the store
+     *
+     * @param string $key
+     * @param $value
+     * @return StoreInterface
+     */
+    public function setSerialized(string $key, $value): StoreInterface;
+
 }

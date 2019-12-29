@@ -33,6 +33,21 @@ class Database extends AbstractStore {
     }
 
     /**
+     * Get the value of specify key in the store. Returns
+     * default when the key not exists
+     *
+     * @param string $key
+     * @param null $default
+     * @return mixed|void
+     */
+    public function get(string $key, $default = null) {
+        if ($field = Field::findByKey($key)) {
+            return $field->getRealFieldValue();
+        }
+        return $default;
+    }
+
+    /**
      * Add a string value to the store
      *
      * @param string $key
@@ -97,16 +112,19 @@ class Database extends AbstractStore {
     }
 
     /**
-     * @inheritDoc
+     * Add a serialized value to the store
+     *
      * @param string $key
-     * @param null $default
-     * @return mixed|void
+     * @param $value
+     * @return StoreInterface
+     * @throws ModelSaveException
      */
-    protected function doGet(string $key, $default = null) {
-        if ($field = Field::findByKey($key)) {
-            return $field->getRealFieldValue();
-        }
-        return $default;
+    public function setSerialized(string $key, $value): StoreInterface {
+        $field = Field::findByKey($key) ?? Field::factory($key);
+        $field->setSerializedField($key, $value);
+        $field->save();
+
+        return $this;
     }
 
 }

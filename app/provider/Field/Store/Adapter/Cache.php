@@ -57,6 +57,19 @@ class Cache extends AbstractStore {
     }
 
     /**
+     * Get the value of specify key in the store. Returns
+     * default when the key not exists
+     *
+     * @param string $key
+     * @param null $default
+     * @return mixed|void
+     */
+    public function get(string $key, $default = null) {
+        // deserialize by phalcon cache frontend
+        return $this->cache->get($this->prefix . $key) ?: $default;
+    }
+
+    /**
      * Add a string value to the store
      *
      * @param string $key
@@ -106,14 +119,16 @@ class Cache extends AbstractStore {
     }
 
     /**
-     * @inheritDoc
+     * Add a serialized value to the store
+     *
      * @param string $key
-     * @param null $default
-     * @return mixed|void
+     * @param $value
+     * @return StoreInterface
      */
-    protected function doGet(string $key, $default = null) {
-        // deserialize by phalcon cache frontend
-        return $this->cache->get($this->prefix . $key) ?: $default;
+    public function setSerialized(string $key, $value): StoreInterface {
+        $this->cache->save($this->prefix . $key, $value, $this->lifetime);
+
+        return $this;
     }
 
 }

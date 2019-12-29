@@ -111,6 +111,20 @@ final class Field extends AbstractModel {
     }
 
     /**
+     * Methods to make serialized field
+     *
+     * @param string $key
+     * @param $value
+     * @return $this
+     */
+    final public function setSerializedField(string $key, $value) {
+        $this->field_key = $key;
+        $this->field_value_type = self::FIELD_VALUE_TPE_SERIALIZED;
+        $this->field_value = serialize($value);
+        return $this;
+    }
+
+    /**
      * Returns the value of field field_id
      *
      * @return integer
@@ -175,6 +189,15 @@ final class Field extends AbstractModel {
     }
 
     /**
+     * Returns the field is serialized type
+     *
+     * @return bool
+     */
+    final public function isSerializedField(): bool {
+        return $this->field_value_type === self::FIELD_VALUE_TPE_SERIALIZED;
+    }
+
+    /**
      * Returns the real value of field
      *
      * @return mixed
@@ -187,6 +210,8 @@ final class Field extends AbstractModel {
                 return (float)$this->field_value;
             case self::FIELD_VALUE_TYPE_BOOLEAN:
                 return $this->field_value === 'true';
+            case self::FIELD_VALUE_TPE_SERIALIZED:
+                return unserialize($this->field_value);
             case self::FIELD_VALUE_TYPE_STRING:
             default:
                 return strval($this->field_value);
@@ -220,7 +245,7 @@ final class Field extends AbstractModel {
         return static::findFirst([
             'conditions' => 'field_key = ?0',
             'bind' => [$key]
-        ]) ?: null;
+        ]);
     }
 
     /**
@@ -255,5 +280,10 @@ final class Field extends AbstractModel {
      * Field type: boolean
      */
     public const FIELD_VALUE_TYPE_BOOLEAN = 'boolean';
+
+    /**
+     * Field type: serialized
+     */
+    public const FIELD_VALUE_TPE_SERIALIZED = 'serialized';
 
 }
