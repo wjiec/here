@@ -133,9 +133,6 @@ final class Draft {
         if (empty($this->article->getArticleAbbr()) && $metadata->abbr) {
             $this->article->setArticleAbbr($metadata->abbr);
         }
-        if (empty($this->article->getArticlePassword()) && $metadata->password) {
-            $this->article->setArticlePassword($metadata->password);
-        }
         if ($metadata->access_private) {
             $this->article->markArticlePrivate();
         }

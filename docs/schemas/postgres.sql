@@ -22,7 +22,6 @@ create table public.article (
   "article_public" bool not null default false,
   "article_publish" bool not null default false,
   "article_allow_comment" bool not null default true,
-  "article_password" varchar(128) not null default '',
   "article_like" integer not null default 0,
   "article_view" integer not null default 0,
   "create_time" timestamp without time zone not null default now(),

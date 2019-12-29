@@ -21,7 +21,6 @@ use Here\Provider\Field\Store\Adapter\Mixed;
  * @property string $outline
  * @property bool $access_private
  * @property bool $disallow_comment
- * @property string $password
  * @property string $body
  */
 class Metadata {
@@ -33,7 +32,6 @@ class Metadata {
      *  - outline
      *  - access_private
      *  - disallow_comment
-     *  - password
      *  - body
      *
      * @var array

@@ -79,12 +79,6 @@ class Article extends AbstractModel {
 
     /**
      *
-     * @var string
-     */
-    protected $article_password;
-
-    /**
-     *
      * @var integer
      */
     protected $article_like;
@@ -248,17 +242,6 @@ class Article extends AbstractModel {
     }
 
     /**
-     * Method to set the article password
-     *
-     * @param string $password
-     * @return $this
-     */
-    public function setArticlePassword(string $password) {
-        $this->article_password = $password;
-        return $this;
-    }
-
-    /**
      * Method to increment like count for the article
      *
      * @return $this
@@ -375,15 +358,6 @@ class Article extends AbstractModel {
      */
     public function isArticleDisallowComment(): bool {
         return (int)$this->article_allow_comment === self::BOOLEAN_FALSE;
-    }
-
-    /**
-     * Returns the value of field article_password
-     *
-     * @return string
-     */
-    public function getArticlePassword(): ?string {
-        return $this->article_password;
     }
 
     /**
