@@ -50,6 +50,8 @@ final class Functions {
                 return sprintf('$this->markdown->parse(%s)', $arguments);
             case 'date':
                 return sprintf('date("F d, Y", strtotime(%s))', $arguments);
+            case 'avatar':
+                return sprintf('$this->avatar->getUrl(%s)', $arguments);
             default:
                 return null;
         }

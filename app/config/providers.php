@@ -10,6 +10,7 @@
  */
 return [
     Here\Provider\Administrator\ServiceProvider::class,
+    Here\Provider\Avatar\ServiceProvider::class,
     Here\Provider\Application\ServiceProvider::class,
     Here\Provider\Cache\ServiceProvider::class,
     Here\Provider\Color\ServiceProvider::class,

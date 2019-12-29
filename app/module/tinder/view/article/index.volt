@@ -28,7 +28,8 @@
           {{ article.article_body | markdown }}
         </section>
         <section class="h-article-operator">
-          like
+          {% set author_avatar = administrator.model().author_avatar %}
+          <div class="h-article-author-avatar" style="background-image: url({{ author_avatar | avatar }})"></div>
         </section>
         <section class="h-article-comment">
           comments
