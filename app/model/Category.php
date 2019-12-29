@@ -16,6 +16,8 @@ use Here\Library\Mvc\Model\AbstractModel;
 /**
  * Class Category
  * @package Here\Model
+ *
+ * @property Category $parent
  */
 final class Category extends AbstractModel {
 
@@ -54,6 +56,27 @@ final class Category extends AbstractModel {
      * @var string
      */
     protected $create_time;
+
+    /**
+     * Initialize method for model.
+     */
+    final public function initialize() {
+        $this->setSource('category');
+
+        $this->belongsTo('category_parent', self::class, 'category_id', [
+            'alias' => 'parent',
+            'reusable' => true,
+        ]);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    final public function getSource() {
+        return 'category';
+    }
 
     /**
      * Method to set the value of field category_name
@@ -151,22 +174,6 @@ final class Category extends AbstractModel {
      */
     final public function getCreateTime(): ?string {
         return $this->create_time;
-    }
-
-    /**
-     * Initialize method for model.
-     */
-    final public function initialize() {
-        $this->setSource('category');
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    final public function getSource() {
-        return 'category';
     }
 
     /**

@@ -19,8 +19,13 @@ use Phalcon\Mvc\Model\Resultset\Simple;
  * Class Article
  * @package Here\Model
  *
+ * @property Author $author
+ *
  * @property Simple $categoryRelation
  * @method Simple getCategoryRelation($parameters = null)
+ *
+ * @property Simple $comments
+ * @method Simple getComments($parameters = null)
  */
 class Article extends AbstractModel {
 
@@ -107,8 +112,17 @@ class Article extends AbstractModel {
     public function initialize() {
         $this->setSource('article');
 
+        $this->belongsTo('author_id', Author::class, 'author_id', [
+            'alias' => 'author',
+            'reusable' => true,
+        ]);
+
         $this->hasMany('article_id', ArticleCategory::class, 'article_id', [
             'alias' => 'categoryRelation',
+        ]);
+
+        $this->hasMany('article_id', Comment::class, 'article_id', [
+            'alias' => 'comments',
         ]);
     }
 
@@ -119,6 +133,18 @@ class Article extends AbstractModel {
      */
     public function getSource() {
         return 'article';
+    }
+
+    /**
+     * Returns list of the article comments
+     *
+     * @return Simple
+     */
+    public function getApprovalComments() {
+        return $this->getComments([
+            'conditions' => 'comment_status = ?0',
+            'bind' => [Comment::COMMENT_STATUS_COMMENTED]
+        ]);
     }
 
     /**

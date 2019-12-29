@@ -16,6 +16,9 @@ use Here\Library\Mvc\Model\AbstractModel;
 /**
  * Class Comment
  * @package Here\Model
+ *
+ * @property Article $article
+ * @property Comment $parent
  */
 final class Comment extends AbstractModel {
 
@@ -78,6 +81,32 @@ final class Comment extends AbstractModel {
      * @var string
      */
     protected $create_time;
+
+    /**
+     * Initialize method for model.
+     */
+    final public function initialize() {
+        $this->setSource('comment');
+
+        $this->belongsTo('article_id', Article::class, 'article_id', [
+            'alias' => 'article',
+            'reusable' => true,
+        ]);
+
+        $this->belongsTo('comment_parent', self::class, 'comment_id', [
+            'alias' => 'parent',
+            'reusable' => true,
+        ]);
+    }
+
+    /**
+     * Returns table name mapped in the model.
+     *
+     * @return string
+     */
+    final public function getSource() {
+        return 'comment';
+    }
 
     /**
      * Method to set the value of field article_id
@@ -311,22 +340,6 @@ final class Comment extends AbstractModel {
      */
     final public function getCreateTime(): ?string {
         return $this->create_time;
-    }
-
-    /**
-     * Initialize method for model.
-     */
-    final public function initialize() {
-        $this->setSource('comment');
-    }
-
-    /**
-     * Returns table name mapped in the model.
-     *
-     * @return string
-     */
-    final public function getSource() {
-        return 'comment';
     }
 
     /**
