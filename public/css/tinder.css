@@ -299,6 +299,42 @@
   border-bottom: 1px dashed rgba(0, 0, 0, .25);
 }
 
+.h-article-comment-container {
+  padding: 0 20px;
+}
+
+.h-article-comment {
+  margin-bottom: 50px;
+  border-bottom: 1px dashed rgba(0, 0, 0, .15);
+}
+
+.h-article-commentator {
+  font-style: normal;
+}
+
+.h-article-commentator:after {
+  content: ' : ';
+  color: #aaa;
+}
+
+.h-article-comment-body {
+  padding: 15px;
+  line-height: 1.5;
+}
+
+.h-article-comment-footer {
+  color: #aaa;
+  display: flex;
+  line-height: 24px;
+  font-size: 14px;
+  padding-right: 10px;
+  justify-content: flex-end;
+}
+
+.h-article-comment-reply {
+  cursor: pointer;
+}
+
 /* error */
 .h-error {
   margin: 60px auto;

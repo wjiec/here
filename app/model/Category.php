@@ -180,10 +180,12 @@ final class Category extends AbstractModel {
      * Factory new category
      *
      * @param string $name
+     * @param string $abbr
      * @return static
      */
-    final public static function factory(string $name): self {
+    final public static function factory(string $name, string $abbr): self {
         $category = new static();
+        $category->setCategoryAbbr($abbr);
         $category->setCategoryName($name);
 
         return $category;

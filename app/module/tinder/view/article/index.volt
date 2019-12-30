@@ -31,11 +31,8 @@
           {% set author_avatar = administrator.model().author_avatar %}
           <div class="h-article-author-avatar" style="background-image: url({{ author_avatar | avatar }})"></div>
         </section>
-        {% if article.isArticleAllowComment() %}
-          <section class="h-article-comment">
-            comments
-          </section>
-        {% endif %}
+
+        {% include 'includes/article/comment' with ['article': article] %}
       </article>
     {% else %}
       {% include 'includes/error/404.volt' %}

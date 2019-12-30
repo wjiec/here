@@ -143,7 +143,8 @@ class Article extends AbstractModel {
     public function getApprovalComments() {
         return $this->getComments([
             'conditions' => 'comment_status = ?0',
-            'bind' => [Comment::COMMENT_STATUS_COMMENTED]
+            'bind' => [Comment::COMMENT_STATUS_COMMENTED],
+            'order' => 'comment_id desc'
         ]);
     }
 

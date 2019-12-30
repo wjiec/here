@@ -64,7 +64,7 @@ final class SetupController extends AbstractController {
             $author = $administrator->create($username, $password, $email);
 
             // Create default category
-            $category = Category::factory($this->translator->_('category_default_name'));
+            $category = Category::factory($this->translator->_('category_default_name'), 'default');
             $category->save();
 
             // Create draft of article and save

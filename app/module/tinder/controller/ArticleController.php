@@ -31,7 +31,9 @@ class ArticleController extends AbstractController {
             $this->tag::setTitle($article->getArticleTitle());
 
             $article->incrArticleViewerCount();
-            $this->view->setVar('article', $article);
+            $this->view->setVars([
+                'article' => $article,
+            ]);
         }
     }
 

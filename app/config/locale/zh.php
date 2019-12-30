@@ -38,12 +38,12 @@ return [
     'form_placeholder_password' => '请输入密码',
     'form_label_email' => '邮箱地址',
     'form_placeholder_email' => '请输入邮箱地址',
+    'form_label_nickname' => '昵称',
+    'form_placeholder_nickname' => '请输入昵称',
     'form_submit_text' => '提交',
 
     'button_retry' => '重试',
-    'button_issue_new' => '提交错误',
-
-    'link_read_more' => '查看详情...',
+    'button_reply' => '回复',
 
     'category_default_name' => '默认分类',
 

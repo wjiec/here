@@ -102,6 +102,14 @@ footer {
   max-width: 850px;
 }
 
+.h-separator:after {
+  content: ' | ';
+  color: inherit;
+  display: inline-block;
+  font-style: normal;
+  padding: 0 10px;
+}
+
 /* Form styles */
 form {
   width: 100%;
