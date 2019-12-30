@@ -19,7 +19,7 @@ create table public.article (
   "article_abbr" varchar(255) not null default '',
   "article_outline" text not null default '',
   "article_body" text not null default '',
-  "article_public" bool not null default false,
+  "article_public" bool not null default true,
   "article_publish" bool not null default false,
   "article_allow_comment" bool not null default true,
   "article_like" integer not null default 0,

@@ -27,14 +27,12 @@ class ArticleController extends AbstractController {
      */
     public function indexAction(string $name) {
         $article = Article::findByAbbr($name) ?: Article::findById((int)$name);
-        if ($article) {
+        if ($article && $article->isArticlePublic() && $article->isArticlePublished()) {
             $this->tag::setTitle($article->getArticleTitle());
-        }
 
-        $article->incrArticleViewerCount();
-        $this->view->setVars([
-            'article' => $article,
-        ]);
+            $article->incrArticleViewerCount();
+            $this->view->setVar('article', $article);
+        }
     }
 
 }

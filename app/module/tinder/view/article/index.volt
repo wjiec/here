@@ -4,7 +4,7 @@
   {% include 'includes/header.volt' %}
 
   <main class="h-explore-body">
-    {% if article !== null %}
+    {% if article is defined and article !== null %}
       <article class="h-article-container h-container h-content-box">
         <div class="h-article-header">
           <h2 class="h-article-title">{{ article.article_title }}</h2>
@@ -31,9 +31,11 @@
           {% set author_avatar = administrator.model().author_avatar %}
           <div class="h-article-author-avatar" style="background-image: url({{ author_avatar | avatar }})"></div>
         </section>
-        <section class="h-article-comment">
-          comments
-        </section>
+        {% if article.isArticleAllowComment() %}
+          <section class="h-article-comment">
+            comments
+          </section>
+        {% endif %}
       </article>
     {% else %}
       {% include 'includes/error/404.volt' %}

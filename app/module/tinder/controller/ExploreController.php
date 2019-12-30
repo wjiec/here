@@ -28,6 +28,8 @@ final class ExploreController extends AbstractController {
         $page_size = $this->field->get('pagination.article.size', self::ARTICLES_IN_PAGE);
         $article_builder = $this->modelsManager->createBuilder()
             ->from(Article::class)
+            ->where('article_public = :public_state:', ['public_state' => Article::BOOLEAN_TRUE])
+            ->andWhere('article_publish = :publish_state:', ['publish_state' => Article::BOOLEAN_TRUE])
             ->orderBy('article_id desc')
             ->limit($page_size, $this->getPaginationOffset($page_size));
 

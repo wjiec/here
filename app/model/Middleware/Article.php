@@ -10,7 +10,6 @@
  */
 namespace Here\Model\Middleware;
 
-use Here\Library\Middleware\Adapter\Cache;
 use Here\Model\Article as ArticleModel;
 
 
