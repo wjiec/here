@@ -20,19 +20,36 @@
   </section>
 
   {% if article.isArticleAllowComment() %}
-    <form action="{{ url('/comment/create') }}" method="post">
-      <div class="h-form-item" data-required>
-        <label class="h-form-label" for="nickname">{{ _t('form_label_nickname') }}</label>
-        <div class="h-form-control">
-          <input name="nickname" id="nickname" placeholder="{{ _t('form_placeholder_nickname') }}" />
+    <section class="h-article-comment-create">
+      <form action="{{ url('/comment/create') }}" method="post">
+        <div class="h-form-item" data-required>
+          <label class="h-form-label" for="nickname">{{ _t('form_label_nickname') }}</label>
+          <div class="h-form-control">
+            <input name="nickname" id="nickname" placeholder="{{ _t('form_placeholder_nickname') }}" />
+          </div>
         </div>
-      </div>
-      <div class="h-form-item">
-        <div class="h-form-control">
-          <button>{{ _t("form_submit_text") }}</button>
+        <div class="h-form-item" data-required>
+          <label class="h-form-label" for="email">{{ _t('form_label_email') }}</label>
+          <div class="h-form-control">
+            <input name="email" id="email" placeholder="{{ _t('form_placeholder_email') }}" />
+          </div>
         </div>
-      </div>
-      <input type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
-    </form>
+        <div class="h-form-item" data-required>
+          <label class="h-form-label" for="comment">{{ _t('form_label_comment') }}</label>
+          <div class="h-form-control">
+            <textarea name="content" id="comment" placeholder="{{ _t('form_placeholder_comment') }}"></textarea>
+          </div>
+          <div class="h-form-tips">
+            <p>{{ _t('form_tips_comment') }}</p>
+          </div>
+        </div>
+        <div class="h-form-item">
+          <div class="h-form-control">
+            <button>{{ _t("form_submit_text") }}</button>
+          </div>
+        </div>
+        <input type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
+      </form>
+    </section>
   {% endif %}
 {% endif %}

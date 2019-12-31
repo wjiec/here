@@ -153,7 +153,8 @@ input, button {
   margin-left: 80px;
 }
 
-.h-form-control input {
+.h-form-control input,
+.h-form-control textarea {
   height: 36px;
   line-height: 36px;
   -webkit-appearance: none;
@@ -168,19 +169,37 @@ input, button {
   transition: all .25s ease-in-out;
 }
 
-.h-form-control input:hover, .h-form-control input:focus {
+.h-form-control textarea {
+  width: 150%;
+  height: 150px;
+  padding: 0 10px;
+  line-height: 2;
+}
+
+.h-form-control input:hover,
+.h-form-control input:focus,
+.h-form-control textarea:hover,
+.h-form-control textarea:focus {
   background: #fafafa;
   border: 1px solid #aaa;
 }
 
+.h-form-tips {
+  color: #aaa;
+  margin-left: 80px;
+}
+
 /* Validator */
-.h-validate-success input {
+.h-validate-success input,
+.h-validate-success textarea {
   border: 1px solid #70b991;
 }
 
-.h-validate-failure input {
+.h-validate-failure input,
+.h-validate-failure textarea {
   border: 1px solid #ff6238;
 }
+
 
 /* Buttons styles */
 button {

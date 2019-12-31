@@ -45,6 +45,11 @@
 {% include 'includes/widgets/back-to-top.volt' %}
 
 <script>
-    new Sidebar(_$('.h-common-wrapper')).init();
-    new BackToTop(300, 500).init();
+  new Sidebar(_$('.h-common-wrapper')).init();
+  new BackToTop(300, 500).init();
+  _$on('form', 'submit', (e) => {
+    if (!new Validator(e.target).validate()) {
+      e.preventDefault();
+    }
+  });
 </script>

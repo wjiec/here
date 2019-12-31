@@ -40,6 +40,9 @@ return [
     'form_placeholder_email' => '请输入邮箱地址',
     'form_label_nickname' => '昵称',
     'form_placeholder_nickname' => '请输入昵称',
+    'form_label_comment' => '评论内容',
+    'form_placeholder_comment' => '请输入评论内容',
+    'form_tips_comment' => '您的评论将在博主审核之后展示，请不要重复提交评论',
     'form_submit_text' => '提交',
 
     'button_retry' => '重试',
