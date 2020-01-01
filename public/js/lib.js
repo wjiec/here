@@ -143,3 +143,37 @@ class BackToTop {
       return -c / 2 * (t * (t - 2) - 1) + b;
   }
 }
+
+class CommentReplier {
+  constructor(container) {
+    this.container = container;
+    this.input = _$('#comment');
+    this.parent = _$('#comment-parent');
+  }
+  init() {
+    _$on(this.container, 'click', (e) => {
+      const target = e.target.parentNode;
+      const commentId = target.dataset['commentId'];
+      if (commentId) {
+        const quoteLines = this.$getQuoteLines(commentId);
+        if (quoteLines.length !== 0) {
+          this.$quoteContent(['>', ...quoteLines, ''].join('\n> ') + '\n\n', commentId);
+        }
+      }
+    });
+    _$on(this.input, 'input', (e) => {
+      if (e.target.value.length === 0) {
+        this.parent.value = 0;
+      }
+    })
+  }
+  $getQuoteLines(commentId) {
+    const body = _$(`#comment-${commentId} .h-article-comment-body`);
+    return body ? body.innerText.split('\n') : [];
+  }
+  $quoteContent(body, id) {
+    this.input.value = body;
+    this.input.focus();
+    this.parent.value = id;
+  }
+}

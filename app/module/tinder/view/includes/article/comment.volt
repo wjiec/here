@@ -13,7 +13,9 @@
         <i class="h-separator"></i>
         <p class="h-article-comment-anchor"><a href="#comment-{{ comment.comment_id }}">#</a></p>
         <i class="h-separator"></i>
-        <p class="h-article-comment-reply"><a>{{ _t('button_reply') }}</a></p>
+        <p class="h-article-comment-reply" data-comment-id="{{ comment.comment_id }}">
+          <a>{{ _t('button_reply') }}</a>
+        </p>
       </div>
     </section>
     {% endfor %}
@@ -50,6 +52,7 @@
         </div>
         <input type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
         <input type="hidden" name="article_id" value="{{ article.article_id }}">
+        <input type="hidden" name="parent_id" value="0" id="comment-parent">
       </form>
     </section>
   {% endif %}

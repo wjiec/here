@@ -52,4 +52,10 @@
       e.preventDefault();
     }
   });
+  new CommentReplier(_$('.h-article-comment-container')).init();
+  _$on('#comment', 'input', (e) => {
+    if (e.target.value.length === 0) {
+      _$('#comment-parent').value = 0;
+    }
+  });
 </script>

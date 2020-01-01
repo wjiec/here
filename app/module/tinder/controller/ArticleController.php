@@ -72,6 +72,7 @@ class ArticleController extends AbstractController {
             $comment->setCommentBody($content);
             $comment->setCommentatorIp($this->request->getClientAddress(true));
             $comment->setCommentatorBrowser($this->request->getUserAgent());
+            $comment->setCommentParent($this->request->getPost('parent_id', 'int!', 0));
             $comment->save();
 
             return $this->response->redirect(['for' => 'article', 'name' => $article->getArticleAbbr()]);
