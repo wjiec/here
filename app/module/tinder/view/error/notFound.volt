@@ -4,7 +4,7 @@
   {% include 'includes/header.volt' %}
 
   <main class="h-container h-content-box">
-    {% include 'includes/error/404.volt' %}
+    {% include 'includes/error/error.volt' %}
   </main>
 
   {% include 'includes/footer.volt' %}

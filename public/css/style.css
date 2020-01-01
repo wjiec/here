@@ -125,7 +125,7 @@ input, button {
 
 .h-form-item {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .h-form-label {
@@ -148,8 +148,7 @@ input, button {
 .h-form-control {
   position: relative;
   display: inline-block;
-  line-height: 36px;
-  width: 320px;
+  width: 480px;
   margin-left: 80px;
 }
 
@@ -158,22 +157,24 @@ input, button {
   height: 36px;
   line-height: 36px;
   -webkit-appearance: none;
+  color: #606266;
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 3px;
   display: inline-block;
+  font-family: inherit;
   font-size: inherit;
   outline: none;
   padding: 0 15px;
   width: 100%;
+  resize: none;
   transition: all .25s ease-in-out;
 }
 
 .h-form-control textarea {
-  width: 150%;
   height: 150px;
-  padding: 0 10px;
-  line-height: 2;
+  padding: 5px 0 0 15px;
+  line-height: 1.5;
 }
 
 .h-form-control input:hover,
@@ -186,7 +187,9 @@ input, button {
 
 .h-form-tips {
   color: #aaa;
-  margin-left: 80px;
+  line-height: 20px;
+  position: absolute;
+  margin-left: 85px;
 }
 
 /* Validator */

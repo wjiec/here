@@ -23,3 +23,11 @@ sysctl vm.overcommit_memory=1
 # WARNING: The TCP backlog setting of 511 cannot be enforced
 sysctl net.core.somaxconn=1024
 ```
+
+
+### TODOs
+
+```php
+// Add CSP header
+$this->response->setHeader('Content-Security-Policy', "default-src 'self'; style-src 'unsafe-inline'; ");
+```

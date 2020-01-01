@@ -25,7 +25,7 @@
         {% endfor %}
       </section>
     {% else %}
-      {% include 'includes/error/404.volt' %}
+      {% include 'includes/error/error.volt' %}
     {% endif %}
   </main>
 

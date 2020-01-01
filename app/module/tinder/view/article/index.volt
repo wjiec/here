@@ -35,7 +35,7 @@
         {% include 'includes/article/comment' with ['article': article] %}
       </article>
     {% else %}
-      {% include 'includes/error/404.volt' %}
+      {% include 'includes/error/error.volt' %}
     {% endif %}
   </main>
 

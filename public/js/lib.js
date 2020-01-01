@@ -14,7 +14,10 @@ window._$on = (target, e, callback) => {
   if (typeof target === 'string') {
     target = _$(target)
   }
-  return target.addEventListener(e, callback, true)
+
+  if (target) {
+    return target.addEventListener(e, callback, true)
+  }
 };
 
 class Validator {
@@ -42,7 +45,10 @@ class Validator {
     return Validator._getValue(control).length !== 0;
   }
   static _getValue(control) {
-    const input = _$(control, 'input');
+    let input = _$(control, 'input');
+    if (!input) {
+      input = _$(control, 'textarea');
+    }
     return input ? input.value : '';
   }
   static _addStatusClass(control, status) {

@@ -31,7 +31,7 @@ class ServiceProvider extends AbstractServiceProvider {
      * @inheritDoc
      */
     public function register() {
-        $this->di->setShared($this->service_name, function() {
+        $this->di->set($this->service_name, function() {
             return new Parsedown();
         });
     }

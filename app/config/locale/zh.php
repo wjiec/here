@@ -30,7 +30,8 @@ return [
 
     'title_tinder_explore_index' => '首页',
     'title_tinder_error_not_found' => '找不到页面',
-    'title_tinder_article_index' => '查看文章内容',
+    'title_tinder_article_index' => '未命名内容',
+    'title_tinder_article_comment' => '提交评论',
 
     'form_label_username' => '用户名',
     'form_placeholder_username' => '请输入用户名',
@@ -42,13 +43,19 @@ return [
     'form_placeholder_nickname' => '请输入昵称',
     'form_label_comment' => '评论内容',
     'form_placeholder_comment' => '请输入评论内容',
-    'form_tips_comment' => '您的评论将在博主审核之后展示，请不要重复提交评论',
+    'form_tips_comment' => '您的评论将在博主同意之后展示，请不要重复提交评论',
     'form_submit_text' => '提交',
 
     'button_retry' => '重试',
     'button_reply' => '回复',
+    'button_back_page' => '返回上一页',
+    'button_back_home' => '返回首页',
 
     'category_default_name' => '默认分类',
 
     'error_not_found_title' => '似乎到了岛上的荒漠，这里啥都没有，去左边路牌上找个地方看看吧',
+    'error_message_invalid_token' => '安全验证错误，请重试',
+    'error_message_invalid_params' => '提交内容无效，请重试',
+    'error_message_save_failure' => '保存内容失败，请重试',
+    'error_message_article_not_found' => '找不到指定的文章'
 ];

@@ -48,6 +48,8 @@ final class Functions {
         switch ($name) {
             case 'markdown':
                 return sprintf('$this->markdown->parse(%s)', $arguments);
+            case 'security_markdown':
+                return sprintf('$this->markdown->setSafeMode(true)->setMarkupEscaped(true)->parse(%s)', $arguments);
             case 'date':
                 return sprintf('date("F d, Y", strtotime(%s))', $arguments);
             case 'avatar':

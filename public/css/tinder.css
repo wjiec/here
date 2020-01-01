@@ -270,7 +270,7 @@
 }
 
 .h-article-operator {
-  margin: 50px 0;
+  margin: 80px 0;
   text-align: center;
   position: relative;
 }
@@ -334,6 +334,13 @@
 .h-article-comment-reply {
   cursor: pointer;
 }
+
+/* article comment */
+.h-article-comment-buttons {
+  width: 50%;
+  justify-content: space-around;
+}
+
 
 /* error */
 .h-error {

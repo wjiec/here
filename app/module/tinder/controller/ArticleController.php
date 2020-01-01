@@ -10,8 +10,11 @@
  */
 namespace Here\Tinder\Controller;
 
+use Here\Library\Exception\Mvc\ModelSaveException;
+use Here\Model\Comment;
 use Here\Model\Middleware\Article;
 use Here\Tinder\Library\Mvc\Controller\AbstractController;
+use Phalcon\Http\ResponseInterface;
 
 
 /**
@@ -34,6 +37,47 @@ class ArticleController extends AbstractController {
             $this->view->setVars([
                 'article' => $article,
             ]);
+        }
+    }
+
+    /**
+     * Adds article comment
+     *
+     * @return ResponseInterface|void
+     */
+    public function commentAction() {
+        if (!$this->security->checkToken()) {
+            $this->view->setVar('error_message', _t('error_message_invalid_token'));
+            return;
+        }
+
+        $article_id = $this->request->getPost('article_id', 'int!', 0);
+        $email = $this->request->getPost('email', 'trim');
+        $nickname = $this->request->getPost('nickname', 'trim');
+        $content = $this->request->getPost('comment', 'trim');
+        if (!$article_id || !$email || !$nickname || !$content) {
+            $this->view->setVar('error_message', _t('error_message_invalid_params'));
+            return;
+        }
+
+        $article = Article::findById($article_id);
+        if (!$article) {
+            $this->view->setVar('error_message', _t('error_message_article_not_found'));
+            return;
+        }
+
+        try {
+            $comment = Comment::factory($article_id, $nickname);
+            $comment->setCommentatorEmail($email);
+            $comment->setCommentBody($content);
+            $comment->setCommentatorIp($this->request->getClientAddress(true));
+            $comment->setCommentatorBrowser($this->request->getUserAgent());
+            $comment->save();
+
+            return $this->response->redirect(['for' => 'article', 'name' => $article->getArticleAbbr()]);
+        } catch (ModelSaveException $e) {
+            container('logger')->error("AddComment: {$e->getMessage()}");
+            $this->view->setVar('error_message', _t('error_message_save_failure'));
         }
     }
 

@@ -187,6 +187,21 @@ if (!function_exists('environment')) {
     }
 }
 
+if (!function_exists('_t')) {
+    /**
+     * Get the translated string of key
+     *
+     * @param string $key
+     * @return string
+     */
+    function _t(string $key): string {
+        if ($translator = container('translator')) {
+            return $translator->_($key);
+        }
+        return $key;
+    }
+}
+
 // Load the utility functions
 (new Loader())->registerFiles([
     app_path('library/Xet/functions.php')
