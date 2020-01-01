@@ -22,7 +22,7 @@
   </section>
 
   {% if article.isArticleAllowComment() %}
-    <section class="h-article-comment-create">
+    <section class="h-article-comment-create h-container">
       <form action="{{ url('/article/comment') }}" method="post">
         <div class="h-form-item" data-required>
           <label class="h-form-label" for="nickname">{{ _t('form_label_nickname') }}</label>

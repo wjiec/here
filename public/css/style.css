@@ -149,6 +149,7 @@ input, button {
   position: relative;
   display: inline-block;
   width: 480px;
+  max-width: 75%;
   margin-left: 80px;
 }
 

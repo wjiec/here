@@ -326,6 +326,7 @@
   padding: 20px;
   margin: 0 0 20px;
   background: #ebebeb;
+  border-radius: 5px;
 }
 
 .h-article-comment-footer {
@@ -339,6 +340,10 @@
 
 .h-article-comment-reply {
   cursor: pointer;
+}
+
+.h-article-comment-create {
+  margin: 0;
 }
 
 /* article comment */
