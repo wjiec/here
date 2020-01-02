@@ -27,9 +27,10 @@ class CategoryController extends AbstractController {
      */
     public function indexAction(string $name) {
         $category = Category::findByAbbr($name) ?: Category::findById((int)$name);
-        $this->view->setVars([
-            'category' => $category
-        ]);
+        if ($category) {
+            $this->tag::setTitle($category->getCategoryName());
+            $this->view->setVar('category', $category);
+        }
     }
 
 }
