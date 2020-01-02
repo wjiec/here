@@ -67,6 +67,10 @@ final class Category extends AbstractModel {
             'alias' => 'parent',
             'reusable' => true,
         ]);
+
+        $this->hasMany('category_id', ArticleCategory::class, 'category_id', [
+            'alias' => 'articles',
+        ]);
     }
 
     /**

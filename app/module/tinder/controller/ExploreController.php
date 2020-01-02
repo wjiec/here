@@ -40,9 +40,4 @@ final class ExploreController extends AbstractController {
         ]);
     }
 
-    /**
-     * @const ARTICLES_IN_PAGE The number of the articles per page
-     */
-    protected const ARTICLES_IN_PAGE = 10;
-
 }

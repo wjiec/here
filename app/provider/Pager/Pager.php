@@ -203,7 +203,8 @@ class Pager {
      * @return int
      */
     public function getTotal(): int {
-        return (int)($this->total / $this->size) + 1;
+        $count = $this->total / $this->size;
+        return is_float($count) ? ((int)$count + 1) : $count;
     }
 
     /**

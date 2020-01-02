@@ -17,4 +17,11 @@ use Here\Library\Mvc\Controller\AbstractController as MvcAbstractController;
  * Class AbstractController
  * @package Here\Tinder\Library\Mvc\Controller
  */
-abstract class AbstractController extends MvcAbstractController {}
+abstract class AbstractController extends MvcAbstractController {
+
+    /**
+     * @const ARTICLES_IN_PAGE The number of the articles per page
+     */
+    protected const ARTICLES_IN_PAGE = 10;
+
+}
