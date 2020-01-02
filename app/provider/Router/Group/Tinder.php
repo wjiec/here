@@ -34,6 +34,7 @@ final class Tinder extends RouteGroup {
         $this->addFeed();
         $this->addArticle();
         $this->addArticleComment();
+        $this->addCategory();
     }
 
     /**
@@ -67,6 +68,14 @@ final class Tinder extends RouteGroup {
     final public function addArticleComment() {
         $this->addPost('article/comment', ['controller' => 'article', 'action' => 'comment'])
             ->setName('article-comment');
+    }
+
+    /**
+     * Category view
+     */
+    final public function addCategory() {
+        $this->addGet('category/{name:.+}', ['controller' => 'category'])
+            ->setName('category');
     }
 
 }
