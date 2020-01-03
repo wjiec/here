@@ -10,6 +10,8 @@
  */
 namespace Here\Library\Mvc\Controller;
 
+use Exception;
+use Here\Model\Viewer;
 use Here\Provider\Field\Store\StoreInterface;
 use Phalcon\Cache\BackendInterface;
 use Phalcon\Http\ResponseInterface;
@@ -38,6 +40,7 @@ abstract class AbstractController extends Controller {
      * administrator has not loaded
      *
      * @return ResponseInterface|void
+     * @throws Exception
      */
     public function initialize() {
         $this->translator = container('translator');
@@ -49,6 +52,24 @@ abstract class AbstractController extends Controller {
         }
         // Match title for each action automatic
         $this->matchActionTitle($this->dispatcher);
+        // Record viewer into database and statistics after
+        $this->recordViewer();
+    }
+
+    /**
+     * Record viewer into database
+     *
+     * @throws Exception
+     */
+    protected function recordViewer() {
+        if (!$this->session->has('viewer')) {
+            $viewer = Viewer::factory(md5(random_bytes(16)));
+            $viewer->setViewerIp($this->request->getClientAddress(true));
+            $viewer->setViewerUserAgent($this->request->getUserAgent());
+            $viewer->save();
+
+            $this->session->set('viewer', $viewer->getViewerKey());
+        }
     }
 
     /**

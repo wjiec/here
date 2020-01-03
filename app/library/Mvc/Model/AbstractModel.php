@@ -42,7 +42,7 @@ abstract class AbstractModel extends Model {
             }
             throw new ModelSaveException(join('|', $this->getMessages()));
         } catch (Throwable $e) {
-            throw new ModelSaveException($e->getMessage());
+            throw new ModelSaveException($e->getTraceAsString());
         }
     }
 

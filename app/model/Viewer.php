@@ -17,7 +17,7 @@ use Here\Library\Mvc\Model\AbstractModel;
  * Class Viewer
  * @package Here\Model
  */
-final class Viewer extends AbstractModel {
+class Viewer extends AbstractModel {
 
     /**
      *
@@ -61,7 +61,7 @@ final class Viewer extends AbstractModel {
      * @param string $viewer_key
      * @return $this
      */
-    final public function setViewerKey(string $viewer_key) {
+    public function setViewerKey(string $viewer_key) {
         $this->viewer_key = $viewer_key;
         return $this;
     }
@@ -72,7 +72,7 @@ final class Viewer extends AbstractModel {
      * @param string $viewer_ip
      * @return $this
      */
-    final public function setViewerIp(string $viewer_ip) {
+    public function setViewerIp(string $viewer_ip) {
         $this->viewer_ip = $viewer_ip;
         return $this;
     }
@@ -80,10 +80,10 @@ final class Viewer extends AbstractModel {
     /**
      * Method to set the value of field viewer_stay_time
      *
-     * @param integer $viewer_stay_time
+     * @param integer|string $viewer_stay_time
      * @return $this
      */
-    final public function setViewerStayTime(int $viewer_stay_time) {
+    public function setViewerStayTime(string $viewer_stay_time) {
         $this->viewer_stay_time = $viewer_stay_time;
         return $this;
     }
@@ -94,7 +94,7 @@ final class Viewer extends AbstractModel {
      * @param string $viewer_user_agent
      * @return $this
      */
-    final public function setViewerUserAgent(string $viewer_user_agent) {
+    public function setViewerUserAgent(string $viewer_user_agent) {
         $this->viewer_user_agent = $viewer_user_agent;
         return $this;
     }
@@ -104,7 +104,7 @@ final class Viewer extends AbstractModel {
      *
      * @return integer
      */
-    final public function getViewerId(): int {
+    public function getViewerId(): int {
         return (int)$this->viewer_id;
     }
 
@@ -113,7 +113,7 @@ final class Viewer extends AbstractModel {
      *
      * @return string
      */
-    final public function getViewerKey(): ?string {
+    public function getViewerKey(): ?string {
         return $this->viewer_key;
     }
 
@@ -122,7 +122,7 @@ final class Viewer extends AbstractModel {
      *
      * @return string
      */
-    final public function getViewerIp(): ?string {
+    public function getViewerIp(): ?string {
         return $this->viewer_ip;
     }
 
@@ -131,7 +131,7 @@ final class Viewer extends AbstractModel {
      *
      * @return integer
      */
-    final public function getViewerStayTime(): int {
+    public function getViewerStayTime(): int {
         return (int)$this->viewer_stay_time;
     }
 
@@ -140,7 +140,7 @@ final class Viewer extends AbstractModel {
      *
      * @return string
      */
-    final public function getViewerUserAgent(): ?string {
+    public function getViewerUserAgent(): ?string {
         return $this->viewer_user_agent;
     }
 
@@ -149,14 +149,14 @@ final class Viewer extends AbstractModel {
      *
      * @return string
      */
-    final public function getCreateTime(): ?string {
+    public function getCreateTime(): ?string {
         return $this->create_time;
     }
 
     /**
      * Initialize method for model.
      */
-    final public function initialize() {
+    public function initialize() {
         $this->setSource('viewer');
     }
 
@@ -165,8 +165,21 @@ final class Viewer extends AbstractModel {
      *
      * @return string
      */
-    final public function getSource() {
+    public function getSource() {
         return 'viewer';
+    }
+
+    /**
+     * Create a new viewer
+     *
+     * @param string $key
+     * @return static
+     */
+    public static function factory(string $key): self {
+        $viewer = new static();
+        $viewer->setViewerKey($key);
+
+        return $viewer;
     }
 
 }
