@@ -192,6 +192,33 @@
   color: #10aec2;
 }
 
+/* article: outline */
+.h-outline {
+  margin-bottom: 60px;
+}
+
+.h-outline-title {
+  color: #293846;
+  font-size: 22px;
+  line-height: 40px;
+}
+
+.h-outline-title a {
+  color: inherit;
+}
+
+.h-outline-metadata {
+  font-size: 14px;
+  color: #aaa;
+  font-family: "Fira Code Light",-apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,
+  Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
+}
+
+.h-outline-content {
+  line-height: 1.5;
+  margin: 10px 20px 30px 20px;
+}
+
 /* explore page */
 .h-common-wrapper {
   transform: translateX(0);
@@ -203,34 +230,7 @@
 }
 
 .h-explore-articles {
-  max-width: 850px;
   margin-top: 50px;
-}
-
-.h-explore-article {
-  margin-bottom: 60px;
-}
-
-.h-explore-article-title {
-  color: #293846;
-  font-size: 22px;
-  line-height: 40px;
-}
-
-.h-explore-article-title a {
-  color: inherit;
-}
-
-.h-explore-article-metadata {
-  font-size: 14px;
-  color: #aaa;
-  font-family: "Fira Code Light",-apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,
-    Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
-}
-
-.h-explore-article-outline {
-  line-height: 1.5;
-  margin: 10px 20px 30px 20px;
 }
 
 /* article */
@@ -350,6 +350,35 @@
 .h-article-comment-buttons {
   width: 50%;
   justify-content: space-around;
+}
+
+/* category */
+.h-category-header {
+  margin-top: 50px;
+}
+
+.h-category-header-container {
+  margin: 0 10px;
+  padding: 20px 10px;
+  border-bottom: 1px dashed rgba(0, 0, 0, .15);
+}
+
+.h-category-header h4 {
+  line-height: 40px;
+}
+
+.h-category-intro {
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.h-category-header h4 {
+  font-size: 22px;
+}
+
+.h-category-articles {
+  margin-top: 100px;
 }
 
 /* error */

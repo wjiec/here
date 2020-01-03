@@ -3,33 +3,19 @@
 <div class="h-common-wrapper">
   {% include 'includes/header.volt' %}
 
-  <main class="h-explore-body">
+  <main class="h-category-container">
     {% if category is defined and category !== null %}
-      <section class="h-category-container h-container h-content-box">
-        <div class="h-category-header">
+      <section class="h-category-header h-container h-content-box">
+        <div class="h-category-header-container">
           <h4>{{ category.category_name }}</h4>
           <div class="h-category-intro">
-            <p>{{ category.category_introduction | default('...') }}</p>
+            <p>{{ category.category_introduction }}</p>
           </div>
         </div>
       </section>
-      <section class="h-articles">
+      <section class="h-category-articles h-container h-content-box">
         {% for article in articles %}
-          <article class="h-article">
-            <div class="h-article-header h-container">
-              <h4 class="h-article-title">
-                <a href="{{ url('/article/' ~ article.article_abbr) }}">{{ article.article_title }}</a>
-              </h4>
-              <div class="h-article-metadata">
-                <p class="h-article-create-time">
-                  {{ article.create_time | date }}
-                </p>
-              </div>
-            </div>
-            <div class="h-article-outline">
-              {{ article.article_outline | markdown }}
-            </div>
-          </article>
+          {% include 'includes/article/outline' with ['article': article] %}
         {% endfor %}
       </section>
     {% else %}
