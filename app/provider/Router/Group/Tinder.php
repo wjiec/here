@@ -35,6 +35,7 @@ final class Tinder extends RouteGroup {
         $this->addArticle();
         $this->addArticleComment();
         $this->addCategory();
+        $this->addSearch();
     }
 
     /**
@@ -76,6 +77,14 @@ final class Tinder extends RouteGroup {
     final public function addCategory() {
         $this->addGet('category/{name:.+}', ['controller' => 'category'])
             ->setName('category');
+    }
+
+    /**
+     * Search form
+     */
+    final public function addSearch() {
+        $this->_addRoute('search', ['controller' => 'search'], ['GET', 'POST'])
+            ->setName('search');
     }
 
 }

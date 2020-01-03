@@ -32,6 +32,7 @@ return [
     'title_tinder_error_not_found' => '找不到页面',
     'title_tinder_article_index' => '未命名内容',
     'title_tinder_article_comment' => '提交评论',
+    'title_tinder_search_index' => '全站搜索',
 
     'form_label_username' => '用户名',
     'form_placeholder_username' => '请输入用户名',
@@ -44,6 +45,8 @@ return [
     'form_label_comment' => '评论内容',
     'form_placeholder_comment' => '请输入评论内容（Markdown语法支持）',
     'form_tips_comment' => '您的评论将在博主同意之后展示，请不要重复提交评论',
+    'form_label_search' => '搜索',
+    'form_placeholder_search' => '请输入您要搜索的内容',
     'form_submit_text' => '提交',
 
     'button_retry' => '重试',

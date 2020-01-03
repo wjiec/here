@@ -116,6 +116,10 @@ form {
   font-size: 14px;
 }
 
+.h-form-inline {
+  display: inline-block;
+}
+
 input, button {
   font-family: inherit;
   font-size: 100%;
@@ -126,6 +130,10 @@ input, button {
 .h-form-item {
   position: relative;
   margin-bottom: 22px;
+}
+
+.h-form-inline .h-form-item {
+  display: inline-block;
 }
 
 .h-form-label {
@@ -148,9 +156,13 @@ input, button {
 .h-form-control {
   position: relative;
   display: inline-block;
-  width: 480px;
+  width: 450px;
   max-width: 75%;
   margin-left: 80px;
+}
+
+.h-form-inline .h-form-control {
+  display: inline-block;
 }
 
 .h-form-control input,

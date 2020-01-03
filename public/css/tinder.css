@@ -381,6 +381,15 @@
   margin-top: 100px;
 }
 
+/* search */
+.h-search-container {
+  margin-top: 50px;
+}
+
+.h-search-form-container {
+  text-align: center;
+}
+
 /* error */
 .h-error {
   margin: 60px auto;
