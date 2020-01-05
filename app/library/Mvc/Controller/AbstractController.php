@@ -12,9 +12,9 @@ namespace Here\Library\Mvc\Controller;
 
 use Exception;
 use Here\Model\Viewer;
+use Here\Provider\Administrator\Administrator;
 use Here\Provider\Field\Store\StoreInterface;
 use Phalcon\Cache\BackendInterface;
-use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Tag;
@@ -27,6 +27,7 @@ use Phalcon\Translate\Adapter;
  * @package Here\Library\Mvc\Controller
  * @property BackendInterface $cache
  * @property StoreInterface $field
+ * @property Administrator $administrator
  */
 abstract class AbstractController extends Controller {
 
@@ -39,7 +40,6 @@ abstract class AbstractController extends Controller {
      * Setups the administrator for application when
      * administrator has not loaded
      *
-     * @return ResponseInterface|void
      * @throws Exception
      */
     public function initialize() {
@@ -47,7 +47,8 @@ abstract class AbstractController extends Controller {
         // Redirect to setup page when administrator not loaded
         if (!container('administrator')->exists()) {
             if ($this->dispatcher->getControllerName() !== 'setup') {
-                return $this->response->redirect(['for' => 'setup-wizard']);
+                $this->response->redirect(['for' => 'setup-wizard']);
+                $this->response->send();
             }
         }
         // Match title for each action automatic
@@ -62,13 +63,13 @@ abstract class AbstractController extends Controller {
      * @throws Exception
      */
     protected function recordViewer() {
-        if (!$this->session->has('viewer')) {
+        if (!$this->session->has('$Here$Viewer$')) {
             $viewer = Viewer::factory(md5(random_bytes(16)));
             $viewer->setViewerIp($this->request->getClientAddress(true));
             $viewer->setViewerUserAgent($this->request->getUserAgent());
             $viewer->save();
 
-            $this->session->set('viewer', $viewer->getViewerKey());
+            $this->session->set('$Here$Viewer$', $viewer->getViewerKey());
         }
     }
 

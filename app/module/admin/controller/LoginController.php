@@ -10,28 +10,18 @@
  */
 namespace Here\Admin\Controller;
 
-use Exception;
 use Here\Admin\Library\Mvc\Controller\AbstractController;
 
 
 /**
- * Class DashboardController
+ * Class LoginController
  * @package Here\Admin\Controller
  */
-final class DashboardController extends AbstractController {
+class LoginController extends AbstractController {
 
     /**
-     * Initializing the states of dashboard
-     *
-     * @throws Exception
+     * Login page
      */
-    final public function initialize() {
-        parent::initialize();
-    }
-
-    /**
-     * Shows something states or something to do
-     */
-    final public function indexAction() {}
+    public function indexAction() {}
 
 }

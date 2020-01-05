@@ -10,6 +10,7 @@
  */
 namespace Here\Tinder\Controller;
 
+use Exception;
 use Here\Tinder\Library\Mvc\Controller\AbstractController;
 
 
@@ -21,6 +22,8 @@ class FeedController extends AbstractController {
 
     /**
      * Closed view renderer
+     *
+     * @throws Exception
      */
     public function initialize() {
         parent::initialize();

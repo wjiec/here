@@ -8,7 +8,7 @@
 
     <div class="h-article-comment-buttons h-container h-is-horizontal">
       <p><a href="javascript:window.history.back();">{{ _t('button_back_page') }}</a></p>
-      <p><a href="{{ url('/') }}">{{ _t('button_back_home') }}</a></p>
+      <p><a href="{{ url(['for': 'explore']) }}">{{ _t('button_back_home') }}</a></p>
     </div>
   </main>
 

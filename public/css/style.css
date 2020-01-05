@@ -132,6 +132,10 @@ input, button {
   margin-bottom: 22px;
 }
 
+.h-form-item:nth-last-child(2) {
+  margin-bottom: 0;
+}
+
 .h-form-inline .h-form-item {
   display: inline-block;
 }
@@ -156,7 +160,7 @@ input, button {
 .h-form-control {
   position: relative;
   display: inline-block;
-  width: 450px;
+  width: 300px;
   max-width: 75%;
   margin-left: 80px;
 }
@@ -186,6 +190,7 @@ input, button {
 
 .h-form-control textarea {
   height: 150px;
+  width: 450px;
   padding: 5px 0 0 15px;
   line-height: 1.5;
 }
@@ -215,7 +220,6 @@ input, button {
 .h-validate-failure textarea {
   border: 1px solid #ff6238;
 }
-
 
 /* Buttons styles */
 button {

@@ -16,6 +16,7 @@ use Here\Library\Creation\Article\Factory;
 use Here\Library\Creation\Comment\Commentator;
 use Here\Model\Category;
 use Here\Provider\Administrator\Administrator;
+use Phalcon\Http\ResponseInterface;
 use Throwable;
 
 
@@ -27,6 +28,8 @@ final class SetupController extends AbstractController {
 
     /**
      * Sets the title of the setup-wizard
+     *
+     * @throws Exception
      */
     final public function initialize() {
         parent::initialize();
@@ -43,6 +46,8 @@ final class SetupController extends AbstractController {
 
     /**
      * Completed the administrator register
+     *
+     * @return ResponseInterface|void
      */
     final public function completeAction() {
         if (!$this->security->checkToken()) {

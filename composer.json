@@ -12,6 +12,8 @@
     "require": {
         "php": ">=7.1",
         "ext-pdo": "*",
+        "ext-json": "*",
+        "ext-openssl": "*",
         "ext-mbstring": "*",
         "vlucas/phpdotenv": "^3.6",
         "filp/whoops": "^2.5",

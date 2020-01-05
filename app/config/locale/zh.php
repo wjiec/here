@@ -33,6 +33,8 @@ return [
     'title_tinder_article_index' => '未命名内容',
     'title_tinder_article_comment' => '提交评论',
     'title_tinder_search_index' => '全站搜索',
+    'title_admin_dashboard_index' => '控制面板',
+    'title_admin_login_index' => '登录',
 
     'form_label_username' => '用户名',
     'form_placeholder_username' => '请输入用户名',

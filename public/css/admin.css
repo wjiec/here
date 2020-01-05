@@ -1,3 +1,4 @@
+/* setup */
 .h-setup-header-container {
   max-width: 1050px;
   height: 100%;
@@ -54,4 +55,28 @@
 
 .h-setup-retry a {
   float: right;
+}
+
+/* login */
+.h-login-container {
+  min-height: 100vh;
+  max-height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.h-login-card {
+  padding: 50px 20px;
+  margin: 20px;
+  border: 1px solid rgba(0, 0, 0, .25);
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, .15);
+  background: #fff;
+}
+
+.h-back-prev-page {
+  color: #ddd;
+  float: right;
+  line-height: 32px;
+  margin-right: 20px;
 }

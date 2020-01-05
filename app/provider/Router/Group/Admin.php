@@ -17,25 +17,26 @@ use Phalcon\Mvc\Router\Group as RouteGroup;
  * Class Admin
  * @package Here\Provider\Router\Group
  */
-final class Admin extends RouteGroup {
+class Admin extends RouteGroup {
 
     /**
      * Route group of admin module
      */
-    final public function initialize() {
+    public function initialize() {
         $this->setPaths(['module' => 'admin']);
         $this->setPrefix(env('ADMIN_PREFIX', '/admin'));
 
         $this->addDashboard();
         $this->addSetupWizard();
         $this->addSetupComplete();
+        $this->addLogin();
     }
 
     /**
      * The purpose of these rules is shows something states
      * or something to do, like review comments and so on
      */
-    final private function addDashboard() {
+    protected function addDashboard() {
         $this->addGet('[/]{0,1}(dashboard){0,1}', ['controller' => 'dashboard'])
             ->setName('dashboard');
     }
@@ -43,7 +44,7 @@ final class Admin extends RouteGroup {
     /**
      * The purpose of these rules is create new administrator
      */
-    final private function addSetupWizard() {
+    protected function addSetupWizard() {
         $this->addGet('/setup', ['controller' => 'setup'])
             ->setName('setup-wizard');
     }
@@ -52,9 +53,17 @@ final class Admin extends RouteGroup {
      * The rules is register the administrator and
      * initializing something default fields
      */
-    final private function addSetupComplete() {
+    protected function addSetupComplete() {
         $this->addPost('/setup/complete', ['controller' => 'setup', 'action' => 'complete'])
             ->setName('setup-complete');
+    }
+
+    /**
+     * Login page and verify login correct
+     */
+    protected function addLogin() {
+        $this->_addRoute('/login', ['controller' => 'login'], ['GET', 'POST'])
+            ->setName('login');
     }
 
 }

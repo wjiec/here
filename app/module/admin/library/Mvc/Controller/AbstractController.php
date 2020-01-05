@@ -10,6 +10,7 @@
  */
 namespace Here\Admin\Library\Mvc\Controller;
 
+use Exception;
 use Here\Library\Mvc\Controller\AbstractController as MvcAbstractController;
 
 
@@ -17,4 +18,21 @@ use Here\Library\Mvc\Controller\AbstractController as MvcAbstractController;
  * Class AbstractController
  * @package Here\Admin\Library\Mvc\Controller
  */
-abstract class AbstractController extends MvcAbstractController {}
+abstract class AbstractController extends MvcAbstractController {
+
+    /**
+     * Check administrator has login
+     *
+     * @throws Exception
+     */
+    public function initialize() {
+        parent::initialize();
+        if (!$this->administrator->loginFromToken()) {
+            if ($this->dispatcher->getControllerName() !== 'login') {
+                $this->response->redirect(['for' => 'login']);
+                $this->response->send();
+            }
+        }
+    }
+
+}
