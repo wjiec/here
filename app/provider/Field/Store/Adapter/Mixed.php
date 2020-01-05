@@ -67,7 +67,7 @@ final class Mixed extends AbstractStore {
             }
             return $carry;
         }, ['missing' => []]);
-        $values['hit'] = $values['hit'] ?? $default;
+        $values['hit'] = $values['hit'] ?? value_of($default);
 
         /* @var StoreInterface $store */
         foreach ($values['missing'] as $store) {
