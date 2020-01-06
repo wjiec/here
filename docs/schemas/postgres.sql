@@ -25,7 +25,8 @@ create table public.article (
   "article_like" integer not null default 0,
   "article_view" integer not null default 0,
   "create_time" timestamp without time zone not null default now(),
-  "update_time" timestamp without time zone not null default now()
+  "update_time" timestamp without time zone not null default now(),
+  "publish_time" timestamp without time zone not null default now()
 );
 
 alter table public.article owner to postgres;

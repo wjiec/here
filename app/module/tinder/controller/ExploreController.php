@@ -30,7 +30,7 @@ final class ExploreController extends AbstractController {
             ->from(Article::class)
             ->where('article_public = :public_state:', ['public_state' => Article::BOOLEAN_TRUE])
             ->andWhere('article_publish = :publish_state:', ['publish_state' => Article::BOOLEAN_TRUE])
-            ->orderBy('article_id desc')
+            ->orderBy('publish_time desc')
             ->limit($page_size, $this->getPaginationOffset($page_size));
 
         $template = sprintf('%s?page={:page:}', $this->url->get(['for' => 'explore']));

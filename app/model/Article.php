@@ -107,6 +107,12 @@ class Article extends AbstractModel {
     protected $update_time;
 
     /**
+     *
+     * @var string
+     */
+    protected $publish_time;
+
+    /**
      * Initialize method for model.
      */
     public function initialize() {
@@ -421,6 +427,15 @@ class Article extends AbstractModel {
      */
     public function getUpdateTime(): ?string {
         return $this->update_time;
+    }
+
+    /**
+     * Returns the value of field publish_time
+     *
+     * @return string|null
+     */
+    public function getPublishTime(): ?string {
+        return $this->publish_time;
     }
 
     /**
