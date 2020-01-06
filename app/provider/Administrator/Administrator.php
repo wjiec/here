@@ -15,6 +15,9 @@ use Here\Model\Author as AuthorModel;
 use Here\Model\Middleware\Author;
 use Phalcon\Http\CookieInterface;
 use Phalcon\Http\Request;
+use Phalcon\Http\Response\Cookies;
+use function Here\Library\Xet\base64_decode_safe;
+use function Here\Library\Xet\base64_encode_safe;
 use function Here\Library\Xet\current_date;
 
 
@@ -108,6 +111,38 @@ final class Administrator {
         }
 
         return true;
+    }
+
+    /**
+     * Return true when username and password corrected, false otherwise
+     *
+     * @param string $username
+     * @param string $password
+     * @return bool
+     */
+    public function verifyPassword(string $username, string $password): bool {
+        if (password_verify($password, $this->author->getAuthorPassword())) {
+            if ($this->author->getAuthorUsername() === $username) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Generate the token to persistent current session
+     */
+    public function signLoginToken(): void {
+        $token = json_encode(['id' => $this->author->getAuthorId(), 'create_at' => current_date()]);
+
+        list($key, $iv) = $this->getAesKeyIv();
+        /* @var $cookies Cookies */
+        $cookies = container('cookies');
+        $value = base64_encode_safe(openssl_encrypt($token, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv));
+        $cookies->set(self::TOKEN_IN_COOKIE_NAME, $value, 0, '/', false, null, true);
+        container('session')->set(self::TOKEN_IN_SESSION_NAME, json_decode($token));
+        $cookies->send();
     }
 
     /**

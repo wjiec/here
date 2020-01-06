@@ -50,7 +50,7 @@ final class ServiceProvider extends AbstractServiceProvider {
                     return $cache_dir . DIRECTORY_SEPARATOR . $basename . '.php';
                 },
             ]);
-            $volt->getCompiler()->addExtension(new Functions());
+            $volt->getCompiler()->addExtension(new Functions($volt->getCompiler()));
 
             return $volt;
         });

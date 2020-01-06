@@ -62,5 +62,6 @@ return [
     'error_message_invalid_token' => '安全验证错误，请重试',
     'error_message_invalid_params' => '提交内容无效，请重试',
     'error_message_save_failure' => '保存内容失败，请重试',
-    'error_message_article_not_found' => '找不到指定的文章'
+    'error_message_article_not_found' => '找不到指定的文章',
+    'error_message_empty_login_params' => '用户名或密码不能为空'
 ];

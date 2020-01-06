@@ -65,13 +65,22 @@
   align-items: center;
 }
 
+.h-login-title {
+  font-size: 24px;
+}
+
 .h-login-card {
   padding: 50px 20px;
   margin: 20px;
+  position: relative;
   border: 1px solid rgba(0, 0, 0, .25);
   border-radius: 5px;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, .15);
   background: #fff;
+}
+
+.h-login-has-error .h-login-card {
+  border: 1px solid #ff6238;
 }
 
 .h-back-prev-page {
@@ -79,4 +88,14 @@
   float: right;
   line-height: 32px;
   margin-right: 20px;
+}
+
+.h-login-error-message {
+  font-size: 14px;
+  color: #ff6238;
+  top: 0;
+  text-align: center;
+  line-height: 50px;
+  position: absolute;
+  margin-left: 80px;
 }

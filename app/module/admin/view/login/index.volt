@@ -1,5 +1,5 @@
 
-<main class="h-login-container h-container h-content-box">
+<main class="h-login-container h-container h-content-box {{ exp(error_message, 'h-login-has-error', '') }}">
   <h4 class="h-login-title">{{ _t('title_admin_login_index') }}</h4>
   <section class="h-login-card">
     <div class="h-login-form">
@@ -31,5 +31,10 @@
         <input type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
       </form>
     </div>
+    {% if error_message is defined %}
+      <div class="h-login-error-message">
+        <p>{{ error_message }}</p>
+      </div>
+    {% endif %}
   </section>
 </main>

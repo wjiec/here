@@ -37,7 +37,9 @@ class Admin extends RouteGroup {
      * or something to do, like review comments and so on
      */
     protected function addDashboard() {
-        $this->addGet('[/]{0,1}(dashboard){0,1}', ['controller' => 'dashboard'])
+        $this->addGet('', ['controller' => 'dashboard'])
+            ->setName('dashboard');
+        $this->addGet('/dashboard', ['controller' => 'dashboard'])
             ->setName('dashboard');
     }
 

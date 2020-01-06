@@ -61,7 +61,7 @@ final class SetupController extends AbstractController {
             $password = $this->request->getPost('password', 'trim');
             $email = $this->request->getPost('email', 'trim');
             if (!$username || !$password) {
-                throw new Exception($this->translator->_('setup_form_submit_invalid'));
+                throw new Exception(_t('setup_form_submit_invalid'));
             }
 
             /** @var Administrator $administrator */
@@ -69,7 +69,7 @@ final class SetupController extends AbstractController {
             $author = $administrator->create($username, $password, $email);
 
             // Create default category
-            $category = Category::factory($this->translator->_('category_default_name'), 'default');
+            $category = Category::factory(_t('category_default_name'), 'default');
             $category->save();
 
             // Create draft of article and save
