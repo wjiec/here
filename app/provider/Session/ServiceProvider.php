@@ -19,7 +19,7 @@ use Phalcon\Session\AdapterInterface;
  * Class ServiceProvider
  * @package Here\Provider\Session
  */
-final class ServiceProvider extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
     /**
      * Name of the service
@@ -31,7 +31,7 @@ final class ServiceProvider extends AbstractServiceProvider {
     /**
      * @inheritDoc
      */
-    final public function register() {
+    public function register() {
         $this->di->setShared($this->service_name, function() {
             $config = container('config')->session;
             /* @var Config $driver_config */

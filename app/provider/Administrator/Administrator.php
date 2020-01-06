@@ -15,9 +15,8 @@ use Here\Model\Author as AuthorModel;
 use Here\Model\Middleware\Author;
 use Phalcon\Http\CookieInterface;
 use Phalcon\Http\Request;
-use Phalcon\Http\Response\Cookies;
-use function Here\Library\Xet\base64_decode_safe;
-use function Here\Library\Xet\base64_encode_safe;
+use function Here\Library\Xet\aes_decrypt;
+use function Here\Library\Xet\aes_encrypt;
 use function Here\Library\Xet\current_date;
 
 
@@ -98,7 +97,7 @@ final class Administrator {
             }
 
             list($key, $iv) = $this->getAesKeyIv();
-            $token = openssl_decrypt($cookie->getValue(), 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+            $token = aes_decrypt($cookie->getValue('trim'), $key, $iv);
             if (!$token) {
                 return false;
             }
@@ -137,12 +136,9 @@ final class Administrator {
         $token = json_encode(['id' => $this->author->getAuthorId(), 'create_at' => current_date()]);
 
         list($key, $iv) = $this->getAesKeyIv();
-        /* @var $cookies Cookies */
-        $cookies = container('cookies');
-        $value = base64_encode_safe(openssl_encrypt($token, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv));
-        $cookies->set(self::TOKEN_IN_COOKIE_NAME, $value, 0, '/', false, null, true);
         container('session')->set(self::TOKEN_IN_SESSION_NAME, json_decode($token));
-        $cookies->send();
+        container('cookies')->add(self::TOKEN_IN_COOKIE_NAME, aes_encrypt($token, $key, $iv));
+        container('cookies')->send();
     }
 
     /**

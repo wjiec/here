@@ -47,3 +47,32 @@ if (!function_exists('base64_decode_safe')) {
             substr('====', strlen($data) % 4));
     }
 }
+
+if (!function_exists('aes_encrypt')) {
+    /**
+     * Encrypt by aes-256-cbc with iv and base64_encode automatically
+     *
+     * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @return false|string
+     */
+    function aes_encrypt(string $data, string $key, string $iv) {
+        return base64_encode_safe(openssl_encrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv));
+    }
+}
+
+if (!function_exists('aes_decrypt')) {
+    /**
+     * Decrypt by aes-256-cbc with iv and base64_decode automatically
+     *
+     * @param string $data
+     * @param string $key
+     * @param string $iv
+     * @return false|string
+     */
+    function aes_decrypt(string $data, string $key, string $iv) {
+        return openssl_decrypt(base64_decode_safe($data), 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+    }
+}
+
