@@ -4,7 +4,7 @@
       <p>{{ administrator.model().author_nickname | capitalize }}</p>
     </section>
     <section class="h-common-sidebar-links">
-      <p><a href="{{ url('/') }}">{{ _t('sidebar_link_blog') }}</a></p>
+      <p><a href="{{ url(['for': 'explore']) }}">{{ _t('sidebar_link_blog') }}</a></p>
       {% for link in field.get('sidebar.links', []) %}
         <p><a href="{{ link['url'] }}" target="{{ link['target'] }}">{{ link['name'] }}</a></p>
       {% endfor %}
@@ -13,6 +13,9 @@
       {% endif %}
       <p><a href="{{ url('/search') }}">{{ _t('sidebar_link_search') }}</a></p>
       <p><a href="{{ url('/feed') }}">{{ _t('sidebar_link_feed') }}</a></p>
+      {% if administrator.loginFromToken() %}
+        <p><a href="{{ url(['for': 'dashboard']) }}">{{ _t('title_admin_dashboard_index') }}</a></p>
+      {% endif %}
     </section>
     <section class="h-common-sidebar-license">
       <p>

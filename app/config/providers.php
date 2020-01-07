@@ -29,4 +29,5 @@ return [
     Here\Provider\UrlResolver\ServiceProvider::class,
     Here\Provider\ViewCache\ServiceProvider::class,
     Here\Provider\Volt\ServiceProvider::class,
+    Here\Provider\Welcome\ServiceProvider::class,
 ];

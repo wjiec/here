@@ -96,13 +96,13 @@
 }
 
 .h-common-sidebar-license {
-  color: #ccc;
+  color: #bac1c8;
   padding: 0 10px;
   margin-top: 30px;
 }
 
 .h-common-sidebar-license a {
-  color: #aaa;
+  color: #9aa4af;
 }
 
 /* widget: back-to-top */
@@ -209,7 +209,7 @@
 
 .h-outline-metadata {
   font-size: 14px;
-  color: #aaa;
+  color: #9aa4af;
   font-family: "Fira Code Light",-apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,
   Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
 }
@@ -248,7 +248,7 @@
 
 .h-article-metadata {
   font-size: 14px;
-  color: #aaa;
+  color: #9aa4af;
   line-height: 24px;
   display: flex;
   flex-direction: row;
@@ -314,7 +314,7 @@
 
 .h-article-commentator:after {
   content: ' : ';
-  color: #aaa;
+  color: #9aa4af;
 }
 
 .h-article-comment-body {
@@ -330,7 +330,7 @@
 }
 
 .h-article-comment-footer {
-  color: #aaa;
+  color: #9aa4af;
   display: flex;
   line-height: 24px;
   font-size: 14px;
@@ -368,7 +368,7 @@
 }
 
 .h-category-intro {
-  color: #aaa;
+  color: #9aa4af;
   font-size: 14px;
   line-height: 1.5;
 }

@@ -55,6 +55,7 @@ return [
     'button_reply' => '回复',
     'button_back_page' => '返回上一页',
     'button_back_home' => '返回首页',
+    'button_logout' => '登出',
 
     'category_default_name' => '默认分类',
 
@@ -63,5 +64,11 @@ return [
     'error_message_invalid_params' => '提交内容无效，请重试',
     'error_message_save_failure' => '保存内容失败，请重试',
     'error_message_article_not_found' => '找不到指定的文章',
-    'error_message_empty_login_params' => '用户名或密码不能为空'
+    'error_message_empty_login_params' => '用户名或密码不能为空',
+
+    'welcome_morning' => '早上好，',
+    'welcome_noon' => '中午好，',
+    'welcome_afternoon' => '下午好，',
+    'welcome_night' => '晚上好，',
+    'welcome_midnight' => '夜深了，'
 ];
