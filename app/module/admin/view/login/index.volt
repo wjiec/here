@@ -3,7 +3,7 @@
   <h4 class="h-login-title">{{ _t('title_admin_login_index') }}</h4>
   <section class="h-login-card">
     <div class="h-login-form">
-      <form action="{{ url(['for': 'login']) }}" method="post">
+      <form action="{{ url(['for': 'login']) }}" method="post" {{ exp(forbidden, 'data-disabled', '') }}>
         {# Form username #}
         <div class="h-form-item">
           <label class="h-form-label" for="username">{{ _t('form_label_username') }}</label>
@@ -38,3 +38,12 @@
     {% endif %}
   </section>
 </main>
+
+<script>
+  (new Forbidden()).init();
+  _$on('form', 'submit', (e) => {
+    if (!new Validator(e.target).validate()) {
+      e.preventDefault();
+    }
+  });
+</script>

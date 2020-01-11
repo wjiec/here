@@ -127,6 +127,10 @@ input, button {
   margin: 0;
 }
 
+input[disabled], button[disabled] {
+  cursor: not-allowed;
+}
+
 .h-form-item {
   position: relative;
   margin-bottom: 22px;

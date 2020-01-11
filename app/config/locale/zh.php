@@ -65,6 +65,8 @@ return [
     'error_message_save_failure' => '保存内容失败，请重试',
     'error_message_article_not_found' => '找不到指定的文章',
     'error_message_empty_login_params' => '用户名或密码不能为空',
+    'error_message_password_not_match' => '用户名或者密码错误',
+    'error_message_login_forbidden' => '登录错误次数过多，请稍后重试',
 
     'welcome_morning' => '早上好，',
     'welcome_noon' => '中午好，',

@@ -177,3 +177,19 @@ class CommentReplier {
     this.parent.value = id;
   }
 }
+
+class Forbidden {
+  constructor() {
+    this.form = _$('form[data-disabled]')
+  }
+  init() {
+    if (this.form) {
+      const control = _$$(this.form, 'input');
+      const textarea = _$$(this.form, 'textarea');
+      const button = _$$(this.form, 'button');
+      [...control, ...textarea, ...button].forEach((control) => {
+        control.disabled = true;
+      });
+    }
+  }
+}

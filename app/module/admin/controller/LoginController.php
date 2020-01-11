@@ -12,6 +12,7 @@ namespace Here\Admin\Controller;
 
 use Exception;
 use Here\Admin\Library\Mvc\Controller\AbstractController;
+use Here\Provider\Limiter\Limiter;
 
 
 /**
@@ -38,10 +39,19 @@ class LoginController extends AbstractController {
      * Login page
      */
     public function indexAction() {
+        /* @var $limiter Limiter */
+        $limiter = container('limiter', 'admin.login');
         if ($this->request->isPost()) {
+            if (!$limiter->enter($this->request->getClientAddress(true))) {
+                $this->view->setVar('forbidden', true);
+                $this->view->setVar('error_message', _t('error_message_login_forbidden'));
+                $this->response->setStatusCode(403);
+                return;
+            }
+
             if (!$this->security->checkToken()) {
-//                $this->view->setVar('error_message', _t('error_message_invalid_token'));
-//                return;
+                $this->view->setVar('error_message', _t('error_message_invalid_token'));
+                return;
             }
 
             $username = $this->request->getPost('username', 'trim');
@@ -52,7 +62,7 @@ class LoginController extends AbstractController {
             }
 
             if (!$this->administrator->verifyPassword($username, $password)) {
-                $this->view->setVar('error_message', _t('error_message_empty_login_params'));
+                $this->view->setVar('error_message', _t('error_message_password_not_match'));
                 return;
             }
 
@@ -60,5 +70,7 @@ class LoginController extends AbstractController {
             $this->response->redirect(['for' => 'dashboard']);
         }
     }
+
+
 
 }

@@ -28,9 +28,11 @@
 .h-admin-header-right {
   display: flex;
   flex-direction: row;
+  color: #9aa4af;
 }
 
 .h-admin-logout {
+  color: #bac1c8;
   margin-left: 30px;
 }
 

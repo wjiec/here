@@ -19,6 +19,7 @@ return [
     Here\Provider\Database\ServiceProvider::class,
     Here\Provider\Field\ServiceProvider::class,
     Here\Provider\FileSystem\ServiceProvider::class,
+    Here\Provider\Limiter\ServiceProvider::class,
     Here\Provider\Logger\ServiceProvider::class,
     Here\Provider\Markdown\ServiceProvider::class,
     Here\Provider\Pager\ServiceProvider::class,
