@@ -13,6 +13,7 @@ namespace Here\Provider\Administrator;
 use Here\Library\Exception\Mvc\ModelSaveException;
 use Here\Model\Author as AuthorModel;
 use Here\Model\Middleware\Author;
+use Here\Provider\Cookies\Cookies;
 use Phalcon\Http\CookieInterface;
 use Phalcon\Http\Request;
 use function Here\Library\Xet\aes_decrypt;
@@ -139,6 +140,16 @@ final class Administrator {
         container('session')->set(self::TOKEN_IN_SESSION_NAME, json_decode($token));
         container('cookies')->add(self::TOKEN_IN_COOKIE_NAME, aes_encrypt($token, $key, $iv));
         container('cookies')->send();
+    }
+
+    /**
+     * Clear login token for administrator
+     */
+    public function cleanLoginToken(): void {
+        container('session')->remove(self::TOKEN_IN_SESSION_NAME);
+        if ($cookie = container('cookies')->get(self::TOKEN_IN_COOKIE_NAME)) {
+            $cookie->delete();
+        }
     }
 
     /**

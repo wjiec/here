@@ -66,6 +66,8 @@ class Admin extends RouteGroup {
     protected function addLogin() {
         $this->_addRoute('/login', ['controller' => 'login'], ['GET', 'POST'])
             ->setName('login');
+        $this->addPost('/logout', ['controller' => 'logout'])
+            ->setName('logout');
     }
 
 }

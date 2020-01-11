@@ -11,7 +11,10 @@
         <p>{{ welcome.say() }}{{ administrator.model().author_nickname | capitalize }}</p>
       </div>
       <div class="h-admin-logout">
-        <p><a href="">{{ _t('button_logout') }}</a></p>
+        <form action="{{ url(['for': 'logout']) }}" method="post" class="h-form-inline">
+          <input type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
+          <button data-text>{{ _t('button_logout') }}</button>
+        </form>
       </div>
     </div>
   </div>

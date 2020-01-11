@@ -248,6 +248,12 @@ button:hover {
   background: #fafafa;
 }
 
+button[data-text] {
+  border: none;
+  background: transparent;
+  box-shadow: none;
+}
+
 /* prism extra */
 pre {
   border-radius: 3px;

@@ -71,6 +71,4 @@ class LoginController extends AbstractController {
         }
     }
 
-
-
 }
