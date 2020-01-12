@@ -202,6 +202,22 @@ if (!function_exists('_t')) {
     }
 }
 
+if (!function_exists('_url')) {
+    /**
+     * Gets the url by parameters
+     *
+     * @param string|array|null $uri
+     * @param string|array|null $args
+     * @param string|array|null $local
+     * @param string|null $baseUri
+     * @return string
+     */
+    function _url($uri = null, $args = null, $local = null, $baseUri = null): string {
+        /** @noinspection PhpMethodParametersCountMismatchInspection */
+        return container('url')->get($uri, $args, $local, $baseUri);
+    }
+}
+
 // Load the utility functions
 (new Loader())->registerFiles([
     app_path('library/Xet/functions.php')

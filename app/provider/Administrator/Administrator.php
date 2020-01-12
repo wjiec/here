@@ -13,7 +13,6 @@ namespace Here\Provider\Administrator;
 use Here\Library\Exception\Mvc\ModelSaveException;
 use Here\Model\Author as AuthorModel;
 use Here\Model\Middleware\Author;
-use Here\Provider\Cookies\Cookies;
 use Phalcon\Http\CookieInterface;
 use Phalcon\Http\Request;
 use function Here\Library\Xet\aes_decrypt;

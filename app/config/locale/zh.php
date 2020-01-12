@@ -28,6 +28,8 @@ return [
     'sidebar_link_feed' => 'Feed',
     'sidebar_license_cc_notice' => '如果没有特殊说明，博客的内容共享协议为',
 
+    'menu_item_name_dashboard' => '控制面板',
+
     'title_tinder_explore_index' => '首页',
     'title_tinder_error_not_found' => '找不到页面',
     'title_tinder_article_index' => '未命名内容',

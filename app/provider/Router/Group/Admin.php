@@ -61,7 +61,7 @@ class Admin extends RouteGroup {
     }
 
     /**
-     * Login page and verify login correct
+     * Login/logout page and verify login is correct
      */
     protected function addLogin() {
         $this->_addRoute('/login', ['controller' => 'login'], ['GET', 'POST'])

@@ -11,14 +11,14 @@
 namespace Here\Admin\Controller;
 
 use Exception;
-use Here\Admin\Library\Mvc\Controller\AbstractController;
+use Here\Admin\Library\Mvc\Controller\AbstractDashboardController;
 
 
 /**
  * Class DashboardController
  * @package Here\Admin\Controller
  */
-final class DashboardController extends AbstractController {
+final class DashboardController extends AbstractDashboardController {
 
     /**
      * Initializing the states of dashboard

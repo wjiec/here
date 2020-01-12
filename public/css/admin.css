@@ -1,4 +1,17 @@
-/* layout: header */
+/* layout */
+.h-admin-aside {
+  color: #f0f0f0;
+  min-width: 300px;
+  background: #545c64;
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, .25);
+}
+
+.h-admin-wrapper {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
 .h-admin-header-container {
   padding: 18px;
   line-height: 30px;
@@ -33,7 +46,27 @@
 
 .h-admin-logout {
   color: #bac1c8;
-  margin-left: 30px;
+}
+
+.h-admin-content {
+  margin: 20px 0;
+}
+
+/* menu */
+.h-admin-menu-item {
+  line-height: 56px;
+  padding: 0 20px;
+  cursor: pointer;
+  transition: all .25s ease-in-out;
+}
+
+.h-admin-menu-item:hover {
+  background: #434a50;
+}
+
+.h-admin-menu a:hover   {
+  color: #fff;
+  border-bottom: 0;
 }
 
 /* setup */
@@ -136,4 +169,14 @@
   line-height: 50px;
   position: absolute;
   margin-left: 80px;
+}
+
+/* dashboard */
+.h-admin-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: stretch;
+  align-items: stretch;
+  overflow: hidden;
+  flex-grow: 1;
 }
