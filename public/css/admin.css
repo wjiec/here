@@ -53,20 +53,63 @@
 }
 
 /* menu */
-.h-admin-menu-item {
+.h-admin-menu-item p {
   line-height: 56px;
   padding: 0 20px;
   cursor: pointer;
   transition: all .25s ease-in-out;
 }
 
-.h-admin-menu-item:hover {
+.h-admin-menu-item p:hover {
   background: #434a50;
 }
 
 .h-admin-menu a:hover   {
   color: #fff;
   border-bottom: 0;
+}
+
+.h-admin-sub-menu {
+  margin-left: 20px;
+}
+
+.h-menu-folder-handler:after {
+  content: '';
+  display: inline-block;
+}
+
+.h-menu-has-folder {
+  position: relative;
+}
+
+.h-menu-folder {
+  cursor: pointer;
+}
+
+.h-menu-folder-arrow {
+  position: absolute;
+  right: 20px;
+  top: 22px;
+}
+
+.h-menu-folder-arrow:before,
+.h-menu-folder-arrow:after {
+  content: '';
+  width: 10px;
+  height: 3px;
+  display: inline-block;
+  background: #909399;
+  margin-bottom: 15px;
+}
+
+.h-menu-folder-arrow:before {
+  transform: rotate(-45deg);
+  transform-origin: 100%;
+}
+
+.h-menu-folder-arrow:after {
+  transform: rotate(45deg);
+  transform-origin: 0 0;
 }
 
 /* setup */
