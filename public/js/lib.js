@@ -193,3 +193,38 @@ class Forbidden {
     }
   }
 }
+
+class Menu {
+  constructor(menu) {
+    this.menu = menu;
+  }
+  init() {
+    _$on(this.menu, 'click', (e) => {
+      const targetTag = e.target.tagName.toLowerCase();
+      if (targetTag !== 'p' && targetTag !== 'i') {
+        return;
+      }
+      const targetParent = e.target.parentNode;
+      if (targetParent && targetParent.tagName.toLowerCase() === 'a') {
+        return;
+      }
+
+      const paths = e['path'] || [];
+      paths.forEach((el) => {
+        if (el.classList && el.classList.contains('h-menu-has-folder')) {
+          el.classList.toggle('h-menu-open');
+
+          const sub = _$(el, '.h-admin-sub-menu');
+          if (sub.dataset['opened']) {
+            sub.style.height = '';
+            sub.dataset['opened'] = '';
+          } else {
+            const count = _$$(sub, '.h-admin-menu-item').length;
+            sub.style.height = `${count * 56}px`;
+            sub.dataset['opened'] = 'opened';
+          }
+        }
+      });
+    });
+  }
+}

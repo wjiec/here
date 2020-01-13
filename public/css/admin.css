@@ -53,14 +53,14 @@
 }
 
 /* menu */
-.h-admin-menu-item p {
+.h-menu-handler {
   line-height: 56px;
   padding: 0 20px;
   cursor: pointer;
   transition: all .25s ease-in-out;
 }
 
-.h-admin-menu-item p:hover {
+.h-menu-handler:hover {
   background: #434a50;
 }
 
@@ -70,44 +70,52 @@
 }
 
 .h-admin-sub-menu {
-  margin-left: 20px;
+  height: 0;
+  transition: height .35s ease-in-out;
+  overflow: hidden;
 }
 
-.h-menu-folder-handler:after {
-  content: '';
-  display: inline-block;
+.h-admin-sub-menu .h-menu-handler {
+  padding-left: 40px;
 }
 
-.h-menu-has-folder {
+.h-menu-handler {
   position: relative;
-}
-
-.h-menu-folder {
   cursor: pointer;
 }
 
-.h-menu-folder-arrow {
+.h-menu-handler-arrow {
   position: absolute;
   right: 20px;
-  top: 22px;
+  bottom: 3px;
+  transition: all .25s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  transform: rotate(-180deg);
+  transform-origin: 50% 32px;
 }
 
-.h-menu-folder-arrow:before,
-.h-menu-folder-arrow:after {
+.h-menu-open .h-menu-handler-arrow {
+  transform: rotate(0);
+}
+
+.h-menu-handler-arrow:before,
+.h-menu-handler-arrow:after {
   content: '';
   width: 10px;
   height: 3px;
   display: inline-block;
   background: #909399;
-  margin-bottom: 15px;
 }
 
-.h-menu-folder-arrow:before {
+.h-menu-handler-arrow:before {
   transform: rotate(-45deg);
   transform-origin: 100%;
 }
 
-.h-menu-folder-arrow:after {
+.h-menu-handler-arrow:after {
   transform: rotate(45deg);
   transform-origin: 0 0;
 }

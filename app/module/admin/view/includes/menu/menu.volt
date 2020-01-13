@@ -1,6 +1,8 @@
 {%- macro menu_item(item) %}
 <div class="h-admin-menu-item">
-  <a href="{{ item.url }}"><p>{{ item.name }}</p></a>
+  <div class="h-menu-handler">
+    <a href="{{ item.url }}"><p>{{ item.name }}</p></a>
+  </div>
 </div>
 {%- endmacro %}
 
@@ -9,9 +11,9 @@
   {% for item in this.menu %}
     {% if item.children is defined %}
       <div class="h-admin-menu-item h-menu-has-folder">
-        <div class="h-menu-folder">
-          <p class="h-menu-folder-handler">{{ item.name }}</p>
-          <i class="h-menu-folder-arrow"></i>
+        <div class="h-menu-handler">
+          <p>{{ item.name }}</p>
+          <i class="h-menu-handler-arrow"></i>
         </div>
         <div class="h-admin-sub-menu">
           {% for child in item.children %}
