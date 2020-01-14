@@ -1,7 +1,11 @@
 {%- macro menu_item(item) %}
-<div class="h-admin-menu-item" data-activated="{{ exp(item.activated, 'yes', 'no') }}">
+<div class="h-admin-menu-item {{ exp(item.activated, 'h-menu-activated', '') }}">
   <div class="h-menu-handler">
-    <a href="{{ item.url }}"><p>{{ item.title }}</p></a>
+    {% if item.activated is defined and item.activated %}
+      <p>{{ item.title }}</p>
+    {% else %}
+      <a href="{{ item.url }}"><p>{{ item.title }}</p></a>
+    {% endif %}
   </div>
 </div>
 {%- endmacro %}
@@ -10,7 +14,7 @@
 <div class="h-admin-menu">
   {% for item in menu.getConfig() %}
     {% if item.children is defined %}
-      <div class="h-admin-menu-item h-menu-has-folder" data-open="{{ exp(item.opened, 'yes', 'no') }}">
+      <div class="h-admin-menu-item h-menu-has-folder" data-open="{{ exp(item.opened, 'yes', 'no') }}">{# animation? #}
         <div class="h-menu-handler">
           <p>{{ item.title }}</p>
           <i class="h-menu-handler-arrow"></i>

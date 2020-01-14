@@ -232,12 +232,6 @@ class Menu {
     }
   }
   $activateMenu() {
-    _$$(this.menu, '[data-activated]').forEach((el) => {
-      if (el.dataset && el.dataset.activated === 'yes') {
-        el.classList.add('h-menu-activated');
-      }
-      delete el.dataset.activated;
-    });
     _$$(this.menu, '[data-open]').forEach((el) => {
       if (el.dataset && el.dataset.open === 'yes') {
         this.$toggleSubMenu(el);

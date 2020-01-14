@@ -53,10 +53,6 @@
 }
 
 /* menu */
-.h-menu-activated {
-  color: #fcce77;
-}
-
 .h-menu-handler {
   line-height: 56px;
   padding: 0 20px;
@@ -71,6 +67,12 @@
 .h-admin-menu a:hover   {
   color: #fff;
   border-bottom: 0;
+}
+
+.h-menu-activated .h-menu-handler {
+  color: #fcce77;
+  background: #434a50;
+  cursor: default;
 }
 
 .h-admin-sub-menu {
