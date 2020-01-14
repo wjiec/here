@@ -199,6 +199,7 @@ class Menu {
     this.menu = menu;
   }
   init() {
+    this.$activateMenu();
     _$on(this.menu, 'click', (e) => {
       const targetTag = e.target.tagName.toLowerCase();
       if (targetTag !== 'p' && targetTag !== 'i') {
@@ -212,19 +213,36 @@ class Menu {
       const paths = e['path'] || [];
       paths.forEach((el) => {
         if (el.classList && el.classList.contains('h-menu-has-folder')) {
-          el.classList.toggle('h-menu-open');
-
-          const sub = _$(el, '.h-admin-sub-menu');
-          if (sub.dataset['opened']) {
-            sub.style.height = '';
-            sub.dataset['opened'] = '';
-          } else {
-            const count = _$$(sub, '.h-admin-menu-item').length;
-            sub.style.height = `${count * 56}px`;
-            sub.dataset['opened'] = 'opened';
-          }
+          this.$toggleSubMenu(el);
         }
       });
+    });
+  }
+  $toggleSubMenu(el) {
+    el.classList.toggle('h-menu-open');
+
+    const sub = _$(el, '.h-admin-sub-menu');
+    if (sub.dataset['opened']) {
+      sub.style.height = '';
+      sub.dataset['opened'] = '';
+    } else {
+      const count = _$$(sub, '.h-admin-menu-item').length;
+      sub.style.height = `${count * 56}px`;
+      sub.dataset['opened'] = 'opened';
+    }
+  }
+  $activateMenu() {
+    _$$(this.menu, '[data-activated]').forEach((el) => {
+      if (el.dataset && el.dataset.activated === 'yes') {
+        el.classList.add('h-menu-activated');
+      }
+      delete el.dataset.activated;
+    });
+    _$$(this.menu, '[data-open]').forEach((el) => {
+      if (el.dataset && el.dataset.open === 'yes') {
+        this.$toggleSubMenu(el);
+      }
+      delete el.dataset.open;
     });
   }
 }

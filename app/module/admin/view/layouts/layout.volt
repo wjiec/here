@@ -11,7 +11,9 @@
 </div>
 
 <script>
-  (new Menu(_$('.h-admin-menu'))).init();
+  window.onload = () => {
+    (new Menu(_$('.h-admin-menu'))).init();
+  }
 </script>
 {% block javascript %}
 <script></script>

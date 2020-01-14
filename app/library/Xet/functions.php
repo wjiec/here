@@ -76,3 +76,28 @@ if (!function_exists('aes_decrypt')) {
     }
 }
 
+if (!function_exists('array_at')) {
+    /**
+     * Gets the value from parameter object and default when key not found in object
+     *
+     * @param array $object
+     * @param string|array $paths
+     * @param null $default
+     * @param string $delimiter
+     * @return array|mixed|null
+     */
+    function array_at(array $object, $paths, $default = null, string $delimiter = '.') {
+        if (!is_array($paths)) {
+            $paths = explode($delimiter, strval($paths));
+        }
+
+        foreach ($paths as $index) {
+            if (!isset($object[$index])) {
+                return $default;
+            }
+            $object = $object[$index];
+        }
+
+        return $object;
+    }
+}

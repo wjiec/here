@@ -10,41 +10,43 @@
  */
 return [
     [
-        'name' => _t('menu_item_name_dashboard'),
+        'name' => 'dashboards',
+        'title' => _t('menu_item_name_dashboard'),
         'url' => _url(['for' => 'dashboard']),
         'children' => [
             [
-                'name' => _t('menu_item_name_dashboard'),
+                'name' => 'dashboard',
+                'title' => _t('menu_item_name_dashboard'),
                 'url' => _url(['for' => 'dashboard']),
             ],
             [
-                'name' => _t('menu_item_name_dashboard'),
+                'title' => _t('menu_item_name_dashboard'),
                 'url' => _url(['for' => 'dashboard']),
             ]
         ]
     ],
     [
-        'name' => _t('menu_item_name_dashboard'),
+        'title' => _t('menu_item_name_dashboard'),
         'url' => _url(['for' => 'dashboard']),
     ],
     [
-        'name' => _t('menu_item_name_dashboard'),
+        'title' => _t('menu_item_name_dashboard'),
         'url' => _url(['for' => 'dashboard']),
     ],
     [
-        'name' => _t('menu_item_name_dashboard'),
+        'title' => _t('menu_item_name_dashboard'),
         'url' => _url(['for' => 'dashboard']),
     ],
     [
-        'name' => _t('menu_item_name_dashboard'),
+        'title' => _t('menu_item_name_dashboard'),
         'url' => _url(['for' => 'dashboard']),
     ],
     [
-        'name' => _t('menu_item_name_dashboard'),
+        'title' => _t('menu_item_name_dashboard'),
         'url' => _url(['for' => 'dashboard']),
     ],
     [
-        'name' => _t('menu_item_name_dashboard'),
+        'title' => _t('menu_item_name_dashboard'),
         'url' => _url(['for' => 'dashboard']),
     ]
 ];

@@ -10,8 +10,8 @@
  */
 namespace Here\Provider\Menu;
 
+
 use Here\Provider\AbstractServiceProvider;
-use Phalcon\Config;
 
 
 /**
@@ -33,7 +33,7 @@ class ServiceProvider extends AbstractServiceProvider {
     public function register() {
         $this->di->setShared($this->service_name, function() {
             /** @noinspection PhpIncludeInspection */
-            return new Config(include config_path('menu.php'));
+            return new Menu(include config_path('menu.php'));
         });
     }
 
