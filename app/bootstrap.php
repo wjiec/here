@@ -30,6 +30,9 @@ define('APP_START_MEMORY', memory_get_usage());
  */
 define('APP_DOCUMENT_ROOT', dirname(__DIR__));
 
+// php configure override
+ini_set('session.cookie_httponly', '1');
+
 // register composer autoloader
 require_once APP_DOCUMENT_ROOT . '/vendor/autoload.php';
 
