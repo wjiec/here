@@ -30,7 +30,6 @@ if (!function_exists('base64_encode_safe')) {
      * @return mixed
      */
     function base64_encode_safe(string $data) {
-        var_dump(base64_encode($data));
         return str_replace(['+', '/'], ['-', '_'], trim(base64_encode($data), '='));
     }
 }

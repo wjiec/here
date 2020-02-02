@@ -11,7 +11,6 @@
 namespace Here\Provider\Translator;
 
 use Here\Provider\AbstractServiceProvider;
-use Phalcon\Translate\Adapter\NativeArray;
 
 
 /**
