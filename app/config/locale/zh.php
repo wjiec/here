@@ -6,7 +6,7 @@
  * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2019 Jayson Wang
  * @license   MIT License
- * @link      https://github.com/lsalio/here
+ * @link      https://github.com/wjiec/here
  */
 return [
     'title_admin_setup_index' => '设置向导',
