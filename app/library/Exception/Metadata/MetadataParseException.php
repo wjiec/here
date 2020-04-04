@@ -1,21 +1,18 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Library\Exception\Metadata;
 
-use Exception;
-use Here\Library\Exception\HereExceptionInterface;
+use Bops\Exception\AbstractException;
 
 
 /**
  * Class MetadataParseException
  * @package Here\Library\Exception\Metadata
  */
-class MetadataParseException extends Exception implements HereExceptionInterface {}
+class MetadataParseException extends AbstractException {}

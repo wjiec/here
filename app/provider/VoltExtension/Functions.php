@@ -1,36 +1,21 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
-namespace Here\Provider\Volt;
+namespace Here\Provider\VoltExtension;
 
+use Bops\Mvc\View\Engine\Volt\Extension\AbstractExtension;
 
-use Phalcon\Mvc\View\Engine\Volt\Compiler;
 
 /**
  * Class Functions
  * @package Here\Provider\Volt
  */
-class Functions {
-
-    /**
-     * @var Compiler
-     */
-    protected $compiler;
-
-    /**
-     * Functions constructor.
-     * @param Compiler $compiler
-     */
-    public function __construct(Compiler $compiler) {
-        $this->compiler = $compiler;
-    }
+class Functions extends AbstractExtension {
 
     /**
      * Compile any function call in a template.

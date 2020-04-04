@@ -10,11 +10,12 @@
  */
 namespace Here\Provider\Administrator;
 
-use Here\Provider\AbstractServiceProvider;
+use Bops\Provider\AbstractServiceProvider;
 
 
 /**
  * Class ServiceProvider
+ *
  * @package Here\Provider\Administrator
  */
 final class ServiceProvider extends AbstractServiceProvider {
@@ -22,15 +23,17 @@ final class ServiceProvider extends AbstractServiceProvider {
     /**
      * Name of the service
      *
-     * @var string
+     * @return string
      */
-    protected $service_name = 'administrator';
+    public function name(): string {
+        return 'administrator';
+    }
 
     /**
      * @inheritDoc
      */
     final public function register() {
-        $this->di->setShared($this->service_name, function() {
+        $this->di->setShared($this->name(), function() {
             return new Administrator();
         });
     }

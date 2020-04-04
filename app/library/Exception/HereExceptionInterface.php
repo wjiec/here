@@ -1,18 +1,19 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Library\Exception;
 
+use Bops\Exception\ExceptionInterface;
+
 
 /**
  * Interface HereException
+ *
  * @package Here\Library\Exception
  */
-interface HereExceptionInterface {}
+interface HereExceptionInterface extends ExceptionInterface {}

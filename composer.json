@@ -15,10 +15,8 @@
         "ext-json": "*",
         "ext-openssl": "*",
         "ext-mbstring": "*",
-        "vlucas/phpdotenv": "^3.6",
-        "filp/whoops": "^2.5",
-        "league/flysystem": "^1.0",
-        "erusev/parsedown": "^1.7"
+        "erusev/parsedown": "^1.7",
+        "wjiec/bops": "dev-master"
     },
     "autoload": {
         "psr-4": {

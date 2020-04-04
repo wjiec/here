@@ -10,14 +10,13 @@
  */
 namespace Here\Provider\Administrator;
 
-use Here\Library\Exception\Mvc\ModelSaveException;
+use Bops\Exception\Framework\Mvc\Model\ModelSaveException;
 use Here\Model\Author as AuthorModel;
 use Here\Model\Middleware\Author;
 use Phalcon\Http\CookieInterface;
 use Phalcon\Http\Request;
-use function Here\Library\Xet\aes_decrypt;
-use function Here\Library\Xet\aes_encrypt;
-use function Here\Library\Xet\current_date;
+use function Xet\aes_decrypt;
+use function Xet\aes_encrypt;
 
 
 /**
@@ -133,7 +132,7 @@ final class Administrator {
      * Generate the token to persistent current session
      */
     public function signLoginToken(): void {
-        $token = json_encode(['id' => $this->author->getAuthorId(), 'create_at' => current_date()]);
+        $token = json_encode(['id' => $this->author->getAuthorId(), 'create_at' => date('Y-m-d H:i:s')]);
 
         list($key, $iv) = $this->getAesKeyIv();
         container('session')->set(self::TOKEN_IN_SESSION_NAME, json_decode($token));
@@ -162,7 +161,7 @@ final class Administrator {
         $request = container('request');
 
         $this->author->setLastLoginIp($request->getClientAddress(true));
-        $this->author->setLastLoginTime(current_date());
+        $this->author->setLastLoginTime(date('Y-m-d H:i:s'));
         return $this->author->save();
     }
 

@@ -1,16 +1,14 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Provider\Markdown;
 
-use Here\Provider\AbstractServiceProvider;
+use Bops\Provider\AbstractServiceProvider;
 use Parsedown;
 
 
@@ -21,17 +19,19 @@ use Parsedown;
 class ServiceProvider extends AbstractServiceProvider {
 
     /**
-     * The name of the service
+     * Name of the service
      *
-     * @var string
+     * @return string
      */
-    protected $service_name = 'markdown';
+    public function name(): string {
+        return 'markdown';
+    }
 
     /**
      * @inheritDoc
      */
     public function register() {
-        $this->di->set($this->service_name, function() {
+        $this->di->set($this->name(), function() {
             return new Parsedown();
         });
     }

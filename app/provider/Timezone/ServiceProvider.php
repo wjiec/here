@@ -1,20 +1,19 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Provider\Timezone;
 
-use Here\Provider\AbstractServiceProvider;
+use Bops\Provider\AbstractServiceProvider;
 
 
 /**
  * Class ServiceProvider
+ *
  * @package Here\Provider\Timezone
  */
 final class ServiceProvider extends AbstractServiceProvider {
@@ -22,15 +21,17 @@ final class ServiceProvider extends AbstractServiceProvider {
     /**
      * Name of the service
      *
-     * @var string
+     * @return string
      */
-    protected $service_name = 'timezone';
+    public function name(): string {
+        return 'timezone';
+    }
 
     /**
      * @inheritDoc
      */
     final public function register() {
-        $this->di->set($this->service_name, function(?string $timezone = null) {
+        $this->di->set($this->name(), function(?string $timezone = null) {
             $config = container('config')->timezone;
             if (!$timezone) {
                 $timezone = $config->default;
@@ -45,7 +46,7 @@ final class ServiceProvider extends AbstractServiceProvider {
      * @inheritDoc
      */
     final public function initialize() {
-        container($this->service_name);
+        container($this->name());
     }
 
 }

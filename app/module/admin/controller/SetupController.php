@@ -1,19 +1,17 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Admin\Controller;
 
 use Exception;
-use Here\Admin\Library\Mvc\Controller\AbstractController;
 use Here\Library\Creation\Article\Factory;
 use Here\Library\Creation\Comment\Commentator;
+use Here\Library\Mvc\Controller\AbstractController;
 use Here\Model\Category;
 use Here\Provider\Administrator\Administrator;
 use Phalcon\Http\ResponseInterface;
@@ -73,7 +71,8 @@ final class SetupController extends AbstractController {
             $category->save();
 
             // Create draft of article and save
-            $draft = (new Factory($author))->createFromFile(doc_path('/template/initial.md'));
+            $file = container('navigator')->rootDir('/docs//template/initial.md');
+            $draft = (new Factory($author))->createFromFile($file);
             $draft->addCategory($category);
             $draft->publish();
 

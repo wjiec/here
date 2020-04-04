@@ -1,18 +1,16 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Library\Creation\Article;
 
+use Bops\Exception\Framework\Mvc\Model\ModelSaveException;
 use Here\Library\Creation\Article\Metadata\Parser;
 use Here\Library\Exception\Metadata\MetadataParseException;
-use Here\Library\Exception\Mvc\ModelSaveException;
 use Here\Model\Article;
 use Here\Model\ArticleCategory;
 use Here\Model\Author;
@@ -101,6 +99,7 @@ final class Draft {
      * Saves the article and other related contents into database
      *
      * @return bool
+     * @throws ModelSaveException
      * @throws ModelSaveException
      * @throws MetadataParseException
      */

@@ -1,36 +1,37 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Provider\Color;
 
-use Here\Provider\AbstractServiceProvider;
+use Bops\Provider\AbstractServiceProvider;
 
 
 /**
  * Class ServiceProvider
+ *
  * @package Here\Provider\Color
  */
 class ServiceProvider extends AbstractServiceProvider {
 
     /**
-     * The name of the service
+     * Name of the service
      *
-     * @var string
+     * @return string
      */
-    protected $service_name = 'color';
+    public function name(): string {
+        return 'color';
+    }
 
     /**
      * @inheritDoc
      */
     public function register() {
-        $this->di->setShared($this->service_name, function() {
+        $this->di->setShared($this->name(), function() {
             return new ColorWheel([
                 // http://zhongguose.com
                 '#f9f4dc'/* 乳白   */, '#f7e8aa'/* 杏仁黄  */, '#f8df72'/* 茉莉黄  */, '#f8df70'/* 麦秆黄  */,

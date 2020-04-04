@@ -1,39 +1,38 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2020 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Provider\Menu;
 
-
-use Here\Provider\AbstractServiceProvider;
+use Bops\Provider\AbstractServiceProvider;
 
 
 /**
  * Class ServiceProvider
+ *
  * @package Here\Provider\Menu
  */
 class ServiceProvider extends AbstractServiceProvider {
 
     /**
-     * The name of the service
+     * Name of the service
      *
-     * @var string
+     * @return string
      */
-    protected $service_name = 'menu';
+    public function name(): string {
+        return 'menu';
+    }
 
     /**
      * @inheritDoc
      */
     public function register() {
-        $this->di->setShared($this->service_name, function() {
-            /** @noinspection PhpIncludeInspection */
-            return new Menu(include config_path('menu.php'));
+        $this->di->setShared($this->name(), function() {
+            return new Menu(container('config')->menu->toArray());
         });
     }
 

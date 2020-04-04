@@ -1,21 +1,19 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Library\Mvc\Controller;
 
+use Bops\Mvc\Controller;
 use Exception;
 use Here\Model\Viewer;
 use Here\Provider\Administrator\Administrator;
 use Here\Provider\Field\Store\StoreInterface;
 use Phalcon\Cache\BackendInterface;
-use Phalcon\Mvc\Controller;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Tag;
 use Phalcon\Text;

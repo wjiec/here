@@ -6,7 +6,7 @@
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
-namespace Here\Provider\Pager;
+namespace Here\Provider\VoltExtension;
 
 use Bops\Provider\AbstractServiceProvider;
 
@@ -14,7 +14,7 @@ use Bops\Provider\AbstractServiceProvider;
 /**
  * Class ServiceProvider
  *
- * @package Here\Provider\Pager
+ * @package Here\Provider\VoltExtension
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -24,15 +24,17 @@ class ServiceProvider extends AbstractServiceProvider {
      * @return string
      */
     public function name(): string {
-        return 'pager';
+        return 'volt.extension';
     }
 
     /**
-     * @inheritDoc
+     * Register the service
+     *
+     * @return void
      */
     public function register() {
-        $this->di->set($this->name(), function(int $current, int $size, int $total) {
-            return new Pager($current, $size, $total);
+        $this->di->setShared($this->name(), function() {
+            return new Functions();
         });
     }
 

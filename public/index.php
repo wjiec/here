@@ -2,6 +2,8 @@
 /**
  * The entry point of the application
  *
+ * @noinspection PhpUnhandledExceptionInspection
+ *
  * @package   here
  * @author    Jayson Wang <jayson@laboys.org>
  * @copyright Copyright (C) 2016-2019 Jayson Wang
@@ -10,11 +12,11 @@
  */
 declare(strict_types=1);
 
-use Here\Library\Bootstrap;
+use Bops\Bootstrap;
+use Bops\Navigator\Adapter\Standard;
 
-
-// register the application bootstrap
-require_once __DIR__ . '/../app/bootstrap.php';
+// import vendor libraries
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // execute bootstrap and output response
-echo (new Bootstrap())->run();
+echo (new Bootstrap(new Standard(dirname(__DIR__))))->run();

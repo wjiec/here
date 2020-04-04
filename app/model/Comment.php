@@ -1,26 +1,25 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Model;
 
-use Here\Library\Mvc\Model\AbstractModel;
+use Bops\Mvc\Model;
 
 
 /**
  * Class Comment
+ *
  * @package Here\Model
  *
  * @property Article $article
  * @property Comment $parent
  */
-final class Comment extends AbstractModel {
+final class Comment extends Model {
 
     /**
      *

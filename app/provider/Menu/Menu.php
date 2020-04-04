@@ -1,10 +1,8 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2020 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
@@ -12,7 +10,7 @@ namespace Here\Provider\Menu;
 
 use Phalcon\Config;
 use Phalcon\Mvc\Router\Route;
-use function Here\Library\Xet\array_at;
+use function Xet\array_at;
 
 
 /**

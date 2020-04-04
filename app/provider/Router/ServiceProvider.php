@@ -1,20 +1,17 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Provider\Router;
 
-use Here\Library\Listener\Adapter\Router as RouterListener;
-use Here\Provider\AbstractServiceProvider;
+use Bops\Mvc\Router\Router;
+use Bops\Provider\AbstractServiceProvider;
 use Here\Provider\Router\Group\Admin;
 use Here\Provider\Router\Group\Tinder;
-use Here\Provider\Router\Hook\Hook;
 
 
 /**
@@ -26,27 +23,28 @@ final class ServiceProvider extends AbstractServiceProvider {
     /**
      * Name of the service
      *
-     * @var string
+     * @return string
      */
-    protected $service_name = 'router';
+    public function name(): string {
+        return 'router';
+    }
 
     /**
      * @inheritDoc
      */
     final public function register() {
-        $this->di->setShared($this->service_name, function() {
-            $router = new Router();
+        /* @var Router $router */
+        $router = container('router');
+        $this->di->setShared($this->name(), function() use ($router) {
             if (!isset($_GET['_url'])) {
                 $router->setUriSource(Router::URI_SOURCE_SERVER_REQUEST_URI);
             }
 
+            $router->clear();
             $router->removeExtraSlashes(true);
-            $router->setEventsManager(container('eventsManager'));
-            container('eventsManager')->attach('router', new RouterListener());
 
             $router->mount(new Admin());
             $router->mount(new Tinder());
-            Hook::hook($router);
 
             return $router;
         });

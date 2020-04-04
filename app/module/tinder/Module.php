@@ -1,28 +1,23 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Tinder;
 
-use Here\Provider\ServiceProviderInstaller;
-use Here\Tinder\Provider\Dispatcher\ServiceProvider as DispatcherServiceProvider;
-use Here\Tinder\Provider\View\ServiceProvider as ViewServiceProvider;
+use Bops\Module\AbstractModule;
 use Phalcon\DiInterface;
 use Phalcon\Loader;
-use Phalcon\Mvc\ModuleDefinitionInterface;
 
 
 /**
  * Class Module
  * @package Here\Tinder
  */
-final class Module implements ModuleDefinitionInterface {
+final class Module extends AbstractModule {
 
     /**
      * Registers an autoloader related to the module
@@ -38,14 +33,32 @@ final class Module implements ModuleDefinitionInterface {
         ])->register();
     }
 
+
     /**
-     * Registers services related to the module
+     * Returns the name of the current module
      *
-     * @param DiInterface $di
+     * @return string
      */
-    final public function registerServices(DiInterface $di) {
-        ServiceProviderInstaller::setup(new DispatcherServiceProvider($di));
-        ServiceProviderInstaller::setup(new ViewServiceProvider($di));
+    protected function moduleName(): string {
+        return 'tinder';
+    }
+
+    /**
+     * Returns the path of module configure dir
+     *
+     * @return string
+     */
+    protected function configDir(): string {
+        return __DIR__ . '/config';
+    }
+
+    /**
+     * Returns an array of the config module filename without extname
+     *
+     * @return array
+     */
+    protected function configModules(): array {
+        return [];
     }
 
 }

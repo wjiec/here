@@ -7,9 +7,5 @@
  * @link      https://github.com/wjiec/here
  */
 return [
-    [
-        'name' => 'dashboard',
-        'title' => _t('menu_item_name_dashboard'),
-        'url' => ['for' => 'dashboard'],
-    ],
+    'github' => 'https://github.com/wjiec/here'
 ];

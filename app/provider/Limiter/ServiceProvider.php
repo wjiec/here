@@ -1,36 +1,37 @@
 <?php
 /**
- * here application
+ * This file is part of here
  *
- * @package   here
- * @author    Jayson Wang <jayson@laboys.org>
- * @copyright Copyright (C) 2016-2019 Jayson Wang
+ * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Provider\Limiter;
 
-use Here\Provider\AbstractServiceProvider;
+use Bops\Provider\AbstractServiceProvider;
 
 
 /**
  * Class ServiceProvider
+ *
  * @package Here\Provider\Limiter
  */
 class ServiceProvider extends AbstractServiceProvider {
 
     /**
-     * The name of the service
+     * Name of the service
      *
-     * @var string
+     * @return string
      */
-    protected $service_name = 'limiter';
+    public function name(): string {
+        return 'limiter';
+    }
 
     /**
      * @inheritDoc
      */
     public function register() {
-        $this->di->set($this->service_name, function(string $name) {
+        $this->di->set($this->name(), function(string $name) {
             return new Limiter($name);
         });
     }
