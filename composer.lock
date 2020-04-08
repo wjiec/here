@@ -427,12 +427,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/wjiec/php-bops.git",
-                "reference": "d04e7ea643fe43d4ccb0f619eaef823b342378df"
+                "reference": "ea146644551eec17b63382d27a2f499c1f48e6c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wjiec/php-bops/zipball/d04e7ea643fe43d4ccb0f619eaef823b342378df",
-                "reference": "d04e7ea643fe43d4ccb0f619eaef823b342378df",
+                "url": "https://api.github.com/repos/wjiec/php-bops/zipball/ea146644551eec17b63382d27a2f499c1f48e6c2",
+                "reference": "ea146644551eec17b63382d27a2f499c1f48e6c2",
                 "shasum": ""
             },
             "require": {
@@ -476,7 +476,7 @@
             ],
             "description": "An phalcon-based secondary development framework",
             "homepage": "https://github.com/wjiec/php-bops",
-            "time": "2020-04-04T14:25:37+00:00"
+            "time": "2020-04-08T15:09:23+00:00"
         },
         {
             "name": "wjiec/xet",
