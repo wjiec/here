@@ -10,6 +10,6 @@ return [
     [
         'name' => 'dashboard',
         'title' => _t('menu_item_name_dashboard'),
-        'url' => ['for' => 'dashboard'],
+        'url' => _url(['for' => 'dashboard']),
     ],
 ];

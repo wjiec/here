@@ -32,7 +32,8 @@ class ServiceProvider extends AbstractServiceProvider {
      */
     public function register() {
         $this->di->setShared($this->name(), function() {
-            return new Menu(container('config')->menu->toArray());
+            /** @noinspection PhpIncludeInspection */
+            return new Menu(include container('navigator')->configDir('menu.php'));
         });
     }
 
