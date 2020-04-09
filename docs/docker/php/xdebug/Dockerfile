@@ -41,9 +41,10 @@ RUN set -ex \
 
 RUN set -ex \
     && mkdir -p "/var/php/xdebug" \
+    && chmod -R 777 /var/php/xdebug \
     && { \
         echo '[xdebug]'; \
-        echo 'xdebug.profiler_enable = 1'; \
+        echo 'xdebug.profiler_enable_trigger = 1'; \
         echo 'xdebug.trace_output_dir = /var/php/xdebug'; \
         echo 'xdebug.profiler_output_dir = /var/php/xdebug'; \
         echo 'xdebug.remote_enable = 1'; \
