@@ -2,4 +2,4 @@
   <div class="h-widget-back-to-top-container"></div>
 </div>
 
-{# new BackToTop(300, 500).init(); #}
+{# new here.BackToTop(300, 500).init(); #}

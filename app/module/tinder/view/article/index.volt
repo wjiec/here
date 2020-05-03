@@ -45,17 +45,17 @@
 {% include 'includes/widgets/back-to-top.volt' %}
 
 <script>
-  new Sidebar(_$('.h-common-wrapper')).init();
-  new BackToTop(300, 500).init();
+  new here.Sidebar(here._$('.h-common-wrapper')).init();
+  new here.BackToTop(300, 500).init();
   _$on('form', 'submit', (e) => {
     if (!new Validator(e.target).validate()) {
       e.preventDefault();
     }
   });
-  new CommentReplier(_$('.h-article-comment-container')).init();
+  new here.CommentReplier(here._$('.h-article-comment-container')).init();
   _$on('#comment', 'input', (e) => {
     if (e.target.value.length === 0) {
-      _$('#comment-parent').value = 0;
+      here._$('#comment-parent').value = 0;
     }
   });
 </script>

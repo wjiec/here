@@ -12,7 +12,7 @@
 
 <script>
   window.onload = () => {
-    (new Menu(_$('.h-admin-menu'))).init();
+    (new Menu(here._$('.h-admin-menu'))).init();
   }
 </script>
 {% block javascript %}

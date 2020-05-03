@@ -14,4 +14,7 @@
 
 # docker-composer
 *.dev.*
-.gitignore
+
+# caches
+storage/**/*.php
+storage/**/*.log

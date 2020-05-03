@@ -1,33 +1,18 @@
-window._$ = (target, selector) => {
-  if (!selector) {
-    [selector, target] = [target, document];
-  }
-  return target.querySelector(selector)
-};
-window._$$ = (target, selector) => {
-  if (!selector) {
-    [selector, target] = [target, document];
-  }
-  return target.querySelectorAll(selector)
-};
-window._$on = (target, e, callback) => {
-  if (typeof target === 'string') {
-    target = _$(target)
-  }
+import selector from "./selector";
 
-  if (target) {
-    return target.addEventListener(e, callback, true)
-  }
-};
+export const _$ = selector.$;
+export const _$$ = selector.$$;
+export const _$on = selector.$on;
 
-class Validator {
+
+export class Validator {
   constructor(form) {
     this.form = form;
-    _$on(this.form, 'input', () => this.validate());
+    selector.$(this.form, 'input', () => this.validate());
   }
   validate() {
     let validate = true;
-    _$$(this.form, '.h-form-item').forEach((control) => {
+    selector.$$(this.form, '.h-form-item').forEach((control) => {
       const dataset = control.dataset;
       Object.keys(dataset).forEach((rule) => {
         if (typeof this[`$${rule}`] === 'function') {
@@ -45,9 +30,9 @@ class Validator {
     return Validator._getValue(control).length !== 0;
   }
   static _getValue(control) {
-    let input = _$(control, 'input');
+    let input = selector.$(control, 'input');
     if (!input) {
-      input = _$(control, 'textarea');
+      input = selector.$(control, 'textarea');
     }
     return input ? input.value : '';
   }
@@ -62,19 +47,19 @@ class Validator {
   }
 }
 
-class Sidebar {
+export class Sidebar {
   constructor(wrapper) {
     this.wrapper = wrapper;
     this.toggleClass = 'h-sidebar-toggle';
-    this.sidebar = _$('.h-common-sidebar');
-    this.control = _$('.h-sidebar-control');
+    this.sidebar = selector.$('.h-common-sidebar');
+    this.control = selector.$('.h-sidebar-control');
   }
   init() {
-    _$on(this.control, 'click', () => {
+    selector.$on(this.control, 'click', () => {
       this.$toggle();
     });
 
-    _$on('.h-common-sidebar', 'click', (e) => {
+    selector.$on('.h-common-sidebar', 'click', (e) => {
       if (e.target.tagName.toLowerCase() !== 'a') {
         this.$toggle();
       }
@@ -92,15 +77,15 @@ class Sidebar {
   }
 }
 
-class BackToTop {
+export class BackToTop {
   constructor(offset, duration) {
     this.offset = offset;
     this.scrolling = false;
     this.duration = duration;
-    this.handler = _$('.h-widget-back-to-top-container');
+    this.handler = selector.$('.h-widget-back-to-top-container');
   }
   init() {
-    _$on(window, 'scroll', () => {
+    selector.$on(window, 'scroll', () => {
       if (!this.scrolling) {
         this.scrolling = true;
         window.requestAnimationFrame(() => {
@@ -114,7 +99,7 @@ class BackToTop {
         })
       }
     });
-    _$on(this.handler, 'click', (e) => {
+    selector.$on(this.handler, 'click', (e) => {
       e.preventDefault();
 
       let currentTimestamp = null;
@@ -144,14 +129,14 @@ class BackToTop {
   }
 }
 
-class CommentReplier {
+export class CommentReplier {
   constructor(container) {
     this.container = container;
-    this.input = _$('#comment');
-    this.parent = _$('#comment-parent');
+    this.input = selector.$('#comment');
+    this.parent = selector.$('#comment-parent');
   }
   init() {
-    _$on(this.container, 'click', (e) => {
+    selector.$on(this.container, 'click', (e) => {
       const target = e.target.parentNode;
       const commentId = target.dataset['commentId'];
       if (commentId) {
@@ -161,14 +146,14 @@ class CommentReplier {
         }
       }
     });
-    _$on(this.input, 'input', (e) => {
+    selector.$on(this.input, 'input', (e) => {
       if (e.target.value.length === 0) {
         this.parent.value = 0;
       }
     })
   }
   $getQuoteLines(commentId) {
-    const body = _$(`#comment-${commentId} .h-article-comment-body`);
+    const body = selector.$(`#comment-${commentId} .h-article-comment-body`);
     return body ? body.innerText.split('\n') : [];
   }
   $quoteContent(body, id) {
@@ -178,15 +163,15 @@ class CommentReplier {
   }
 }
 
-class Forbidden {
+export class Forbidden {
   constructor() {
-    this.form = _$('form[data-disabled]')
+    this.form = selector.$('form[data-disabled]')
   }
   init() {
     if (this.form) {
-      const control = _$$(this.form, 'input');
-      const textarea = _$$(this.form, 'textarea');
-      const button = _$$(this.form, 'button');
+      const control = selector.$$(this.form, 'input');
+      const textarea = selector.$$(this.form, 'textarea');
+      const button = selector.$$(this.form, 'button');
       [...control, ...textarea, ...button].forEach((control) => {
         control.disabled = true;
       });
@@ -194,13 +179,13 @@ class Forbidden {
   }
 }
 
-class Menu {
+export class Menu {
   constructor(menu) {
     this.menu = menu;
   }
   init() {
     this.$activateMenu();
-    _$on(this.menu, 'click', (e) => {
+    selector.$on(this.menu, 'click', (e) => {
       const targetTag = e.target.tagName.toLowerCase();
       if (targetTag !== 'p' && targetTag !== 'i') {
         return;
@@ -221,18 +206,18 @@ class Menu {
   $toggleSubMenu(el) {
     el.classList.toggle('h-menu-open');
 
-    const sub = _$(el, '.h-admin-sub-menu');
+    const sub = selector.$(el, '.h-admin-sub-menu');
     if (sub.dataset['opened']) {
       sub.style.height = '';
       sub.dataset['opened'] = '';
     } else {
-      const count = _$$(sub, '.h-admin-menu-item').length;
+      const count = selector.$$(sub, '.h-admin-menu-item').length;
       sub.style.height = `${count * 56}px`;
       sub.dataset['opened'] = 'opened';
     }
   }
   $activateMenu() {
-    _$$(this.menu, '[data-open]').forEach((el) => {
+    selector.$$(this.menu, '[data-open]').forEach((el) => {
       if (el.dataset && el.dataset.open === 'yes') {
         this.$toggleSubMenu(el);
       }

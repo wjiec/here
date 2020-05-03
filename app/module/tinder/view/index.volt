@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
   <title>{{ get_title(false) ~ ' - ' ~ field.get('blog.name', 'Here') }}</title>
-  <link rel="stylesheet" href="{{ static_url('css/prism.css') }}">
-  <link rel="stylesheet" href="{{ static_url('css/style.css') }}">
-  <link rel="stylesheet" href="{{ static_url('css/tinder.css') }}">
-  <script src="{{ static_url('js/lib.js') }}"></script>
-  <script src="{{ static_url('js/prism.js') }}"></script>
+  <link rel="stylesheet" href="{{ static_url('assets/prism/prism.css') }}">
+  <link rel="stylesheet" href="{{ static_url('static/style.min.css') }}">
+  <link rel="stylesheet" href="{{ static_url('static/tinder.min.css') }}">
+  <script src="{{ static_url('static/lib.min.js') }}"></script>
+  <script src="{{ static_url('assets/prism/prism.js') }}"></script>
 </head>
 <body>
 

@@ -8,6 +8,6 @@
       {% endif %}
     </h4>
     <div class="h-error-body"></div>
-    <script>_$('.h-sidebar-control').style.animation = 'shrink 3s ease-out infinite';</script>
+    <script>here._$('.h-sidebar-control').style.animation = 'shrink 3s ease-out infinite';</script>
   </div>
 </div>
