@@ -47,13 +47,13 @@
 <script>
   new here.Sidebar(here._$('.h-common-wrapper')).init();
   new here.BackToTop(300, 500).init();
-  _$on('form', 'submit', (e) => {
-    if (!new Validator(e.target).validate()) {
+  here._$on('form', 'submit', (e) => {
+    if (!new here.Validator(e.target).validate()) {
       e.preventDefault();
     }
   });
   new here.CommentReplier(here._$('.h-article-comment-container')).init();
-  _$on('#comment', 'input', (e) => {
+  here._$on('#comment', 'input', (e) => {
     if (e.target.value.length === 0) {
       here._$('#comment-parent').value = 0;
     }

@@ -40,9 +40,9 @@
 </main>
 
 <script>
-  (new Forbidden()).init();
-  _$on('form', 'submit', (e) => {
-    if (!new Validator(e.target).validate()) {
+  (new here.Forbidden()).init();
+  here._$on('form', 'submit', (e) => {
+    if (!new here.Validator(e.target).validate()) {
       e.preventDefault();
     }
   });

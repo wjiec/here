@@ -13,7 +13,7 @@ export default {
     },
     $on(target, e, callback) {
       if (typeof target === 'string') {
-        target = this.$(target)
+        target = document.querySelector(target)
       }
 
       if (target) {

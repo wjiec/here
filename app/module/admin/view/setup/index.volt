@@ -52,8 +52,8 @@
 </main>
 
 <script>
-  _$on('form', 'submit', (e) => {
-    if (!new Validator(e.target).validate()) {
+  here._$on('form', 'submit', (e) => {
+    if (!new here.Validator(e.target).validate()) {
       e.preventDefault();
     }
   });
