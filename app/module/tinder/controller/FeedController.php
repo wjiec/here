@@ -2,45 +2,27 @@
 /**
  * This file is part of here
  *
+ * @noinspection PhpUnused
+ *
  * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Tinder\Controller;
 
-use Exception;
-use Here\Tinder\Library\Mvc\Controller\AbstractController;
+use Here\Tinder\Library\Mvc\Controller;
 
 
 /**
  * Class FeedController
+ *
  * @package Here\Tinder\Controller
  */
-class FeedController extends AbstractController {
+class FeedController extends Controller {
 
     /**
-     * Closed view renderer
-     *
-     * @throws Exception
+     * feed stream
      */
-    public function initialize() {
-        parent::initialize();
-
-        $this->view->disable();
-    }
-
-    /**
-     * Rss subscribe
-     */
-    public function indexAction() {
-        $this->response->setContentType('application/atom+xml;charset=UTF-8');
-        return $this->response->setContent(
-            '<?xml version="1.0" encoding="utf-8"?>' .
-            '<feed xmlns="http://www.w3.org/2005/Atom">' .
-                "<title>{$this->administrator->model()->author_nickname}</title>" .
-                '<entry></entry>' .
-            '</feed>'
-        );
-    }
+    public function indexAction() {}
 
 }

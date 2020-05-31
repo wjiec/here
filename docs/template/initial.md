@@ -1,9 +1,8 @@
 ///----------------------------------------------------
+//@permalink hello-world
 //@title Hello World
-//@abbr hello-world
 //@outline Congratulations, when you saw this article,
 // you had finished installing.
-//@password
 ///----------------------------------------------------
 
 

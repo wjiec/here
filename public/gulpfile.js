@@ -10,7 +10,7 @@ const { terser } = require('rollup-plugin-terser');
 
 
 gulp.task('scss', () => {
-  return gulp.src('scss/**/*.scss')
+  return gulp.src('static/scss/**/*.scss')
     .pipe(plumber())
     .pipe(sass({outputStyle: 'compressed', sourceMap: false}))
     .pipe(prefix())
@@ -21,7 +21,7 @@ gulp.task('scss', () => {
 
 gulp.task('js', () => {
   return rollup.rollup({
-    input: 'js/lib.js',
+    input: 'static/js/main.js',
     plugins: [
       babel({
         presets: ['@babel/preset-env'],
@@ -31,15 +31,14 @@ gulp.task('js', () => {
     ]
   }).then((bundle) => {
     return bundle.write({
-      file: './static/lib.min.js',
+      file: './static/go.min.js',
       format: 'iife',
-      name: 'here',
     });
   })
 });
 
 gulp.task('default', gulp.parallel('scss', 'js'));
 gulp.task('watch', () => {
-  gulp.watch('scss/**/*.scss', gulp.series('scss'));
-  gulp.watch('js/**/*.js', gulp.series('js'));
+  gulp.watch('static/scss/**/*.scss', gulp.series('scss'));
+  gulp.watch('static/js/**/*.js', gulp.series('js'));
 });

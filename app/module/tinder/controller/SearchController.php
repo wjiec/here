@@ -2,29 +2,27 @@
 /**
  * This file is part of here
  *
+ * @noinspection PhpUnused
+ *
  * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Tinder\Controller;
 
-use Here\Tinder\Library\Mvc\Controller\AbstractController;
+use Here\Tinder\Library\Mvc\Controller;
 
 
 /**
  * Class SearchController
+ *
  * @package Here\Tinder\Controller
  */
-class SearchController extends AbstractController {
+class SearchController extends Controller {
 
     /**
-     * Search something in blog
+     * search anything
      */
-    public function indexAction() {
-        $search = $this->request->getPost('search', 'trim');
-        if (!empty($search) && $this->security->checkToken()) {
-            $this->tag::setTitle($search);
-        }
-    }
+    public function indexAction() {}
 
 }

@@ -6,6 +6,4 @@
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
-return [
-    'blog' => []
-];
+return [];

@@ -1,0 +1,28 @@
+@import "../includes/variables";
+
+.h-container {
+  height: 100%;
+  display: flex;
+  margin: 0 auto;
+  width: $container-width;
+  max-width: $container-width;
+
+  &.is-vertical {
+    flex-direction: column;
+  }
+}
+
+.h-header {
+  height: $header-height;
+  min-height: $header-height;
+  border-bottom: 1px solid $border-color;
+  box-shadow: 0 0 3px $box-shadow-color;
+
+  .h-container {
+    justify-content: space-between
+  }
+}
+
+.h-body {
+  margin-top: $body-margin-top;
+}

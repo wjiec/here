@@ -1,10 +1,10 @@
 <?php
 /**
- * This file is part of bops-example
+ * This file is part of here
  *
  * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
- * @link      https://github.com/wjiec/php-bops-example
+ * @link      https://github.com/wjiec/here
  */
 return [
     'module' => [
@@ -12,7 +12,7 @@ return [
             'controllerNamespace' => 'Here\Tinder\Controller'
         ],
         'view' => [
-            'uses' => true, // html by default
+            'uses' => true,
             'viewDir' => container('navigator')->moduleDir('tinder/view'),
         ],
     ],

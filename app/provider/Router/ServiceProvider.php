@@ -10,15 +10,15 @@ namespace Here\Provider\Router;
 
 use Bops\Mvc\Router\Router;
 use Bops\Provider\AbstractServiceProvider;
-use Here\Provider\Router\Group\Admin;
-use Here\Provider\Router\Group\Tinder;
+use Phalcon\Mvc\Router\Group;
 
 
 /**
  * Class ServiceProvider
+ *
  * @package Here\Provider\Router
  */
-final class ServiceProvider extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider {
 
     /**
      * Name of the service
@@ -30,21 +30,24 @@ final class ServiceProvider extends AbstractServiceProvider {
     }
 
     /**
-     * @inheritDoc
+     * Register the service
+     *
+     * @return void
      */
-    final public function register() {
-        /* @var Router $router */
-        $router = container('router');
-        $this->di->setShared($this->name(), function() use ($router) {
-            if (!isset($_GET['_url'])) {
-                $router->setUriSource(Router::URI_SOURCE_SERVER_REQUEST_URI);
-            }
-
+    public function register() {
+        $this->di->setShared($this->name(), function() {
+            $router = new Router();
             $router->clear();
             $router->removeExtraSlashes(true);
 
-            $router->mount(new Admin());
-            $router->mount(new Tinder());
+            $tinder = new Group(['module' => 'tinder']);
+            $tinder->addGet('/', ['controller' => 'explore'])->setName('explore');
+            $tinder->addGet('feed', ['controller' => 'feed'])->setName('feed');
+            $tinder->addGet('article/{name:.+}', ['controller' => 'article'])->setName('article');
+            $tinder->addPut('article/{id:\w+}/comment', ['controller' => 'article', 'action' => 'comment']);
+            $tinder->addGet('category/{name:.+}', ['controller' => 'category'])->setName('category');
+            $tinder->add('search', ['controller' => 'search'])->setName('search');
+            $router->mount($tinder->setPrefix('/'));
 
             return $router;
         });

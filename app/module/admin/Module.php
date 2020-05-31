@@ -15,23 +15,10 @@ use Phalcon\Loader;
 
 /**
  * Class Module
+ *
  * @package Here\Admin
  */
 class Module extends AbstractModule {
-
-    /**
-     * Registers an autoloader related to the module
-     *
-     * @param DiInterface $di
-     */
-    public function registerAutoloaders(DiInterface $di = null) {
-        (new Loader())->registerNamespaces([
-            'Here\Admin' => __DIR__,
-            'Here\Admin\Controller' => __DIR__ . DIRECTORY_SEPARATOR . 'controller',
-            'Here\Admin\Library' => __DIR__ . DIRECTORY_SEPARATOR . 'library',
-            'Here\Admin\Provider' => __DIR__ . DIRECTORY_SEPARATOR . 'provider'
-        ])->register();
-    }
 
     /**
      * Returns the name of the current module
@@ -52,12 +39,16 @@ class Module extends AbstractModule {
     }
 
     /**
-     * Returns an array of the config module filename without extname
+     * Registers an autoloader related to the module
      *
-     * @return array
+     * @param DiInterface $di
      */
-    protected function configModules(): array {
-        return [];
+    public function registerAutoloaders(DiInterface $di = null) {
+        (new Loader())->registerNamespaces([
+            'Here\Admin' => __DIR__,
+            'Here\Admin\Controller' => __DIR__ . '/controller',
+            'Here\Admin\Library' => __DIR__ . '/library'
+        ]);
     }
 
 }

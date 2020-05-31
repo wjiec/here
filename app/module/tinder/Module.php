@@ -15,24 +15,10 @@ use Phalcon\Loader;
 
 /**
  * Class Module
+ *
  * @package Here\Tinder
  */
-final class Module extends AbstractModule {
-
-    /**
-     * Registers an autoloader related to the module
-     *
-     * @param DiInterface|null $di
-     */
-    final public function registerAutoloaders(DiInterface $di = null) {
-        (new Loader())->registerNamespaces([
-            'Here\Tinder' => __DIR__,
-            'Here\Tinder\Controller' => __DIR__ . DIRECTORY_SEPARATOR . 'controller',
-            'Here\Tinder\Library' => __DIR__ . DIRECTORY_SEPARATOR . 'library',
-            'Here\Tinder\Provider' => __DIR__ . DIRECTORY_SEPARATOR . 'provider'
-        ])->register();
-    }
-
+class Module extends AbstractModule {
 
     /**
      * Returns the name of the current module
@@ -53,12 +39,15 @@ final class Module extends AbstractModule {
     }
 
     /**
-     * Returns an array of the config module filename without extname
+     * Registers an autoloader related to the module
      *
-     * @return array
+     * @param DiInterface $di
      */
-    protected function configModules(): array {
-        return [];
+    public function registerAutoloaders(DiInterface $di = null) {
+        (new Loader())->registerNamespaces([
+            'Here\Tinder' => __DIR__,
+            'Here\Tinder\Controller' => __DIR__ . '/controller',
+            'Here\Tinder\Library' => __DIR__ . '/library'
+        ])->register();
     }
-
 }

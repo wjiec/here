@@ -2,26 +2,27 @@
 /**
  * This file is part of here
  *
+ * @noinspection PhpUnused
+ *
  * @copyright Copyright (C) 2020 Jayson Wang
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
 namespace Here\Tinder\Controller;
 
-use Here\Tinder\Library\Mvc\Controller\AbstractController;
+use Bops\Mvc\Controller\AbstractErrorController;
 
 
 /**
  * Class ErrorController
+ *
  * @package Here\Tinder\Controller
  */
-class ErrorController extends AbstractController {
+class ErrorController extends AbstractErrorController {
 
-    /**
-     * Hooks on the anything found on router
-     */
     public function notFoundAction() {
-        $this->response->setStatusCode(404);
+        echo '<pre>';
+        var_dump(container('router')); die();
     }
 
 }

@@ -1,0 +1,21 @@
+@import "../includes/variables";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  line-height: 1.25;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: $default-font-family;
+  background: $background-color;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
