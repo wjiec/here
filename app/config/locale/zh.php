@@ -7,5 +7,8 @@
  * @link      https://github.com/wjiec/here
  */
 return [
-    'cap' => "script-src 'self'; object-src 'none'; style-src 'self'; child-src 'none';"
+    // titles
+    'title_unknown' => 'Unknown',
+    'title_admin_setup_index' => '',
+    'title_tinder_explore_index' => 'Blog'
 ];

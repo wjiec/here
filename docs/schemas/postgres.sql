@@ -16,13 +16,10 @@ create table public.article (
   "article_id" serial4 not null primary key,
   "author_id" integer not null default 0,
   "article_title" varchar(128) not null default '',
-  "article_abbr" varchar(255) not null default '',
   "article_outline" text not null default '',
-  "article_body" text not null default '',
-  "article_public" bool not null default true,
+  "article_content" text not null default '',
   "article_publish" bool not null default false,
   "article_allow_comment" bool not null default true,
-  "article_like" integer not null default 0,
   "article_view" integer not null default 0,
   "create_time" timestamp without time zone not null default now(),
   "update_time" timestamp without time zone not null default now(),
@@ -32,7 +29,6 @@ create table public.article (
 alter table public.article owner to postgres;
 create index idx_author_id on public.article using btree (author_id);
 create index idx_article_title on public.article using btree (article_title);
-create index idx_article_abbr on public.article using btree (article_abbr);
 
 
 --
@@ -50,8 +46,8 @@ create table public.author (
   "author_2fa_code" varchar(64) not null default '',
   "create_time" timestamp without time zone not null default now(),
   "update_time" timestamp without time zone not null default now(),
-  "last_login_time" timestamp without time zone not null default now(),
-  "last_login_ip" inet not null default '0.0.0.0'
+  "last_login_ip" inet not null default '0.0.0.0',
+  "last_login_time" timestamp without time zone not null default now()
 );
 
 alter table public.author owner to postgres;
@@ -84,21 +80,16 @@ create index idx_field_key on public.field (field_key);
 
 
 --
--- Table structure for table `category`
+-- Table structure for table `tag`
 --
-create table public.category (
-  "category_id" serial4 not null primary key,
-  "category_abbr" varchar(64) not null default '',
-  "category_name" varchar(64) not null default '',
-  "category_introduction" text not null default '',
-  "category_parent" integer not null default 0,
+create table public.tag (
+  "tag_id" serial4 not null primary key,
+  "tag_name" varchar(64) not null default '',
   "create_time" timestamp without time zone not null default now()
 );
 
-alter table public.category owner to postgres;
-create index idx_category_abbr on public.category (category_abbr);
-create index idx_category_name on public.category (category_name);
-create index idx_category_parent on public.category (category_parent);
+alter table public.tag owner to postgres;
+create index idx_category_name on public.tag (tag_name);
 
 
 --
@@ -121,7 +112,7 @@ create table public.comment (
   "commentator_email" varchar(64) not null default '',
   "commentator_ip" inet not null default '0.0.0.0',
   "commentator_browser" varchar(255) not null default '',
-  "comment_body" text not null default '',
+  "comment_content" text not null default '',
   "comment_status" public.comment_type not null default 'pending'::public.comment_type,
   "comment_parent" integer not null default 0,
   "create_time" timestamp without time zone not null default now()
@@ -135,15 +126,15 @@ create index idx_comment_parent on public.comment (comment_parent);
 --
 -- Table structure for table `article_category`
 --
-create table public.article_category (
+create table public.article_tag (
   "relation_id" serial4 not null primary key,
   "article_id" integer not null default 0,
-  "category_id" integer not null default 0
+  "tag_id" integer not null default 0
 );
 
-alter table public.article_category owner to postgres;
-create index idx_relation_article_id on public.article_category (article_id);
-create index idx_relation_category_id on public.article_category (category_id);
+alter table public.article_tag owner to postgres;
+create index idx_relation_article_id on public.article_tag (article_id);
+create index idx_relation_category_id on public.article_tag (tag_id);
 
 
 --

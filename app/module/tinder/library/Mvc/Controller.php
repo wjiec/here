@@ -18,6 +18,11 @@ use Here\Library\Mvc\Controller as HereController;
  */
 class Controller extends HereController {
 
-
+    /**
+     * initializing titles
+     */
+    public function initialize() {
+        parent::initialize();
+    }
 
 }
