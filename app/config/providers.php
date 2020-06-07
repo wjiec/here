@@ -7,5 +7,6 @@
  * @link      https://github.com/wjiec/here
  */
 return [
+    \Here\Provider\Field\ServiceProvider::class,
     \Here\Provider\Router\ServiceProvider::class,
 ];
