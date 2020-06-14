@@ -10,6 +10,7 @@
  */
 namespace Here\Tinder\Controller;
 
+use Here\Model\Article;
 use Here\Tinder\Library\Mvc\Controller;
 
 
@@ -23,6 +24,11 @@ class ExploreController extends Controller {
     /**
      * explore articles, homepage
      */
-    public function indexAction() {}
+    public function indexAction() {
+        $articles = Article::query()
+            ->where('article_publish = :publish:', ['publish' => Article::BOOLEAN_TRUE])
+            ->orderBy('article_id desc');
+        $this->view->setVar('articles', $articles->execute());
+    }
 
 }

@@ -9,6 +9,8 @@
 namespace Here\Library\Mvc;
 
 use Bops\Mvc\Controller as BopsController;
+use Here\Library\Field\Store\StoreInterface;
+use Here\Model\Author;
 use Phalcon\Tag;
 use Phalcon\Text;
 use Phalcon\Translate\Adapter as Translator;
@@ -18,7 +20,10 @@ use Phalcon\Translate\Adapter as Translator;
  * Class Controller
  *
  * @package Here\Library\Mvc
+ *
  * @property Translator $translator
+ * @property StoreInterface $field
+ * @property Author $blogger
  */
 class Controller extends BopsController {
 
@@ -28,7 +33,12 @@ class Controller extends BopsController {
     public function initialize() {
         $this->translator = container('translator', $this->request->getBestLanguage());
         /** @noinspection PhpUndefinedFieldInspection */
-        $this->response->setHeader('Content-Security-Policy', $this->config->cap);
+        $this->response->setHeader('Content-Security-Policy', $this->config->security->cap);
+        /** @noinspection PhpUndefinedFieldInspection */
+        $this->response->setHeader('X-Frame-Options', $this->config->security->frameOptions);
+        /** @noinspection PhpUndefinedFieldInspection */
+        $this->response->setHeader('X-XSS-Protection', $this->config->security->xssProtection);
+        $this->response->setHeader('X-DNS-Prefetch-Control', 'on');
 
         $this->matchedViewTitle();
     }

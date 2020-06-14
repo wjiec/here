@@ -7,6 +7,7 @@
  * @link      https://github.com/wjiec/here
  */
 return [
+    \Here\Provider\Blogger\ServiceProvider::class,
     \Here\Provider\Field\ServiceProvider::class,
     \Here\Provider\Router\ServiceProvider::class,
 ];

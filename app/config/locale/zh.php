@@ -9,6 +9,6 @@
 return [
     // titles
     'title_unknown' => 'Unknown',
-    'title_admin_setup_index' => '',
+    'title_admin_setup_index' => 'Setup Wizard',
     'title_tinder_explore_index' => 'Blog'
 ];

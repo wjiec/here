@@ -37,9 +37,17 @@ class ServiceProvider extends AbstractServiceProvider {
      * @return void
      */
     public function register() {
-        $this->di->setShared($this->name(), function() {
-            return new Composition(new Memory(), new Cache(container('cache')), new Database());
-        });
+        $memory = new Memory();
+        $this->di->setShared("{$this->name()}.memory", $memory);
+
+        $cache = new Cache(container('cache'));
+        $this->di->setShared("{$this->name()}.cache", $cache);
+
+        $database = new Database();
+        $this->di->setShared("{$this->name()}.db", $database);
+
+        $composition = new Composition($memory, $cache, $database);
+        $this->di->setShared($this->name(), $composition);
     }
 
 }

@@ -9,6 +9,7 @@
 namespace Here\Tinder\Library\Mvc;
 
 use Here\Library\Mvc\Controller as HereController;
+use Phalcon\Http\ResponseInterface;
 
 
 /**
@@ -19,10 +20,15 @@ use Here\Library\Mvc\Controller as HereController;
 class Controller extends HereController {
 
     /**
-     * initializing titles
+     * initializing titles and checks blog author inits
+     *
+     * @return ResponseInterface|void
      */
     public function initialize() {
         parent::initialize();
+        if (!$this->blogger) {
+            return $this->response->redirect(['for' => 'setup-wizard']);
+        }
     }
 
 }
