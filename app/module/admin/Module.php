@@ -48,7 +48,7 @@ class Module extends AbstractModule {
             'Here\Admin' => __DIR__,
             'Here\Admin\Controller' => __DIR__ . '/controller',
             'Here\Admin\Library' => __DIR__ . '/library'
-        ]);
+        ])->register();
     }
 
 }

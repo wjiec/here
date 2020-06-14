@@ -40,14 +40,23 @@ class ServiceProvider extends AbstractServiceProvider {
             $router->clear();
             $router->removeExtraSlashes(true);
 
-            $tinder = new Group(['module' => 'tinder']);
-            $tinder->addGet('/', ['controller' => 'explore'])->setName('explore');
-            $tinder->addGet('feed', ['controller' => 'feed'])->setName('feed');
-            $tinder->addGet('article/{name:.+}', ['controller' => 'article'])->setName('article');
-            $tinder->addPut('article/{id:\w+}/comment', ['controller' => 'article', 'action' => 'comment']);
-            $tinder->addGet('category/{name:.+}', ['controller' => 'category'])->setName('category');
+            $tinder = (new Group(['module' => 'tinder']))->setPrefix('/');
+            $tinder->addGet('', ['controller' => 'explore'])->setName('explore');
+            $tinder->addGet('/feed', ['controller' => 'feed'])->setName('feed');
+            $tinder->addGet('/article/{name:.+}', ['controller' => 'article'])->setName('article');
+            $tinder->addPut('/article/{id:\w+}/comment', ['controller' => 'article', 'action' => 'comment']);
+            $tinder->addGet('/category/{name:.+}', ['controller' => 'category'])->setName('category');
             $tinder->add('search', ['controller' => 'search'])->setName('search');
-            $router->mount($tinder->setPrefix('/'));
+            $router->mount($tinder);
+
+            $adminPrefix = container('field')->get('blog.admin.prefix', 'admin');
+            $admin = (new Group(['module' => 'admin']))->setPrefix('/' . ltrim($adminPrefix, '/'));
+            $admin->addGet('/', ['controller' => 'dashboard'])->setName('dashboard');
+            $admin->addGet('/dashboard', ['controller' => 'dashboard'])->setName('dashboard');
+            $admin->addGet('/setup', ['controller' => 'setup'])->setName('setup-wizard');
+            $admin->addPut('/setup/complete', ['controller' => 'setup', 'action' => 'complete'])
+                ->setName('setup-complete');
+            $router->mount($admin);
 
             return $router;
         });
