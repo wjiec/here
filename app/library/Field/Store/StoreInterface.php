@@ -46,6 +46,14 @@ interface StoreInterface {
     public function set(string $key, $value): StoreInterface;
 
     /**
+     * remove key from store
+     *
+     * @param string $key
+     * @return StoreInterface
+     */
+    public function del(string $key): StoreInterface;
+
+    /**
      * Add a string value to the store
      *
      * @param string $key

@@ -59,6 +59,19 @@ class Database extends AbstractStore {
     }
 
     /**
+     * remove key from store
+     *
+     * @param string $key
+     * @return StoreInterface
+     */
+    public function del(string $key): StoreInterface {
+        if ($field = Field::findByKey($key)) {
+            $field->delete();
+        }
+        return $this;
+    }
+
+    /**
      * Add a string value to the store
      *
      * @param string $key

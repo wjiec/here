@@ -76,6 +76,17 @@ class Cache extends AbstractStore {
     }
 
     /**
+     * remove key from store
+     *
+     * @param string $key
+     * @return StoreInterface
+     */
+    public function del(string $key): StoreInterface {
+        $this->cache->delete($key);
+        return $this;
+    }
+
+    /**
      * Add a string value to the store
      *
      * @param string $key

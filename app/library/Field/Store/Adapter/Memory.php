@@ -56,6 +56,17 @@ class Memory extends AbstractStore {
     }
 
     /**
+     * remove key from store
+     *
+     * @param string $key
+     * @return StoreInterface
+     */
+    public function del(string $key): StoreInterface {
+        unset($this->store[$key]);
+        return $this;
+    }
+
+    /**
      * Add a string value to the store
      *
      * @param string $key
