@@ -54,7 +54,7 @@ class ServiceProvider extends AbstractServiceProvider {
             $admin->addGet('/', ['controller' => 'dashboard'])->setName('dashboard');
             $admin->addGet('/dashboard', ['controller' => 'dashboard'])->setName('dashboard');
             $admin->addGet('/setup', ['controller' => 'setup'])->setName('setup-wizard');
-            $admin->addPut('/setup/complete', ['controller' => 'setup', 'action' => 'complete'])
+            $admin->addPost('/setup/complete', ['controller' => 'setup', 'action' => 'complete'])
                 ->setName('setup-complete');
             $router->mount($admin);
 

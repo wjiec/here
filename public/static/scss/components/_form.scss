@@ -1,0 +1,26 @@
+@import "../includes/variables";
+
+form {
+
+  label {
+    width: 100px;
+    text-align: left;
+    vertical-align: middle;
+    float: left;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 40px;
+    padding-right: 14px;
+  }
+
+  .h-form-item {
+    clear: both;
+    margin-bottom: 24px;
+  }
+
+  .h-form-control {
+    position: relative;
+    margin-right: 100px;
+  }
+}
+

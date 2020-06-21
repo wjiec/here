@@ -9,7 +9,14 @@ $link-color                 : #b0b0b0;
 $background-color           : #faf9f9;
 $border-color               : #ccdae0;
 $box-shadow-color           : rgba(#182125, .35);
+$primary-color              : #5bc0eb;
+$success-color              : #43aa8b;
 
 // fonts
 $default-font-family        : -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
 $artistry-font-family       : "Rouge Script",cursive, sans-serif;
+
+// buttons
+$button-font-size           : 14px;
+$button-default-color       : #fff;
+$button-border-color        : darken($background-color, 10%);
