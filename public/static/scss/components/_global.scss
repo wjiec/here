@@ -37,3 +37,8 @@ a, a:hover, a:active, a:visited {
 a:hover {
   color: $font-color;
 }
+
+a[data-disabled] {
+  cursor: default;
+  pointer-events: none;
+}

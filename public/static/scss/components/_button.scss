@@ -24,6 +24,5 @@ button.h-primary {
 
 button:hover {
   color: $primary-color;
-  background-color: lighten($primary-color, 80%);
-  border-color: lighten($primary-color, 25%);
+  border-color: $primary-color;
 }

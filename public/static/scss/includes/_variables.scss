@@ -5,12 +5,14 @@ $body-margin-top            : 75px;
 
 // colors
 $font-color                 : #3f3844;
+$font-light-color           : #666869;
 $link-color                 : #b0b0b0;
 $background-color           : #faf9f9;
 $border-color               : #ccdae0;
 $box-shadow-color           : rgba(#182125, .35);
-$primary-color              : #5bc0eb;
-$success-color              : #43aa8b;
+$primary-color              : #00a6ed;
+$success-color              : #0cce6b;
+$danger-color               : #d64933;
 
 // fonts
 $default-font-family        : -apple-system,BlinkMacSystemFont,Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,SimSun,sans-serif;
@@ -20,3 +22,6 @@ $artistry-font-family       : "Rouge Script",cursive, sans-serif;
 $button-font-size           : 14px;
 $button-default-color       : #fff;
 $button-border-color        : darken($background-color, 10%);
+
+// form
+$form-control-line-height   : 36px;

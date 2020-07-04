@@ -10,5 +10,9 @@ return [
     // titles
     'title_unknown' => 'Unknown',
     'title_admin_setup_index' => 'Setup Wizard',
-    'title_tinder_explore_index' => 'Blog'
+    'title_tinder_explore_index' => 'Blog',
+
+    // placeholder
+    'placeholder_username' => 'Username for blogger',
+    'placeholder_password' => 'Password for blogger'
 ];
