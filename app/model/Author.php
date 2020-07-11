@@ -18,7 +18,7 @@ use Bops\Mvc\Model;
  *
  * @package Here\Model
  */
-class Author extends Model{
+class Author extends Model {
 
     /**
      *

@@ -39,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
             $router = new Router();
             $router->clear();
             $router->removeExtraSlashes(true);
+            $router->setUriSource(Router::URI_SOURCE_SERVER_REQUEST_URI);
 
             $tinder = (new Group(['module' => 'tinder']))->setPrefix('/');
             $tinder->addGet('', ['controller' => 'explore'])->setName('explore');
@@ -53,7 +54,7 @@ class ServiceProvider extends AbstractServiceProvider {
             $admin = (new Group(['module' => 'admin']))->setPrefix('/' . ltrim($adminPrefix, '/'));
             $admin->addGet('/', ['controller' => 'dashboard'])->setName('dashboard');
             $admin->addGet('/dashboard', ['controller' => 'dashboard'])->setName('dashboard');
-            $admin->addGet('/setup', ['controller' => 'setup'])->setName('setup-wizard');
+            $admin->add('/setup', ['controller' => 'setup'], ['GET', 'POST'])->setName('setup-wizard');
             $admin->addPost('/setup/complete', ['controller' => 'setup', 'action' => 'complete'])
                 ->setName('setup-complete');
             $router->mount($admin);

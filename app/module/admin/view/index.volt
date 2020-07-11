@@ -9,7 +9,15 @@
 </head>
 <body>
 
-{{ content() }}
+
+{% if errorRedirect is not defined %}
+  {{ content() }}
+{% else %}
+<form action="{{ errorRedirect }}" method="post" data-error-form>
+  <input type="hidden" name="error" value="{{ errorMessage }}">
+</form>
+{% endif %}
+
 
 <script src="{{ static_url('static/go.min.js') }}"></script>
 </body>

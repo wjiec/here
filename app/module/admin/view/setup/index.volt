@@ -7,6 +7,11 @@
       <p>Please input username and password below and dont forgot.</p>
       <p>That all, enjoy fun of write and share.</p>
     </section>
+    {% if errorMessage is defined %}
+    <section class="h-register-error">
+      <p>{{ errorMessage }}</p>
+    </section>
+    {% endif %}
     <section class="h-register-form">
       <form action="{{ url(['for': 'setup-complete']) }}" method="post">
         <div class="h-form-item" data-required>
@@ -23,6 +28,7 @@
         </div>
         <div class="h-form-item">
           <div class="h-form-control">
+            <input type="hidden" name="{{ security.getTokenKey() }}" value="{{ security.getToken() }}">
             <button>Register</button>
           </div>
         </div>

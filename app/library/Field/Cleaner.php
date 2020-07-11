@@ -49,7 +49,9 @@ class Cleaner {
      * @param string $key
      */
     public static function fromAll(string $key) {
-        container('field')->del($key);
+        static::fromMemory($key);
+        static::fromCache($key);
+        static::fromDb($key);
     }
 
 }

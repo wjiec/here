@@ -62,4 +62,13 @@ class Controller extends BopsController {
         }
     }
 
+    /**
+     * Set page title from translated
+     *
+     * @param string $name
+     */
+    protected function setTitleI18n(string $name) {
+        Tag::setTitle($this->translator->_($name));
+    }
+
 }

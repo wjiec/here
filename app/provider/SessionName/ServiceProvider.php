@@ -6,16 +6,15 @@
  * @license   MIT License
  * @link      https://github.com/wjiec/here
  */
-namespace Here\Provider\Blogger;
+namespace Here\Provider\SessionName;
 
 use Bops\Provider\AbstractServiceProvider;
-use Here\Model\Author;
 
 
 /**
  * Class ServiceProvider
  *
- * @package Here\Provider\Blogger
+ * @package Here\Provider\SessionName
  */
 class ServiceProvider extends AbstractServiceProvider {
 
@@ -25,7 +24,7 @@ class ServiceProvider extends AbstractServiceProvider {
      * @return string
      */
     public function name(): string {
-        return 'blogger';
+        return 'session.name';
     }
 
     /**
@@ -35,10 +34,13 @@ class ServiceProvider extends AbstractServiceProvider {
      */
     public function register() {
         $this->di->setShared($this->name(), function() {
-            return container('field')->get(CacheKey::BLOGGER_CACHE_KEY, function() {
-                return Author::findFirst();
-            });
+            return self::SESSION_NAME;
         });
     }
+
+    /**
+     * Session Name
+     */
+    protected const SESSION_NAME = '_bw';
 
 }

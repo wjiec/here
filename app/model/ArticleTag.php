@@ -21,7 +21,7 @@ use Bops\Mvc\Model;
  * @property Article $article
  * @property Tag $tag
  */
-class ArticleTag extends Model{
+class ArticleTag extends Model {
 
     /**
      *
