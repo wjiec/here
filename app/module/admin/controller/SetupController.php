@@ -90,9 +90,7 @@ class SetupController extends Controller {
             ]);
         }
 
-        return $this->view->setVars([
-            'redirectUrl' => _url(['for' => 'explore'])
-        ]);
+        return $this->response->redirect(['for' => 'explore']);
     }
 
 }

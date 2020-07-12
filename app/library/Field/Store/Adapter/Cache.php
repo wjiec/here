@@ -82,7 +82,7 @@ class Cache extends AbstractStore {
      * @return StoreInterface
      */
     public function del(string $key): StoreInterface {
-        $this->cache->delete($key);
+        $this->cache->delete($this->prefix . $key);
         return $this;
     }
 

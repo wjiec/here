@@ -27,8 +27,10 @@ class ErrorController extends AbstractErrorController {
     }
 
     public function notFoundAction() {
-        echo '<pre>';
-        var_dump(container('router')); die();
+        if (!container('blogger')) {
+            return $this->response->redirect(['for' => 'setup-wizard']);
+        }
+        return parent::notFoundAction();
     }
 
 }

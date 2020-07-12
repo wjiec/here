@@ -16,4 +16,16 @@ use Bops\Mvc\Controller\AbstractErrorController;
  *
  * @package Here\Admin\Controller
  */
-class ErrorController extends AbstractErrorController {}
+class ErrorController extends AbstractErrorController {
+
+    /**
+     * check blogger exists
+     */
+    public function notFoundAction() {
+        if (!container('blogger')) {
+            return $this->response->redirect(['for' => 'setup-wizard']);
+        }
+        return parent::notFoundAction();
+    }
+
+}
